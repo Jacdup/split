@@ -131,7 +131,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       //color: Colors.cyan,
       //padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
       width: screenWidth(context, dividedBy: 2,reducedBy: 0),
-      height: screenHeight(context, dividedBy: 5),
+      height: screenHeight(context, dividedBy: 6),
       //height: screenHeightExcludingToolbar(context, dividedBy: 5), //TODO: this causes pixel overflowing error
       // color: Colors.cyan,
 
