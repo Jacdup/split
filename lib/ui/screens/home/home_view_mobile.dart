@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/utils/colours.dart';
+import 'package:twofortwo/utils/routing_constants.dart';
+
+class HomeMobilePortrait extends StatelessWidget {
+  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final List<String> chosenCategories;
+  final BorrowList borrowList;
+
+  const HomeMobilePortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
+  final _itemFont = const TextStyle(fontSize: 15.0);
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 1,
+        initialIndex: 0,
+        child: Scaffold(
+          //key: _scaffoldKey,
+          appBar: _createHeader('userName'), //TODO: make this sliverAppBar
+          drawer: SizedBox(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.65, //20.0,
+            child: _buildDrawer(context),
+          ),
+
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              Navigator.pushNamed(context, NewItemRoute);
+            },
+            label: Text('Add request'),
+            icon: Icon(Icons.add),
+            backgroundColor: Colors.red,
+          ),
+
+//appBar: AppBar(
+// title: Text('List of items'),
+//),
+          body: _buildBorrowList(chosenCategories, borrowList),//TODO: borrowlist should contain multiple items
+        ));
+
+  }
+
+  Widget _buildBorrowList(List<String> chosenCategories, BorrowList item1) {
+    //final chosenCategories = chosenCategories1.categories;
+    //return ListView.builder(
+    //return
+    //  return CustomScrollView(
+    //    slivers: <Widget>[
+    //  SliverList(
+    //delegate: new SliverChildListDelegate())
+    //),
+    return ListView.separated(
+      padding: const EdgeInsets.all(16.0),
+      itemCount: 1,
+      itemBuilder: (BuildContext context, int index) {
+        //  children: <Widget>[
+        // for (var items in borrowItem1.keys)
+        //itemBuilder: /*1*/ (context, i) {
+        //if (i.isOdd) return Divider();
+
+        if (chosenCategories.contains(item1.category)) {
+          //TODO: iterate over items in borrowList here
+          return _buildRow(chosenCategories.first, item1.itemName, item1.date,
+              item1.description);
+        } else {
+          return Text("No items in chosen category");
+        }
+      },
+//],
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+      //    }
+      // ),
+      // ],
+    );
+
+  }
+
+  Widget _buildRow(
+      String category, String itemName, String date, String description) {
+    // final bool alreadySaved = _saved.contains(pair);
+    return Card(
+      child: ListTile(
+        title: Text(
+          itemName,
+          //pair.asPascalCase,
+          style: _itemFont,
+        ),
+        subtitle: Text(
+          description,
+        ),
+        trailing: Text(
+          date,
+        ),
+        onTap: () {}, //TODO: create expandable thing here
+      ),
+    );
+  }
+
+  Widget _createHeader(String userName) {
+    //return Scaffold(
+
+    return AppBar(
+      title: Text(''),
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'split.png',
+                alignment: Alignment.bottomCenter,
+                width: 120.0,
+                height: 120.0,),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+//                  Text(
+//                    'Welcome [Account Name]!',
+//                    style: TextStyle(color: Colors.white),
+//                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottom: PreferredSize(
+        preferredSize: Size.square(105.0),
+        child: TabBar(
+          tabs: [
+            Text(
+
+              'Welcome $userName!',
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
+
+            )
+            // Icon(Icons.train),
+            // Icon(Icons.directions_bus),
+            //Icon(Icons.motorcycle)
+          ],
+        ),
+      ),
+    );
+    // );
+  }
+
+  Widget _buildDrawer(context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text('Menu'),
+            decoration: BoxDecoration(
+              color: colorCustom,
+            ),
+          ),
+          ListTile(
+              title: Text('Edit Categories'),
+              onTap: () {
+                Navigator.pop(context); // This one for the drawer
+                Navigator.pushReplacementNamed(context, CategoryRoute);
+              })
+        ],
+      ),
+    );
+  }
+
+}

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:twofortwo/routing_constants.dart';
-import '../screen_size.dart';
-import '../service_locator.dart';
+import 'package:twofortwo/utils/routing_constants.dart';
+import '../../utils/screen_size.dart';
+import '../../utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
-//import 'BorrowList.dart';
+import 'package:twofortwo/utils/colours.dart';
 //TODO: this should save categories specific to the user on the hard disk
 
 class ChooseCategory extends StatefulWidget {
@@ -136,7 +136,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       // color: Colors.cyan,
 
       child: Card(
-        color: Colors.cyan,
+        color: colorCustom,
         child: Container(
           decoration: BoxDecoration(
               border: Border.all(

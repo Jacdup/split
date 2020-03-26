@@ -4,6 +4,7 @@ import 'dart:convert';
 class LocalStorageService {
 
   static const String UserKey = 'user';//TODO
+  static const String itemKey = 'item';
   static const String CategoryKey = 'category';
   static LocalStorageService _instance;
   static SharedPreferences _preferences;
@@ -79,6 +80,20 @@ class LocalStorageService {
   }
 
   /* Getter */
+  Item get item {
+    var itemJson = _getFromDisk(itemKey);
+    if (itemJson == null) {
+      return null;
+    }
+    return Item.fromJson(json.decode(itemJson));
+  }
+
+/* Setter */
+  set item(Item itemToSave) {
+    saveStringToDisk(itemKey, json.encode(itemToSave.toJson()));
+  }
+
+  /* Getter */
   List<String> get category {
     //var userJson = _getFromDisk(UserKey);
    // var cate1 = _getStringListFromDisk(CategoryKey) ?? List<String>();
@@ -105,52 +120,53 @@ class LocalStorageService {
 
 class User { //TODO: should this be here, and not in user_service.dart?
 
-
   final String name;
   final String surname;
-  final int age;
+  final String phone;
 
-  User({this.name, this.surname, this.age});
+  User({this.name, this.surname, this.phone});
 
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         surname = json['surname'],
-        age = json['age'];
+        phone = json['phone'];
+       // age = json['age'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['surname'] = this.surname;
-    data['age'] = this.age;
+    data['phone'] = this.phone;
+    //data['age'] = this.age;
     return data;
   }
 }
 
-class Category{
-  // Have to make this a json, otherwise there is no way to use a getter/setter
+class Item {
 
- /* List categories = [
-    'Sport',
-    'Camping',
-    'Household',
-    'Automobile',
-    'Books',
-    'Boardgames'
-  ];*/
-  List categories;
+  final String date;
+  final String description;
+  final String itemName;
+  final String category;
 
-  Category({this.categories});
+  const Item(this.category, this.itemName, this.date, this.description);
 
-//
-//  Category.fromJson(Map<String, dynamic> json)
-//      : categories = json['categories'];
-//
-//  Map<String, dynamic> toJson() {
-//    final Map<String, dynamic> data = new Map<String, dynamic>();
-//    data['categories'] = this.categories;
+  Item.fromJson(Map<String, dynamic> json)
+      : itemName = json['itemName'],
+        date = json['date'],
+        description = json['description'],
+        category = json['category'];
+  // age = json['age'];
 
-   // return data;
-  //}
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['itemName'] = this.itemName;
+    data['date'] = this.date;
+    data['description'] = this.description;
+    data['category'] = this.category;
+    //data['age'] = this.age;
+    return data;
+  }
 
 }
 

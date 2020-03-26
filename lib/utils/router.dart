@@ -2,13 +2,14 @@
 //import 'dart:js';
 
 import 'package:flutter/material.dart';
-import 'package:twofortwo/screens/home_view.dart';
-import 'package:twofortwo/screens/signup_view.dart';
-import 'package:twofortwo/screens/undefined_view.dart';
-import 'screens/category_view.dart';
-import 'screens/BorrowList.dart';
-import 'screens/login.dart';
+import 'package:twofortwo/ui/screens/home_view.dart';
+import 'package:twofortwo/ui/screens/signup_view.dart';
+import 'package:twofortwo/ui/screens/undefined_view.dart';
+import '../ui/screens/category_view.dart';
+import '../ui/screens/BorrowList.dart';
+import '../ui/screens/login.dart';
 import 'routing_constants.dart';
+import '../ui/screens/new_item_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings){
 switch(settings.name){
@@ -24,6 +25,8 @@ switch(settings.name){
     return MaterialPageRoute(builder: (context) => LoginView());
   case SignupRoute:
     return MaterialPageRoute(builder: (context) => SignupView());
+  case NewItemRoute:
+    return MaterialPageRoute(builder: (context) => NewItem());
   default:
     return MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name));
 }

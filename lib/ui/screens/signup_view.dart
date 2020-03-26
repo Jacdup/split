@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:twofortwo/routing_constants.dart';
-import 'package:twofortwo/service_locator.dart';
+import 'package:twofortwo/utils/routing_constants.dart';
+import 'package:twofortwo/utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
-import 'package:twofortwo/screen_size.dart';
+import 'package:twofortwo/utils/screen_size.dart';
+import 'package:twofortwo/utils/colours.dart';
 
 class SignupView extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class _SignupViewState extends State<SignupView> {
 
   List<String> _locations = ['Stellenbosch', 'Rustenburg', 'buenos aires']; // Option 2
   String _selectedLocation; // Option 2
+  User userDetails;
 
   final userName = TextEditingController();
   final userSurname = TextEditingController();
@@ -32,13 +34,18 @@ class _SignupViewState extends State<SignupView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue[400],
+        backgroundColor: colorCustom,
         floatingActionButton: FloatingActionButton(onPressed: () {
           locator<LocalStorageService>().hasSignedUp = true;
          // var userInput = myController.text;
          // print('userinput = $userInput');
 
           //Navigator.pop(context);
+          userDetails = new User(name: userName.text, surname: userSurname.text, phone: userPhone.text);
+          var storageService = locator<LocalStorageService>();
+          storageService.user = userDetails; // Setter
+          //print('user = $userDetails');
+
           Navigator.pushReplacementNamed(context, CategoryRoute);
           //dispose();// TODO: Where to dispose?
           //Navigator.push(context, MaterialPageRoute(builder: (context) => HomeViewRoute));

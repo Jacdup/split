@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../screen_size.dart';
-import '../routing_constants.dart';
-import '../service_locator.dart';
-import '../services/localstorage_service.dart';
-import '../services/user_service.dart';
+import '../../utils/screen_size.dart';
+import '../../utils/routing_constants.dart';
+import '../../utils/service_locator.dart';
+import '../../services/localstorage_service.dart';
+import '../../services/user_service.dart';
 
 
 //var mySavedUser = storageService.user;

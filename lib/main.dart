@@ -1,10 +1,12 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:twofortwo/routing_constants.dart';
-import 'router.dart' as router;
-import 'service_locator.dart';
+import 'package:twofortwo/utils/routing_constants.dart';
+import 'utils/router.dart' as router;
+import 'utils/service_locator.dart';
 import './services/localstorage_service.dart';
+import 'utils/colours.dart';
+import 'package:device_preview/device_preview.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
@@ -14,28 +16,30 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   try{
     await setupLocator();
-    runApp(MyApp());
+    runApp(
+      DevicePreview( // This is for testing UI
+        builder: (context) => MyApp(),
+      ),
+    );
   } catch (error){
     print('Locator setup has failed');
   }
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
-  //final _catStrings = {'Sport','Camp','Household'};
-
-
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: DevicePreview.appBuilder, //  This is for testing UI
       title: '2For2 Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
+        primarySwatch: colorCustom,
       ),
 
       onGenerateRoute: router.generateRoute,
       initialRoute: _getStartupScreen(),
-     // initialRoute: myFirstRoute,
       //onUnknownRoute: (settings) => MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name)),
       //home: MyHomePage(title: '2For2 Demo'),
     );
@@ -47,7 +51,8 @@ class MyApp extends StatelessWidget {
     locator<LocalStorageService>().hasSignedUp = false;
     if(!localStorageService.hasSignedUp) {
 
-      return SignupRoute;
+       return SignupRoute;
+//       return HomeViewRoute;
     }
 
     if(!localStorageService.hasLoggedIn) {
