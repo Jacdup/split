@@ -3,13 +3,13 @@ import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 
-class HomeMobilePortrait extends StatelessWidget {
+class BorrowListPortrait extends StatelessWidget {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> chosenCategories;
-  final BorrowList borrowList;
+  final Item borrowList;
 
-  const HomeMobilePortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
+  const BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
   final _itemFont = const TextStyle(fontSize: 15.0);
 
   @override
@@ -45,7 +45,7 @@ class HomeMobilePortrait extends StatelessWidget {
 
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, BorrowList item1) {
+  Widget _buildBorrowList(List<String> chosenCategories, Item item1) {
     //final chosenCategories = chosenCategories1.categories;
     //return ListView.builder(
     //return
@@ -62,14 +62,23 @@ class HomeMobilePortrait extends StatelessWidget {
         // for (var items in borrowItem1.keys)
         //itemBuilder: /*1*/ (context, i) {
         //if (i.isOdd) return Divider();
-
-        if (chosenCategories.contains(item1.category)) {
-          //TODO: iterate over items in borrowList here
-          return _buildRow(chosenCategories.first, item1.itemName, item1.date,
-              item1.description);
-        } else {
+        if (item1 == null) {
+          print('in here');
+            return Text("No items in chosen category");}
+        else if (chosenCategories.contains(item1.category)){
+        //TODO: iterate over items in borrowList here
+             return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
+        }else{
+          print(item1.category);
           return Text("No items in chosen category");
         }
+//        if (chosenCategories.contains(item1.category)) {
+//          //TODO: iterate over items in borrowList here
+//          return _buildRow(chosenCategories.first, item1.itemName, item1.date,
+//              item1.description);
+//        } else {
+//          return Text("No items in chosen category");
+//        }
       },
 //],
       separatorBuilder: (BuildContext context, int index) => const Divider(),

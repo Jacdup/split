@@ -9,11 +9,26 @@ import '../../services/user_service.dart';
 //var mySavedUser = storageService.user;
 //var userService = locator<UserService>();
 
-class LoginView extends StatelessWidget {
+
+
+class LoginView extends StatefulWidget {
   @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView>{
  // final String argument;
-  const LoginView({Key key}) : super(key: key);
+  //const LoginView({Key key}) : super(key: key);
   //final String title;
+  final userName = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    userName.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +42,7 @@ class LoginView extends StatelessWidget {
             this.runtimeType.toString(),
           ),
           TextField(
+            controller: userName,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'username',
@@ -45,9 +61,11 @@ class LoginView extends StatelessWidget {
             width: screenWidth(context,dividedBy: 3),
             child: RaisedButton(
             onPressed: () {
+              //TODO: validation, get user
               var storageService = locator<LocalStorageService>();
               storageService.hasLoggedIn = true;
               var savedCategories = storageService.category; // Getter
+              //storageService.user = userName.text; // TODO: this should query FireBase
 
               Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategories);},// Not to return to this function
 

@@ -4,6 +4,7 @@ import '../../utils/routing_constants.dart';
 import '../../utils/service_locator.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
+import 'package:twofortwo/services/item_service.dart';
 
 
 class NewItem extends StatefulWidget {
@@ -104,10 +105,18 @@ class _NewItemState extends State<NewItem> {
               ),
               RaisedButton(
                 onPressed: () {
+//                  print("new item cat: ");
+//                  print(_selectedCategory);
                   newItem = new Item(_selectedCategory, itemName.text, date.text, description.text);
+//                  print("new iteM:");
+//                      print(newItem.category);
                   //newItem = new Item(itemName: itemName.text, description: description.text, category: , date: date);
                   var storageService = locator<LocalStorageService>();
+                  //TODO: save JSON to firebase here
                   storageService.item = newItem; // Setter
+                  Item item1 = storageService.item; //  Getter
+                  print("new iteM:");
+                  print(item1);
                   Navigator.pop(context);
 
                 },

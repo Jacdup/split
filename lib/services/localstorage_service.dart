@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'item_service.dart';
+import 'user_service.dart';
 
 class LocalStorageService {
 
@@ -20,7 +22,8 @@ class LocalStorageService {
     if (_preferences == null) {
       _preferences = await SharedPreferences.getInstance();
     }
-    _preferences.clear();
+
+//    _preferences.clear();
 
     return _instance;
   }
@@ -34,13 +37,13 @@ class LocalStorageService {
 
   dynamic _getFromDisk(String key) {
     var value  = _preferences.get(key);
-    //print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
+    print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
     return value;
   }
 
   void saveStringToDisk(String key, String content){
-    //print('(TRACE) LocalStorageService:_saveStringToDisk. key: $key value: $content');
-    _preferences.setString(UserKey, content);
+    print('(TRACE) LocalStorageService:_saveStringToDisk. key: $key value: $content');
+    _preferences.setString(key, content);
   }
 
 // updated _saveToDisk function that handles all types
@@ -91,6 +94,7 @@ class LocalStorageService {
 /* Setter */
   set item(Item itemToSave) {
     saveStringToDisk(itemKey, json.encode(itemToSave.toJson()));
+
   }
 
   /* Getter */
@@ -118,57 +122,8 @@ class LocalStorageService {
   set hasLoggedIn(bool value) => _saveToDisk(LoggedInKey, value);
   }
 
-class User { //TODO: should this be here, and not in user_service.dart?
 
-  final String name;
-  final String surname;
-  final String phone;
 
-  User({this.name, this.surname, this.phone});
-
-  User.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        surname = json['surname'],
-        phone = json['phone'];
-       // age = json['age'];
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['surname'] = this.surname;
-    data['phone'] = this.phone;
-    //data['age'] = this.age;
-    return data;
-  }
-}
-
-class Item {
-
-  final String date;
-  final String description;
-  final String itemName;
-  final String category;
-
-  const Item(this.category, this.itemName, this.date, this.description);
-
-  Item.fromJson(Map<String, dynamic> json)
-      : itemName = json['itemName'],
-        date = json['date'],
-        description = json['description'],
-        category = json['category'];
-  // age = json['age'];
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['itemName'] = this.itemName;
-    data['date'] = this.date;
-    data['description'] = this.description;
-    data['category'] = this.category;
-    //data['age'] = this.age;
-    return data;
-  }
-
-}
 
 
 

@@ -4,6 +4,7 @@ import 'package:twofortwo/utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/utils/colours.dart';
+import 'package:twofortwo/services/user_service.dart';
 
 class SignupView extends StatefulWidget {
   @override

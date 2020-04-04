@@ -17,7 +17,7 @@ class ChooseCategory extends StatefulWidget {
 
 class _ChooseCategoryState extends State<ChooseCategory> {
   //int _counter = 0;
-  final _categories = [
+  final List<String> _categories = [
     'Sport',
     'Camp',
     'Household',
@@ -25,7 +25,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
     'Books',
     'Boardgames'
   ];
-
+  var storageService = locator<LocalStorageService>();
   final List<String> _selectedCategories = [];
   final _biggerFont = const TextStyle(fontSize: 25.0);
 
@@ -67,8 +67,12 @@ class _ChooseCategoryState extends State<ChooseCategory> {
               child: btnNxt,
               onPressed: () {
                 // Save a value
-                var storageService = locator<LocalStorageService>();
+                print("Has signed up value before:");
+                print(storageService.hasSignedUp);
                 storageService.category = _selectedCategories; // Setter
+                storageService.hasSignedUp = true;
+                print("Has signed up value after:");
+                print(storageService.hasSignedUp);
                 //set category(Category categoriesToSave)
                 //var mySavedUser = storageService.user;
 

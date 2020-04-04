@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:twofortwo/services/localstorage_service.dart';
+import '../../../utils/service_locator.dart';
+import 'package:flutter/services.dart';
+
+import 'package:twofortwo/ui/responsive/screen_type_layout.dart';
+import 'package:twofortwo/ui/responsive/orientation_layout.dart';
+import 'home_view_mobile.dart';
+import 'package:twofortwo/services/item_service.dart';
+
+class HomeView extends StatefulWidget {
+  final List<String> chosenCategories;
+
+  const HomeView({Key key, this.chosenCategories}) : super(key: key);
+
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView>{
+//@override
+
+//  final String userName;
+
+//  static const item1 = Item(
+//      'Household', 'Example name', '03/2020 - 04/2020', 'Generic description');
+
+  // final Data _categories;
+  // SecondPage({this._categories});
+
+  Widget build(BuildContext context) {
+
+    var localStorageService = locator<LocalStorageService>();
+    final Item item1 = localStorageService.item; //  Getter
+    //TODO: get all from database here
+    List<String> chosenCategories;
+
+    widget.chosenCategories == null ? chosenCategories = localStorageService.category : chosenCategories = widget.chosenCategories;
+   // var appInfo = Provider.of<AppInfo>(context);
+//    var storageService = locator<LocalStorageService>();
+//    User thisUser = storageService.user; // Getter
+//    String userName = thisUser.name;
+
+//    Hero(
+//      tag: "New Request",
+//      child: Image.asset('split.png'),
+//    );
+    return WillPopScope(
+      /* This function ensures the user cannot route back to categories with the back button */
+      onWillPop: () async {
+        return _confirmLogout(context);
+        //return false;
+      }, // The page will not respond to back press
+      child: ScreenTypeLayout(
+        mobile: OrientationLayout(
+          portrait: BorrowListPortrait(chosenCategories: chosenCategories, borrowList: item1),
+          //landscape: //TODO,
+        ),
+      ),
+
+    );
+  }
+}
+
+
+ _confirmLogout(context) {
+  // flutter defined function
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        title: new Text("Confirm Logout"),
+        content: new Text("Are you sure you want to exit?"),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text("Yes"),
+            onPressed: () {
+              //locator<LocalStorageService>().hasLoggedIn = false;
+              //Navigator.pop(context); // Pop the AlertDialog
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+             // exit(0);
+              //return Future.value(true);
+             // Navigator.pop(context);
+              //Navigator.pushReplacementNamed(context, SplashRoute);
+            },
+          ),
+          new FlatButton(
+            child: new Text("No"),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+             // var storageService = locator<LocalStorageService>();
+              //storageService.category = _selectedCategories; // Setter
+             // print(storageService.hasSignedUp);
+              //storageService.hasSignedUp = true;
+              //return Future.value(false);
+            },
+          ),
+        ],
+      );
+    },
+  );
+ // return false;
+  //return true;
+}

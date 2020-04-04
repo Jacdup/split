@@ -12,7 +12,7 @@ import 'package:device_preview/device_preview.dart';
 //var userService = locator<LocalStorageService>();
 
 
-void main() async{
+Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   try{
     await setupLocator();
@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localStorageService = locator<LocalStorageService>();
+    var userCategories = localStorageService.category;
     return MaterialApp(
       builder: DevicePreview.appBuilder, //  This is for testing UI
       title: '2For2 Demo',
@@ -38,7 +40,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: colorCustom,
       ),
 
-      onGenerateRoute: router.generateRoute,
+
+      onGenerateRoute: (settings){
+        return router.generateRoute(settings);//TODO: how to pass arguments here
+      },
       initialRoute: _getStartupScreen(),
       //onUnknownRoute: (settings) => MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name)),
       //home: MyHomePage(title: '2For2 Demo'),
@@ -47,17 +52,22 @@ class MyApp extends StatelessWidget {
 
   String _getStartupScreen() {
     var localStorageService = locator<LocalStorageService>();
-    locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
-    locator<LocalStorageService>().hasSignedUp = false;
+
+    print(localStorageService.hasSignedUp);
+    print('test');
+   // locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
+//    locator<LocalStorageService>().hasSignedUp = false;
     if(!localStorageService.hasSignedUp) {
 
-       return SignupRoute;
-//       return HomeViewRoute;
+//       return SignupRoute;
+   // return CategoryRoute;
+    //   return HomeViewRoute;
+    return SplashRoute;
     }
 
-    if(!localStorageService.hasLoggedIn) {
-      return LoginRoute;
-    }
+//    if(!localStorageService.hasLoggedIn) {
+////      return LoginRoute;
+////    }
 
     return HomeViewRoute;
   }

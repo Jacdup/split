@@ -4,6 +4,7 @@ import '../services/login_service.dart';
 import '../services/localstorage_service.dart';
 
 GetIt locator = GetIt();
+//GetIt getIt = GetIt.instance;
 
 Future setupLocator() async {
   locator.registerSingleton(UserService());
