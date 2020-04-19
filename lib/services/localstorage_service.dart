@@ -12,6 +12,7 @@ class LocalStorageService {
   static SharedPreferences _preferences;
   static const String SignedUpKey = 'signedUp';
   static const String LoggedInKey = 'loggedIn';
+  static const String StayLoggedInKey = 'stayLoggedIn';
 
 
   static Future<LocalStorageService> getInstance() async {
@@ -120,6 +121,9 @@ class LocalStorageService {
 
   bool get hasLoggedIn => _getFromDisk(LoggedInKey) ?? false;
   set hasLoggedIn(bool value) => _saveToDisk(LoggedInKey, value);
+
+  bool get stayLoggedIn => _getFromDisk(StayLoggedInKey) ?? false;
+  set stayLoggedIn(bool value) => _saveToDisk(StayLoggedInKey, value);
   }
 
 

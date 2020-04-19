@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
-import '../../utils/screen_size.dart';
-import '../../utils/service_locator.dart';
+import '../../../utils/screen_size.dart';
+import '../../../utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/colours.dart';
 //TODO: this should save categories specific to the user on the hard disk

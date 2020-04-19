@@ -18,15 +18,17 @@ class User {
 
   final String uid;
   final String name;
-  final String surname;
+//  final String surname;
   final String phone;
+  final String email;
 
-  User({this.uid, this.name, this.surname, this.phone});
+  User({this.uid, this.name, this.email, this.phone});
 
   User.fromJson(Map<String, dynamic> json)
       : uid = json['uid'],
         name = json['name'],
-        surname = json['surname'],
+        email = json['email'],
+//        surname = json['surname'],
         phone = json['phone'];
   // age = json['age'];
 
@@ -34,7 +36,8 @@ class User {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['uid'] = this.uid;
     data['name'] = this.name;
-    data['surname'] = this.surname;
+    data['email'] = this.email;
+//    data['surname'] = this.surname;
     data['phone'] = this.phone;
     //data['age'] = this.age;
     return data;

@@ -32,6 +32,7 @@ class _HomeViewState extends State<HomeView>{
 
     var localStorageService = locator<LocalStorageService>();
     final Item item1 = localStorageService.item; //  Getter
+
     //TODO: get all from database here
     List<String> chosenCategories;
 
@@ -65,19 +66,25 @@ class _HomeViewState extends State<HomeView>{
 
  _confirmLogout(context) {
   // flutter defined function
+   final bool staySignedIn = locator<LocalStorageService>().stayLoggedIn; // Getter TODO: it might be better to pass this variable through the constructor, then we don't have to query the local storage every time
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
       // return object of type Dialog
       return AlertDialog(
-        title: new Text("Confirm Logout"),
+        title: new Text("Confirm Exit"),
         content: new Text("Are you sure you want to exit?"),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
           new FlatButton(
             child: new Text("Yes"),
             onPressed: () {
-              //locator<LocalStorageService>().hasLoggedIn = false;
+
+              if (!staySignedIn){
+                // TODO: add firestore logout here
+//                locator<LocalStorageService>().hasLoggedIn = false;
+              }
               //Navigator.pop(context); // Pop the AlertDialog
               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
              // exit(0);

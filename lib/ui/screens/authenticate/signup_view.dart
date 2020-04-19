@@ -42,7 +42,7 @@ class _SignupViewState extends State<SignupView> {
          // print('userinput = $userInput');
 
           //Navigator.pop(context);
-          userDetails = new User(name: userName.text, surname: userSurname.text, phone: userPhone.text);
+          userDetails = new User(name: userName.text, email: userEmail.text, phone: userPhone.text);
           var storageService = locator<LocalStorageService>();
           storageService.user = userDetails; // Setter
           //print('user = $userDetails');
@@ -62,18 +62,18 @@ class _SignupViewState extends State<SignupView> {
                   controller: userName,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Name',
+                    labelText: 'Name & Surname',
                   ),
                 ),
                 SizedBox(height: 20),
-                TextField(
-                  controller: userSurname,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Surname',
-                  ),
-                ),
-                SizedBox(height: 20),
+//                TextField(
+//                  controller: userEmail,
+//                  decoration: InputDecoration(
+//                    border: OutlineInputBorder(),
+//                    labelText: 'Email Address',
+//                  ),
+//                ),
+//                SizedBox(height: 20),
                 TextField(
                   controller: userEmail,
                   decoration: InputDecoration(

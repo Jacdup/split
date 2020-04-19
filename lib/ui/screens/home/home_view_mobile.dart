@@ -63,7 +63,6 @@ class BorrowListPortrait extends StatelessWidget {
         //itemBuilder: /*1*/ (context, i) {
         //if (i.isOdd) return Divider();
         if (item1 == null) {
-          print('in here');
             return Text("No items in chosen category");}
         else if (chosenCategories.contains(item1.category)){
         //TODO: iterate over items in borrowList here
@@ -73,7 +72,6 @@ class BorrowListPortrait extends StatelessWidget {
           return Text("No items in chosen category");
         }
 //        if (chosenCategories.contains(item1.category)) {
-//          //TODO: iterate over items in borrowList here
 //          return _buildRow(chosenCategories.first, item1.itemName, item1.date,
 //              item1.description);
 //        } else {

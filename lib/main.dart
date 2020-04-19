@@ -7,6 +7,7 @@ import 'utils/service_locator.dart';
 import './services/localstorage_service.dart';
 import 'utils/colours.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:twofortwo/services/user_service.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
@@ -51,26 +52,37 @@ class MyApp extends StatelessWidget {
   }
 
   String _getStartupScreen() {
+    // TODO: this is for handling cases where user selected to stay logged in
     var localStorageService = locator<LocalStorageService>();
 
-    print(localStorageService.hasSignedUp);
-    print('test');
-    locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
-    locator<LocalStorageService>().hasSignedUp = false;
-    if(!localStorageService.hasSignedUp) {
+//    print(localStorageService.hasSignedUp);
+//    print('test');
+//    locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
+//    locator<LocalStorageService>().hasSignedUp = false;
+    var alreadyLoggedIn = localStorageService.stayLoggedIn;
+    User thisUser = localStorageService.user; // Get user from storage, not firestore
 
-//       return SignupRoute;
-    return LoginRoute;
-//       return HomeViewRoute;
-//    return SplashRoute;
+
+    if (alreadyLoggedIn) {
+      return HomeViewRoute; //TODO: pass thisUser to HomeViewRoute constructor
+    } else {
+      return AuthRoute;
     }
-
-//    if(!localStorageService.hasLoggedIn) {
-////      return LoginRoute;
-////    }
-
-    return HomeViewRoute;
   }
+//    if(!localStorageService.hasSignedUp) {
+//
+////       return SignupRoute;
+//    return LoginRoute;
+////       return HomeViewRoute;
+////    return SplashRoute;
+//    }
+//
+////    if(!localStorageService.hasLoggedIn) {
+//////      return LoginRoute;
+//////    }
+//
+//    return HomeViewRoute;
+//  }
 }
 
 /*class MyHomePage extends StatefulWidget {

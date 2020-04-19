@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/auth.dart';
 import '../../../utils/screen_size.dart';
-import '../../../utils/routing_constants.dart';
 import '../../../utils/service_locator.dart';
 import '../../../services/localstorage_service.dart';
 
@@ -23,7 +22,7 @@ class _LoginViewState extends State<Login>{
   //const LoginView({Key key}) : super(key: key);
   //final String title;
   final AuthService _auth = AuthService();
-
+  bool rememberMe = false;
   final userName = TextEditingController();
 
   @override
@@ -32,6 +31,17 @@ class _LoginViewState extends State<Login>{
     userName.dispose();
     super.dispose();
   }
+
+  void _onRememberMeChanged(bool newValue) => setState(() {
+    rememberMe = newValue;
+    if (rememberMe) {
+      // Functionality that remembers the user.
+      locator<LocalStorageService>().stayLoggedIn = true;
+    } else {
+      // Forget the user
+      locator<LocalStorageService>().stayLoggedIn = false;
+    }
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +68,12 @@ class _LoginViewState extends State<Login>{
               labelText: 'password',
             ),
           ),
+          Text('Stay logged in?'),
+          Checkbox(
+            value: rememberMe,
+            onChanged: _onRememberMeChanged,
+          ),
+
           Container(
             margin: const EdgeInsets.all(50.0),
             height: screenHeight(context, dividedBy: 14) ,
@@ -68,14 +84,21 @@ class _LoginViewState extends State<Login>{
 //              var storageService = locator<LocalStorageService>();
 //              storageService.hasLoggedIn = true;
 //              var savedCategories = storageService.category; // Getter
-              //storageService.user = userName.text; // TODO: this should query FireBase
+              //storageService.user = userName.text;
               dynamic result = await _auth.signInAnon();
-              if (result == null){
-                print("Error signing in");
 
+
+              if (result == null){
+                print("Error signing in"); // TODO: show message to user
               }else {
                 print("signed in");
+                if (rememberMe){
+                  // Save the current FireStore user to local storage
+                  locator<LocalStorageService>().user = result;
+                }
+                //TODO: get categories of user
                 print(result);
+                print(locator<LocalStorageService>().stayLoggedIn);
               }
 //              Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategories);// Not to return to this function
               },
@@ -84,6 +107,7 @@ class _LoginViewState extends State<Login>{
                 'proceed',
                 style: TextStyle(fontSize: 20)
             ),
+
           ),
           )
         ],
