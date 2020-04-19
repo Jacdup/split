@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
+import 'package:twofortwo/services/auth.dart';
 
 class BorrowListPortrait extends StatelessWidget {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> chosenCategories;
   final Item borrowList;
-
-  const BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
+  BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
+//  const BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
   final _itemFont = const TextStyle(fontSize: 15.0);
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
+
+
     return DefaultTabController(
         length: 1,
         initialIndex: 0,
@@ -158,6 +163,7 @@ class BorrowListPortrait extends StatelessWidget {
   }
 
   Widget _buildDrawer(context) {
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -173,6 +179,13 @@ class BorrowListPortrait extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context); // This one for the drawer
                 Navigator.pushReplacementNamed(context, CategoryRoute);
+              }),
+          ListTile(
+              title: Text('Logout'),
+              onTap: () async {
+                Navigator.pop(context); // This one for the drawer
+                await _auth.logOut();
+//                Navigator.pushReplacementNamed(context, CategoryRoute);
               })
         ],
       ),
