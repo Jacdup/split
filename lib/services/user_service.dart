@@ -16,20 +16,23 @@ class UserService {
 
 class User {
 
+  final String uid;
   final String name;
   final String surname;
   final String phone;
 
-  User({this.name, this.surname, this.phone});
+  User({this.uid, this.name, this.surname, this.phone});
 
   User.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
+      : uid = json['uid'],
+        name = json['name'],
         surname = json['surname'],
         phone = json['phone'];
   // age = json['age'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['uid'] = this.uid;
     data['name'] = this.name;
     data['surname'] = this.surname;
     data['phone'] = this.phone;

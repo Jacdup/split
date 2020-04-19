@@ -3,11 +3,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:twofortwo/ui/screens/splash_screen.dart';
-import 'package:twofortwo/ui/screens/signup_view.dart';
+import 'package:twofortwo/ui/screens/authenticate/signup_view.dart';
 import 'package:twofortwo/ui/screens/undefined_view.dart';
 import '../ui/screens/category_view.dart';
 import '../ui/screens/home/home_view.dart';
-import '../ui/screens/login.dart';
+import '../ui/screens/authenticate/login.dart';
 import 'routing_constants.dart';
 import '../ui/screens/new_item_view.dart';
 
@@ -25,7 +25,7 @@ switch(settings.name){
     return MaterialPageRoute(builder: (context) => HomeView(chosenCategories: chosenCategories,));
   case LoginRoute:
     var argument = settings.arguments;
-    return MaterialPageRoute(builder: (context) => LoginView());
+    return MaterialPageRoute(builder: (context) => Login());
   case SignupRoute:
     return MaterialPageRoute(builder: (context) => SignupView());
   case NewItemRoute:

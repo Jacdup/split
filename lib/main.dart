@@ -55,14 +55,14 @@ class MyApp extends StatelessWidget {
 
     print(localStorageService.hasSignedUp);
     print('test');
-   // locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
-//    locator<LocalStorageService>().hasSignedUp = false;
+    locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
+    locator<LocalStorageService>().hasSignedUp = false;
     if(!localStorageService.hasSignedUp) {
 
 //       return SignupRoute;
-   // return CategoryRoute;
-    //   return HomeViewRoute;
-    return SplashRoute;
+    return LoginRoute;
+//       return HomeViewRoute;
+//    return SplashRoute;
     }
 
 //    if(!localStorageService.hasLoggedIn) {
