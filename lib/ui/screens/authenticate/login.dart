@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/utils/colours.dart';
 import '../../../utils/screen_size.dart';
@@ -21,13 +22,10 @@ class _LoginViewState extends State<Login> {
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
+
   bool rememberMe = false;
-  final _itemFont =
-      const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
-  final _textFont = const TextStyle(
-      fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black54);
-  final _errorFont = const TextStyle(
-      fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red);
+
 
   String email = '';
   String password = '';
@@ -49,7 +47,7 @@ class _LoginViewState extends State<Login> {
   Widget build(BuildContext context) {
     final _space = screenHeight(context, dividedBy: 30);
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
         backgroundColor: colorCustom,
         appBar: AppBar(
             backgroundColor: colorCustom,
@@ -62,7 +60,7 @@ class _LoginViewState extends State<Login> {
                   icon: Icon(Icons.person, size: 35),
                   label: Text(
                     'Register',
-                    style: _textFont,
+                    style: textFont,
                   )),
             ]),
         body: Center(
@@ -75,8 +73,8 @@ class _LoginViewState extends State<Login> {
                   children: <Widget>[
                     SizedBox(height: 10.0),
                     Text(
-                      'login',
-                      style: _itemFont,
+                      'Login',
+                      style: itemFont,
                     ),
                     SizedBox(height: _space * 2),
                     TextFormField(
@@ -117,16 +115,11 @@ class _LoginViewState extends State<Login> {
                             ),
                           ],
                         )),
-                    SizedBox(
-                      height: _space,
-                    ),
-//                    _buildButton(),
+                    SizedBox(height: _space),
                     ButtonWidget(
                         icon: Icons.arrow_forward, onPressed: onPressedBtn),
-                    SizedBox(
-                      height: _space,
-                    ),
-                    Text(error, style: _errorFont),
+                    SizedBox(height: _space),
+                    Text(error, style: errorFont),
                   ],
                 ),
               ),
@@ -145,10 +138,15 @@ class _LoginViewState extends State<Login> {
     // Validation
     if (_formKey.currentState.validate()) {
       // Is correct
+      setState(() {
+        loading = true;
+      });
+
       dynamic result = await _auth.signIn(email, password);
       if (result == null) {
         setState(() {
           error = 'Could not sign in, please check details';
+          loading = false;
         });
       } else {
         print(result);

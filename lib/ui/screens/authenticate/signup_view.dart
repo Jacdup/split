@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:twofortwo/utils/routing_constants.dart';
-import 'package:twofortwo/utils/service_locator.dart';
-import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
+import 'package:twofortwo/shared/loading.dart';
 
 class SignupView extends StatefulWidget {
   final Function toggleView;
@@ -28,38 +26,19 @@ class _SignupViewState extends State<SignupView> {
   User userDetails;
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String userName = '';
   String userEmail = '';
   String userPhone = '';
   String userPassword = '';
-
   String error = '';
-
-  final _textFont = const TextStyle(
-      fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black54);
-  final _itemFont =
-      const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
-  final _errorFont = const TextStyle(
-      fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red);
-  final _borderColour = Colors.black87;
-  final _borderWidth = 1.2;
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-//    userName.dispose();
-//    userSurname.dispose();
-//    userEmail.dispose();
-//    userPhone.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final _space = screenHeight(context, dividedBy: 40);
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
         backgroundColor: colorCustom,
         appBar: AppBar(
             backgroundColor: colorCustom,
@@ -72,13 +51,11 @@ class _SignupViewState extends State<SignupView> {
                   icon: Icon(Icons.person, size: 35),
                   label: Text(
                     'Login',
-                    style: _textFont,
+                    style: textFont,
                   )),
             ]),
         body: Center(
           child: Container(
-//            padding: EdgeInsets.only(top: screenHeight(context, dividedBy: 12)),
-            //height: screenHeight(context, dividedBy: 1, reducedBy: 200) ,
             width: screenWidth(context, dividedBy: 1.5),
             child: Form(
               key: _formKey, // Keep track of form
@@ -87,9 +64,8 @@ class _SignupViewState extends State<SignupView> {
                   children: <Widget>[
                     SizedBox(height: _space / 2),
                     Text(
-//            this.runtimeType.toString(),
                       'Register',
-                      style: _itemFont,
+                      style: itemFont,
                     ),
                     SizedBox(height: _space * 2),
                     TextFormField(
@@ -100,7 +76,6 @@ class _SignupViewState extends State<SignupView> {
                           userName = val;
                         });
                       },
-//            controller: userName,
                       decoration: textInputDecoration.copyWith(
                           labelText: 'Name & surname'),
                     ),
@@ -147,7 +122,7 @@ class _SignupViewState extends State<SignupView> {
                     DropdownButton(
                       hint: Text(
                         'Please choose a location',
-                        style: _textFont,
+                        style: textFont,
                       ), // Not necessary for Option 1
                       value: _selectedLocation,
                       onChanged: (newValue) {
@@ -159,21 +134,17 @@ class _SignupViewState extends State<SignupView> {
                         return DropdownMenuItem(
                           child: new Text(
                             location,
-                            style: _textFont,
+                            style: textFont,
                           ),
                           value: location,
                         );
                       }).toList(),
                     ),
-                    SizedBox(
-                      height: _space / 2,
-                    ),
+                    SizedBox(height: _space/2),
                     ButtonWidget(
                         icon: Icons.arrow_forward, onPressed: onPressedBtn),
-                    SizedBox(
-                      height: _space,
-                    ),
-                    Text(error, style: _errorFont),
+                    SizedBox(height: _space),
+                    Text(error, style: errorFont),
                   ], // Children
                 ),
               ),
@@ -186,11 +157,15 @@ class _SignupViewState extends State<SignupView> {
     // Validation
     if (_formKey.currentState.validate()) {
       // Is correct
+      setState(() {
+        loading = true;
+      });
       dynamic result = await _auth.registerWithEmailAndPassword(
           userName, userEmail, userPhone, userPassword, _selectedLocation);
       if (result == null) {
         setState(() {
           error = 'Email invalid, or already in use!';
+          loading = false;
         });
       } else {
         print(result);

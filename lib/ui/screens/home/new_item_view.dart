@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
+import 'package:twofortwo/shared/loading.dart';
 import '../../../utils/routing_constants.dart';
 import '../../../utils/service_locator.dart';
 import 'package:twofortwo/utils/colours.dart';
@@ -31,6 +32,7 @@ class _NewItemState extends State<NewItem> {
   ];
 
    String _selectedCategory;
+   bool loading = false;
 
   Item newItem;
 
@@ -38,6 +40,7 @@ class _NewItemState extends State<NewItem> {
   String description;
   String date;
   final category = TextEditingController();
+  String error = '';
 
   @override
   void dispose() {
@@ -59,7 +62,7 @@ class _NewItemState extends State<NewItem> {
     final _itemFont = const TextStyle(fontSize: 18, color: Colors.black);
     final _textFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black54);
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: colorCustom,
       body: Center(
         child: Container(
@@ -124,12 +127,25 @@ class _NewItemState extends State<NewItem> {
   }
 
   onPressedBtn() async {
-    newItem =
-    new Item(_selectedCategory, itemName, date, description);
+
+    // TODO: validation
+
+    setState(() {
+      loading = true;
+    });
+    newItem =  new Item(_selectedCategory, itemName, date, description);
     var storageService = locator<LocalStorageService>();
     //TODO: save JSON to firebase here
     storageService.item = newItem; // Setter
     Item item1 = storageService.item; //  Getter
+
+    if (item1 == null) {
+      setState(() {
+      loading = false;
+        });
+      error = 'Error adding item, please check details';
+
+    }
     print("new iteM:");
     print(item1);
     Navigator.pop(context);
