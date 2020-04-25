@@ -3,6 +3,9 @@ import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
+import 'package:twofortwo/services/localstorage_service.dart';
+import 'package:twofortwo/utils/service_locator.dart';
+import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/services/auth.dart';
 
 class BorrowListPortrait extends StatelessWidget {
@@ -10,10 +13,12 @@ class BorrowListPortrait extends StatelessWidget {
 
   final List<String> chosenCategories;
   final Item borrowList;
-  BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
+  final User user;
+  BorrowListPortrait({Key key, this.chosenCategories, this.borrowList, this.user}) : super(key: key);
 //  const BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
   final _itemFont = const TextStyle(fontSize: 15.0);
   final AuthService _auth = AuthService();
+  final localStorageService = locator<LocalStorageService>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,7 @@ class BorrowListPortrait extends StatelessWidget {
         initialIndex: 0,
         child: Scaffold(
           //key: _scaffoldKey,
-          appBar: _createHeader('userName'), //TODO: make this sliverAppBar
+          appBar: _createHeader(user.uid), //TODO: make this sliverAppBar
           drawer: SizedBox(
             width: MediaQuery
                 .of(context)
@@ -73,7 +78,7 @@ class BorrowListPortrait extends StatelessWidget {
         //TODO: iterate over items in borrowList here
              return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
         }else{
-          print(item1.category);
+//          print(item1.category);
           return Text("No items in chosen category");
         }
 //        if (chosenCategories.contains(item1.category)) {
@@ -178,12 +183,15 @@ class BorrowListPortrait extends StatelessWidget {
               title: Text('Edit Categories'),
               onTap: () {
                 Navigator.pop(context); // This one for the drawer
-                Navigator.pushReplacementNamed(context, CategoryRoute);
+                Navigator.pushNamed(context, CategoryRoute);
               }),
           ListTile(
               title: Text('Logout'),
               onTap: () async {
                 Navigator.pop(context); // This one for the drawer
+//                Navigator.pushReplacementNamed(context, LoginRoute); // Shouldn't have to call this, the wrapper listens for changes
+                localStorageService.clear(); //  Remove all saved values
+//                print(localStorageService.stayLoggedIn);
                 await _auth.logOut();
 //                Navigator.pushReplacementNamed(context, CategoryRoute);
               })

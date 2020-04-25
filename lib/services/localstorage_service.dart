@@ -29,6 +29,10 @@ class LocalStorageService {
     return _instance;
   }
 
+  clear(){
+    _preferences.clear();
+  }
+
   List<String> _getStringListFromDisk(String key){
     //var value  = _preferences.get(key);
     List<String> value = _preferences.getStringList(key);

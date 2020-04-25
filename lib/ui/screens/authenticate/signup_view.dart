@@ -5,8 +5,16 @@ import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/services/user_service.dart';
+import 'package:twofortwo/services/auth.dart';
+import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/widgets.dart';
 
 class SignupView extends StatefulWidget {
+
+  final Function toggleView;
+
+  SignupView({this.toggleView});
+
   @override
   _SignupViewState createState() => _SignupViewState();
 }
@@ -16,101 +24,222 @@ class _SignupViewState extends State<SignupView> {
   List<String> _locations = ['Stellenbosch', 'Rustenburg', 'buenos aires']; // Option 2
   String _selectedLocation; // Option 2
   User userDetails;
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
-  final userName = TextEditingController();
-  final userSurname = TextEditingController();
-  final userEmail = TextEditingController();
-  final userPhone = TextEditingController();
+  String userName = '';
+  String userEmail = '';
+  String userPhone = '';
+  String userPassword = '';
+
+  String error = '';
+
+  final _textFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black54);
+  final _itemFont = const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
+  final _errorFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red);
+  final _borderColour = Colors.black87;
+  final _borderWidth = 1.2;
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    userName.dispose();
-    userSurname.dispose();
-    userEmail.dispose();
-    userPhone.dispose();
+//    userName.dispose();
+//    userSurname.dispose();
+//    userEmail.dispose();
+//    userPhone.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final _space = screenHeight(context, dividedBy: 40);
+
     return Scaffold(
         backgroundColor: colorCustom,
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          locator<LocalStorageService>().hasSignedUp = true;
-         // var userInput = myController.text;
-         // print('userinput = $userInput');
-
-          //Navigator.pop(context);
-          userDetails = new User(name: userName.text, email: userEmail.text, phone: userPhone.text);
-          var storageService = locator<LocalStorageService>();
-          storageService.user = userDetails; // Setter
-          //print('user = $userDetails');
-
-          Navigator.pushReplacementNamed(context, CategoryRoute);
-          //dispose();// TODO: Where to dispose?
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => HomeViewRoute));
-        }),
+        appBar: AppBar(
+            backgroundColor: colorCustom,
+            elevation: 0.0,
+            actions: <Widget>[
+              FlatButton.icon(onPressed: (){
+                widget.toggleView();
+              },
+                  icon: Icon(Icons.person,size:35), label: Text('Login', style: _textFont,)),
+            ]
+        ),
         body: Center(
           child: Container(
-            padding: EdgeInsets.only(top: 100 ),
+//            padding: EdgeInsets.only(top: screenHeight(context, dividedBy: 12)),
             //height: screenHeight(context, dividedBy: 1, reducedBy: 200) ,
             width: screenWidth(context,dividedBy: 1.5),
-            child: Column(
-              children: [
-                TextField(
-                  controller: userName,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name & Surname',
-                  ),
+            child: Form(
+              key: _formKey, // Keep track of form
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget> [
+                    SizedBox(height: _space/2),
+                    Text(
+//            this.runtimeType.toString(),
+                      'Register',
+                      style: _itemFont,
+                    ),
+                    SizedBox(height: _space*2),
+                    TextFormField(
+                      validator: (val) => val.isEmpty ? 'Enter your name & surname' : null,
+                      onChanged: (val){
+                        setState(() {
+                          userName = val;
+                        });
+                      },
+//            controller: userName,
+                      decoration: textInputDecoration.copyWith(labelText: 'Name & surname'),
+                    ),
+                    SizedBox(height: _space),
+                    TextFormField(
+                      validator: (val) => val.isEmpty ? 'Enter an email address' : null,
+                      onChanged: (val){
+                        setState(() {
+                          userEmail = val;
+                        });
+                      },
+                      decoration: textInputDecoration.copyWith(labelText: 'Email Address'),
+                    ),
+                    SizedBox(height: _space),
+                    TextFormField(
+                      validator: (val) => val.length!= 10 ? 'Enter a valid 10 digit phone number' : null,
+                      onChanged: (val){
+                        setState(() {
+                          userPhone = val;
+                        });
+                      },
+                      decoration: textInputDecoration.copyWith(labelText: 'Phone Number'),
+                    ),
+                    SizedBox(height: _space),
+                    TextFormField(
+                      validator: (val) => val.length < 6 ? 'Password must be 6 or more characters' : null,
+                      onChanged: (val){
+                        setState(() {
+                          userPassword = val;
+                        });
+                      },
+                      obscureText: true,
+                      decoration: textInputDecoration.copyWith(labelText: 'Password'),
+                    ),
+                    SizedBox(height: _space),
+                    //createDropDown(context),
+                    DropdownButton(
+                      hint: Text('Please choose a location', style: _textFont,), // Not necessary for Option 1
+                      value: _selectedLocation,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedLocation = newValue;
+                        });
+                      },
+                      items: _locations.map((location) {
+                        return DropdownMenuItem(
+                          child: new Text(location, style: _textFont,),
+                          value: location,
+                        );
+                      }).toList(),
+                    ) ,
+                    SizedBox(height: _space/2,),
+                    ButtonWidget(icon: Icons.arrow_forward, onPressed:onPressedBtn),
+                    SizedBox(height: _space,),
+                    Text(error, style: _errorFont ),
+                  ], // Children
+
                 ),
-                SizedBox(height: 20),
-//                TextField(
-//                  controller: userEmail,
-//                  decoration: InputDecoration(
-//                    border: OutlineInputBorder(),
-//                    labelText: 'Email Address',
-//                  ),
-//                ),
-//                SizedBox(height: 20),
-                TextField(
-                  controller: userEmail,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email Address',
-                  ),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: userPhone,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Phone Number',
-                  ),
-                ),
-                SizedBox(height: 20),
-                //createDropDown(context),
-                DropdownButton(
-                  hint: Text('Please choose a location'), // Not necessary for Option 1
-                  value: _selectedLocation,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedLocation = newValue;
-                    });
-                  },
-                  items: _locations.map((location) {
-                    return DropdownMenuItem(
-                      child: new Text(location),
-                      value: location,
-                    );
-                  }).toList(),
-                )
-              ], // Children
+
+              ),
             ),
           ),
         ));
   }
+onPressedBtn() async {
+  // Validation
+  if (_formKey.currentState.validate()) {
+    // Is correct
+    dynamic result = await _auth.registerWithEmailAndPassword(
+        userName, userEmail, userPhone, userPassword, _selectedLocation);
+    if (result == null) {
+      setState(() {
+        error = 'Email invalid, or already in use!';
+      });
+    } else {
+      print(result);
+    }
+  }
+}
+
+//  Widget _buildButton() {
+//    return Container(
+//      margin: const EdgeInsets.all(50.0),
+//      height: screenHeight(context, dividedBy: 14),
+//      width: screenWidth(context, dividedBy: 2.5),
+////            decoration: InputDecoration(borderRadius: BorderRadius.circular(32.0)),
+//
+//      child: RaisedButton(
+//          shape:
+//          RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+//          color: Colors.amberAccent,
+//          onPressed: () async {
+//
+//            // Validation
+//            if (_formKey.currentState.validate()){
+//              // Is correct
+//              dynamic result = await _auth.registerWithEmailAndPassword(userName, userEmail, userPhone,  userPassword, _selectedLocation);
+//              if (result == null){
+//                setState(() {
+//                  error = 'Email invalid, or already in use!';
+//                });
+//              }else {
+//                print(result);
+//              }
+//            }
+//
+//
+//
+//
+//
+////            locator<LocalStorageService>().hasSignedUp = true;
+////
+////            //Navigator.pop(context);
+////            userDetails = new User(name: userName, email: userEmail, phone: userPhone);
+////            var storageService = locator<LocalStorageService>();
+////            storageService.user = userDetails; // Setter
+////            //print('user = $userDetails');
+////
+////            Navigator.pushReplacementNamed(context, CategoryRoute);
+////            //dispose();// TODO: Where to dispose?
+////            //Navigator.push(context, MaterialPageRoute(builder: (context) => HomeViewRoute));
+//////              Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategories);// Not to return to this function
+//          },
+//          child: Row(
+//            crossAxisAlignment: CrossAxisAlignment.center,
+//            mainAxisAlignment: MainAxisAlignment.center,
+//            children: <Widget>[
+////                    Container(
+////                      padding: EdgeInsets.fromLTRB(10, 4, 4, 4)
+////                    ),
+//              Center(
+//                child: Column(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  crossAxisAlignment: CrossAxisAlignment.center,
+//                  children: <Widget>[
+//                    Align(
+//                      alignment: Alignment.bottomRight,
+//                      child: Icon(
+//                        Icons.arrow_forward,
+//                        color: Colors.black87,
+//                        size: screenWidth(context, dividedBy: 11), // TODO: responsive this
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//              ),
+//            ],
+//          )),
+//    );
+//  }
 
 
 }

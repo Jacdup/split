@@ -67,17 +67,19 @@ class _ChooseCategoryState extends State<ChooseCategory> {
               child: btnNxt,
               onPressed: () {
                 // Save a value
+                //TODO: save selectedCategories either to storage, or firestore
+                // TODO: call a setstate that changes the value of home_view_mobile
                 print("Has signed up value before:");
-                print(storageService.hasSignedUp);
-                storageService.category = _selectedCategories; // Setter
+//                print(storageService.hasSignedUp);
+//                storageService.category = _selectedCategories; // Setter
                 storageService.hasSignedUp = true;
                 print("Has signed up value after:");
-                print(storageService.hasSignedUp);
+//                print(storageService.hasSignedUp);
                 //set category(Category categoriesToSave)
                 //var mySavedUser = storageService.user;
 
-
-                Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: _selectedCategories);// Not to return to this function
+                Navigator.pop(context);
+//                Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: _selectedCategories);// Not to return to this function
                 //Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategory);// Not to return to this function
                /* if (borrowListBack == 'fromBorrowList'){
                   showDialog(context: context,

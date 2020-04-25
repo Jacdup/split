@@ -7,11 +7,13 @@ import 'package:twofortwo/ui/responsive/screen_type_layout.dart';
 import 'package:twofortwo/ui/responsive/orientation_layout.dart';
 import 'home_view_mobile.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/services/user_service.dart';
 
 class HomeView extends StatefulWidget {
   final List<String> chosenCategories;
+  final User user;
 
-  const HomeView({Key key, this.chosenCategories}) : super(key: key);
+  const HomeView({Key key, this.chosenCategories, this.user}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -37,6 +39,7 @@ class _HomeViewState extends State<HomeView>{
     List<String> chosenCategories;
 
     widget.chosenCategories == null ? chosenCategories = localStorageService.category : chosenCategories = widget.chosenCategories;
+    User thisUser = widget.user;
    // var appInfo = Provider.of<AppInfo>(context);
 //    var storageService = locator<LocalStorageService>();
 //    User thisUser = storageService.user; // Getter
@@ -54,7 +57,7 @@ class _HomeViewState extends State<HomeView>{
       }, // The page will not respond to back press
       child: ScreenTypeLayout(
         mobile: OrientationLayout(
-          portrait: BorrowListPortrait(chosenCategories: chosenCategories, borrowList: item1),
+          portrait: BorrowListPortrait(chosenCategories: chosenCategories, borrowList: item1, user: thisUser,),
           //landscape: //TODO,
         ),
       ),

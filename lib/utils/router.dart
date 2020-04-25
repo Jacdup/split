@@ -10,6 +10,7 @@ import '../ui/screens/home/home_view.dart';
 import '../ui/screens/authenticate/login.dart';
 import 'routing_constants.dart';
 import '../ui/screens/home/new_item_view.dart';
+import 'package:twofortwo/ui/screens/wrapper.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings){
 switch(settings.name){
@@ -18,8 +19,9 @@ switch(settings.name){
   case SplashRoute:
     return MaterialPageRoute(builder: (context) => Splash());
   case HomeViewRoute:
-    var chosenCategories = settings.arguments;
-    return MaterialPageRoute(builder: (context) => HomeView(chosenCategories: chosenCategories));
+    return MaterialPageRoute(builder: (context) => Wrapper());
+//    var chosenCategories = settings.arguments;
+//    return MaterialPageRoute(builder: (context) => HomeView(chosenCategories: chosenCategories));
   case CategoryRoute:
     return MaterialPageRoute(builder: (context) => ChooseCategory());
   case BorrowListRoute:

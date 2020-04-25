@@ -10,21 +10,34 @@ import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 
 class Wrapper extends StatelessWidget{
+
   @override
   Widget build(BuildContext context) {
+    var localStorageService = locator<LocalStorageService>();
 
     final user = Provider.of<User>(context);
-//    print(user);
+    String firstRoute = '';
+    print(user);
+    print('im here');
+    var alreadyLoggedIn = localStorageService.stayLoggedIn;
 
-    if (user == null){
+    // First check whether there exists a local copy of user, if not go to firebase
+    if (alreadyLoggedIn){
+      User user = localStorageService.user;
+      if (user == null) {
+        print("Could not retrieve user from localstorage");
+      }else{
+        return HomeView(user: user,);
+      }
+    }else if (user == null){
       return Authenticate();
+//      return AuthRoute;
     }else{
-      return HomeView();
+//      return HomeViewRoute;
+      return HomeView(user: user,);
     }
 
-//    onGenerateRoute: (settings){
-//      return router.generateRoute(settings);//TODO: how to pass arguments here
-//    },
+
 //    initialRoute: _getStartupScreen(),
 
     return Authenticate();
