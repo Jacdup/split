@@ -5,6 +5,8 @@ import '../../../utils/service_locator.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/widgets.dart';
 
 
 class NewItem extends StatefulWidget {
@@ -83,13 +85,7 @@ class _NewItemState extends State<NewItem> {
                 setState(() {
                 itemName = val;});
                 },
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0),borderSide: BorderSide(color:_borderColour, width:_borderWidth)),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                    labelText: 'Item name',
-                    labelStyle: _itemFont,
-                  ),
+                  decoration: textInputDecoration.copyWith(labelText: 'Item name'),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -97,14 +93,7 @@ class _NewItemState extends State<NewItem> {
                     setState(() {
                       description = val;});
                   },
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0),borderSide: BorderSide(color:_borderColour, width:_borderWidth)),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                    labelText: 'Description',
-                    labelStyle: _itemFont,
-
-                  ),
+                  decoration: textInputDecoration.copyWith(labelText: 'Description'),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -112,13 +101,7 @@ class _NewItemState extends State<NewItem> {
                     setState(() {
                       date = val;});
                   },
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0),borderSide: BorderSide(color:_borderColour, width:_borderWidth)),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                    labelText: 'Requested usage date',
-                    labelStyle: _itemFont,
-                  ),
+                  decoration: textInputDecoration.copyWith(labelText: 'Requested usage date'),
                 ),
                 SizedBox(height: 20),
                 //createDropDown(context),
@@ -138,29 +121,7 @@ class _NewItemState extends State<NewItem> {
                     );
                   }).toList(),
                 ),
-                _buildButton()
-//                RaisedButton(
-//                  onPressed: () {
-////                  print("new item cat: ");
-////                  print(_selectedCategory);
-//                    newItem = new Item(_selectedCategory, itemName, date, description);
-////                  print("new iteM:");
-////                      print(newItem.category);
-//                    //newItem = new Item(itemName: itemName.text, description: description.text, category: , date: date);
-//                    var storageService = locator<LocalStorageService>();
-//                    //TODO: save JSON to firebase here
-//                    storageService.item = newItem; // Setter
-//                    Item item1 = storageService.item; //  Getter
-//                    print("new iteM:");
-//                    print(item1);
-//                    Navigator.pop(context);
-//
-//                  },
-//                  child: const Text(
-//                      'Add',
-//                      style: TextStyle(fontSize: 20)
-//                  ),
-//                ),
+                ButtonWidget(icon: Icons.add, onPressed: onPressedBtn),
               ], // Children
             ),
           ),
@@ -169,58 +130,19 @@ class _NewItemState extends State<NewItem> {
     );
   }
 
-  Widget _buildButton(){
-    return
-      Container(
-        margin: const EdgeInsets.all(50.0),
-        height: screenHeight(context, dividedBy: 14) ,
-        width: screenWidth(context,dividedBy: 2.5),
-//            decoration: InputDecoration(borderRadius: BorderRadius.circular(32.0)),
-
-        child: RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-            color: Colors.amberAccent,
-//                child: Text('',
-//                  style: TextStyle(fontSize: 20)
-//                ),
-//                icon: Icon( Icons.arrow_forward),
-
-            onPressed: () async {
-//                  print("new item cat: ");
-//                  print(_selectedCategory);
-              newItem =
-              new Item(_selectedCategory, itemName, date, description);
+  onPressedBtn() async {
+    newItem =
+    new Item(_selectedCategory, itemName, date, description);
 //                  print("new iteM:");
 //                      print(newItem.category);
-              //newItem = new Item(itemName: itemName.text, description: description.text, category: , date: date);
-              var storageService = locator<LocalStorageService>();
-              //TODO: save JSON to firebase here
-              storageService.item = newItem; // Setter
-              Item item1 = storageService.item; //  Getter
-              print("new iteM:");
-              print(item1);
-              Navigator.pop(context);
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-//                    Container(
-//                      padding: EdgeInsets.fromLTRB(10, 4, 4, 4)
-//                    ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(screenWidth(context, dividedBy: 9), 0, 0, 0),
-                  child: Icon(
-                    Icons.add,
-                    color:Colors.black87,
-                    size: screenWidth(context,dividedBy: 11),
-                  ),
-                ),
-              ],
-            ),
-
-
-
-        ),
-      );
+    //newItem = new Item(itemName: itemName.text, description: description.text, category: , date: date);
+    var storageService = locator<LocalStorageService>();
+    //TODO: save JSON to firebase here
+    storageService.item = newItem; // Setter
+    Item item1 = storageService.item; //  Getter
+    print("new iteM:");
+    print(item1);
+    Navigator.pop(context);
   }
+
 }
