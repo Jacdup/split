@@ -7,10 +7,6 @@ import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';
 import '../../../services/localstorage_service.dart';
 
-import '../../../services/user_service.dart';
-
-//var mySavedUser = storageService.user;
-//var userService = locator<UserService>();
 
 class Login extends StatefulWidget {
   final Function toggleView;
@@ -22,9 +18,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginViewState extends State<Login> {
-  // final String argument;
-  //const LoginView({Key key}) : super(key: key);
-  //final String title;
+
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool rememberMe = false;
@@ -34,20 +28,11 @@ class _LoginViewState extends State<Login> {
       fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black54);
   final _errorFont = const TextStyle(
       fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red);
-//  final _itemFont = const TextStyle(fontSize: 18, color: Colors.black);
-  final _borderColour = Colors.black87;
-  final _borderWidth = 1.2;
+
   String email = '';
   String password = '';
   String error = '';
-//  final userName = TextEditingController();
 
-//  @override
-//  void dispose() {
-//    // Clean up the controller when the widget is disposed.
-//    userName.dispose();
-//    super.dispose();
-//  }
 
   void _onRememberMeChanged(bool newValue) => setState(() {
         rememberMe = newValue;
@@ -82,19 +67,14 @@ class _LoginViewState extends State<Login> {
             ]),
         body: Center(
           child: Container(
-//            padding: EdgeInsets.only(top: screenHeight(context, dividedBy: 8)),
-            //height: screenHeight(context, dividedBy: 1, reducedBy: 200) ,
             width: screenWidth(context, dividedBy: 1.5),
             child: Form(
               key: _formKey, // Keep track of form
               child: SingleChildScrollView(
                 child: Column(
-//          mainAxisAlignment: MainAxisAlignment.center,
-//          crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 10.0),
                     Text(
-//            this.runtimeType.toString(),
                       'login',
                       style: _itemFont,
                     ),
@@ -107,7 +87,6 @@ class _LoginViewState extends State<Login> {
                           email = val;
                         });
                       },
-//            controller: userName,
                       decoration:
                           textInputDecoration.copyWith(labelText: 'Email'),
                     ),
@@ -127,10 +106,8 @@ class _LoginViewState extends State<Login> {
                     ),
                     SizedBox(height: _space / 2),
                     Container(
-//              margin: const EdgeInsets.all(5.0),
                         height: screenHeight(context, dividedBy: 14),
                         width: screenWidth(context, dividedBy: 1.6),
-//              alignment: Alignment(screenWidth(context, dividedBy: 2),screenWidth(context, dividedBy: 3)),
                         child: Row(
                           children: <Widget>[
                             Text('Keep me logged in'),

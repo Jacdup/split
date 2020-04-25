@@ -34,12 +34,9 @@ class _NewItemState extends State<NewItem> {
 
   Item newItem;
 
-//  final itemName = TextEditingController();
   String itemName;
   String description;
-//  final description = TextEditingController();
   String date;
-//  final date = TextEditingController();
   final category = TextEditingController();
 
   @override
@@ -60,27 +57,22 @@ class _NewItemState extends State<NewItem> {
 //    );
     final _titleFont = const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold );
     final _itemFont = const TextStyle(fontSize: 18, color: Colors.black);
-  final _borderColour = Colors.black87;
-  final _borderWidth = 1.2;
+    final _textFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black54);
 
     return Scaffold(
       backgroundColor: colorCustom,
       body: Center(
         child: Container(
-//          padding: EdgeInsets.only(top: screenHeight(context, dividedBy: 15)),
-          //height: screenHeight(context, dividedBy: 1, reducedBy: 200) ,
           width: screenWidth(context, dividedBy: 1.2),
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 Text(
-//            this.runtimeType.toString(),
                   'Add item',
                   style: _titleFont,
                 ),
                 SizedBox(height: 60.0),
                 TextFormField(
-//                controller: itemName,
                 onChanged: (val){
                 setState(() {
                 itemName = val;});
@@ -107,7 +99,8 @@ class _NewItemState extends State<NewItem> {
                 //createDropDown(context),
                 DropdownButton(
                   hint: Text(
-                      'Please choose a category'), // Not necessary for Option 1
+                      'Please choose a category',
+                    style: _textFont,), // Not necessary for Option 1
                   value: _selectedCategory,
                   onChanged: (newValue) {
                     setState(() {
@@ -116,7 +109,7 @@ class _NewItemState extends State<NewItem> {
                   },
                   items: _categories.map((category) {
                     return DropdownMenuItem(
-                      child: new Text(category),
+                      child: new Text(category,style: _textFont),
                       value: category,
                     );
                   }).toList(),
@@ -133,9 +126,6 @@ class _NewItemState extends State<NewItem> {
   onPressedBtn() async {
     newItem =
     new Item(_selectedCategory, itemName, date, description);
-//                  print("new iteM:");
-//                      print(newItem.category);
-    //newItem = new Item(itemName: itemName.text, description: description.text, category: , date: date);
     var storageService = locator<LocalStorageService>();
     //TODO: save JSON to firebase here
     storageService.item = newItem; // Setter
