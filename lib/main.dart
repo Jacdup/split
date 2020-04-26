@@ -47,13 +47,11 @@ class MyApp extends StatelessWidget {
 //        builder: DevicePreview.appBuilder, //  This is for testing UI
         title: '2For2 Demo',
         theme: ThemeData(
-          //primarySwatch: Colors.blue,
           primarySwatch: colorCustom,
         ),
 //        home: Wrapper(), // becomes the route named '/'
           initialRoute: HomeViewRoute, // Temporary name for wrapper
 //        onGenerateRoute: router.generateRoute,//TODO: how to pass arguments here
-//
 //        initialRoute: _getStartupScreen(context),
 
         //onUnknownRoute: (settings) => MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name)),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/shared/loading.dart';
-import '../../../utils/routing_constants.dart';
 import '../../../utils/service_locator.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
+import 'package:twofortwo/services/database.dart';
 
 
 class NewItem extends StatefulWidget {
@@ -135,20 +135,32 @@ class _NewItemState extends State<NewItem> {
     });
     newItem =  new Item(_selectedCategory, itemName, date, description);
     var storageService = locator<LocalStorageService>();
-    //TODO: save JSON to firebase here
-    storageService.item = newItem; // Setter
-    Item item1 = storageService.item; //  Getter
 
-    if (item1 == null) {
+    dynamic result = await DatabaseService().updateItemData(itemName, description, date, _selectedCategory);
+    if (result == null) {
       setState(() {
-      loading = false;
-        });
-      error = 'Error adding item, please check details';
-
+        error = 'Could not add item, please check details';
+        loading = false;
+      });
+    } else {
+      Navigator.pop(context);
+      print(result);
     }
-    print("new iteM:");
-    print(item1);
     Navigator.pop(context);
+
+//    storageService.item = newItem; // Setter
+//    Item item1 = storageService.item; //  Getter
+
+//    if (item1 == null) {
+//      setState(() {
+//      loading = false;
+//        });
+//      error = 'Error adding item, please check details';
+//
+//    }
+//    print("new iteM:");
+//    print(item1);
+
   }
 
 }

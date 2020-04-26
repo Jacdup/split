@@ -29,6 +29,7 @@ class _SignupViewState extends State<SignupView> {
   bool loading = false;
 
   String userName = '';
+  String userLastName = '';
   String userEmail = '';
   String userPhone = '';
   String userPassword = '';
@@ -70,14 +71,26 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space * 2),
                     TextFormField(
                       validator: (val) =>
-                          val.isEmpty ? 'Enter your name & surname' : null,
+                          val.isEmpty ? 'Enter your first name' : null,
                       onChanged: (val) {
                         setState(() {
                           userName = val;
                         });
                       },
                       decoration: textInputDecoration.copyWith(
-                          labelText: 'Name & surname'),
+                          labelText: 'Name'),
+                    ),
+                    SizedBox(height: _space),
+                    TextFormField(
+                      validator: (val) =>
+                      val.isEmpty ? 'Enter your surname' : null,
+                      onChanged: (val) {
+                        setState(() {
+                          userLastName = val;
+                        });
+                      },
+                      decoration: textInputDecoration.copyWith(
+                          labelText: 'Surname'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
@@ -161,7 +174,7 @@ class _SignupViewState extends State<SignupView> {
         loading = true;
       });
       dynamic result = await _auth.registerWithEmailAndPassword(
-          userName, userEmail, userPhone, userPassword, _selectedLocation);
+          userName, userLastName, userEmail, userPhone, userPassword, _selectedLocation);
       if (result == null) {
         setState(() {
           error = 'Email invalid, or already in use!';

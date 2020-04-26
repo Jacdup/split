@@ -6,7 +6,7 @@ import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/service_locator.dart';
 import 'package:twofortwo/services/user_service.dart';
-import 'package:twofortwo/services/auth.dart';
+import 'package:provider/provider.dart';
 
 class BorrowListPortrait extends StatelessWidget {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -23,7 +23,14 @@ class BorrowListPortrait extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
+  final items = Provider.of<List<Item>>(context);
+//  print(items.documents);
+//  items.forEach((item) {
+//    print(item.category);
+//    print(item.date);
+//    print(item.description);
+//    print(item.itemName);
+//  });
     return DefaultTabController(
         length: 1,
         initialIndex: 0,
@@ -50,12 +57,12 @@ class BorrowListPortrait extends StatelessWidget {
 //appBar: AppBar(
 // title: Text('List of items'),
 //),
-          body: _buildBorrowList(chosenCategories, borrowList),//TODO: borrowlist should contain multiple items
+          body: _buildBorrowList(chosenCategories, items),//TODO: borrowlist should contain multiple items
         ));
 
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, Item item1) {
+  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems) {
     //final chosenCategories = chosenCategories1.categories;
     //return ListView.builder(
     //return
@@ -66,39 +73,36 @@ class BorrowListPortrait extends StatelessWidget {
     //),
     return ListView.separated(
       padding: const EdgeInsets.all(16.0),
-      itemCount: 1,
+      itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-        //  children: <Widget>[
-        // for (var items in borrowItem1.keys)
-        //itemBuilder: /*1*/ (context, i) {
-        //if (i.isOdd) return Divider();
-        if (item1 == null) {
-            return Text("No items in chosen category");}
-        else if (chosenCategories.contains(item1.category)){
-        //TODO: iterate over items in borrowList here
-             return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
-        }else{
-//          print(item1.category);
-          return Text("No items in chosen category");
-        }
-//        if (chosenCategories.contains(item1.category)) {
-//          return _buildRow(chosenCategories.first, item1.itemName, item1.date,
-//              item1.description);
-//        } else {
+
+//        allItems.forEach((item) {
+          return _buildRow(allItems[index]);
+//        });
+//        if (item1 == null) {
+//            return Text("No items in chosen category");}
+////        else if (chosenCategories.contains(item1.category)){
+//        else if (chosenCategories.contains(item1.category)){
+//
+//        //TODO: iterate over items in borrowList here
+//             return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
+//        }else{
+////          print(item1.category);
 //          return Text("No items in chosen category");
 //        }
+
       },
-//],
+
       separatorBuilder: (BuildContext context, int index) => const Divider(),
-      //    }
-      // ),
-      // ],
     );
 
   }
 
-  Widget _buildRow(
-      String category, String itemName, String date, String description) {
+  Widget _buildRow(Item item) {
+    String category = item.category;
+    String itemName = item.itemName;
+    String description = item.description;
+    String date = item.date;
     // final bool alreadySaved = _saved.contains(pair);
     return Card(
       child: ListTile(

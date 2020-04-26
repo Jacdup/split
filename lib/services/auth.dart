@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/user_service.dart';
 
 class AuthService {
@@ -48,11 +49,16 @@ class AuthService {
   }
 
   // register with email & password
-  Future registerWithEmailAndPassword(String name, String email, String phone,  String password, String location) async {
+  Future registerWithEmailAndPassword(String name, String surname, String email, String phone,  String password, String location) async {
     // TODO: name, phone, etc.
     try{
         AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
        FirebaseUser user = result.user;
+
+       // create a new document for the user with the uid
+        await DatabaseService(uid: user.uid).updateUserData(name, surname, phone, location);
+
+
        return _userFromFirebaseUser(user);
     }catch(e){
       print(e.toString());

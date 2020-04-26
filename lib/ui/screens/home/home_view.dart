@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import '../../../utils/service_locator.dart';
 import 'package:flutter/services.dart';
-
 import 'package:twofortwo/ui/responsive/screen_type_layout.dart';
 import 'package:twofortwo/ui/responsive/orientation_layout.dart';
 import 'home_view_mobile.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
+import 'package:twofortwo/services/database.dart';
+import 'package:provider/provider.dart';
+
 
 class HomeView extends StatefulWidget {
   final List<String> chosenCategories;
@@ -49,19 +51,22 @@ class _HomeViewState extends State<HomeView>{
 //      tag: "New Request",
 //      child: Image.asset('split.png'),
 //    );
-    return WillPopScope(
-      /* This function ensures the user cannot route back to categories with the back button */
-      onWillPop: () async {
-        return _confirmLogout(context);
-        //return false;
-      }, // The page will not respond to back press
-      child: ScreenTypeLayout(
-        mobile: OrientationLayout(
-          portrait: BorrowListPortrait(chosenCategories: chosenCategories, borrowList: item1, user: thisUser,),
-          //landscape: //TODO,
+    return StreamProvider<List<Item>>.value( // Get stream of user/item data
+      value: DatabaseService().items, // TODO: only interested in updating the items via the stream
+      child: WillPopScope(
+        /* This function ensures the user cannot route back to categories with the back button */
+        onWillPop: () async {
+          return _confirmLogout(context);
+          //return false;
+        }, // The page will not respond to back press
+        child: ScreenTypeLayout(
+          mobile: OrientationLayout(
+            portrait: BorrowListPortrait(chosenCategories: chosenCategories, borrowList: item1, user: thisUser,),
+            //landscape: //TODO,
+          ),
         ),
-      ),
 
+      ),
     );
   }
 }
