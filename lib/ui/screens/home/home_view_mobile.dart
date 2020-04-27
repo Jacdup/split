@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/service_locator.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
+import 'package:twofortwo/services/database.dart';
 
 class BorrowListPortrait extends StatelessWidget {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -14,7 +16,9 @@ class BorrowListPortrait extends StatelessWidget {
   final List<String> chosenCategories;
   final Item borrowList;
   final User user;
-  BorrowListPortrait({Key key, this.chosenCategories, this.borrowList, this.user}) : super(key: key);
+  BorrowListPortrait(
+      {Key key, this.chosenCategories, this.borrowList, this.user})
+      : super(key: key);
 //  const BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
   final _itemFont = const TextStyle(fontSize: 15.0);
   final AuthService _auth = AuthService();
@@ -22,8 +26,13 @@ class BorrowListPortrait extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final items = Provider.of<List<Item>>(context) ?? [];
+//  final userAll = Provider.of<User>(context);
+//  print(userAll);
+    print(items);
+//  print(user.toString());
 
-  final items = Provider.of<List<Item>>(context);
+//  final userDetails = await DatabaseService(uid: user.uid).userCollection
 //  print(items.documents);
 //  items.forEach((item) {
 //    print(item.category);
@@ -31,35 +40,40 @@ class BorrowListPortrait extends StatelessWidget {
 //    print(item.description);
 //    print(item.itemName);
 //  });
-    return DefaultTabController(
-        length: 1,
-        initialIndex: 0,
-        child: Scaffold(
-          //key: _scaffoldKey,
-          appBar: _createHeader(user.uid), //TODO: make this sliverAppBar
-          drawer: SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.65, //20.0,
-            child: _buildDrawer(context),
-          ),
+    return StreamBuilder<User>(
+        stream: DatabaseService(uid: user.uid).userData, // Access stream
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            User userData = snapshot.data;
+            return DefaultTabController(
+                length: 1,
+                initialIndex: 0,
+                child: Scaffold(
+                  //key: _scaffoldKey,
+                  appBar: _createHeader(userData.name), //TODO: make this sliverAppBar
 
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              Navigator.pushNamed(context, NewItemRoute);
-            },
-            label: Text('Add request'),
-            icon: Icon(Icons.add),
-            backgroundColor: Colors.red,
-          ),
+                  drawer: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.65, //20.0,
+                    child: _buildDrawer(context),
+                  ),
 
-//appBar: AppBar(
-// title: Text('List of items'),
-//),
-          body: _buildBorrowList(chosenCategories, items),//TODO: borrowlist should contain multiple items
-        ));
+                  floatingActionButton: FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.pushNamed(context, NewItemRoute); // TODO: Can send userData to route
+                    },
+                    label: Text('Add request'),
+                    icon: Icon(Icons.add),
+                    backgroundColor: Colors.red,
+                  ),
 
+                  body: _buildBorrowList(chosenCategories, items),
+                ));
+          } else {
+//            print('in here');
+//            _auth.logOut();
+            return Loading();
+          }
+        });
   }
 
   Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems) {
@@ -75,9 +89,8 @@ class BorrowListPortrait extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-
 //        allItems.forEach((item) {
-          return _buildRow(allItems[index]);
+        return _buildRow(allItems[index]);
 //        });
 //        if (item1 == null) {
 //            return Text("No items in chosen category");}
@@ -90,12 +103,9 @@ class BorrowListPortrait extends StatelessWidget {
 ////          print(item1.category);
 //          return Text("No items in chosen category");
 //        }
-
       },
-
       separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
-
   }
 
   Widget _buildRow(Item item) {
@@ -137,7 +147,8 @@ class BorrowListPortrait extends StatelessWidget {
                 'split.png',
                 alignment: Alignment.bottomCenter,
                 width: 120.0,
-                height: 120.0,),
+                height: 120.0,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -156,10 +167,8 @@ class BorrowListPortrait extends StatelessWidget {
         child: TabBar(
           tabs: [
             Text(
-
               'Welcome $userName!',
               style: TextStyle(color: Colors.white, fontSize: 20.0),
-
             )
             // Icon(Icons.train),
             // Icon(Icons.directions_bus),
@@ -172,7 +181,6 @@ class BorrowListPortrait extends StatelessWidget {
   }
 
   Widget _buildDrawer(context) {
-
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -184,10 +192,16 @@ class BorrowListPortrait extends StatelessWidget {
             ),
           ),
           ListTile(
-              title: Text('Edit Categories'),
+              title: Text('Edit categories'),
               onTap: () {
                 Navigator.pop(context); // This one for the drawer
                 Navigator.pushNamed(context, CategoryRoute);
+              }),
+          ListTile(
+              title: Text('Edit personal data'),
+              onTap: () {
+                Navigator.pop(context); // This one for the drawer
+                Navigator.pushNamed(context, UpdateUserRoute);
               }),
           ListTile(
               title: Text('Logout'),
@@ -203,5 +217,4 @@ class BorrowListPortrait extends StatelessWidget {
       ),
     );
   }
-
 }

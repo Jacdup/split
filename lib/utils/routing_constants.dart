@@ -6,3 +6,4 @@ const String SignupRoute = 'signup';
 const String NewItemRoute = 'newItem';
 const String SplashRoute = 'splash';
 const String AuthRoute = 'auth';
+const String UpdateUserRoute = 'userUpdate';

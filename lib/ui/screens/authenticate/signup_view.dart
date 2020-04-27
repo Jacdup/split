@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -173,8 +174,14 @@ class _SignupViewState extends State<SignupView> {
       setState(() {
         loading = true;
       });
-      dynamic result = await _auth.registerWithEmailAndPassword(
+
+
+
+      dynamic result = await _auth.registerWithEmailAndPassword( // TODO: move to category screen first
           userName, userLastName, userEmail, userPhone, userPassword, _selectedLocation);
+
+      Navigator.pushNamed(context, CategoryRoute);
+
       if (result == null) {
         setState(() {
           error = 'Email invalid, or already in use!';

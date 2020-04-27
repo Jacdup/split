@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/colours.dart';
+import 'package:twofortwo/services/user_service.dart';
+import 'package:provider/provider.dart';
 //TODO: this should save categories specific to the user on the hard disk
 
 class ChooseCategory extends StatefulWidget {
@@ -17,6 +20,9 @@ class ChooseCategory extends StatefulWidget {
 
 class _ChooseCategoryState extends State<ChooseCategory> {
   //int _counter = 0;
+
+
+
   final List<String> _categories = [
     'Sport',
     'Camp',
@@ -31,6 +37,9 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<User>(context); // Firestore user (contains uid, email)
+
+
     final btnNxt = SizedBox(
       height: screenHeightExcludingToolbar(context, dividedBy: 10) ,
       width: screenWidth(context, dividedBy: 3,reducedBy: 0),
@@ -65,15 +74,16 @@ class _ChooseCategoryState extends State<ChooseCategory> {
             SizedBox(height: screenHeight(context, dividedBy: 16)),
             RaisedButton(
               child: btnNxt,
-              onPressed: () {
+              onPressed: () async {
                 // Save a value
                 //TODO: save selectedCategories either to storage, or firestore
                 // TODO: call a setstate that changes the value of home_view_mobile
-                print("Has signed up value before:");
+                await DatabaseService(uid: user.uid).updateCategory(_selectedCategories);
+//                print("Has signed up value before:");
 //                print(storageService.hasSignedUp);
 //                storageService.category = _selectedCategories; // Setter
                 storageService.hasSignedUp = true;
-                print("Has signed up value after:");
+//                print("Has signed up value after:");
 //                print(storageService.hasSignedUp);
                 //set category(Category categoriesToSave)
                 //var mySavedUser = storageService.user;

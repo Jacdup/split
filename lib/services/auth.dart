@@ -5,13 +5,14 @@ import 'package:twofortwo/services/user_service.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+
+
   // create user obj based on FirebaseUser
   User _userFromFirebaseUser(FirebaseUser user, ) {
+//    return await DatabaseService(uid: user.uid).user;
     return user != null
         ? User(
             uid: user.uid,
-//            name: userName,
-//            phone: userPhone,
             email: user.email)
         : null;
   }
@@ -30,8 +31,9 @@ class AuthService {
 
   // auth change user stream
   Stream<User> get user {
+//    dynamic userAll = DatabaseService(uid: user.).user;
     return _auth.onAuthStateChanged
-        .map((FirebaseUser user) => _userFromFirebaseUser(user));
+        .map((FirebaseUser user) => _userFromFirebaseUser(user)); //TODO: change so that database user is sent to stream
 //        .map(_userFromFirebaseUser()); // This does the same as above
 //        .map(FirebaseUser);
   }
@@ -41,6 +43,15 @@ class AuthService {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+
+//      dynamic userAll = await DatabaseService(uid: user.uid).user;
+//      userAll.then((User result){
+//        userAll = result;
+//
+//        print(userAll.name);
+//      });
+//      return userAll;
+
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -56,9 +67,10 @@ class AuthService {
        FirebaseUser user = result.user;
 
        // create a new document for the user with the uid
-        await DatabaseService(uid: user.uid).updateUserData(name, surname, phone, location);
+        await DatabaseService(uid: user.uid).updateUserData(name, surname, phone, location, email, []); //setter TODO: update userdetails categories
+//        dynamic userAll = await DatabaseService(uid: user.uid).user; //getter
 
-
+//        return userAll;
        return _userFromFirebaseUser(user);
     }catch(e){
       print(e.toString());

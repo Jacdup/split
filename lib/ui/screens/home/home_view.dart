@@ -52,7 +52,7 @@ class _HomeViewState extends State<HomeView>{
 //      child: Image.asset('split.png'),
 //    );
     return StreamProvider<List<Item>>.value( // Get stream of user/item data
-      value: DatabaseService().items, // TODO: only interested in updating the items via the stream
+      value: DatabaseService().items,
       child: WillPopScope(
         /* This function ensures the user cannot route back to categories with the back button */
         onWillPop: () async {

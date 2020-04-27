@@ -8,6 +8,7 @@ import 'package:twofortwo/utils/router.dart' as router;
 import 'package:twofortwo/utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/services/user_service.dart';
+import 'package:twofortwo/services/database.dart';
 
 class Wrapper extends StatelessWidget{
 
@@ -15,10 +16,15 @@ class Wrapper extends StatelessWidget{
   Widget build(BuildContext context) {
     var localStorageService = locator<LocalStorageService>();
 
-    final user = Provider.of<User>(context);
-    String firstRoute = '';
-    print(user);
-    print('im here');
+    final User user = Provider.of<User>(context); // Firestore user (contains uid, email)
+//    print(user.uid);
+//    Future<User> userAll = getUser(user.uid);
+//    userAll.then((User result){
+//      User userAll = result;
+//      print(userAll);
+//    });
+
+//    Future<User> userAll  = getUser(user.uid); // Database user with the rest of the info
     var alreadyLoggedIn = localStorageService.stayLoggedIn;
 
     // First check whether there exists a local copy of user, if not go to firebase
@@ -33,7 +39,6 @@ class Wrapper extends StatelessWidget{
       return Authenticate();
 //      return AuthRoute;
     }else{
-//      return HomeViewRoute;
       return HomeView(user: user,);
     }
 
@@ -45,6 +50,15 @@ class Wrapper extends StatelessWidget{
 
 
   }
+
+//  Future<User> getUser(String uid)async {
+//   return await DatabaseService(uid: uid).user;
+////        .then((User result){
+////      print(result);
+////      return result;
+//
+////    });
+//  }
 
   String _getStartupScreen() {
     // TODO: this is for handling cases where user selected to stay logged in

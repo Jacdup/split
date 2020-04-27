@@ -1,9 +1,9 @@
 
 //import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:twofortwo/ui/screens/home/splash_screen.dart';
 import 'package:twofortwo/ui/screens/authenticate/signup_view.dart';
+import 'package:twofortwo/ui/screens/home/update_user_details_view.dart';
 import 'package:twofortwo/ui/screens/undefined_view.dart';
 import '../ui/screens/home/category_view.dart';
 import '../ui/screens/home/home_view.dart';
@@ -34,6 +34,8 @@ switch(settings.name){
     return MaterialPageRoute(builder: (context) => SignupView());
   case NewItemRoute:
     return MaterialPageRoute(builder: (context) => NewItem());
+    case UpdateUserRoute:
+      return MaterialPageRoute(builder: (context) => UpdateUserDetails());
   default:
     return MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name));
 }

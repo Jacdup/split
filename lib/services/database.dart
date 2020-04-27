@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/services/user_service.dart';
 //import 'dart:math';
 
 import 'package:uuid/uuid.dart';
@@ -17,11 +18,19 @@ class DatabaseService{
   final CollectionReference userCollection = Firestore.instance.collection('users');
 
 
-  Future updateUserData(String name, String surname, String phone, String location) async {
+  Future updateUserData(String name, String surname, String phone, String location, String email, List<String> categories) async {
     return await userCollection.document(uid).setData({
       'name':name,
       'phoneNumber':phone,
       'location': location,
+      'email' : email,
+      'categories' : categories,
+    });
+  }
+
+  Future updateCategory(List<String> categories) async{
+    return await userCollection.document(uid).updateData({
+      'categories': categories,
     });
   }
 
@@ -36,6 +45,19 @@ class DatabaseService{
     });
   }
 
+  User _getUserFromSnapshot(DocumentSnapshot snapshot){
+  var userData = snapshot.data; // This itself is a map
+//  print(userData);
+//    return snapshot.data.map((snapshot) {
+      return User(uid: uid,
+          name: userData['name'],
+          email: userData['email'],
+          phone: userData['phoneNumber'],
+          categories: userData['categories']
+      );
+//    });
+  }
+
   // item list from snapshot
   List<Item> _itemListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
@@ -48,9 +70,18 @@ class DatabaseService{
     }).toList();
   }
 
-  // get user stream
-  Stream<QuerySnapshot> get user {
-    return userCollection.snapshots();
+  Stream<User> get userData{
+    return userCollection.document(uid).snapshots().map(_getUserFromSnapshot);
+  }
+
+  // get user snapshot
+  Future<User> get user async {
+    return _getUserFromSnapshot(await userCollection.document(uid).get());
+//    userCollection.document(uid).get().then((DocumentSnapshot ds){
+//      return _getUserFromSnapshot(ds);
+//    }).catchError((e) => print('Error retrieving user data'));
+//    return null;
+//    return (userCollection.document(uid).snapshots().map(_getUserFromSnapshot)); // Get single document snapshot
   }
 
   // get item stream
