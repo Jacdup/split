@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/loading.dart';
+import 'package:twofortwo/ui/screens/authenticate/login.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
@@ -29,7 +30,7 @@ class BorrowListPortrait extends StatelessWidget {
     final items = Provider.of<List<Item>>(context) ?? [];
 //  final userAll = Provider.of<User>(context);
 //  print(userAll);
-    print(items);
+//    print(items);
 //  print(user.toString());
 
 //  final userDetails = await DatabaseService(uid: user.uid).userCollection
@@ -43,6 +44,7 @@ class BorrowListPortrait extends StatelessWidget {
     return StreamBuilder<User>(
         stream: DatabaseService(uid: user.uid).userData, // Access stream
         builder: (context, snapshot) {
+          print(snapshot);
           if (snapshot.hasData) {
             User userData = snapshot.data;
             return DefaultTabController(
@@ -69,8 +71,10 @@ class BorrowListPortrait extends StatelessWidget {
                   body: _buildBorrowList(chosenCategories, items),
                 ));
           } else {
-//            print('in here');
-//            _auth.logOut();
+            print('in here');
+//            _auth.logOut();//TODO
+//            return Navigator.pushReplacementNamed(context, LoginRoute);
+//            return Login();
             return Loading();
           }
         });
@@ -97,7 +101,6 @@ class BorrowListPortrait extends StatelessWidget {
 ////        else if (chosenCategories.contains(item1.category)){
 //        else if (chosenCategories.contains(item1.category)){
 //
-//        //TODO: iterate over items in borrowList here
 //             return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
 //        }else{
 ////          print(item1.category);
@@ -208,7 +211,9 @@ class BorrowListPortrait extends StatelessWidget {
               onTap: () async {
                 Navigator.pop(context); // This one for the drawer
 //                Navigator.pushReplacementNamed(context, LoginRoute); // Shouldn't have to call this, the wrapper listens for changes
-                localStorageService.clear(); //  Remove all saved values
+//                setState()
+                localStorageService.clear(); //  Remove all saved values // TODO: call a setstate or something so the widget knows the stayloggedin is cleared
+
 //                print(localStorageService.stayLoggedIn);
                 await _auth.logOut();
 //                Navigator.pushReplacementNamed(context, CategoryRoute);

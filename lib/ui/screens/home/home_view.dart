@@ -9,6 +9,7 @@ import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:provider/provider.dart';
+import 'package:twofortwo/services/auth.dart';
 
 
 class HomeView extends StatefulWidget {
@@ -31,7 +32,7 @@ class _HomeViewState extends State<HomeView>{
 
   // final Data _categories;
   // SecondPage({this._categories});
-
+@override
   Widget build(BuildContext context) {
 
     var localStorageService = locator<LocalStorageService>();
@@ -73,7 +74,8 @@ class _HomeViewState extends State<HomeView>{
 
 
  _confirmLogout(context) {
-  // flutter defined function
+
+   final AuthService _auth = AuthService();
    final bool staySignedIn = locator<LocalStorageService>().stayLoggedIn; // Getter TODO: it might be better to pass this variable through the constructor, then we don't have to query the local storage every time
 
   showDialog(
@@ -87,29 +89,21 @@ class _HomeViewState extends State<HomeView>{
           // usually buttons at the bottom of the dialog
           new FlatButton(
             child: new Text("Yes"),
-            onPressed: () {
+            onPressed: () async {
 
               if (!staySignedIn){
-                // TODO: add firestore logout here
+                await _auth.logOut();
 //                locator<LocalStorageService>().hasLoggedIn = false;
               }
               //Navigator.pop(context); // Pop the AlertDialog
               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
              // exit(0);
-              //return Future.value(true);
-             // Navigator.pop(context);
-              //Navigator.pushReplacementNamed(context, SplashRoute);
             },
           ),
           new FlatButton(
             child: new Text("No"),
             onPressed: () {
               Navigator.of(context).pop(false);
-             // var storageService = locator<LocalStorageService>();
-              //storageService.category = _selectedCategories; // Setter
-             // print(storageService.hasSignedUp);
-              //storageService.hasSignedUp = true;
-              //return Future.value(false);
             },
           ),
         ],

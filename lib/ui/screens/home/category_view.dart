@@ -78,7 +78,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
                 // Save a value
                 //TODO: save selectedCategories either to storage, or firestore
                 // TODO: call a setstate that changes the value of home_view_mobile
-                await DatabaseService(uid: user.uid).updateCategory(_selectedCategories);
+//                await DatabaseService(uid: user.uid).updateCategory(_selectedCategories);
 //                print("Has signed up value before:");
 //                print(storageService.hasSignedUp);
 //                storageService.category = _selectedCategories; // Setter

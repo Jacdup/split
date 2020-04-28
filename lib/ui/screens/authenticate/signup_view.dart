@@ -180,7 +180,7 @@ class _SignupViewState extends State<SignupView> {
       dynamic result = await _auth.registerWithEmailAndPassword( // TODO: move to category screen first
           userName, userLastName, userEmail, userPhone, userPassword, _selectedLocation);
 
-      Navigator.pushNamed(context, CategoryRoute);
+//      Navigator.pushNamed(context, CategoryRoute);
 
       if (result == null) {
         setState(() {

@@ -28,14 +28,17 @@ class Wrapper extends StatelessWidget{
     var alreadyLoggedIn = localStorageService.stayLoggedIn;
 
     // First check whether there exists a local copy of user, if not go to firebase
-    if (alreadyLoggedIn){
-      User user = localStorageService.user;
-      if (user == null) {
-        print("Could not retrieve user from localstorage");
-      }else{
-        return HomeView(user: user,);
-      }
-    }else if (user == null){
+    // Dont have to
+//    if (alreadyLoggedIn){
+//      print("Stay logged in true");
+//      User user = localStorageService.user;
+//      if (user == null) {
+//        print("Could not retrieve user from localstorage");
+//      }else{
+//        return HomeView(user: user,);
+//      }
+//    }else
+      if (user == null){
       return Authenticate();
 //      return AuthRoute;
     }else{
