@@ -58,9 +58,7 @@ class _NewItemState extends State<NewItem> {
 //      tag: "New Request",
 //      child: Image.asset('split.png'),
 //    );
-    final _titleFont = const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold );
-    final _itemFont = const TextStyle(fontSize: 18, color: Colors.black);
-    final _textFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black54);
+
 
     return loading ? Loading() : Scaffold(
       backgroundColor: colorCustom,
@@ -72,7 +70,7 @@ class _NewItemState extends State<NewItem> {
               children: <Widget>[
                 Text(
                   'Add item',
-                  style: _titleFont,
+                  style: titleFont,
                 ),
                 SizedBox(height: 60.0),
                 TextFormField(
@@ -84,26 +82,30 @@ class _NewItemState extends State<NewItem> {
                 ),
                 SizedBox(height: 20),
                 TextFormField(
+                  keyboardType: TextInputType.multiline,
                   onChanged: (val){
                     setState(() {
                       description = val;});
                   },
                   decoration: textInputDecoration.copyWith(labelText: 'Description'),
+                  maxLines: null,
                 ),
                 SizedBox(height: 20),
                 TextFormField(
+                  keyboardType: TextInputType.datetime,
                   onChanged: (val){
                     setState(() {
                       date = val;});
                   },
                   decoration: textInputDecoration.copyWith(labelText: 'Requested usage date'),
+
                 ),
                 SizedBox(height: 20),
                 //createDropDown(context),
                 DropdownButton(
                   hint: Text(
                       'Please choose a category',
-                    style: _textFont,), // Not necessary for Option 1
+                    style: textFont,), // Not necessary for Option 1
                   value: _selectedCategory,
                   onChanged: (newValue) {
                     setState(() {
@@ -112,7 +114,7 @@ class _NewItemState extends State<NewItem> {
                   },
                   items: _categories.map((category) {
                     return DropdownMenuItem(
-                      child: new Text(category,style: _textFont),
+                      child: new Text(category,style: textFontDropDown),
                       value: category,
                     );
                   }).toList(),

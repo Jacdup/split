@@ -14,7 +14,7 @@ class Wrapper extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    var localStorageService = locator<LocalStorageService>();
+//    var localStorageService = locator<LocalStorageService>();
 
     final User user = Provider.of<User>(context); // Firestore user (contains uid, email)
 //    print(user.uid);
@@ -25,7 +25,7 @@ class Wrapper extends StatelessWidget{
 //    });
 
 //    Future<User> userAll  = getUser(user.uid); // Database user with the rest of the info
-    var alreadyLoggedIn = localStorageService.stayLoggedIn;
+//    var alreadyLoggedIn = localStorageService.stayLoggedIn;
 
     // First check whether there exists a local copy of user, if not go to firebase
     // Dont have to

@@ -3,15 +3,18 @@ import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/ui/screens/authenticate/login.dart';
+import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/utils/colours.dart';
+import 'package:twofortwo/utils/overlay.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/service_locator.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/database.dart';
+import 'package:overlay_container/overlay_container.dart';
 
-class BorrowListPortrait extends StatelessWidget {
+class BorrowListPortrait extends StatefulWidget {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> chosenCategories;
@@ -20,10 +23,27 @@ class BorrowListPortrait extends StatelessWidget {
   BorrowListPortrait(
       {Key key, this.chosenCategories, this.borrowList, this.user})
       : super(key: key);
-//  const BorrowListPortrait({Key key, this.chosenCategories, this.borrowList}) : super(key: key);
+
+  @override
+  _BorrowListPortraitState createState() => _BorrowListPortraitState();
+}
+
+class _BorrowListPortraitState extends State<BorrowListPortrait> {
   final _itemFont = const TextStyle(fontSize: 15.0);
+
   final AuthService _auth = AuthService();
   final localStorageService = locator<LocalStorageService>();
+  List<bool> _infoShow = [];
+  void _toggleDropdown(int num) {
+    setState(() {
+      _infoShow[num] = !_infoShow[num];
+    });
+  }
+//  void populateData() {
+//    var list = [];
+//    for (int i = 0; i < 10; i++)
+//      list.add(ListItem<String>("item $i"));
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +62,7 @@ class BorrowListPortrait extends StatelessWidget {
 //    print(item.itemName);
 //  });
     return StreamBuilder<User>(
-        stream: DatabaseService(uid: user.uid).userData, // Access stream
+        stream: DatabaseService(uid: widget.user.uid).userData, // Access stream
         builder: (context, snapshot) {
           print(snapshot);
           if (snapshot.hasData) {
@@ -52,7 +72,8 @@ class BorrowListPortrait extends StatelessWidget {
                 initialIndex: 0,
                 child: Scaffold(
                   //key: _scaffoldKey,
-                  appBar: _createHeader(userData.name), //TODO: make this sliverAppBar
+                  appBar: _createHeader(
+                      userData.name), //TODO: make this sliverAppBar
 
                   drawer: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.65, //20.0,
@@ -61,14 +82,15 @@ class BorrowListPortrait extends StatelessWidget {
 
                   floatingActionButton: FloatingActionButton.extended(
                     onPressed: () {
-                      Navigator.pushNamed(context, NewItemRoute); // TODO: Can send userData to route
+                      Navigator.pushNamed(context,
+                          NewItemRoute); // TODO: Can send userData to route
                     },
                     label: Text('Add request'),
                     icon: Icon(Icons.add),
                     backgroundColor: Colors.red,
                   ),
 
-                  body: _buildBorrowList(chosenCategories, items),
+                  body: _buildBorrowList(widget.chosenCategories, items),
                 ));
           } else {
             print('in here');
@@ -90,12 +112,11 @@ class BorrowListPortrait extends StatelessWidget {
     //delegate: new SliverChildListDelegate())
     //),
     return ListView.separated(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(10.0),
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-//        allItems.forEach((item) {
-        return _buildRow(allItems[index]);
-//        });
+        return _buildRow(allItems[index], index);
+
 //        if (item1 == null) {
 //            return Text("No items in chosen category");}
 ////        else if (chosenCategories.contains(item1.category)){
@@ -111,27 +132,55 @@ class BorrowListPortrait extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(Item item) {
+  Widget _buildRow(Item item, int num) {
     String category = item.category;
     String itemName = item.itemName;
     String description = item.description;
     String date = item.date;
     // final bool alreadySaved = _saved.contains(pair);
-    return Card(
-      child: ListTile(
-        title: Text(
-          itemName,
-          //pair.asPascalCase,
-          style: _itemFont,
-        ),
-        subtitle: Text(
-          description,
-        ),
-        trailing: Text(
-          date,
-        ),
-        onTap: () {}, //TODO: create expandable thing here
-      ),
+    return Hero(
+      tag: "row$num",
+      child: Card(
+          elevation: 4.0,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text(
+                  itemName,
+                  //pair.asPascalCase,
+                  style: _itemFont,
+                ),
+                subtitle: Text(
+                  description,
+                ),
+                trailing: Text(
+                  date,
+                ),
+                onTap: () {
+//                  _toggleDropdown(num);
+
+//            print('row$num');
+            Navigator.pushNamed(context, getItemInfoRoute, arguments: num,);
+                }, //TODO: create expandable thing here
+              ),
+
+              Visibility(
+//                visible: _infoShow[num] ,
+                child: ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text('Willing to help'),
+                      onPressed: () {/* ... */},
+                    ),
+                    FlatButton(
+                      child: const Text('Contact'),
+                      onPressed: () {/* ... */},
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )),
     );
   }
 
@@ -211,8 +260,9 @@ class BorrowListPortrait extends StatelessWidget {
               onTap: () async {
                 Navigator.pop(context); // This one for the drawer
 //                Navigator.pushReplacementNamed(context, LoginRoute); // Shouldn't have to call this, the wrapper listens for changes
-//                setState()
-                localStorageService.clear(); //  Remove all saved values // TODO: call a setstate or something so the widget knows the stayloggedin is cleared
+//                setState(() {
+                localStorageService.clear(); //  Remove all saved values
+//                });
 
 //                print(localStorageService.stayLoggedIn);
                 await _auth.logOut();
@@ -220,6 +270,39 @@ class BorrowListPortrait extends StatelessWidget {
               })
         ],
       ),
+    );
+  }
+
+  Widget _buildItemInfo(BuildContext context, int num, bool vis) {
+    return AnchoredOverlay(
+      showOverlay: true,
+      overlayBuilder: (context, offset) {
+        return CenterAbout(
+          position: Offset(offset.dx, offset.dy + 50.0),
+
+//      return Hero(
+//        tag: 'row$num',
+          child: ItemInfo(
+            num: num,
+          ),
+
+//      child: Container(
+//
+//        margin: const EdgeInsets.all(50.0),
+//        color: Colors.white,
+//        child: Center(
+//          child: Card(
+//
+//            child: Text(
+//
+//              'test$num', style: TextStyle(color: Colors.black),
+//            ),
+//          ),
+//        ),
+//      ),
+//      );
+        );
+      },
     );
   }
 }
