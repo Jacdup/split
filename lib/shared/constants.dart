@@ -5,9 +5,9 @@ const textColor = Colors.black54;
 final itemFont =
 const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const textFont = const TextStyle(
-    fontSize: 20.0, fontWeight: FontWeight.bold, color: textColor);
+    fontSize: 18.0, fontWeight: FontWeight.bold, color: textColor);
 final errorFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red);
-final titleFont = const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold, color: textColor );
+final titleFont = const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold, color: Colors.black87 );
 final textFontDropDown = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black);
 //  final _itemFont = const TextStyle(fontSize: 18, color: Colors.black);
 
@@ -18,7 +18,7 @@ final textFontDropDown = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.
 //final _errorFont = const TextStyle(
 //    fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red);
 
-const borderColour = Colors.black;
+const borderColour = Colors.white;
 const borderWidth = 1.2;
 const borderWidthFocused = 1.2;
 const bRad = 20.0;
@@ -26,11 +26,12 @@ const _borderRadius = const BorderRadius.all(const Radius.circular(bRad));
 
 
 const textInputDecoration = InputDecoration(
-//  filled: true,
-//  fillColor: Colors.white,
+  filled: true,
+  fillColor: Colors.white,
 //  focusColor: Colors.amberAccent,
 //  hoverColor: Colors.white,
 // hintText: 'test',
+hintStyle: textFont,
 // border: OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: borderWidthFocused)),
 //  icon: Icon(Icons.map),
   focusedBorder: OutlineInputBorder(

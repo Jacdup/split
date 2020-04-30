@@ -23,20 +23,13 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView>{
-//@override
 
-//  final String userName;
 
-//  static const item1 = Item(
-//      'Household', 'Example name', '03/2020 - 04/2020', 'Generic description');
-
-  // final Data _categories;
-  // SecondPage({this._categories});
 @override
   Widget build(BuildContext context) {
 
     var localStorageService = locator<LocalStorageService>();
-    final Item item1 = localStorageService.item; //  Getter
+//    final Item item1 = localStorageService.item; //  Getter
 
     //TODO: get all from database here
     List<String> chosenCategories;
@@ -62,7 +55,7 @@ class _HomeViewState extends State<HomeView>{
         }, // The page will not respond to back press
         child: ScreenTypeLayout(
           mobile: OrientationLayout(
-            portrait: BorrowListPortrait(chosenCategories: chosenCategories, borrowList: item1, user: thisUser,),
+            portrait: BorrowListPortrait(chosenCategories: chosenCategories, user: thisUser,),
             //landscape: //TODO,
           ),
         ),

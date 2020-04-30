@@ -61,7 +61,7 @@ class _NewItemState extends State<NewItem> {
 
 
     return loading ? Loading() : Scaffold(
-      backgroundColor: colorCustom,
+      backgroundColor: customBlue5,
       body: Center(
         child: Container(
           width: screenWidth(context, dividedBy: 1.2),
@@ -78,7 +78,7 @@ class _NewItemState extends State<NewItem> {
                 setState(() {
                 itemName = val;});
                 },
-                  decoration: textInputDecoration.copyWith(labelText: 'Item name'),
+                  decoration: textInputDecoration.copyWith(hintText: 'Item name'),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -87,7 +87,7 @@ class _NewItemState extends State<NewItem> {
                     setState(() {
                       description = val;});
                   },
-                  decoration: textInputDecoration.copyWith(labelText: 'Description'),
+                  decoration: textInputDecoration.copyWith(hintText: 'Description'),
                   maxLines: null,
                 ),
                 SizedBox(height: 20),
@@ -97,7 +97,7 @@ class _NewItemState extends State<NewItem> {
                     setState(() {
                       date = val;});
                   },
-                  decoration: textInputDecoration.copyWith(labelText: 'Requested usage date'),
+                  decoration: textInputDecoration.copyWith(hintText: 'Requested usage date'),
 
                 ),
                 SizedBox(height: 20),

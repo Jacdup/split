@@ -18,10 +18,9 @@ class BorrowListPortrait extends StatefulWidget {
   //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> chosenCategories;
-  final Item borrowList;
   final User user;
   BorrowListPortrait(
-      {Key key, this.chosenCategories, this.borrowList, this.user})
+      {Key key, this.chosenCategories, this.user})
       : super(key: key);
 
   @override
@@ -48,19 +47,12 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
   @override
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
-//  final userAll = Provider.of<User>(context);
-//  print(userAll);
-//    print(items);
-//  print(user.toString());
 
-//  final userDetails = await DatabaseService(uid: user.uid).userCollection
-//  print(items.documents);
-//  items.forEach((item) {
-//    print(item.category);
-//    print(item.date);
-//    print(item.description);
-//    print(item.itemName);
-//  });
+    var numItems = items.length;
+    for (var i = 0; i <= numItems; i++){
+      _infoShow.add(false) ;
+    }
+
     return StreamBuilder<User>(
         stream: DatabaseService(uid: widget.user.uid).userData, // Access stream
         builder: (context, snapshot) {
@@ -72,8 +64,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
                 initialIndex: 0,
                 child: Scaffold(
                   //key: _scaffoldKey,
-                  appBar: _createHeader(
-                      userData.name), //TODO: make this sliverAppBar
+//                  appBar: _createHeader(userData.name), //TODO: make this sliverAppBar
+                  _createHeader(userData.name),
 
                   drawer: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.65, //20.0,
@@ -157,77 +149,86 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
                   date,
                 ),
                 onTap: () {
-//                  _toggleDropdown(num);
+
+                  _toggleDropdown(num);
 
 //            print('row$num');
-            Navigator.pushNamed(context, getItemInfoRoute, arguments: num,);
+//
                 }, //TODO: create expandable thing here
               ),
 
               Visibility(
-//                visible: _infoShow[num] ,
+                visible: _infoShow[num] ,
                 child: ButtonBar(
                   children: <Widget>[
                     FlatButton(
                       child: const Text('Willing to help'),
-                      onPressed: () {/* ... */},
+                      onPressed: () {/* send ping to item user, with thisUser info */},
                     ),
                     FlatButton(
                       child: const Text('Contact'),
-                      onPressed: () {/* ... */},
+                      onPressed: () {
+                        print("row$num");
+                      Navigator.pushNamed(context, getItemInfoRoute, arguments: num,);},
                     ),
                   ],
                 ),
               )
             ],
-          )),
+          )
+      ),
     );
   }
 
   Widget _createHeader(String userName) {
     //return Scaffold(
 
-    return AppBar(
-      title: Text(''),
-      flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset(
-                'split.png',
-                alignment: Alignment.bottomCenter,
-                width: 120.0,
-                height: 120.0,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+
+        title: Text(''),
+        flexibleSpace: FlexibleSpaceBar(
+          centerTitle: true,
+          title: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'split.png',
+                  alignment: Alignment.bottomCenter,
+                  width: 120.0,
+                  height: 120.0,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
 //                  Text(
 //                    'Welcome [Account Name]!',
 //                    style: TextStyle(color: Colors.white),
 //                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.square(105.0),
+          child: TabBar(
+            tabs: [
+              Text(
+                'Welcome $userName!',
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
+              )
+              // Icon(Icons.train),
+              // Icon(Icons.directions_bus),
+              //Icon(Icons.motorcycle)
             ],
           ),
         ),
       ),
-      bottom: PreferredSize(
-        preferredSize: Size.square(105.0),
-        child: TabBar(
-          tabs: [
-            Text(
-              'Welcome $userName!',
-              style: TextStyle(color: Colors.white, fontSize: 20.0),
-            )
-            // Icon(Icons.train),
-            // Icon(Icons.directions_bus),
-            //Icon(Icons.motorcycle)
-          ],
-        ),
-      ),
+      ],
     );
     // );
   }
@@ -240,7 +241,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
           DrawerHeader(
             child: Text('Menu'),
             decoration: BoxDecoration(
-              color: colorCustom,
+              color: customBlue5,
             ),
           ),
           ListTile(

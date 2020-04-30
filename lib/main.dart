@@ -47,7 +47,8 @@ class MyApp extends StatelessWidget {
 //        builder: DevicePreview.appBuilder, //  This is for testing UI
         title: '2For2 Demo',
         theme: ThemeData(
-          primarySwatch: colorCustom,
+//          primarySwatch: colorCustom,
+          primarySwatch: customBlue5,
         ),
 //        home: Wrapper(), // becomes the route named '/'
           initialRoute: HomeViewRoute, // Temporary name for wrapper

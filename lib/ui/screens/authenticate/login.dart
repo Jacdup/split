@@ -48,9 +48,9 @@ class _LoginViewState extends State<Login> {
     final _space = screenHeight(context, dividedBy: 30);
 
     return loading ? Loading() : Scaffold(
-        backgroundColor: colorCustom,
+        backgroundColor: customBlue5,
         appBar: AppBar(
-            backgroundColor: colorCustom,
+            backgroundColor: customBlue5,
             elevation: 0.0,
             actions: <Widget>[
               FlatButton.icon(
@@ -86,7 +86,7 @@ class _LoginViewState extends State<Login> {
                         });
                       },
                       decoration:
-                          textInputDecoration.copyWith(labelText: 'Email'),
+                          textInputDecoration.copyWith(hintText: 'Email'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
@@ -100,7 +100,7 @@ class _LoginViewState extends State<Login> {
                       },
                       obscureText: true,
                       decoration:
-                          textInputDecoration.copyWith(labelText: 'Password'),
+                          textInputDecoration.copyWith(hintText: 'Password'),
                     ),
                     SizedBox(height: _space / 2),
                     Container(

@@ -17,30 +17,35 @@ class _ItemInfoState extends State<ItemInfo> {
 
   @override
   Widget build(BuildContext context) {
+    var num = widget.num;
     print('in item info');
-    return Stack(children: <Widget>[
-      Hero(
-        tag: "row$num",
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black54,width: 3.0)
-          ),
-          margin: const EdgeInsets.fromLTRB(50.0, 200.0, 50.0, 200.0),
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black54,width: 3.0)
+      ),
+      margin: const EdgeInsets.fromLTRB(50.0, 200.0, 50.0, 200.0),
 //            position: Offset(offset.dx, offset.dy),
 //        color: Colors.white,
-          child: Center(
-            child: Card(
+      child: Center(
+        child: Hero(
+          tag: "row$num",
+          child: Card(
 
-              child: Text(
-                'test${widget.num}', style: TextStyle(color: Colors.black),
-              ),
-            ),
+//            child: Text(
+//              'test${widget.num}', style: TextStyle(color: Colors.black),
+//            ),
+              elevation: 4.0,
+              child: Column(
+                children: <Widget>[
+                  Center(child: Text("TODO"))
+                  ],
+              )
+
           ),
-
         ),
       ),
-    ],
+
     );
 
   }

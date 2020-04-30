@@ -41,9 +41,9 @@ class _SignupViewState extends State<SignupView> {
     final _space = screenHeight(context, dividedBy: 40);
 
     return loading ? Loading() : Scaffold(
-        backgroundColor: colorCustom,
+        backgroundColor: customBlue5,
         appBar: AppBar(
-            backgroundColor: colorCustom,
+            backgroundColor: customBlue5,
             elevation: 0.0,
             actions: <Widget>[
               FlatButton.icon(
@@ -79,7 +79,7 @@ class _SignupViewState extends State<SignupView> {
                         });
                       },
                       decoration: textInputDecoration.copyWith(
-                          labelText: 'Name'),
+                          hintText: 'Name'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
@@ -91,7 +91,7 @@ class _SignupViewState extends State<SignupView> {
                         });
                       },
                       decoration: textInputDecoration.copyWith(
-                          labelText: 'Surname'),
+                          hintText: 'Surname'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
@@ -103,7 +103,7 @@ class _SignupViewState extends State<SignupView> {
                         });
                       },
                       decoration: textInputDecoration.copyWith(
-                          labelText: 'Email Address'),
+                          hintText: 'Email Address'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
@@ -116,7 +116,7 @@ class _SignupViewState extends State<SignupView> {
                         });
                       },
                       decoration: textInputDecoration.copyWith(
-                          labelText: 'Phone Number'),
+                          hintText: 'Phone Number'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
@@ -130,7 +130,7 @@ class _SignupViewState extends State<SignupView> {
                       },
                       obscureText: true,
                       decoration:
-                          textInputDecoration.copyWith(labelText: 'Password'),
+                          textInputDecoration.copyWith(hintText: 'Password'),
                     ),
                     SizedBox(height: _space),
                     DropdownButton(
