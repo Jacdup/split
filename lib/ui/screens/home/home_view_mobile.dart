@@ -106,15 +106,20 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
     //  SliverList(
     //delegate: new SliverChildListDelegate())
     //),
+    double _buildBox = 0;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
-            if (index.isOdd) {
-              return Divider( color: Colors.grey,);
-             }
-            return _buildRow(allItems[index~/2], index~/2);
+//            if (index.isOdd) {
+//              return Divider( color: Colors.grey,);
+//             }
+            if (index == (allItems.length)-1){
+              _buildBox = 80;
+            }
+            return _buildRow(allItems[index], index, _buildBox);
+
           },
-           childCount:(allItems.length*2)-1,
+           childCount:(allItems.length),
 //        padding: const EdgeInsets.all(10.0),
 ////        itemCount: allItems.length,
 ////        itemBuilder: (BuildContext context, int index) {
@@ -125,7 +130,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
     );
   }
 
-  Widget _buildRow(Item item, int num) {
+  Widget _buildRow(Item item, int num, double buildBox) {
     String category = item.category;
     String itemName = item.itemName;
     String description = item.description;
@@ -134,6 +139,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
     return Hero(
       tag: "row$num",
       child: Card(
+        margin: EdgeInsets.fromLTRB(0, 20, 0, buildBox),
           elevation: 4.0,
           child: Column(
             children: <Widget>[
@@ -171,7 +177,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
                 ),
               )
             ],
-          )
+          ),
       ),
     );
   }
