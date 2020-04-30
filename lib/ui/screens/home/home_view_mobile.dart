@@ -63,27 +63,30 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
                 length: 1,
                 initialIndex: 0,
                 child: Scaffold(
-                  //key: _scaffoldKey,
-//                  appBar: _createHeader(userData.name), //TODO: make this sliverAppBar
+                    drawer: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.65, //20.0,
+                      child: _buildDrawer(context),
+                    ),
+
+                    floatingActionButton: FloatingActionButton.extended(
+                      onPressed: () {
+                        Navigator.pushNamed(context,
+                            NewItemRoute); // TODO: Can send userData to route
+                      },
+                      label: Text('Add request'),
+                      icon: Icon(Icons.add),
+                      backgroundColor: Colors.red,
+                    ),
+
+                  body: CustomScrollView(
+                  slivers: <Widget>[
                   _createHeader(userData.name),
-
-                  drawer: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.65, //20.0,
-                    child: _buildDrawer(context),
+                    _buildBorrowList(widget.chosenCategories, items),
+                    ],
                   ),
+                ),
 
-                  floatingActionButton: FloatingActionButton.extended(
-                    onPressed: () {
-                      Navigator.pushNamed(context,
-                          NewItemRoute); // TODO: Can send userData to route
-                    },
-                    label: Text('Add request'),
-                    icon: Icon(Icons.add),
-                    backgroundColor: Colors.red,
-                  ),
-
-                  body: _buildBorrowList(widget.chosenCategories, items),
-                ));
+            );
           } else {
             print('in here');
 //            _auth.logOut();//TODO
@@ -103,24 +106,17 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
     //  SliverList(
     //delegate: new SliverChildListDelegate())
     //),
-    return ListView.separated(
-      padding: const EdgeInsets.all(10.0),
-      itemCount: allItems.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildRow(allItems[index], index);
-
-//        if (item1 == null) {
-//            return Text("No items in chosen category");}
-////        else if (chosenCategories.contains(item1.category)){
-//        else if (chosenCategories.contains(item1.category)){
-//
-//             return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
-//        }else{
-////          print(item1.category);
-//          return Text("No items in chosen category");
-//        }
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+          (context,index) => _buildRow(allItems[index], index),
+          childCount: allItems.length,
+//        padding: const EdgeInsets.all(10.0),
+////        itemCount: allItems.length,
+////        itemBuilder: (BuildContext context, int index) {
+////          return _buildRow(allItems[index], index);
+////        },
+//        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ),
     );
   }
 
@@ -139,7 +135,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
               ListTile(
                 title: Text(
                   itemName,
-                  //pair.asPascalCase,
                   style: _itemFont,
                 ),
                 subtitle: Text(
@@ -149,12 +144,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
                   date,
                 ),
                 onTap: () {
-
                   _toggleDropdown(num);
-
-//            print('row$num');
-//
-                }, //TODO: create expandable thing here
+                },
               ),
 
               Visibility(
@@ -183,11 +174,10 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
   Widget _createHeader(String userName) {
     //return Scaffold(
 
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-
+    return  SliverAppBar(
+        floating: true,
         title: Text(''),
+        expandedHeight: 200,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
           title: Center(
@@ -227,9 +217,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
             ],
           ),
         ),
-      ),
-      ],
-    );
+      );
+
     // );
   }
 
@@ -306,4 +295,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
       },
     );
   }
+
+
 }
