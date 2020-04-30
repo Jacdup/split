@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/loading.dart';
-import 'package:twofortwo/ui/screens/authenticate/login.dart';
 import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/overlay.dart';
@@ -15,7 +15,6 @@ import 'package:twofortwo/services/database.dart';
 import 'package:overlay_container/overlay_container.dart';
 
 class BorrowListPortrait extends StatefulWidget {
-  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> chosenCategories;
   final User user;
@@ -27,7 +26,7 @@ class BorrowListPortrait extends StatefulWidget {
   _BorrowListPortraitState createState() => _BorrowListPortraitState();
 }
 
-class _BorrowListPortraitState extends State<BorrowListPortrait> {
+class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTickerProviderStateMixin {//TODO, dont know what this does
   final _itemFont = const TextStyle(fontSize: 15.0);
 
   final AuthService _auth = AuthService();
@@ -38,11 +37,12 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
       _infoShow[num] = !_infoShow[num];
     });
   }
-//  void populateData() {
-//    var list = [];
-//    for (int i = 0; i < 10; i++)
-//      list.add(ListItem<String>("item $i"));
-//  }
+  TabController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = new TabController(length: 2, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +59,14 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
           print(snapshot);
           if (snapshot.hasData) {
             User userData = snapshot.data;
-            return DefaultTabController(
-                length: 1,
-                initialIndex: 0,
-                child: Scaffold(
+//            return DefaultTabController(
+//                length: 2,
+//                initialIndex: 0,
+                return new Scaffold(
                     drawer: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.65, //20.0,
                       child: _buildDrawer(context),
                     ),
-
                     floatingActionButton: FloatingActionButton.extended(
                       onPressed: () {
                         Navigator.pushNamed(context,
@@ -81,14 +80,24 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
                   body: CustomScrollView(
                   slivers: <Widget>[
                   _createHeader(userData.name),
-                    _buildBorrowList(widget.chosenCategories, items),
+//
+                    new SliverFillRemaining(
+                      child: TabBarView(
+                        controller: controller,
+                        children: <Widget>[
+                          _buildBorrowList(widget.chosenCategories, items),
+//                          Text("Tab 2"),
+                          Text("Tab 3"),
+                        ],
+                      ),
+                    ),
+
                     ],
                   ),
-                ),
-
-            );
+                );
+//            );
           } else {
-            print('in here');
+//            print('in here');
 //            _auth.logOut();//TODO
 //            return Navigator.pushReplacementNamed(context, LoginRoute);
 //            return Login();
@@ -98,36 +107,40 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
   }
 
   Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems) {
-    //final chosenCategories = chosenCategories1.categories;
-    //return ListView.builder(
-    //return
-    //  return CustomScrollView(
-    //    slivers: <Widget>[
-    //  SliverList(
-    //delegate: new SliverChildListDelegate())
-    //),
-    double _buildBox = 0;
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-//            if (index.isOdd) {
-//              return Divider( color: Colors.grey,);
-//             }
-            if (index == (allItems.length)-1){
-              _buildBox = 80;
-            }
-            return _buildRow(allItems[index], index, _buildBox);
 
-          },
-           childCount:(allItems.length),
-//        padding: const EdgeInsets.all(10.0),
-////        itemCount: allItems.length,
-////        itemBuilder: (BuildContext context, int index) {
-////          return _buildRow(allItems[index], index);
-////        },
-//        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      ),
+    double _buildBox = 0;
+//    return SliverList(
+//      delegate: SliverChildBuilderDelegate(
+//          (BuildContext context, int index) {
+//            if (index == (allItems.length)-1){
+//              _buildBox = 80;
+//            }
+//            return _buildRow(allItems[index], index, _buildBox);
+//          },
+//           childCount:(allItems.length),
+//      ),
+//    );
+
+    return ListView.separated(
+      padding: const EdgeInsets.all(10.0),
+      itemCount: allItems.length,
+      itemBuilder: (BuildContext context, int index) {
+        return _buildRow(allItems[index], index, _buildBox);
+
+//        if (item1 == null) {
+//            return Text("No items in chosen category");}
+////        else if (chosenCategories.contains(item1.category)){
+//        else if (chosenCategories.contains(item1.category)){
+//
+//             return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
+//        }else{
+////          print(item1.category);
+//          return Text("No items in chosen category");
+//        }
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
+
   }
 
   Widget _buildRow(Item item, int num, double buildBox) {
@@ -139,7 +152,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
     return Hero(
       tag: "row$num",
       child: Card(
-        margin: EdgeInsets.fromLTRB(0, 20, 0, buildBox),
+        margin: EdgeInsets.fromLTRB(10, 15, 10, buildBox),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
           elevation: 4.0,
           child: Column(
             children: <Widget>[
@@ -183,49 +197,51 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
   }
 
   Widget _createHeader(String userName) {
-    //return Scaffold(
 
     return  SliverAppBar(
         floating: true,
         title: Text(''),
-        expandedHeight: 200,
+//        expandedHeight: 200,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
           title: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[//TODO
+                    Text(
+                      'Welcome $userName!',
+                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+                    ),
+                  ],
+                ),
                 Image.asset(
                   'split.png',
                   alignment: Alignment.bottomCenter,
-                  width: 120.0,
-                  height: 120.0,
+                  width: 110.0,
+                  height: 100.0,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-//                  Text(
-//                    'Welcome [Account Name]!',
-//                    style: TextStyle(color: Colors.white),
-//                  ),
-                  ],
-                ),
+
               ],
             ),
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.square(105.0),
+          preferredSize: Size.square(110.0),
           child: TabBar(
+            indicatorColor: customYellow2,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorWeight: 4.0,
+            labelColor: Colors.black87,
+            unselectedLabelColor: Colors.black38 ,
             tabs: [
-              Text(
-                'Welcome $userName!',
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
-              )
-              // Icon(Icons.train),
-              // Icon(Icons.directions_bus),
-              //Icon(Icons.motorcycle)
+              new Tab(text: "Items Requested"),
+              new Tab(text: "Items Available"),
+
             ],
+            controller: controller,
           ),
         ),
       );
