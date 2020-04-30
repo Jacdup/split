@@ -108,8 +108,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> {
     //),
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-          (context,index) => _buildRow(allItems[index], index),
-          childCount: allItems.length,
+          (BuildContext context, int index) {
+            if (index.isOdd) {
+              return Divider( color: Colors.grey,);
+             }
+            return _buildRow(allItems[index~/2], index~/2);
+          },
+           childCount:(allItems.length*2)-1,
 //        padding: const EdgeInsets.all(10.0),
 ////        itemCount: allItems.length,
 ////        itemBuilder: (BuildContext context, int index) {
