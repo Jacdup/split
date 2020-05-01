@@ -37,11 +37,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
       _infoShow[num] = !_infoShow[num];
     });
   }
-  TabController controller;
+  TabController _tabController;
+  ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
-    controller = new TabController(length: 2, vsync: this);
+    _scrollController = new ScrollController();
+    _tabController = new TabController(length: 2, vsync: this);
   }
 
   @override
@@ -77,22 +79,37 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                       backgroundColor: Colors.red,
                     ),
 
-                  body: CustomScrollView(
-                  slivers: <Widget>[
-                  _createHeader(userData.name),
-//
-                    new SliverFillRemaining(
-                      child: TabBarView(
-                        controller: controller,
-                        children: <Widget>[
-                          _buildBorrowList(widget.chosenCategories, items),
-//                          Text("Tab 2"),
-                          Text("Tab 3"),
-                        ],
-                      ),
-                    ),
+                  body: NestedScrollView(
+                    controller: _scrollController,
+                  headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
+                      return <Widget>[
+                        _createHeader(userData.name, innerBoxIsScrolled),
+                      ];
+                  },
+                  body: new TabBarView(
+                      children: <Widget>[
+                        _buildBorrowList(widget.chosenCategories, items, 'tab1'),
+                        _buildBorrowList(widget.chosenCategories, items, 'tab2'),
+//                        Text("Tab 2"),
+                      ],
+                          controller: _tabController,
+                  )
 
-                    ],
+//                  slivers: <Widget>[
+//                  _createHeader(userData.name),
+////
+//                    new SliverFillRemaining(
+//                      child: TabBarView(
+//                        controller: controller,
+//                        children: <Widget>[
+//                          _buildBorrowList(widget.chosenCategories, items),
+////                          Text("Tab 2"),
+//                          Text("Tab 3"),
+//                        ],
+//                      ),
+//                    ),
+//
+//                    ],
                   ),
                 );
 //            );
@@ -106,7 +123,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
         });
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems) {
+  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems, String name) {
 
     double _buildBox = 0;
 //    return SliverList(
@@ -122,21 +139,15 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
 //    );
 
     return ListView.separated(
+      key: PageStorageKey<String>(name), // Keeps track of scroll position
       padding: const EdgeInsets.all(10.0),
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
+        if (index == allItems.length -1){
+          _buildBox = 80;
+        }
         return _buildRow(allItems[index], index, _buildBox);
-
-//        if (item1 == null) {
-//            return Text("No items in chosen category");}
-////        else if (chosenCategories.contains(item1.category)){
-//        else if (chosenCategories.contains(item1.category)){
-//
-//             return _buildRow(chosenCategories.first, item1.itemName, item1.date,item1.description);
-//        }else{
-////          print(item1.category);
-//          return Text("No items in chosen category");
-//        }
+        
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
@@ -152,7 +163,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
     return Hero(
       tag: "row$num",
       child: Card(
-        margin: EdgeInsets.fromLTRB(10, 15, 10, buildBox),
+        margin: EdgeInsets.fromLTRB(0, 0, 0, buildBox),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
           elevation: 4.0,
           child: Column(
@@ -196,13 +207,18 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
     );
   }
 
-  Widget _createHeader(String userName) {
+  Widget _createHeader(String userName, bool innerBoxIsScrolled) {
 
     return  SliverAppBar(
+//      snap: true,
         floating: true,
-        title: Text(''),
-//        expandedHeight: 200,
+        pinned: true,
+        forceElevated: innerBoxIsScrolled,
+        title: Text('Welcome $userName!', style: TextStyle(color: Colors.white, fontSize: 20.0),),
+        centerTitle: true,
+        expandedHeight: 200,
         flexibleSpace: FlexibleSpaceBar(
+          titlePadding: const EdgeInsets.all(10.0),
           centerTitle: true,
           title: Center(
             child: Column(
@@ -211,10 +227,10 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[//TODO
-                    Text(
-                      'Welcome $userName!',
-                      style: TextStyle(color: Colors.white, fontSize: 20.0),
-                    ),
+//                    Text(
+////                      'Welcome $userName!',
+////                      style: TextStyle(color: Colors.white, fontSize: 20.0),
+//                    ),
                   ],
                 ),
                 Image.asset(
@@ -229,7 +245,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.square(110.0),
+          preferredSize: Size.square(100.0),
           child: TabBar(
             indicatorColor: customYellow2,
             indicatorSize: TabBarIndicatorSize.tab,
@@ -241,7 +257,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
               new Tab(text: "Items Available"),
 
             ],
-            controller: controller,
+            controller: _tabController,
           ),
         ),
       );
