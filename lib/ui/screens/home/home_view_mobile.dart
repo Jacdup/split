@@ -13,6 +13,7 @@ import 'package:twofortwo/utils/service_locator.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/database.dart';
+import 'package:twofortwo/ui/screens/home/available_list.dart';
 import 'package:overlay_container/overlay_container.dart';
 
 class BorrowListPortrait extends StatefulWidget {
@@ -45,13 +46,14 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
   @override
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
+    final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
 
 
 
     return StreamBuilder<User>(
         stream: DatabaseService(uid: widget.user.uid).userData, // Access stream
         builder: (context, snapshot) {
-          print(snapshot);
+//          print(snapshot);
           if (snapshot.hasData) {
             User userData = snapshot.data;
 //            return DefaultTabController(
@@ -67,7 +69,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                         Navigator.pushNamed(context,
                             NewItemRoute); // TODO: Can send userData to route
                       },
-                      label: Text('Add request'),
+                      label: Text('Add item'),
                       icon: Icon(Icons.add),
                       backgroundColor: Colors.red,
                     ),
@@ -82,29 +84,12 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                   body: new TabBarView(
                       children: <Widget>[
                         new RequestList(chosenCategories: widget.chosenCategories, allItems: items, name: 'tab1'),
-                        new RequestList(chosenCategories: widget.chosenCategories, allItems: items, name: 'tab2'),
-//                        _buildBorrowList(widget.chosenCategories, items, 'tab1'),
-//                        _buildBorrowList(widget.chosenCategories, items, 'tab2'),
-//                        Text("Tab 2"),
+                        new AvailableList(chosenCategories: widget.chosenCategories, allItems: itemsAvailable, name: 'tab2'),
+
                       ],
                           controller: _tabController,
                   )
 
-//                  slivers: <Widget>[
-//                  _createHeader(userData.name),
-////
-//                    new SliverFillRemaining(
-//                      child: TabBarView(
-//                        controller: controller,
-//                        children: <Widget>[
-//                          _buildBorrowList(widget.chosenCategories, items),
-////                          Text("Tab 2"),
-//                          Text("Tab 3"),
-//                        ],
-//                      ),
-//                    ),
-//
-//                    ],
                   ),
                 );
 //            );
@@ -118,89 +103,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
         });
   }
 
-//  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems, String name) {
-//
-//    double _buildBox = 0;
-////    return SliverList(
-////      delegate: SliverChildBuilderDelegate(
-////          (BuildContext context, int index) {
-////            if (index == (allItems.length)-1){
-////              _buildBox = 80;
-////            }
-////            return _buildRow(allItems[index], index, _buildBox);
-////          },
-////           childCount:(allItems.length),
-////      ),
-////    );
-//
-//    return ListView.separated(
-//      key: PageStorageKey<String>(name), // Keeps track of scroll position
-//      padding: const EdgeInsets.all(10.0),
-//      itemCount: allItems.length,
-//      itemBuilder: (BuildContext context, int index) {
-//        if (index == allItems.length -1){
-//          _buildBox = 80;
-//        }
-//        return _buildRow(allItems[index], index, _buildBox);
-//
-//      },
-//      separatorBuilder: (BuildContext context, int index) => const Divider(),
-//    );
-//
-//  }
-//
-//  Widget _buildRow(Item item, int num, double buildBox) {
-//    String category = item.category;
-//    String itemName = item.itemName;
-//    String description = item.description;
-//    String date = item.date;
-//    // final bool alreadySaved = _saved.contains(pair);
-//    return Hero(
-//      tag: "row$num",
-//      child: Card(
-//        margin: EdgeInsets.fromLTRB(0, 0, 0, buildBox),
-//          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-//          elevation: 4.0,
-//          child: Column(
-//            children: <Widget>[
-//              ListTile(
-//                title: Text(
-//                  itemName,
-//                  style: _itemFont,
-//                ),
-//                subtitle: Text(
-//                  description,
-//                ),
-//                trailing: Text(
-//                  date,
-//                ),
-//                onTap: () {
-//                  _toggleDropdown(num);
-//                },
-//              ),
-//
-//              Visibility(
-//                visible: _infoShow[num] ,
-//                child: ButtonBar(
-//                  children: <Widget>[
-//                    FlatButton(
-//                      child: const Text('Willing to help'),
-//                      onPressed: () {/* send ping to item user, with thisUser info */},
-//                    ),
-//                    FlatButton(
-//                      child: const Text('Contact'),
-//                      onPressed: () {
-//                        print("row$num");
-//                      Navigator.pushNamed(context, getItemInfoRoute, arguments: num,);},
-//                    ),
-//                  ],
-//                ),
-//              )
-//            ],
-//          ),
-//      ),
-//    );
-//  }
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
 
@@ -233,18 +135,11 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                   ],
                 ),
 
-//                Image.asset(
-//                  'split.png',
-//                  alignment: Alignment.bottomCenter,
-//                  width: 110.0,
-//                  height: 100.0,
-//                ),
-
               ],
             ),
           ),
           background:  Image.asset(
-            'split.png',
+            'split_new_blue1.png',
             alignment: Alignment.bottomCenter,
             width: 50.0,
             height: 50.0,
@@ -344,6 +239,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
       },
     );
   }
+
 
 
 }

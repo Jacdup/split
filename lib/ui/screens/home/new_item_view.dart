@@ -9,7 +9,6 @@ import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/services/database.dart';
 
-
 class NewItem extends StatefulWidget {
   @override
   _NewItemState createState() => _NewItemState();
@@ -30,9 +29,11 @@ class _NewItemState extends State<NewItem> {
     'Books',
     'Boardgames'
   ];
+  final _formKey1 = GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
 
-   String _selectedCategory;
-   bool loading = false;
+  String _selectedCategory;
+  bool loading = false;
 
   Item newItem;
 
@@ -59,110 +60,181 @@ class _NewItemState extends State<NewItem> {
 //      child: Image.asset('split.png'),
 //    );
 
+    return loading
+        ? Loading()
+        : DefaultTabController(
+            length: 2,
+            initialIndex: 0,
+            child: Scaffold(
+                backgroundColor: customBlue5,
+                appBar: PreferredSize(
+                  preferredSize:
+                      Size.fromHeight(screenHeight(context, dividedBy: 4)),
+                  child: AppBar(
+                    automaticallyImplyLeading: false,
+                    elevation: 0.0,
+                    flexibleSpace: FlexibleSpaceBar(
+                      titlePadding: const EdgeInsets.all(10.0),
+                      centerTitle: true,
+                      title: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Add item',
+                              style: titleFont,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    bottom: TabBar(
+                      indicatorColor: customYellow2,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorWeight: 4.0,
+                      labelColor: Colors.black87,
+                      unselectedLabelColor: Colors.black38,
+                      tabs: [
+                        new Tab(text: "Request an item"),
+                        new Tab(text: "Post an item"),
+                      ],
+                    ),
+                  ),
+                ),
+                body: new TabBarView(
+                  children: <Widget>[
+                    _createFields('Requested usage date', _formKey1),
+                    _createFields('Dates available', _formKey2),
+                  ],
+                )),
+          );
+  }
 
-    return loading ? Loading() : Scaffold(
-      backgroundColor: customBlue5,
-      body: Center(
+  Widget _createFields(String dateDescription, GlobalKey type) {
+    return Form(
+      key: type, // Keep track of form
+      child: SingleChildScrollView(
         child: Container(
-          width: screenWidth(context, dividedBy: 1.2),
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'Add item',
-                  style: titleFont,
-                ),
-                SizedBox(height: 60.0),
-                TextFormField(
-                onChanged: (val){
-                setState(() {
-                itemName = val;});
+          width: screenWidth(context, dividedBy: 4),
+          margin: EdgeInsets.all(50.0),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              TextFormField(
+                validator: (val) => val.isEmpty ? 'Please enter a name' : null,
+                onChanged: (val) {
+                  setState(() {
+                    itemName = val;
+                  });
                 },
-                  decoration: textInputDecoration.copyWith(hintText: 'Item name'),
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  onChanged: (val){
-                    setState(() {
-                      description = val;});
-                  },
-                  decoration: textInputDecoration.copyWith(hintText: 'Description'),
-                  maxLines: null,
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  keyboardType: TextInputType.datetime,
-                  onChanged: (val){
-                    setState(() {
-                      date = val;});
-                  },
-                  decoration: textInputDecoration.copyWith(hintText: 'Requested usage date'),
+                decoration: textInputDecoration.copyWith(hintText: 'Item name'),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                validator: (val) => val.isEmpty ? 'Please provide a description' : null,
+                keyboardType: TextInputType.multiline,
+                onChanged: (val) {
+                  setState(() {
+                    description = val;
+                  });
+                },
+                decoration: textInputDecoration.copyWith(hintText: 'Description'),
+                maxLines: null,
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                validator: (val) => val.isEmpty ? 'Enter a date. Dates can be formatted dd/mm/yy or dd/mm/yyyy or some other variation. We are really not picky!' : null,
+                keyboardType: TextInputType.datetime,
+                onChanged: (val) {
+                  setState(() {
+                    date = val;
+                  });
+                },
+                decoration: textInputDecoration.copyWith(
+                    hintText: dateDescription),
+              ),
+              SizedBox(height: 20),
+              //createDropDown(context),
+              DropdownButton(
+                hint: Text(
+                  'Please choose a category',
+                  style: textFont,
+                ), // Not necessary for Option 1
+                value: _selectedCategory,
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                  });
+                },
+                items: _categories.map((category) {
+                  return DropdownMenuItem(
+                    child: new Text(category, style: textFontDropDown),
+                    value: category,
+                  );
+                }).toList(),
+              ),
 
-                ),
-                SizedBox(height: 20),
-                //createDropDown(context),
-                DropdownButton(
-                  hint: Text(
-                      'Please choose a category',
-                    style: textFont,), // Not necessary for Option 1
-                  value: _selectedCategory,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedCategory = newValue;
-                    });
-                  },
-                  items: _categories.map((category) {
-                    return DropdownMenuItem(
-                      child: new Text(category,style: textFontDropDown),
-                      value: category,
-                    );
-                  }).toList(),
-                ),
-                ButtonWidget(icon: Icons.add, onPressed: onPressedBtn),
-              ], // Children
-            ),
+              (type == _formKey1) ? ButtonWidget(icon: Icons.add, onPressed: onPressedBtn1) : ButtonWidget(icon: Icons.add, onPressed: onPressedBtn2),
+
+
+
+            ], // Children
           ),
         ),
       ),
     );
   }
 
-  onPressedBtn() async {
 
-    // TODO: validation
+  onPressedBtn1() async {
 
-    setState(() {
-      loading = true;
-    });
-    newItem =  new Item(_selectedCategory, itemName, date, description);
-    var storageService = locator<LocalStorageService>();
-
-    dynamic result = await DatabaseService().updateItemData(itemName, description, date, _selectedCategory);
-    if (result == null) {
+    if (_formKey1.currentState.validate()) {
+      // Is correct
       setState(() {
-        error = 'Could not add item, please check details';
-        loading = false;
+        loading = true;
       });
-    } else {
+//      newItem = new Item(_selectedCategory, itemName, date, description);
+      dynamic result = await DatabaseService().updateItemData(itemName, description, date, _selectedCategory);
+
+      if (result == null) {
+        setState(() {
+          error = 'Could not add item, please check details';
+          loading = false;
+        });
+      } else {
+        Navigator.pop(context);
+      }
       Navigator.pop(context);
-      print(result);
     }
-    Navigator.pop(context);
-
-//    storageService.item = newItem; // Setter
-//    Item item1 = storageService.item; //  Getter
-
-//    if (item1 == null) {
-//      setState(() {
-//      loading = false;
-//        });
-//      error = 'Error adding item, please check details';
-//
-//    }
-//    print("new iteM:");
-//    print(item1);
 
   }
+
+
+  onPressedBtn2() async {
+
+    if (_formKey2.currentState.validate()) {
+      // Is correct
+      setState(() {
+        loading = true;
+      });
+//      newItem = new Item(_selectedCategory, itemName, date, description);
+      dynamic result = await DatabaseService().updateItemAvailableData(itemName, description, date, _selectedCategory);
+
+      if (result == null) {
+        setState(() {
+          error = 'Could not add item, please check details';
+          loading = false;
+        });
+      } else {
+        Navigator.pop(context);
+      }
+      Navigator.pop(context);
+    }
+
+  }
+
+
+
+
 
 }

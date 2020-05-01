@@ -14,10 +14,13 @@ class DatabaseService{
   var uuid = Uuid();
 
   // collection reference
-  final CollectionReference itemCollection = Firestore.instance.collection('items'); // Creates a collection if there isn't one defined
+  final CollectionReference itemRequestCollection = Firestore.instance.collection('itemsRequested'); // Creates a collection if there isn't one defined
+  final CollectionReference itemAvailableCollection = Firestore.instance.collection('itemsAvailable');
   final CollectionReference userCollection = Firestore.instance.collection('users');
 
-
+ /* --------------------------------------------------------------------------
+  User stuff
+ * ---------------------------------------------------------------------------*/
   Future updateUserData(String name, String surname, String phone, String location, String email, List<String> categories) async {
     return await userCollection.document(uid).setData({
       'name':name,
@@ -34,16 +37,6 @@ class DatabaseService{
     });
   }
 
-  Future updateItemData(String itemName, String description, String usageDate, String category) async {
-//    itemCount = itemCount + 1; // Using sequential indexing atm
-//    var rng = new Random();
-    return await itemCollection.document(uuid.v4().toString()).setData({
-      'itemName' : itemName,
-      'description': description,
-      'usageDate' : usageDate,
-      'category' : category,
-    });
-  }
 
   User _getUserFromSnapshot(DocumentSnapshot snapshot){
   var userData = snapshot.data; // This itself is a map
@@ -56,18 +49,6 @@ class DatabaseService{
           categories: userData['categories']
       );
 //    });
-  }
-
-  // item list from snapshot
-  List<Item> _itemListFromSnapshot(QuerySnapshot snapshot){
-    return snapshot.documents.map((doc){
-      return Item( // Expects only positional arguments
-        doc.data['category'],
-        doc.data['itemName'] ,
-        doc.data['usageDate'] ,
-        doc.data['description'],
-      );
-    }).toList();
   }
 
   Stream<User> get userData{
@@ -84,9 +65,66 @@ class DatabaseService{
 //    return (userCollection.document(uid).snapshots().map(_getUserFromSnapshot)); // Get single document snapshot
   }
 
-  // get item stream
-  Stream<List<Item>> get items{
-    return itemCollection.snapshots().map(_itemListFromSnapshot);
+
+  /* --------------------------------------------------------------------------
+  Item stuff
+ * ---------------------------------------------------------------------------*/
+  Future updateItemData(String itemName, String description, String usageDate, String category) async {
+//    itemCount = itemCount + 1; // Using sequential indexing atm
+//    var rng = new Random();
+    return await itemRequestCollection.document(uuid.v4().toString()).setData({
+      'itemName' : itemName,
+      'description': description,
+      'usageDate' : usageDate,
+      'category' : category,
+    });
+  }
+
+  Future updateItemAvailableData(String itemName, String description, String usageDate, String category) async {
+//    itemCount = itemCount + 1; // Using sequential indexing atm
+//    var rng = new Random();
+    return await itemAvailableCollection.document(uuid.v4().toString()).setData({
+      'itemName' : itemName,
+      'description': description,
+      'usageDate' : usageDate,
+      'category' : category,
+    });
+  }
+
+
+
+  // requested item list from snapshot
+  List<Item> _itemListFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((doc){
+      return Item( // Expects only positional arguments
+        doc.data['category'],
+        doc.data['itemName'] ,
+        doc.data['usageDate'] ,
+        doc.data['description'],
+      );
+    }).toList();
+  }
+
+  // requested item list from snapshot
+  List<ItemAvailable> _itemAvailableListFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((doc){
+      return ItemAvailable( // Expects only positional arguments
+        doc.data['category'],
+        doc.data['itemName'] ,
+        doc.data['usageDate'] ,
+        doc.data['description'],
+      );
+    }).toList();
+  }
+
+  // get requested item stream
+  Stream<List<Item>> get itemsRequested{
+    return itemRequestCollection.snapshots().map(_itemListFromSnapshot);
+  }
+
+  // get available item stream
+  Stream<List<ItemAvailable>> get itemsAvailable{
+    return itemAvailableCollection.snapshots().map(_itemAvailableListFromSnapshot);
   }
 
 }

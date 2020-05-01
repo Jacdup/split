@@ -4,19 +4,19 @@ import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 
 
-class RequestList extends StatefulWidget {
+class AvailableList extends StatefulWidget {
 
   final List<String> chosenCategories;
-  final List<Item> allItems;
+  final List<ItemAvailable> allItems;
   final String name;
 
-  RequestList({this.chosenCategories, this. allItems, this.name});
+  AvailableList({this.chosenCategories, this. allItems, this.name});
 
   @override
-  _RequestListState createState() => _RequestListState();
+  _AvailableListState createState() => _AvailableListState();
 }
 
-class _RequestListState extends State<RequestList> {
+class _AvailableListState extends State<AvailableList> {
   final _itemFont = const TextStyle(fontSize: 15.0);
   List<bool> _infoShow = [];
 
@@ -36,7 +36,7 @@ class _RequestListState extends State<RequestList> {
     return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems, String name) {
+  Widget _buildBorrowList(List<String> chosenCategories, List<ItemAvailable> allItems, String name) {
 
     double _buildBox = 0;
 
@@ -56,7 +56,7 @@ class _RequestListState extends State<RequestList> {
 
   }
 
-  Widget _buildRow(Item item, int num, double buildBox) {
+  Widget _buildRow(ItemAvailable item, int num, double buildBox) {
     String category = item.category;
     String itemName = item.itemName;
     String description = item.description;

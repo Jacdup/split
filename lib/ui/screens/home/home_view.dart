@@ -45,8 +45,11 @@ class _HomeViewState extends State<HomeView>{
 //      tag: "New Request",
 //      child: Image.asset('split.png'),
 //    );
-    return StreamProvider<List<Item>>.value( // Get stream of user/item data
-      value: DatabaseService().items,
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested),
+        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable)
+      ],
       child: WillPopScope(
         /* This function ensures the user cannot route back to categories with the back button */
         onWillPop: () async {
