@@ -21,7 +21,7 @@ class User {
 //  final String surname;
   final String phone;
   final String email;
-  final List<String> categories;
+  final List<dynamic> categories;
 
   User({this.uid, this.name, this.email, this.phone, this.categories});
 

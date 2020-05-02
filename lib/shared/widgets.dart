@@ -11,7 +11,7 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(50.0),
+      margin: const EdgeInsets.all(30.0),
       height: screenHeight(context, dividedBy: 16),
       width: screenWidth(context, dividedBy: 3),
 //            decoration: InputDecoration(borderRadius: BorderRadius.circular(32.0)),

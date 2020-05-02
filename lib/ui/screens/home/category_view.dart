@@ -73,7 +73,18 @@ class _ChooseCategoryState extends State<ChooseCategory> {
             _buildRow(_categories.sublist(4)),
 
             SizedBox(height: screenHeight(context, dividedBy: 16)),
-            ButtonWidget(icon: Icons.arrow_forward, onPressed: _onButtonPress),
+            ButtonWidget(icon: Icons.arrow_forward, onPressed: () async {
+            await DatabaseService(uid: user.uid).updateCategory(_selectedCategories);
+
+        storageService.hasSignedUp = true;
+//                print("Has signed up value after:");
+//                print(storageService.hasSignedUp);
+        //set category(Category categoriesToSave)
+        //var mySavedUser = storageService.user;
+
+        Navigator.pop(context);
+            },
+            ),
 //            RaisedButton(
 //              child: btnNxt,
 //              onPressed: () async {

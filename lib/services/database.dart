@@ -21,7 +21,7 @@ class DatabaseService{
  /* --------------------------------------------------------------------------
   User stuff
  * ---------------------------------------------------------------------------*/
-  Future updateUserData(String name, String surname, String phone, String email, List<String> categories) async {
+  Future updateUserData(String name, String surname, String phone, String email, List<dynamic> categories) async {
     return await userCollection.document(uid).setData({
       'name':name,
       'phoneNumber':phone,
@@ -70,8 +70,7 @@ class DatabaseService{
   Item stuff
  * ---------------------------------------------------------------------------*/
   Future updateItemData(String itemName, String description, String usageDate, String category) async {
-//    itemCount = itemCount + 1; // Using sequential indexing atm
-//    var rng = new Random();
+
     return await itemRequestCollection.document(uuid.v4().toString()).setData({
       'itemName' : itemName,
       'description': description,
