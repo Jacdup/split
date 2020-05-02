@@ -7,6 +7,7 @@ import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
+import 'package:twofortwo/shared/widgets.dart';
 //TODO: this should save categories specific to the user on the hard disk
 
 class ChooseCategory extends StatefulWidget {
@@ -72,38 +73,13 @@ class _ChooseCategoryState extends State<ChooseCategory> {
             _buildRow(_categories.sublist(4)),
 
             SizedBox(height: screenHeight(context, dividedBy: 16)),
-            RaisedButton(
-              child: btnNxt,
-              onPressed: () async {
-                // Save a value
-                //TODO: save selectedCategories either to storage, or firestore
-                // TODO: call a setstate that changes the value of home_view_mobile
-//                await DatabaseService(uid: user.uid).updateCategory(_selectedCategories);
-//                print("Has signed up value before:");
-//                print(storageService.hasSignedUp);
-//                storageService.category = _selectedCategories; // Setter
-                storageService.hasSignedUp = true;
-//                print("Has signed up value after:");
-//                print(storageService.hasSignedUp);
-                //set category(Category categoriesToSave)
-                //var mySavedUser = storageService.user;
-
-                Navigator.pop(context);
-//                Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: _selectedCategories);// Not to return to this function
-                //Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategory);// Not to return to this function
-               /* if (borrowListBack == 'fromBorrowList'){
-                  showDialog(context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Are you sure?')
-                  ));
-                }*/
-                /*Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ToBorrow()),
-                );*/
-              },
-            ),
+            ButtonWidget(icon: Icons.arrow_forward, onPressed: _onButtonPress),
+//            RaisedButton(
+//              child: btnNxt,
+//              onPressed: () async {
+//
+//              },
+//            ),
             //  _buildNext(),
           ],
           // Column is also a layout widget. It takes a list of children and
@@ -152,7 +128,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       // color: Colors.cyan,
 
       child: Card(
-        color: colorCustom,
+        color: customBlue5,
         child: Container(
           decoration: BoxDecoration(
               border: Border.all(
@@ -182,6 +158,37 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       ),
     );
   } // _buildCard
+
+  _onButtonPress() async {
+    // Save a value
+    //TODO: save selectedCategories either to storage, or firestore
+    // TODO: call a setstate that changes the value of home_view_mobile
+//                await DatabaseService(uid: user.uid).updateCategory(_selectedCategories);
+//                print("Has signed up value before:");
+//                print(storageService.hasSignedUp);
+//                storageService.category = _selectedCategories; // Setter
+    storageService.hasSignedUp = true;
+//                print("Has signed up value after:");
+//                print(storageService.hasSignedUp);
+    //set category(Category categoriesToSave)
+    //var mySavedUser = storageService.user;
+
+    Navigator.pop(context);
+//                Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: _selectedCategories);// Not to return to this function
+//Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategory);// Not to return to this function
+/* if (borrowListBack == 'fromBorrowList'){
+                  showDialog(context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Are you sure?')
+                  ));
+                }*/
+/*Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ToBorrow()),
+                );*/
+  }
+
 
 }
 
