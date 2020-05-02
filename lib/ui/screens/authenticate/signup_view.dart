@@ -23,11 +23,17 @@ class _SignupViewState extends State<SignupView> {
     'Rustenburg',
     'buenos aires'
   ]; // Option 2
-  String _selectedLocation; // Option 2
+  String _selectedLocation = "Stellenbosch"; // Option 2
   User userDetails;
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool _obscureText = true;
+
+  @override
+  void initState() {
+    _obscureText = false;
+  }
 
   String userName = '';
   String userLastName = '';
@@ -58,7 +64,7 @@ class _SignupViewState extends State<SignupView> {
             ]),
         body: Center(
           child: Container(
-            width: screenWidth(context, dividedBy: 1.5),
+            width: screenWidth(context, dividedBy: 1.4),
             child: Form(
               key: _formKey, // Keep track of form
               child: SingleChildScrollView(
@@ -72,7 +78,7 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space * 2),
                     TextFormField(
                       validator: (val) =>
-                          val.isEmpty ? 'Enter your first name' : null,
+                      val.isEmpty ? 'Enter your first name' : null,
                       onChanged: (val) {
                         setState(() {
                           userName = val;
@@ -96,18 +102,20 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space),
                     TextFormField(
                       validator: (val) =>
-                          val.isEmpty ? 'Enter an email address' : null,
+                      val.isEmpty ? 'Enter an email address' : null,
                       onChanged: (val) {
                         setState(() {
                           userEmail = val;
                         });
                       },
+                      keyboardType: TextInputType.emailAddress,
                       decoration: textInputDecoration.copyWith(
                           hintText: 'Email Address'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
-                      validator: (val) => val.length != 10
+                      validator: (val) =>
+                      val.length != 10
                           ? 'Enter a valid 10 digit phone number'
                           : null,
                       onChanged: (val) {
@@ -115,12 +123,14 @@ class _SignupViewState extends State<SignupView> {
                           userPhone = val;
                         });
                       },
+                      keyboardType: TextInputType.phone,
                       decoration: textInputDecoration.copyWith(
                           hintText: 'Phone Number'),
                     ),
                     SizedBox(height: _space),
                     TextFormField(
-                      validator: (val) => val.length < 6
+                      validator: (val) =>
+                      val.length < 6
                           ? 'Password must be 6 or more characters'
                           : null,
                       onChanged: (val) {
@@ -128,36 +138,18 @@ class _SignupViewState extends State<SignupView> {
                           userPassword = val;
                         });
                       },
-                      obscureText: true,
+                      obscureText: _obscureText,
+
                       decoration:
-                          textInputDecoration.copyWith(hintText: 'Password'),
+                      textInputDecoration.copyWith(
+                          hintText: 'Password', suffixIcon: _passwordIcon()),
                     ),
-                    SizedBox(height: _space),
-                    DropdownButton(
-                      hint: Text(
-                        'Please choose a location',
-                        style: textFont,
-                      ), // Not necessary for Option 1
-                      value: _selectedLocation,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _selectedLocation = newValue;
-                        });
-                      },
-                      items: _locations.map((location) {
-                        return DropdownMenuItem(
-                          child: new Text(
-                            location,
-                            style: textFont,
-                          ),
-                          value: location,
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: _space/2),
+//                    SizedBox(height: _space/2),
+
+//                    SizedBox(height: _space / 2),
                     ButtonWidget(
                         icon: Icons.arrow_forward, onPressed: onPressedBtn),
-                    SizedBox(height: _space),
+//                    SizedBox(height: _space),
                     Text(error, style: errorFont),
                   ], // Children
                 ),
@@ -176,9 +168,14 @@ class _SignupViewState extends State<SignupView> {
       });
 
 
+//      dynamic result = await _auth
+//          .registerWithEmailAndPassword( // TODO: move to category screen first
+//          userName, userLastName, userEmail, userPhone, userPassword,
+//          _selectedLocation);
 
-      dynamic result = await _auth.registerWithEmailAndPassword( // TODO: move to category screen first
-          userName, userLastName, userEmail, userPhone, userPassword, _selectedLocation);
+      dynamic result = await _auth
+          .registerWithEmailAndPassword( // TODO: move to category screen first
+          userName, userLastName, userEmail, userPhone, userPassword,);
 
 //      Navigator.pushNamed(context, CategoryRoute);
 
@@ -192,4 +189,57 @@ class _SignupViewState extends State<SignupView> {
       }
     }
   }
+
+  _passwordIcon() {
+    return IconButton(
+      icon: Icon(
+        // Based on passwordVisible state choose the icon
+        _obscureText
+            ? Icons.visibility
+            : Icons.visibility_off,
+        color: Theme
+            .of(context)
+            .primaryColorDark,
+      ),
+      onPressed: () {
+        // Update the state i.e. toggle the state of passwordVisible variable
+        setState(() {
+          _obscureText = !_obscureText;
+        });
+      },
+    );
+  }
+
+  // Not used at the moment
+  Widget _createDropDown() {
+    return DropdownButtonFormField(
+      decoration: textInputDecoration.copyWith(),
+      autovalidate: true,
+      validator: (_selectedLocation) =>
+      _selectedLocation.isEmpty
+          ? 'Please choose a location'
+          : null,
+      hint: Text(
+        'Please choose a location',
+        style: textFont,
+      ),
+      // Not necessary for Option 1
+      value: _selectedLocation,
+      onChanged: (newValue) {
+        setState(() {
+          _selectedLocation = newValue;
+        });
+      },
+      items: _locations.map((location) {
+        return DropdownMenuItem(
+          child: new Text(
+            location,
+            style: textFont,
+          ),
+          value: location,
+        );
+      }).toList(),
+    );
+  }
+
 }

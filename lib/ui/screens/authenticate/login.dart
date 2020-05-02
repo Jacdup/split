@@ -23,6 +23,7 @@ class _LoginViewState extends State<Login> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool _obscureText = true;
 
   bool rememberMe = false;
 
@@ -85,6 +86,7 @@ class _LoginViewState extends State<Login> {
                           email = val;
                         });
                       },
+                      keyboardType: TextInputType.emailAddress,
                       decoration:
                           textInputDecoration.copyWith(hintText: 'Email'),
                     ),
@@ -98,9 +100,9 @@ class _LoginViewState extends State<Login> {
                           password = val;
                         });
                       },
-                      obscureText: true,
+                      obscureText: _obscureText,
                       decoration:
-                          textInputDecoration.copyWith(hintText: 'Password'),
+                          textInputDecoration.copyWith(hintText: 'Password',suffixIcon: _passwordIcon()),
                     ),
                     SizedBox(height: _space / 2),
                     Container(
@@ -159,4 +161,25 @@ class _LoginViewState extends State<Login> {
 
 //              Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategories);// Not to return to this function
   }
+
+  _passwordIcon() {
+    return IconButton(
+      icon: Icon(
+        // Based on passwordVisible state choose the icon
+        _obscureText
+            ? Icons.visibility
+            : Icons.visibility_off,
+        color: Theme
+            .of(context)
+            .primaryColorDark,
+      ),
+      onPressed: () {
+        // Update the state i.e. toggle the state of passwordVisible variable
+        setState(() {
+          _obscureText = !_obscureText;
+        });
+      },
+    );
+  }
+
 }

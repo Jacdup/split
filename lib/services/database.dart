@@ -21,11 +21,11 @@ class DatabaseService{
  /* --------------------------------------------------------------------------
   User stuff
  * ---------------------------------------------------------------------------*/
-  Future updateUserData(String name, String surname, String phone, String location, String email, List<String> categories) async {
+  Future updateUserData(String name, String surname, String phone, String email, List<String> categories) async {
     return await userCollection.document(uid).setData({
       'name':name,
       'phoneNumber':phone,
-      'location': location,
+//      'location': location,
       'email' : email,
       'categories' : categories,
     });

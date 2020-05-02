@@ -43,6 +43,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
     _tabController = new TabController(length: 2, vsync: this);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
@@ -94,7 +96,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                 );
 //            );
           } else {
-//            print('in here');
+            print('in here');
 //            _auth.logOut();//TODO
 //            return Navigator.pushReplacementNamed(context, LoginRoute);
 //            return Login();
