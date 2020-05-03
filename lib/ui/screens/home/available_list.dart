@@ -46,19 +46,22 @@ class _AvailableListState extends State<AvailableList> {
       padding: const EdgeInsets.all(10.0),
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index == allItems.length -1){
+        if (index == allItems.length ){
           _buildBox = 80;
+          if (i == 0) {
+            return Center(child: Text("No items in chosen categories"));
+          }
         }
         if (chosenCategories.contains(allItems[index].category)){
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
-          if (i == 0){
-            i = i + 1;
-            return Center(child: Text("No items in chosen categories"));
-          }else {
-            return null;
-          }
+//          if (i == 0){
+//            i = i + 1;
+
+//          }else {
+            return Center();
+//          }
         }
 
       },

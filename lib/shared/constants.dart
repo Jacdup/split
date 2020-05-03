@@ -22,7 +22,7 @@ const borderColour = Colors.white;
 const borderWidth = 1.2;
 const borderWidthFocused = 1.2;
 const bRad = 20.0;
-const _borderRadius = const BorderRadius.all(const Radius.circular(bRad));
+const borderRadius = const BorderRadius.all(const Radius.circular(bRad));
 
 
 const textInputDecoration = InputDecoration(
@@ -35,10 +35,10 @@ hintStyle: textFont,
 // border: OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: borderWidthFocused)),
 //  icon: Icon(Icons.map),
   focusedBorder: OutlineInputBorder(
-      borderRadius: _borderRadius, // At the moment, BorderRadius.circular constructor cannot be const
+      borderRadius: borderRadius, // At the moment, BorderRadius.circular constructor cannot be const
       borderSide: BorderSide(color: borderColour, width: borderWidthFocused)),
   enabledBorder: OutlineInputBorder(
-      borderRadius: _borderRadius,
+      borderRadius: borderRadius,
       borderSide: BorderSide(color: borderColour, width: borderWidth)),
 
 //  contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),

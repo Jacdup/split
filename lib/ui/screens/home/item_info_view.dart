@@ -19,8 +19,8 @@ class _ItemInfoState extends State<ItemInfo> {
 
   @override
   Widget build(BuildContext context) {
-    int num = widget.numType[1];
-    int type = widget.numType[2];
+    int num = widget.numType[0];
+    int type = widget.numType[1];
     print('in item info');
     return Container(
       decoration: BoxDecoration(

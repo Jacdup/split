@@ -43,30 +43,35 @@ class _RequestListState extends State<RequestList> {
     double _buildBox = 0;
     int i = 0;
 
-    return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.separated(
+    return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.builder(
       key: PageStorageKey<String>(name), // Keeps track of scroll position
       padding: const EdgeInsets.all(10.0),
+
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index == allItems.length -1){
+        if (index == allItems.length ){
           _buildBox = 80;
+          if (i == 0){
+            return Center(child: Text("No items in chosen categories"));
+          }
         }
         if (chosenCategories.contains(allItems[index].category)){
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
-          if (i == 0){
-            i = i + 1;
-            return Center(child: Text("No items in chosen categories"));
-          }else {
-            return null;
-          }
+//          print(index);
+//          if (i == 0){
+//            i = i +1;
+//            return Center(child: Text("No items in chosen categories"));
+//          }else {
+            return Center();
+//          }
         }
 
 
 
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+//      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
 
   }
@@ -80,7 +85,7 @@ class _RequestListState extends State<RequestList> {
     return Hero(
       tag: "row$num 1",
       child: Card(
-        margin: EdgeInsets.fromLTRB(0, 0, 0, buildBox),
+        margin: EdgeInsets.fromLTRB(0, 10, 0, buildBox),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
         elevation: 4.0,
         child: Column(

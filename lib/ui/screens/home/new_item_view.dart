@@ -119,7 +119,7 @@ class _NewItemState extends State<NewItem> {
           margin: EdgeInsets.all(50.0),
           child: Column(
             children: <Widget>[
-              SizedBox(height: 20.0),
+//              SizedBox(height: 20.0),
               TextFormField(
                 validator: (val) => val.isEmpty ? 'Please enter a name' : null,
                 onChanged: (val) {
@@ -155,13 +155,27 @@ class _NewItemState extends State<NewItem> {
               ),
               SizedBox(height: 20),
               //createDropDown(context),
-              DropdownButton(
+              DropdownButtonFormField(
+                decoration: textInputDecoration,
+//                InputDecoration(
+//                border:
+//                OutlineInputBorder(
+////                  isOutline: false,
+////                  gapPadding: 100.0,
+//                    borderRadius: borderRadius,
+//                    borderSide: BorderSide(color: Colors.white, width: 2.0)),
+//                    filled: true,
+//                  fillColor: Colors.white,
+////                  hintText: 'Please choose a category'
+//                ),
+                isDense: true,
                 hint: Text(
                   'Please choose a category',
                   style: textFont,
                 ), // Not necessary for Option 1
                 value: _selectedCategory,
                 onChanged: (newValue) {
+                  FocusScope.of(context).requestFocus(FocusNode());
                   setState(() {
                     _selectedCategory = newValue;
                   });
