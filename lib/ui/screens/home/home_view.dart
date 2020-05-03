@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
+import 'package:twofortwo/ui/screens/home/drawer.dart';
 import '../../../utils/service_locator.dart';
 import 'package:flutter/services.dart';
 import 'package:twofortwo/ui/responsive/screen_type_layout.dart';
@@ -22,7 +23,27 @@ class HomeView extends StatefulWidget {
   _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView>{
+class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin{
+
+AnimationController _animationController;
+final double maxSlide = 225.0 ;//TODO, responsive
+
+@override
+void initState(){
+  super.initState();
+  _animationController = AnimationController(
+    vsync: this,
+    duration: Duration(milliseconds: 250)
+  );
+}
+
+void toggleAnimation() => _animationController.isDismissed ? _animationController.forward() : _animationController.reverse();
+
+@override
+void dispose() {
+  _animationController.dispose();
+  super.dispose();
+}
 
 
 @override
@@ -35,6 +56,7 @@ class _HomeViewState extends State<HomeView>{
     List<String> chosenCategories;
 
     chosenCategories = localStorageService.category;
+
 
 //    chosenCategories == null ? chosenCategories = DatabaseService().
 //    widget.chosenCategories == null ? chosenCategories = localStorageService.category : chosenCategories = widget.chosenCategories;
@@ -62,7 +84,29 @@ class _HomeViewState extends State<HomeView>{
         }, // The page will not respond to back press
         child: ScreenTypeLayout(
           mobile: OrientationLayout(
-            portrait: BorrowListPortrait(user: thisUser,),
+            portrait: GestureDetector(
+              onTap: toggleAnimation,
+
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context,_) {
+                  double slide = maxSlide * _animationController.value;
+                  double scale = 1 - (_animationController.value * 0.3);
+                  return Stack(
+                    children: <Widget>[
+                      MenuDrawer(userData: thisUser,),
+                      Transform(
+                          transform: Matrix4.identity()
+                            ..translate(slide)
+                            ..
+                            scale(scale),
+                          alignment: Alignment.centerLeft,
+                          child: BorrowListPortrait(user: thisUser,)),
+                    ],
+                  );
+                }
+              ),
+            ),
             //landscape: //TODO,
           ),
         ),

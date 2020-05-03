@@ -56,10 +56,10 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //                length: 2,
 //                initialIndex: 0,
             return new Scaffold(
-              drawer: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.65, //20.0,
-                child: _buildDrawer(context, userData),
-              ),
+//              drawer: SizedBox(
+//                width: MediaQuery.of(context).size.width * 0.65, //20.0,
+//                child: _buildDrawer(context, userData),
+//              ),
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
                   Navigator.pushNamed(context, NewItemRoute,
@@ -110,6 +110,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       floating: false,
       pinned: true,
       forceElevated: innerBoxIsScrolled,
+      leading: Icon(Icons.menu),
       title:
 //        IconButton(icon: Icon(Icons.menu), color: Colors.white,),
 

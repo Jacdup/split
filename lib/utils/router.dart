@@ -28,7 +28,7 @@ switch(settings.name){
     return MaterialPageRoute(builder: (context) => ChooseCategory());
   case BorrowListRoute:
 //    var chosenCategories = settings.arguments;
-    return MaterialPageRoute(builder: (context) => HomeView());
+    return MaterialPageRoute(builder: (context) { return HomeView(); });
   case LoginRoute:
     var argument = settings.arguments;
     return MaterialPageRoute(builder: (context) => Login());
