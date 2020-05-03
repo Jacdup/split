@@ -109,6 +109,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //    leading: IconButton(icon: Icon(Icons.menu),onPressed:(){ _buildDrawer(context);},),
       floating: false,
       pinned: true,
+      elevation: 8.0,
       forceElevated: innerBoxIsScrolled,
       leading: Icon(Icons.menu),
       title:

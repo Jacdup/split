@@ -26,7 +26,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin{
 
 AnimationController _animationController;
-final double maxSlide = 225.0 ;//TODO, responsive
+final double maxSlide = 500.0 ;//TODO, responsive
 
 @override
 void initState(){
@@ -91,10 +91,11 @@ void dispose() {
                 animation: _animationController,
                 builder: (context,_) {
                   double slide = maxSlide * _animationController.value;
-                  double scale = 1 - (_animationController.value * 0.3);
+                  double scale = 1 - (_animationController.value * 0.0);
                   return Stack(
                     children: <Widget>[
                       MenuDrawer(userData: thisUser,),
+//                    MyDrawer(),
                       Transform(
                           transform: Matrix4.identity()
                             ..translate(slide)
