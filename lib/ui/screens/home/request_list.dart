@@ -49,7 +49,7 @@ class _RequestListState extends State<RequestList> {
 
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index == allItems.length ){
+        if (index == allItems.length -1){
           _buildBox = 80;
           if (i == 0){
             return Center(child: Text("No items in chosen categories"));
@@ -59,6 +59,10 @@ class _RequestListState extends State<RequestList> {
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
+
+//          if (index == allItems.length-1){
+//
+//          }
 //          print(index);
 //          if (i == 0){
 //            i = i +1;
@@ -91,6 +95,7 @@ class _RequestListState extends State<RequestList> {
         child: Column(
           children: <Widget>[
             ListTile(
+              contentPadding: EdgeInsets.all(12.0),
               title: Text(
                 itemName,
                 style: _itemFont,

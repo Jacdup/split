@@ -8,3 +8,4 @@ const String SplashRoute = 'splash';
 const String AuthRoute = 'auth';
 const String UpdateUserRoute = 'userUpdate';
 const String getItemInfoRoute = 'itemInfo';
+const String UpdateItemRoute = 'UpdateItemsRoute';

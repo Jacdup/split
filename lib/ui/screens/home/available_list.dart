@@ -41,12 +41,12 @@ class _AvailableListState extends State<AvailableList> {
     double _buildBox = 0;
     int i = 0;
 
-    return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.separated(
+    return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.builder(
       key: PageStorageKey<String>(name), // Keeps track of scroll position
       padding: const EdgeInsets.all(10.0),
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index == allItems.length ){
+        if (index == allItems.length -1){
           _buildBox = 80;
           if (i == 0) {
             return Center(child: Text("No items in chosen categories"));
@@ -65,7 +65,7 @@ class _AvailableListState extends State<AvailableList> {
         }
 
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+//      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
 
   }
@@ -79,12 +79,13 @@ class _AvailableListState extends State<AvailableList> {
     return Hero(
       tag: "row$num 2",
       child: Card(
-        margin: EdgeInsets.fromLTRB(0, 0, 0, buildBox),
+        margin: EdgeInsets.fromLTRB(0, 10, 0, buildBox),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
         elevation: 4.0,
         child: Column(
           children: <Widget>[
             ListTile(
+              contentPadding: EdgeInsets.all(12.0),
               title: Text(
                 itemName,
                 style: _itemFont,
@@ -105,7 +106,7 @@ class _AvailableListState extends State<AvailableList> {
               child: ButtonBar(
                 children: <Widget>[
                   FlatButton(
-                    child: const Text('Willing to help'),
+                    child: const Text('Request to borrow'),
                     onPressed: () {/* send ping to item user, with thisUser info */
                       _confirmHelp(context);},
                   ),
@@ -131,7 +132,7 @@ class _AvailableListState extends State<AvailableList> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Confirmation"),
-          content: new Text("This will send your contact details to the user that requested this item. Proceed?"),
+          content: new Text("This will send your contact details to the user that listed this item. Proceed?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(

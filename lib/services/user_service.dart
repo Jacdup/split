@@ -18,18 +18,18 @@ class User {
 
   final String uid;
   final String name;
-//  final String surname;
+  final String surname;
   final String phone;
   final String email;
   final List<dynamic> categories;
 
-  User({this.uid, this.name, this.email, this.phone, this.categories});
+  User({this.uid, this.name, this.surname, this.email, this.phone, this.categories});
 
   User.fromJson(Map<String, dynamic> json)
       : uid = json['uid'],
         name = json['name'],
         email = json['email'],
-//        surname = json['surname'],
+        surname = json['surname'],
         phone = json['phone'],
         categories = json['categories'];
   // age = json['age'];
@@ -39,7 +39,7 @@ class User {
     data['uid'] = this.uid;
     data['name'] = this.name;
     data['email'] = this.email;
-//    data['surname'] = this.surname;
+    data['surname'] = this.surname;
     data['phone'] = this.phone;
     data['categories'] = this.categories;
     //data['age'] = this.age;

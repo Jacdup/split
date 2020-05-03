@@ -134,7 +134,7 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
     setState(() {
       loading = true;
     });
-    newItem =  new Item(_selectedCategory, itemName, date, description);
+//    newItem =  new Item(_selectedCategory, itemName, date, description, );
     var storageService = locator<LocalStorageService>();
 
     dynamic result = await DatabaseService().updateItemData(itemName, description, date, _selectedCategory);

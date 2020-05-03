@@ -10,11 +10,17 @@ import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/services/database.dart';
 
 class NewItem extends StatefulWidget {
+
+  final String uid;
+
+  NewItem({this.uid});
+
   @override
   _NewItemState createState() => _NewItemState();
 }
 
 class _NewItemState extends State<NewItem> {
+
 //  List<String> _locations = [
 //    'Stellenbosch',
 //    'Rustenburg',
@@ -55,10 +61,9 @@ class _NewItemState extends State<NewItem> {
 
   @override
   Widget build(BuildContext context) {
-//    Hero(
-//      tag: "New Request",
-//      child: Image.asset('split.png'),
-//    );
+
+
+
 
     return loading
         ? Loading()
@@ -208,7 +213,7 @@ class _NewItemState extends State<NewItem> {
         loading = true;
       });
 //      newItem = new Item(_selectedCategory, itemName, date, description);
-      dynamic result = await DatabaseService().updateItemData(itemName, description, date, _selectedCategory);
+      dynamic result = await DatabaseService(uid: widget.uid).updateItemData(itemName, description, date, _selectedCategory);
 
       if (result == null) {
         setState(() {
@@ -232,7 +237,7 @@ class _NewItemState extends State<NewItem> {
         loading = true;
       });
 //      newItem = new Item(_selectedCategory, itemName, date, description);
-      dynamic result = await DatabaseService().updateItemAvailableData(itemName, description, date, _selectedCategory);
+      dynamic result = await DatabaseService(uid: widget.uid).updateItemAvailableData(itemName, description, date, _selectedCategory);
 
       if (result == null) {
         setState(() {

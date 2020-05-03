@@ -25,6 +25,7 @@ class DatabaseService{
     return await userCollection.document(uid).setData({
       'name':name,
       'phoneNumber':phone,
+      'surname' : surname,
 //      'location': location,
       'email' : email,
       'categories' : categories,
@@ -46,7 +47,8 @@ class DatabaseService{
           name: userData['name'],
           email: userData['email'],
           phone: userData['phoneNumber'],
-          categories: userData['categories']
+          categories: userData['categories'],
+          surname: userData['surname'],
       );
 //    });
   }
@@ -76,6 +78,7 @@ class DatabaseService{
       'description': description,
       'usageDate' : usageDate,
       'category' : category,
+      'uid' : uid,
     });
   }
 
@@ -87,6 +90,7 @@ class DatabaseService{
       'description': description,
       'usageDate' : usageDate,
       'category' : category,
+      'uid' : uid,
     });
   }
 
@@ -100,6 +104,7 @@ class DatabaseService{
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],
+        doc.data['uid'],
       );
     }).toList();
   }
@@ -112,6 +117,7 @@ class DatabaseService{
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],
+        doc.data['uid'],
       );
     }).toList();
   }
