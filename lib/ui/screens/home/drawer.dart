@@ -101,6 +101,10 @@ class MenuDrawer extends StatelessWidget {
 
   final localStorageService = locator<LocalStorageService>();
   final AuthService _auth = AuthService();
+  final textFont = const TextStyle(
+      fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.white);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,34 +134,35 @@ class MenuDrawer extends StatelessWidget {
 //                width: 200,
 //              ),
               ListTile(
-                leading: Icon(Icons.category),
-                  title: Text('Edit my categories'),
+//                leading: Icon(Icons.category),
+                  title: Text('Edit my categories', style: textFont,),
                   onTap: () {
 //                      Navigator.pop(context); // This one for the drawer
                     Navigator.pushNamed(context, CategoryRoute);
                   },
               ),
               ListTile(
-                leading: Icon(Icons.edit_attributes),
-                  title: Text('Edit my items'),
+//                leading: Icon(Icons.edit_attributes),
+                  title: Text('Edit my items', style: textFont),
                   onTap: () {
 //                      Navigator.pop(context); // This one for the drawer
                     Navigator.pushNamed(context, UpdateItemRoute);
                   },
               ),
               ListTile(
-                leading: Icon(Icons.edit),
-                  title: Text('Edit personal data'),
+//                leading: Icon(Icons.edit),
+//                  dense: true,
+                  title: Text('Profile', style: textFont),
                   onTap: () {
 //                      Navigator.pop(context); // This one for the drawer
                     Navigator.pushNamed(context, UpdateUserRoute, arguments: userData.uid);
                   }
               ),
               ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Logout'),
+//                leading: Icon(Icons.person),
+                title: Text('Logout', style: textFont),
                 onTap: () async {
-                  Navigator.pop(context); // This one for the drawer
+//                  Navigator.pop(context); // This one for the drawer
 //                Navigator.pushReplacementNamed(context, LoginRoute); // Shouldn't have to call this, the wrapper listens for changes
 //                setState(() {
                   localStorageService.clear(); //  Remove all saved values
@@ -167,10 +172,6 @@ class MenuDrawer extends StatelessWidget {
                   await _auth.logOut();
 //                Navigator.pushReplacementNamed(context, CategoryRoute);
                 },
-              ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Profile'),
               ),
             ],
           ),

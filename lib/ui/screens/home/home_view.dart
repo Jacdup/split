@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:twofortwo/services/auth.dart';
 
 
+
 class HomeView extends StatefulWidget {
 //  final List<dynamic> chosenCategories;
   final User user;
@@ -26,18 +27,26 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin{
 
 AnimationController _animationController;
-final double maxSlide = 500.0 ;//TODO, responsive
+static const double maxSlide = 200.0 ;//TODO, responsive
+static const Duration toggleDuration = Duration(milliseconds: 250);
+static const double minDragStartEdge = 20;
+static const double maxDragStartEdge = maxSlide - 16;
+bool _canBeDragged = false;
 
 @override
 void initState(){
   super.initState();
   _animationController = AnimationController(
     vsync: this,
-    duration: Duration(milliseconds: 250)
+    duration: _HomeViewState.toggleDuration,
   );
 }
 
-void toggleAnimation() => _animationController.isDismissed ? _animationController.forward() : _animationController.reverse();
+void close() => _animationController.reverse();
+
+void open() => _animationController.forward();
+
+void toggleAnimation() => _animationController.isCompleted ? close() : open();
 
 @override
 void dispose() {
@@ -79,28 +88,40 @@ void dispose() {
       child: WillPopScope(
         /* This function ensures the user cannot route back to categories with the back button */
         onWillPop: () async {
-          return _confirmLogout(context);
+
+//          if (_animationController.isCompleted) {
+//            close();
+            return _confirmLogout(context);
+//            return false;
+//          }
+          return true;
+//          return _confirmLogout(context);
           //return false;
         }, // The page will not respond to back press
         child: ScreenTypeLayout(
           mobile: OrientationLayout(
             portrait: GestureDetector(
-              onTap: toggleAnimation,
+              onHorizontalDragStart: _onDragStart,
+              onHorizontalDragUpdate: _onDragUpdate,
+              onHorizontalDragEnd: _onDragEnd,
+              behavior: HitTestBehavior.translucent,
+              onTap: (){toggleAnimation();},
 
               child: AnimatedBuilder(
                 animation: _animationController,
                 builder: (context,_) {
                   double slide = maxSlide * _animationController.value;
-                  double scale = 1 - (_animationController.value * 0.0);
+                  double scale = 1 - (_animationController.value * 0.1);
                   return Stack(
                     children: <Widget>[
                       MenuDrawer(userData: thisUser,),
 //                    MyDrawer(),
                       Transform(
                           transform: Matrix4.identity()
+//                            ..rotateY(math.pi / 2 * _animationController.value)
                             ..translate(slide)
-                            ..
-                            scale(scale),
+
+                            ..scale(scale),
                           alignment: Alignment.centerLeft,
                           child: BorrowListPortrait(user: thisUser,)),
                     ],
@@ -115,7 +136,47 @@ void dispose() {
       ),
     );
   }
+
+
+void _onDragStart(DragStartDetails details) {
+  bool isDragOpenFromLeft = _animationController.isDismissed;
+  bool isDragCloseFromRight = _animationController.isCompleted;
+  _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
 }
+
+void _onDragUpdate(DragUpdateDetails details) {
+  if (_canBeDragged) {
+    double delta = details.primaryDelta / maxSlide;
+    _animationController.value += delta;
+  }
+}
+
+void _onDragEnd(DragEndDetails details) {
+  //I have no idea what it means, copied from Drawer
+  double _kMinFlingVelocity = 365.0;
+
+  if (_animationController.isDismissed || _animationController.isCompleted) {
+    return;
+  }
+  if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
+    double visualVelocity = details.velocity.pixelsPerSecond.dx /
+        MediaQuery.of(context).size.width;
+
+    _animationController.fling(velocity: visualVelocity);
+  } else if (_animationController.value < 0.5) {
+    _animationController.reverse();
+  } else {
+    _animationController.forward();
+  }
+}
+
+
+
+
+
+}
+
+
 
 
  _confirmLogout(context) {
