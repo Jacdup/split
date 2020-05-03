@@ -32,7 +32,7 @@ class _SignupViewState extends State<SignupView> {
 
   @override
   void initState() {
-    _obscureText = false;
+    _obscureText = true;
   }
 
   String userName = '';

@@ -18,21 +18,22 @@ import 'package:overlay_container/overlay_container.dart';
 
 class BorrowListPortrait extends StatefulWidget {
 
-  final List<String> chosenCategories;
+//  final List<dynamic> chosenCategories;
   final User user;
   BorrowListPortrait(
-      {Key key, this.chosenCategories, this.user})
+      {Key key, this.user})
       : super(key: key);
 
   @override
   _BorrowListPortraitState createState() => _BorrowListPortraitState();
 }
 
-class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTickerProviderStateMixin {//TODO, dont know what this does
+class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTickerProviderStateMixin {
 
 
   final AuthService _auth = AuthService();
   final localStorageService = locator<LocalStorageService>();
+  List<dynamic> userCategories = [];
 
   TabController _tabController;
   ScrollController _scrollController;
@@ -58,6 +59,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
 //          print(snapshot);
           if (snapshot.hasData) {
             User userData = snapshot.data;
+            userCategories = userData.categories;
 //            return DefaultTabController(
 //                length: 2,
 //                initialIndex: 0,
@@ -85,8 +87,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                   },
                   body: new TabBarView(
                       children: <Widget>[
-                        new RequestList(chosenCategories: widget.chosenCategories, allItems: items, name: 'tab1'),
-                        new AvailableList(chosenCategories: widget.chosenCategories, allItems: itemsAvailable, name: 'tab2'),
+                        new RequestList(chosenCategories: userCategories, allItems: items, name: 'tab1'),
+                        new AvailableList(chosenCategories: userCategories, allItems: itemsAvailable, name: 'tab2'),
 
                       ],
                           controller: _tabController,
@@ -96,7 +98,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
                 );
 //            );
           } else {
-            print('in here');
+//            print('in here');
 //            _auth.logOut();//TODO
 //            return Navigator.pushReplacementNamed(context, LoginRoute);
 //            return Login();
@@ -219,7 +221,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait> with SingleTick
 //      return Hero(
 //        tag: 'row$num',
           child: ItemInfo(
-            num: num,
+//            numType[1]: num,
           ),
 
 //      child: Container(

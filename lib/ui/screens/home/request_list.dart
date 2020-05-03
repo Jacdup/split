@@ -6,7 +6,7 @@ import 'package:twofortwo/utils/routing_constants.dart';
 
 class RequestList extends StatefulWidget {
 
-  final List<String> chosenCategories;
+  final List<dynamic> chosenCategories;
   final List<Item> allItems;
   final String name;
 
@@ -26,6 +26,8 @@ class _RequestListState extends State<RequestList> {
     });
   }
 
+  final type = 1;
+
   @override
   Widget build(BuildContext context) {
 
@@ -36,9 +38,10 @@ class _RequestListState extends State<RequestList> {
     return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems, String name) {
+  Widget _buildBorrowList(List<dynamic> chosenCategories, List<Item> allItems, String name) {
 
     double _buildBox = 0;
+    int i = 0;
 
     return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.separated(
       key: PageStorageKey<String>(name), // Keeps track of scroll position
@@ -48,7 +51,19 @@ class _RequestListState extends State<RequestList> {
         if (index == allItems.length -1){
           _buildBox = 80;
         }
-        return _buildRow(allItems[index], index, _buildBox);
+        if (chosenCategories.contains(allItems[index].category)){
+          i = i + 1;
+          return _buildRow(allItems[index], index, _buildBox);
+        }else{
+          if (i == 0){
+            i = i + 1;
+            return Center(child: Text("No items in chosen categories"));
+          }else {
+            return null;
+          }
+        }
+
+
 
       },
       separatorBuilder: (BuildContext context, int index) => const Divider(),
@@ -63,7 +78,7 @@ class _RequestListState extends State<RequestList> {
     String date = item.date;
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
-      tag: "row$num",
+      tag: "row$num 1",
       child: Card(
         margin: EdgeInsets.fromLTRB(0, 0, 0, buildBox),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -99,7 +114,7 @@ class _RequestListState extends State<RequestList> {
                     child: const Text('Contact'),
                     onPressed: () {
                       print("row$num");
-                      Navigator.pushNamed(context, getItemInfoRoute, arguments: num,);},
+                      Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, type]);},
                   ),
                 ],
               ),

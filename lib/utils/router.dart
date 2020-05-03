@@ -26,8 +26,8 @@ switch(settings.name){
   case CategoryRoute:
     return MaterialPageRoute(builder: (context) => ChooseCategory());
   case BorrowListRoute:
-    var chosenCategories = settings.arguments;
-    return MaterialPageRoute(builder: (context) => HomeView(chosenCategories: chosenCategories,));
+//    var chosenCategories = settings.arguments;
+    return MaterialPageRoute(builder: (context) => HomeView());
   case LoginRoute:
     var argument = settings.arguments;
     return MaterialPageRoute(builder: (context) => Login());
@@ -37,8 +37,8 @@ switch(settings.name){
     return MaterialPageRoute(builder: (context) => NewItem());
     case getItemInfoRoute:
       var argument = settings.arguments;
-      return MaterialPageRoute(builder: (context) => ItemInfo(num: argument));
-
+      return MaterialPageRoute(builder: (context) => ItemInfo(numType: argument));
+//num: argument, type: argument,
     case UpdateUserRoute:
       return MaterialPageRoute(builder: (context) => UpdateUserDetails());
   default:

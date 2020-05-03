@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/utils/overlay.dart';
 
 class ItemInfo extends StatefulWidget {
-  final int num;
+//  final int num;
+//  final int type;
+  final List<int> numType;
 //  final bool vis;
-  ItemInfo({this.num});
+  ItemInfo({this.numType});
 
   @override
   _ItemInfoState createState() => _ItemInfoState();
@@ -17,7 +19,8 @@ class _ItemInfoState extends State<ItemInfo> {
 
   @override
   Widget build(BuildContext context) {
-    var num = widget.num;
+    int num = widget.numType[1];
+    int type = widget.numType[2];
     print('in item info');
     return Container(
       decoration: BoxDecoration(
@@ -29,7 +32,7 @@ class _ItemInfoState extends State<ItemInfo> {
 //        color: Colors.white,
       child: Center(
         child: Hero(
-          tag: "row$num",
+          tag: "row$num $type",
           child: Card(
 
 //            child: Text(

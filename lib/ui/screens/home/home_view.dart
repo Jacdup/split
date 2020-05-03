@@ -13,10 +13,10 @@ import 'package:twofortwo/services/auth.dart';
 
 
 class HomeView extends StatefulWidget {
-  final List<String> chosenCategories;
+//  final List<dynamic> chosenCategories;
   final User user;
 
-  const HomeView({Key key, this.chosenCategories, this.user}) : super(key: key);
+  const HomeView({Key key, this.user}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -34,8 +34,12 @@ class _HomeViewState extends State<HomeView>{
     //TODO: get all from database here
     List<String> chosenCategories;
 
-    widget.chosenCategories == null ? chosenCategories = localStorageService.category : chosenCategories = widget.chosenCategories;
+    chosenCategories = localStorageService.category;
+
+//    chosenCategories == null ? chosenCategories = DatabaseService().
+//    widget.chosenCategories == null ? chosenCategories = localStorageService.category : chosenCategories = widget.chosenCategories;
     User thisUser = widget.user;
+//    print(widget.chosenCategories);
    // var appInfo = Provider.of<AppInfo>(context);
 //    var storageService = locator<LocalStorageService>();
 //    User thisUser = storageService.user; // Getter
@@ -58,7 +62,7 @@ class _HomeViewState extends State<HomeView>{
         }, // The page will not respond to back press
         child: ScreenTypeLayout(
           mobile: OrientationLayout(
-            portrait: BorrowListPortrait(chosenCategories: chosenCategories, user: thisUser,),
+            portrait: BorrowListPortrait(user: thisUser,),
             //landscape: //TODO,
           ),
         ),
