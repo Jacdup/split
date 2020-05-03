@@ -9,8 +9,9 @@ class AvailableList extends StatefulWidget {
   final List<dynamic> chosenCategories;
   final List<ItemAvailable> allItems;
   final String name;
+  final String uid;
 
-  AvailableList({this.chosenCategories, this. allItems, this.name});
+  AvailableList({this.chosenCategories, this. allItems, this.name, this.uid});
 
   @override
   _AvailableListState createState() => _AvailableListState();

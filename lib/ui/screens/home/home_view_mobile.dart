@@ -197,13 +197,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
             ),
           ),
           ListTile(
-              title: Text('Edit categories'),
+              title: Text('Edit my categories'),
               onTap: () {
                 Navigator.pop(context); // This one for the drawer
                 Navigator.pushNamed(context, CategoryRoute);
               }),
           ListTile(
-              title: Text('Edit items'),
+              title: Text('Edit my items'),
               onTap: () {
                 Navigator.pop(context); // This one for the drawer
                 Navigator.pushNamed(context, UpdateItemRoute);
@@ -212,7 +212,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
               title: Text('Edit personal data'),
               onTap: () {
                 Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(context, UpdateUserRoute);
+                Navigator.pushNamed(context, UpdateUserRoute, arguments: userData.uid);
               }),
           ListTile(
               title: Text('Logout'),

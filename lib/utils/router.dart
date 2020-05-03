@@ -44,7 +44,8 @@ switch(settings.name){
     case UpdateUserRoute:
       return MaterialPageRoute(builder: (context) => UpdateUserDetails());
     case UpdateItemRoute:
-      return MaterialPageRoute(builder: (context) => UpdateItemDetails());
+      var argument = settings.arguments;
+      return MaterialPageRoute(builder: (context) => UpdateItemDetails(uid: argument,));
   default:
     return MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name));
 }

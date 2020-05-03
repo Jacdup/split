@@ -9,8 +9,9 @@ class RequestList extends StatefulWidget {
   final List<dynamic> chosenCategories;
   final List<Item> allItems;
   final String name;
+  final String uid;
 
-  RequestList({this.chosenCategories, this. allItems, this.name});
+  RequestList({this.chosenCategories, this. allItems, this.name, this.uid});
 
   @override
   _RequestListState createState() => _RequestListState();
