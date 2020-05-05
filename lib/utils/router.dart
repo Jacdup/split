@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/ui/screens/home/splash_screen.dart';
 import 'package:twofortwo/ui/screens/authenticate/signup_view.dart';
-import 'package:twofortwo/ui/screens/home/update_user_details_view.dart';
+import 'package:twofortwo/ui/screens/home/user_details_view.dart';
 import 'package:twofortwo/ui/screens/undefined_view.dart';
 import '../ui/screens/home/category_view.dart';
 import '../ui/screens/home/home_view.dart';
@@ -41,8 +41,9 @@ switch(settings.name){
       var argument = settings.arguments;
       return MaterialPageRoute(builder: (context) => ItemInfo(numType: argument));
 //num: argument, type: argument,
-    case UpdateUserRoute:
-      return MaterialPageRoute(builder: (context) => UpdateUserDetails());
+    case ProfileRoute:
+//      var argument = settings.arguments;
+      return MaterialPageRoute(builder: (context) => UserDetails());
     case UpdateItemRoute:
       var argument = settings.arguments;
       return MaterialPageRoute(builder: (context) => UpdateItemDetails(uid: argument,));

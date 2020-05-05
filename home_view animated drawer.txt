@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/ui/screens/home/drawer.dart';
@@ -18,7 +16,7 @@ import 'package:twofortwo/services/auth.dart';
 
 class HomeView extends StatefulWidget {
 //  final List<dynamic> chosenCategories;
-  final FUser user; // Firebase user
+  final User user;
 
   const HomeView({Key key, this.user}) : super(key: key);
 
@@ -71,7 +69,7 @@ void dispose() {
 
 //    chosenCategories == null ? chosenCategories = DatabaseService().
 //    widget.chosenCategories == null ? chosenCategories = localStorageService.category : chosenCategories = widget.chosenCategories;
-    FUser thisUser = widget.user;
+    User thisUser = widget.user;
 //    print(widget.chosenCategories);
    // var appInfo = Provider.of<AppInfo>(context);
 //    var storageService = locator<LocalStorageService>();
@@ -82,11 +80,12 @@ void dispose() {
 //      tag: "New Request",
 //      child: Image.asset('split.png'),
 //    );
-    return StreamProvider.value(
-      value: DatabaseService(uid: thisUser.uid).userData,
-
-//        StreamProvider<User>.value(value: DatabaseService(uid: thisUser.uid).userData), // Access stream
-
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested),
+        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable),
+        StreamProvider<User>.value(value: DatabaseService(uid: thisUser.uid).userData), // Access stream
+      ],
       child: WillPopScope(
         /* This function ensures the user cannot route back to categories with the back button */
         onWillPop: () async {
@@ -102,21 +101,34 @@ void dispose() {
         }, // The page will not respond to back press
         child: ScreenTypeLayout(
           mobile: OrientationLayout(
-//            portrait: AnimatedBuilder(
-//              animation: _animationController,
-//              builder: (context,_) {
-//                double slide = maxSlide * _animationController.value;
-//                double scale = 1 - (_animationController.value * 0.1);
-//                return Stack(
-//                  children: <Widget>[
-//                    MenuDrawer(userData: thisUser,),
-//                    MyDrawer(),
-                    portrait: BorrowListPortrait(user: thisUser,),
+            portrait: GestureDetector(
+              onHorizontalDragStart: _onDragStart,
+              onHorizontalDragUpdate: _onDragUpdate,
+              onHorizontalDragEnd: _onDragEnd,
+              behavior: HitTestBehavior.translucent,
+              onTap: (){toggleAnimation();},
 
-//                  ],
-//                );
-//              }
-//            ),
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context,_) {
+                  double slide = maxSlide * _animationController.value;
+                  double scale = 1 - (_animationController.value * 0.1);
+                  return Stack(
+                    children: <Widget>[
+                      MenuDrawer(userData: thisUser,),
+//                    MyDrawer(),
+                      Transform(
+                          transform: Matrix4.identity()
+//                            ..rotateY(math.pi / 2 * _animationController.value)
+                            ..translate(slide)
+                            ..scale(scale),
+                          alignment: Alignment.centerLeft,
+                          child: BorrowListPortrait(user: thisUser,)),
+                    ],
+                  );
+                }
+              ),
+            ),
             //landscape: //TODO,
           ),
         ),

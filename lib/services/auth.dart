@@ -8,10 +8,10 @@ class AuthService {
 
 
   // create user obj based on FirebaseUser
-  User _userFromFirebaseUser(FirebaseUser user, ) {
+  FUser _userFromFirebaseUser(FirebaseUser user, ) {
 //    return await DatabaseService(uid: user.uid).user;
     return user != null
-        ? User(
+        ? FUser(
             uid: user.uid,
             email: user.email)
         : null;
@@ -30,7 +30,7 @@ class AuthService {
   }
 
   // auth change user stream
-  Stream<User> get user {
+  Stream<FUser> get user {
 //    dynamic userAll = DatabaseService(uid: user.).user;
     return _auth.onAuthStateChanged
         .map((FirebaseUser user) => _userFromFirebaseUser(user)); //TODO: change so that database user is sent to stream

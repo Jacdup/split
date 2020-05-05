@@ -58,14 +58,14 @@ class DatabaseService{
   }
 
   // get user snapshot
-  Future<User> get user async {
-    return _getUserFromSnapshot(await userCollection.document(uid).get());
-//    userCollection.document(uid).get().then((DocumentSnapshot ds){
-//      return _getUserFromSnapshot(ds);
-//    }).catchError((e) => print('Error retrieving user data'));
-//    return null;
-//    return (userCollection.document(uid).snapshots().map(_getUserFromSnapshot)); // Get single document snapshot
-  }
+//  Future<User> get user async {
+//    return _getUserFromSnapshot(await userCollection.document(uid).get());
+////    userCollection.document(uid).get().then((DocumentSnapshot ds){
+////      return _getUserFromSnapshot(ds);
+////    }).catchError((e) => print('Error retrieving user data'));
+////    return null;
+////    return (userCollection.document(uid).snapshots().map(_getUserFromSnapshot)); // Get single document snapshot
+//  }
 
 
   /* --------------------------------------------------------------------------

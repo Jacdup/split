@@ -47,5 +47,26 @@ class User {
   }
 }
 
+class FUser {
+
+  final String uid;
+  final String email;
+
+  FUser({this.uid, this.email,});
+
+  FUser.fromJson(Map<String, dynamic> json)
+      : uid = json['uid'],
+        email = json['email'];
+  // age = json['age'];
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['uid'] = this.uid;
+    data['email'] = this.email;
+    //data['age'] = this.age;
+    return data;
+  }
+}
+
 
 

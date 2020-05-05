@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 
 
@@ -27,16 +30,68 @@ class _RequestListState extends State<RequestList> {
     });
   }
 
-  final type = 1;
+  double sigmaXVal = 10;
+  double sigmaYVal = 10;
+  List<int> numType = [0,1];
+  int indexStack = 0;
+  void _toggleBlur(int num, int rowNum){
+    setState(() {
+      indexStack = num;
+      numType[0] = rowNum;
+//      numType[1] = 1;
+//      sigmaXVal = num;
+//      sigmaYVal = num;
+    });
+  }
+  OverlayEntry _overlayEntry;
+  OverlayState overlayState;
+
+  void _insertOverlayEntry() async {
+    _overlayEntry = OverlayEntry(builder: (context){
+      print('test');
+      return ItemInfo(numType: [0,1],);
+    },
+    );
+
+  }
+
+    void _removeOverlayEntry() {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    }
 
   @override
   Widget build(BuildContext context) {
+
+    overlayState = OverlayState();
+//    print(overlayState);
 
     var numItems = widget.allItems.length;
     for (var i = 0; i <= numItems; i++){
       _infoShow.add(false) ;
     }
     return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
+
+//      child: Stack(
+//      index: indexStack,
+//      fit: StackFit.loose,
+//        children: <Widget>[
+
+
+//        ItemInfo(numType: numType),
+//        Positioned.fill(
+//          child: BackdropFilter(
+//              filter: ImageFilter.blur(sigmaX: sigmaXVal, sigmaY: sigmaYVal),
+//              child: Container(color: Colors.transparent),// Insert into stack only on button press
+//          ),
+//        ),
+//        ],
+//      ),
+
+
+
+
+
   }
 
   Widget _buildBorrowList(List<dynamic> chosenCategories, List<Item> allItems, String name) {
@@ -125,7 +180,12 @@ class _RequestListState extends State<RequestList> {
                     child: const Text('Contact'),
                     onPressed: () {
                       print("row$num");
-                      Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, type]);},
+                      _toggleBlur(1,num);
+//                      _insertOverlayEntry();
+//                      overlayState.insert(_overlayEntry);
+//                      overlayState.insert(_overlayEntry);
+                      Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 1]);
+                      },
                   ),
                 ],
               ),

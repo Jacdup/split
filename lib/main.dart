@@ -8,39 +8,45 @@ import './services/localstorage_service.dart';
 import 'utils/colours.dart';
 import 'package:device_preview/device_preview.dart';
 import 'ui/screens/wrapper.dart';
-import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/utils/router.dart' as router;
 import 'package:twofortwo/utils/routing_constants.dart';
+import 'package:provider/provider.dart';
+import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/services/user_service.dart';
+import 'package:twofortwo/services/database.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
 
-
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try{
+  try {
     await setupLocator();
-    runApp( MyApp()
+    runApp(MyApp()
 //      DevicePreview( // This is for testing UI
 //        builder: (context) => MyApp(),
 //      ),
-    );
-  } catch (error){
+        );
+  } catch (error) {
     print('Locator setup has failed');
   }
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
 //    var localStorageService = locator<LocalStorageService>();
 //    var userCategories = localStorageService.category;
 
-    return StreamProvider<User>.value(
-      value: AuthService().user,
+    return MultiProvider(
+      providers: [
+        StreamProvider<FUser>.value(value: AuthService().user,), // Firebase user
+        StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested),
+        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable),
+//
+      ],
       child: MaterialApp(
-        onGenerateRoute: (settings){
+        onGenerateRoute: (settings) {
           return router.generateRoute(settings);
         },
 
@@ -51,7 +57,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: customBlue5,
         ),
 //        home: Wrapper(), // becomes the route named '/'
-          initialRoute: HomeViewRoute, // Temporary name for wrapper
+        initialRoute: HomeViewRoute, // Temporary name for wrapper
 //        onGenerateRoute: router.generateRoute,//TODO: how to pass arguments here
 //        initialRoute: _getStartupScreen(context),
 
@@ -61,11 +67,11 @@ class MyApp extends StatelessWidget {
     );
   }
 
-
   String _getStartupScreen(context) {
     // TODO: this is for handling cases where user selected to stay logged in
     var localStorageService = locator<LocalStorageService>();
-    var thisUser = Provider.of<User>(context); // Provide does not work without build method
+    var thisUser = Provider.of<User>(
+        context); // Provide does not work without build method
 
 //    print(localStorageService.hasSignedUp);
 //    print('test');
@@ -73,17 +79,18 @@ class MyApp extends StatelessWidget {
 //    locator<LocalStorageService>().hasSignedUp = false;
     var alreadyLoggedIn = localStorageService.stayLoggedIn;
     if (alreadyLoggedIn) {
-      User thisUser = localStorageService.user; // Get user from storage, not firestore
-    }else {
+      User thisUser =
+          localStorageService.user; // Get user from storage, not firestore
+    } else {
       final thisUser = Provider.of<User>(context);
     }
-    if (thisUser == null){
+    if (thisUser == null) {
       return AuthRoute;
-    }else{
+    } else {
       return HomeViewRoute;
 //      return HomeView();
     }
-    }
+  }
 
 //    if (alreadyLoggedIn) {
 //      return HomeViewRoute; //TODO: pass thisUser to HomeViewRoute constructor
@@ -91,7 +98,6 @@ class MyApp extends StatelessWidget {
 //      return AuthRoute;
 //    }
 //  }
-
 
 //    if(!localStorageService.hasSignedUp) {
 //
@@ -108,6 +114,3 @@ class MyApp extends StatelessWidget {
 //    return HomeViewRoute;
 //  }
 }
-
-
-

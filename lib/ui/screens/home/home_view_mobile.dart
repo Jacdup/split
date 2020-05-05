@@ -15,10 +15,11 @@ import 'package:provider/provider.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/ui/screens/home/available_list.dart';
 import 'package:overlay_container/overlay_container.dart';
+import 'package:twofortwo/ui/screens/home/drawer.dart';
 
 class BorrowListPortrait extends StatefulWidget {
 //  final List<dynamic> chosenCategories;
-  final User user;
+  final FUser user;
   BorrowListPortrait({Key key, this.user}) : super(key: key);
 
   @override
@@ -44,22 +45,24 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
+    final User userData = Provider.of<User>(context) ?? [];
 
-    return StreamBuilder<User>(
-        stream: DatabaseService(uid: widget.user.uid).userData, // Access stream
-        builder: (context, snapshot) {
+//    return StreamBuilder<User>(
+//        stream: DatabaseService(uid: widget.user.uid).userData, // Access stream
+//        builder: (context, snapshot) {
 //          print(snapshot);
-          if (snapshot.hasData) {
-            User userData = snapshot.data;
-            userCategories = userData.categories;
+          if (userData != null) {
+//            User userData = snapshot.data;
+            userCategories = userData.categories ?? [];
 //            return DefaultTabController(
 //                length: 2,
 //                initialIndex: 0,
             return new Scaffold(
-//              drawer: SizedBox(
-//                width: MediaQuery.of(context).size.width * 0.65, //20.0,
-//                child: _buildDrawer(context, userData),
-//              ),
+              drawer: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6, //20.0,
+                child: MenuDrawer(userData: userData,),
+//              child: _buildDrawer(context, userData),
+            ),
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
                   Navigator.pushNamed(context, NewItemRoute,
@@ -80,14 +83,14 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   },
                   body: new TabBarView(
                     children: <Widget>[
-                      new RequestList(
-                          chosenCategories: userCategories,
-                          allItems: items,
-                          name: 'tab1'),
                       new AvailableList(
                           chosenCategories: userCategories,
                           allItems: itemsAvailable,
                           name: 'tab2'),
+                      new RequestList(
+                          chosenCategories: userCategories,
+                          allItems: items,
+                          name: 'tab1'),
                     ],
                     controller: _tabController,
                   )),
@@ -100,7 +103,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //            return Login();
             return Loading();
           }
-        });
+//        });
   }
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
@@ -111,7 +114,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       pinned: true,
       elevation: 8.0,
       forceElevated: innerBoxIsScrolled,
-      leading: Icon(Icons.menu),
+//      leading: Icon(Icons.menu),
       title:
 //        IconButton(icon: Icon(Icons.menu), color: Colors.white,),
 
@@ -157,8 +160,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
           labelColor: Colors.black87,
           unselectedLabelColor: Colors.black38,
           tabs: [
-            new Tab(text: "Items Requested"),
             new Tab(text: "Items Available"),
+            new Tab(text: "Items Requested"),
           ],
           controller: _tabController,
         ),
@@ -166,72 +169,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     );
 
     // );
-  }
-
-  Widget _buildDrawer(context, User userData) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Center(
-                child: Column(
-              children: <Widget>[
-                Text('Menu'),
-                SizedBox(
-                  height: 20.0,
-                ),
-                CircleAvatar(
-                  radius: 40.0,
-                  backgroundColor: Colors.deepOrangeAccent,
-                  child: Text(
-                    userData.name.substring(0, 1) +
-                        userData.surname.substring(0, 1),
-                    style: TextStyle(fontSize: 25.0, color: Colors.white),
-                  ),
-                )
-
-//    )
-              ],
-            )),
-            decoration: BoxDecoration(
-              color: customBlue5,
-            ),
-          ),
-          ListTile(
-              title: Text('Edit my categories'),
-              onTap: () {
-                Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(context, CategoryRoute);
-              }),
-          ListTile(
-              title: Text('Edit my items'),
-              onTap: () {
-                Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(context, UpdateItemRoute);
-              }),
-          ListTile(
-              title: Text('Edit personal data'),
-              onTap: () {
-                Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(context, UpdateUserRoute, arguments: userData.uid);
-              }),
-          ListTile(
-              title: Text('Logout'),
-              onTap: () async {
-                Navigator.pop(context); // This one for the drawer
-//                Navigator.pushReplacementNamed(context, LoginRoute); // Shouldn't have to call this, the wrapper listens for changes
-//                setState(() {
-                localStorageService.clear(); //  Remove all saved values
-//                });
-
-//                print(localStorageService.stayLoggedIn);
-                await _auth.logOut();
-//                Navigator.pushReplacementNamed(context, CategoryRoute);
-              })
-        ],
-      ),
-    );
   }
 
   Widget _buildItemInfo(BuildContext context, int num, bool vis) {

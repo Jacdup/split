@@ -36,8 +36,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final User user =
-        Provider.of<User>(context); // Firestore user (contains uid, email)
+    final FUser user = Provider.of<FUser>(context); // Firestore user (contains uid, email)
 
     final btnNxt = SizedBox(
       height: screenHeightExcludingToolbar(context, dividedBy: 10),

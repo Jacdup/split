@@ -16,7 +16,7 @@ class Wrapper extends StatelessWidget{
   Widget build(BuildContext context) {
 //    var localStorageService = locator<LocalStorageService>();
 
-    final User user = Provider.of<User>(context); // Firestore user (contains uid, email)
+    final FUser user = Provider.of<FUser>(context); // Firestore user (contains uid, email)
 //    print(user.uid);
 //    Future<User> userAll = getUser(user.uid);
 //    userAll.then((User result){
