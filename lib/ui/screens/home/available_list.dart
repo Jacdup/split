@@ -30,11 +30,19 @@ class _AvailableListState extends State<AvailableList> {
   @override
   Widget build(BuildContext context) {
 
-    var numItems = widget.allItems.length;
+    var numItems = 0;
+    if (widget.allItems != null){
+      numItems = widget.allItems.length;
+    }
+
     for (var i = 0; i <= numItems; i++){
       _infoShow.add(false) ;
     }
+    if (widget.allItems == null){
+      return Center(child: Text("No items"),);
+    }else{
     return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
+    }
   }
 
   Widget _buildBorrowList(List<dynamic> chosenCategories, List<ItemAvailable> allItems, String name) {

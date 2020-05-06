@@ -64,14 +64,19 @@ class _RequestListState extends State<RequestList> {
   Widget build(BuildContext context) {
 
     overlayState = OverlayState();
-//    print(overlayState);
+    var numItems = 0;
+    if (widget.allItems != null){
+      numItems = widget.allItems.length;
+    }
 
-    var numItems = widget.allItems.length;
     for (var i = 0; i <= numItems; i++){
       _infoShow.add(false) ;
     }
-    return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
-
+    if (widget.allItems == null){
+      return Center(child: Text("No items"),);
+    }else{
+      return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
+    }
 //      child: Stack(
 //      index: indexStack,
 //      fit: StackFit.loose,

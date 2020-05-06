@@ -14,6 +14,10 @@ import 'package:twofortwo/services/user_service.dart';
 
 class UserDetails extends StatefulWidget {
 
+  final User userData;
+
+  UserDetails({this.userData});
+
   @override
   _UserDetailsState createState() => _UserDetailsState();
 }
@@ -22,6 +26,7 @@ class _UserDetailsState extends State<UserDetails> {
 
 
   Widget build(BuildContext context) {
+
     /* Providers are scoped.
     If they are inserted inside a route, other routes cannot access the value.
 
@@ -30,41 +35,45 @@ class _UserDetailsState extends State<UserDetails> {
 
 //    final items = Provider.of<List<Item>>(context) ?? [];
 //    final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
-    final FUser fUser = Provider.of<FUser>(context) ?? [];
-//    User userData = widget.user;
+//    final FUser fUser = Provider.of<FUser>(context) ?? [];
 
+    final User userData = widget.userData;
+
+//    User userData = widget.user;
+    String tag = userData.uid;
 //    if (userData != null) {
 //      print(userData.email);
 
-      return StreamBuilder<User>(
-        stream: DatabaseService(uid: fUser.uid).userData,
-        builder: (context, snapshot) {
-        if (snapshot.hasData){
+//      return StreamBuilder<User>(
+//        stream: DatabaseService(uid: fUser.uid).userData,
+//        builder: (context, snapshot) {
+//        if (snapshot.hasData){
           return Scaffold(
-            appBar: _profileAppBar(snapshot.data),
+            appBar: _profileAppBar(userData, tag),
             body: Container(
 
               child: Text("My profile"),
 
 
             ),
+            floatingActionButton: FloatingActionButton(onPressed: (){print('profilePic$tag');},),
           );
-        }
-    else {
-
-    print('test');
-    return Loading();
-    };
-
+//        }
+//    else {
+//
+//    print('test');
+//    return Loading();
+//    };
+//
+////      );
+//    }
 //      );
-    }
-      );
 
 }
 
 
 
-  _profileAppBar(User userData){
+  _profileAppBar(User userData, String tag){
     return PreferredSize(
       preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 6)),
       child: Container(
@@ -75,14 +84,19 @@ class _UserDetailsState extends State<UserDetails> {
 //        centerTitle: true,
       child: Column(
         children: <Widget>[
-          CircleAvatar(
-            radius: 40.0,
-            backgroundColor: Colors.deepOrangeAccent,
-            child: Text(
-            userData.name.substring(0, 1) +
-                userData.surname.substring(0, 1),
-            style: TextStyle(fontSize: 25.0, color: Colors.white),
-          ),),
+          Hero(
+            tag: 'profilePic$tag',
+            child: CircleAvatar(
+              radius: 40.0,
+              backgroundColor: Colors.deepOrangeAccent,
+//              child: Image.asset('split_new_blue1.png'),
+              child: Text(
+              userData.name.substring(0, 1) +
+                  userData.surname.substring(0, 1),
+              style: TextStyle(fontSize: 25.0, color: Colors.white),
+            ),
+            ),
+          ),
           Text(userData.email),
           Text(userData.phone)
         ],

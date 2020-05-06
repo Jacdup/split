@@ -96,6 +96,7 @@ class MenuDrawer extends StatelessWidget {
 
   final userData;
 
+
   MenuDrawer({this.userData});
 
   final localStorageService = locator<LocalStorageService>();
@@ -106,6 +107,7 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String tag = userData.uid;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -118,13 +120,17 @@ class MenuDrawer extends StatelessWidget {
                     SizedBox(
                       height: 20.0,
                     ),
-                    CircleAvatar(
-                      radius: 40.0,
-                      backgroundColor: Colors.deepOrangeAccent,
-                      child: Text(
-                        userData.name.substring(0, 1) +
-                            userData.surname.substring(0, 1),
-                        style: TextStyle(fontSize: 25.0, color: Colors.white),
+                    Hero(
+                      tag: 'profilePic$tag',
+                      child: CircleAvatar(
+                        radius: 40.0,
+                        backgroundColor: Colors.deepOrangeAccent,
+//                        child: Image.asset('split_new_blue1.png'),
+                        child: Text(
+                          userData.name.substring(0, 1) +
+                              userData.surname.substring(0, 1),
+                          style: TextStyle(fontSize: 25.0, color: Colors.white),
+                        ),
                       ),
                     )
 
@@ -155,9 +161,10 @@ class MenuDrawer extends StatelessWidget {
               leading: Icon(Icons.person),
               title: Text('Profile', style: textFont),
               onTap: () {
+                print('profilePic$tag');
                 Navigator.pop(context); // This one for the drawer
                 Navigator.pushNamed(
-                    context, ProfileRoute, arguments: userData.uid);
+                    context, ProfileRoute, arguments: userData);
               }),
           ListTile(
               leading: Icon(Icons.call_end),

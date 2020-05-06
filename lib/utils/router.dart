@@ -12,7 +12,7 @@ import '../ui/screens/authenticate/login.dart';
 import 'routing_constants.dart';
 import '../ui/screens/home/new_item_view.dart';
 import 'package:twofortwo/ui/screens/wrapper.dart';
-import 'package:twofortwo/ui/screens/home/update_item_view.dart';
+import 'package:twofortwo/ui/screens/home/user_item_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings){
 switch(settings.name){
@@ -42,11 +42,11 @@ switch(settings.name){
       return MaterialPageRoute(builder: (context) => ItemInfo(numType: argument));
 //num: argument, type: argument,
     case ProfileRoute:
-//      var argument = settings.arguments;
-      return MaterialPageRoute(builder: (context) => UserDetails());
+      var argument = settings.arguments;
+      return MaterialPageRoute(builder: (context) => UserDetails(userData: argument,));
     case UpdateItemRoute:
       var argument = settings.arguments;
-      return MaterialPageRoute(builder: (context) => UpdateItemDetails(uid: argument,));
+      return MaterialPageRoute(builder: (context) => UserItemDetails(userData:  argument,));
   default:
     return MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name));
 }
