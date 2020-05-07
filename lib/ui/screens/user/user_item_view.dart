@@ -4,11 +4,12 @@ import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/loading.dart';
-import 'package:twofortwo/ui/screens/user/user_items.dart';
+import 'package:twofortwo/ui/screens/user/user_item_list.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import '../home/request_list.dart';
 import '../home/available_list.dart';
+import 'package:twofortwo/shared/constants.dart';
 
 class UserItemDetails extends StatefulWidget {
 
@@ -21,14 +22,7 @@ class UserItemDetails extends StatefulWidget {
 }
 
 class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProviderStateMixin{
-  final _categories = [
-    'Sport',
-    'Camp',
-    'Household',
-    'Automobile',
-    'Books',
-    'Boardgames'
-  ];
+
 
   TabController _tabController;
 //  ScrollController _scrollController;
@@ -71,10 +65,9 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
               appBar: _profileAppBar(userData, userData.uid),
               body: new TabBarView(
                 children: <Widget>[
-                  // TODO: will want to create new widgets for this, because of extra functionality required
-                  // OR, if possible, only supply flag to function that selects different functions/words to display
-                  new UserList(chosenCategories: _categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
-                  new UserList(chosenCategories: _categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
+
+                  new UserList(chosenCategories: categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
+                  new UserList(chosenCategories: categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
 //                  new AvailableList(chosenCategories: _categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
 //                  new RequestList(chosenCategories: _categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
 //              new RequestList(allItems: items, name: 'tab1', uid: uid,),
@@ -95,7 +88,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
     return PreferredSize(
       preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 4 )), // TODO
       child: Container(
-        padding: EdgeInsets.fromLTRB(0,20,0,0),
+        padding: EdgeInsets.fromLTRB(0,30,0,0),
         color: customBlue5,
 
 
@@ -103,19 +96,30 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 //        centerTitle: true,
         child: Column(
           children: <Widget>[
-            //IconButton(alignment: Alignment.topLeft,icon: Icon(Icons.arrow_back)),
-            Hero(
-              tag: 'profilePic$tag',
-              child: CircleAvatar(
-                radius: 40.0,
-                backgroundColor: Colors.deepOrangeAccent,
+//            IconButton(alignment: Alignment.centerLeft,icon: Icon(Icons.arrow_back)),
+            Row(
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.arrow_back), iconSize: 32.0,onPressed: (){Navigator.pop(context);},),
+
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 50.0),//TODO, responsive
+                    child: Hero(
+                      tag: 'profilePic$tag',
+                      child: CircleAvatar(
+                        radius: 40.0,
+                        backgroundColor: Colors.deepOrangeAccent,
 //              child: Image.asset('split_new_blue1.png'),
-                child: Text(
-                  userData.name.substring(0, 1) +
-                      userData.surname.substring(0, 1),
-                  style: TextStyle(fontSize: 25.0, color: Colors.white),
+                        child: Text(
+                          userData.name.substring(0, 1) +
+                              userData.surname.substring(0, 1),
+                          style: TextStyle(fontSize: 25.0, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             Text(userData.email),
             Text(userData.phone),

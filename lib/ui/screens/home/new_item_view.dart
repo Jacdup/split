@@ -9,6 +9,7 @@ import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/services/database.dart';
+import 'package:twofortwo/shared/constants.dart';
 
 class NewItem extends StatefulWidget {
 
@@ -28,14 +29,7 @@ class _NewItemState extends State<NewItem> {
 //    'buenos aires'
 //  ]; // Option 2
 //  String _selectedLocation; // Option 2
-  List<String> _categories = [
-    'Sport',
-    'Camp',
-    'Household',
-    'Automobile',
-    'Books',
-    'Boardgames'
-  ];
+
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
 
@@ -186,7 +180,7 @@ class _NewItemState extends State<NewItem> {
                     _selectedCategory = newValue;
                   });
                 },
-                items: _categories.map((category) {
+                items: categories.map((category) {
                   return DropdownMenuItem(
                     child: new Text(category, style: textFontDropDown),
                     value: category,

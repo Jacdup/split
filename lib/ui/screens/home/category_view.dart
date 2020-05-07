@@ -9,6 +9,7 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/shared/loading.dart';
+import 'package:twofortwo/shared/constants.dart';
 //TODO: this should save categories specific to the user on the hard disk
 
 class ChooseCategory extends StatefulWidget {
@@ -22,14 +23,7 @@ class ChooseCategory extends StatefulWidget {
 class _ChooseCategoryState extends State<ChooseCategory> {
   //int _counter = 0;
 
-  final List<String> _categories = [
-    'Sport',
-    'Camp',
-    'Household',
-    'Automobile',
-    'Books',
-    'Boardgames'
-  ];
+
   var storageService = locator<LocalStorageService>();
   final List<String> _selectedCategories = [];
   final _biggerFont = const TextStyle(fontSize: 25.0);
@@ -71,9 +65,9 @@ class _ChooseCategoryState extends State<ChooseCategory> {
                 children: [
                   //for (var item in _categories) _buildRow(item)
                   //SizedBox(height: screenHeight(context, dividedBy: 3)),
-                  _buildRow(_categories.sublist(0, 2)),
-                  _buildRow(_categories.sublist(2, 4)),
-                  _buildRow(_categories.sublist(4)),
+                  _buildRow(categories.sublist(0, 2)),
+                  _buildRow(categories.sublist(2, 4)),
+                  _buildRow(categories.sublist(4)),
 
                   SizedBox(height: screenHeight(context, dividedBy: 16)),
                   ButtonWidget(

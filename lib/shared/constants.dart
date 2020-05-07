@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/utils/colours.dart';
 
+final List<String> categories = [
+  'Sport',
+  'Camp',
+  'Household',
+  'Automobile',
+  'Books',
+  'Boardgames'
+];
+
+
 const textColor = Colors.black54;
 final itemFont =
 const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
