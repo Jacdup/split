@@ -4,10 +4,11 @@ import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/loading.dart';
+import 'package:twofortwo/ui/screens/user/user_items.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
-import 'request_list.dart';
-import 'available_list.dart';
+import '../home/request_list.dart';
+import '../home/available_list.dart';
 
 class UserItemDetails extends StatefulWidget {
 
@@ -72,8 +73,10 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
                 children: <Widget>[
                   // TODO: will want to create new widgets for this, because of extra functionality required
                   // OR, if possible, only supply flag to function that selects different functions/words to display
-                  new AvailableList(chosenCategories: _categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
-                  new RequestList(chosenCategories: _categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
+                  new UserList(chosenCategories: _categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
+                  new UserList(chosenCategories: _categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
+//                  new AvailableList(chosenCategories: _categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
+//                  new RequestList(chosenCategories: _categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
 //              new RequestList(allItems: items, name: 'tab1', uid: uid,),
 //              new AvailableList(allItems: itemsAvailable, name: 'tab2', uid: uid),
                 ],

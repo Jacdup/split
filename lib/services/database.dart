@@ -41,10 +41,10 @@ class DatabaseService{
 
   User _getUserFromSnapshot(DocumentSnapshot snapshot){
   var userData = snapshot.data; // This itself is a map
-      print('!!!!!!!!');
-      print(userData['surname'].runtimeType);
-      print(userData['categories'].runtimeType);
-      print((userData['categories']).cast<String>().runtimeType);
+//      print('!!!!!!!!');
+//      print(userData['surname'].runtimeType);
+//      print(userData['categories'].runtimeType);
+//      print((userData['categories']).cast<String>().runtimeType);
 //    return snapshot.data.map((snapshot) {
       return User(uid: uid,
           name: userData['name'],
@@ -74,27 +74,57 @@ class DatabaseService{
   /* --------------------------------------------------------------------------
   Item stuff
  * ---------------------------------------------------------------------------*/
-  Future updateItemData(String itemName, String description, String usageDate, String category) async {
+  Future addItemRequestedData(String itemName, String description, String usageDate, String category) async {
+    String thisDocRef = uuid.v4().toString();
 
-    return await itemRequestCollection.document(uuid.v4().toString()).setData({
+    return await itemRequestCollection.document(thisDocRef).setData({
       'itemName' : itemName,
       'description': description,
       'usageDate' : usageDate,
       'category' : category,
       'uid' : uid,
+      'docRef' : thisDocRef,
     });
   }
 
-  Future updateItemAvailableData(String itemName, String description, String usageDate, String category) async {
+  Future addItemAvailableData(String itemName, String description, String usageDate, String category) async {
 //    itemCount = itemCount + 1; // Using sequential indexing atm
 //    var rng = new Random();
-    return await itemAvailableCollection.document(uuid.v4().toString()).setData({
+  String thisDocRef = uuid.v4().toString();
+
+    return await itemAvailableCollection.document(thisDocRef).setData({
       'itemName' : itemName,
       'description': description,
       'usageDate' : usageDate,
       'category' : category,
       'uid' : uid,
+      'docRef' : thisDocRef,
     });
+  }
+
+
+  Future deleteItem(String documentRef, bool type) async {
+
+//    dynamic result;
+
+    await Firestore.instance.runTransaction((Transaction myTransaction) async {
+      if (type){
+        return await myTransaction.delete(itemAvailableCollection.document(documentRef));
+      }else{
+        return await myTransaction.delete(itemRequestCollection.document(documentRef));
+      }
+    });
+
+//    if (result == null){
+//      await Firestore.instance.runTransaction((Transaction myTransaction) async {
+//
+//      });
+//    }
+
+
+
+
+//    return await itemAvailableCollection.document(documentRef).delete(); // Easier, but not best practice.
   }
 
 
@@ -108,6 +138,7 @@ class DatabaseService{
         doc.data['usageDate'] ,
         doc.data['description'],
         doc.data['uid'],
+        doc.data['docRef'],
       );
     }).toList();
   }
@@ -121,6 +152,7 @@ class DatabaseService{
         doc.data['usageDate'] ,
         doc.data['description'],
         doc.data['uid'],
+        doc.data['docRef'],
       );
     }).toList();
   }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/ui/screens/home/splash_screen.dart';
 import 'package:twofortwo/ui/screens/authenticate/signup_view.dart';
-import 'package:twofortwo/ui/screens/home/user_details_view.dart';
+import 'package:twofortwo/ui/screens/user/user_details_view.dart';
 import 'package:twofortwo/ui/screens/undefined_view.dart';
 import '../ui/screens/home/category_view.dart';
 import '../ui/screens/home/home_view.dart';
@@ -12,7 +12,7 @@ import '../ui/screens/authenticate/login.dart';
 import 'routing_constants.dart';
 import '../ui/screens/home/new_item_view.dart';
 import 'package:twofortwo/ui/screens/wrapper.dart';
-import 'package:twofortwo/ui/screens/home/user_item_view.dart';
+import 'package:twofortwo/ui/screens/user/user_item_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings){
 switch(settings.name){

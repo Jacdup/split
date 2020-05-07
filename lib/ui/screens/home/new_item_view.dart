@@ -213,7 +213,7 @@ class _NewItemState extends State<NewItem> {
         loading = true;
       });
 //      newItem = new Item(_selectedCategory, itemName, date, description);
-      dynamic result = await DatabaseService(uid: widget.uid).updateItemData(itemName, description, date, _selectedCategory);
+      dynamic result = await DatabaseService(uid: widget.uid).addItemRequestedData(itemName, description, date, _selectedCategory);
 
       if (result == null) {
         setState(() {
@@ -237,7 +237,7 @@ class _NewItemState extends State<NewItem> {
         loading = true;
       });
 //      newItem = new Item(_selectedCategory, itemName, date, description);
-      dynamic result = await DatabaseService(uid: widget.uid).updateItemAvailableData(itemName, description, date, _selectedCategory);
+      dynamic result = await DatabaseService(uid: widget.uid).addItemAvailableData(itemName, description, date, _selectedCategory);
 
       if (result == null) {
         setState(() {
