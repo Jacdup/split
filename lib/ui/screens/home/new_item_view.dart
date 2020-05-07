@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/shared/loading.dart';
 import '../../../utils/service_locator.dart';
@@ -217,7 +218,8 @@ class _NewItemState extends State<NewItem> {
 
       if (result == null) {
         setState(() {
-          error = 'Could not add item, please check details';
+          Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
+//          error = 'Could not add item, please check details';
           loading = false;
         });
       } else {

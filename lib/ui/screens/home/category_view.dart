@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/services/database.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';
@@ -84,13 +85,14 @@ class _ChooseCategoryState extends State<ChooseCategory> {
                       dynamic result = await DatabaseService(uid: user.uid)
                           .updateCategory(_selectedCategories);
 
-                      storageService.hasSignedUp = true;
-                      storageService.category = _selectedCategories;
-                      print(_selectedCategories);
-                      print(storageService.category);
+//                      storageService.hasSignedUp = true;
+//                      storageService.category = _selectedCategories;
+//                      print(_selectedCategories);
+//                      print(storageService.category);
 
                       if (result == null) {
                         setState(() {
+                          Fluttertoast.showToast(msg: 'Successfully updated categories.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
 //                  error = 'Could not sign in, please check details';
                           loading = false;
                         });
