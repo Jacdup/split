@@ -75,7 +75,7 @@ class _UserDetailsState extends State<UserDetails> {
 
   _profileAppBar(User userData, String tag){
     return PreferredSize(
-      preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 6)),
+      preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 5)),
       child: Container(
         padding: EdgeInsets.fromLTRB(0,30,0,0),
         color: customBlue5,

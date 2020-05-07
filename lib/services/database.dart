@@ -21,40 +21,43 @@ class DatabaseService{
  /* --------------------------------------------------------------------------
   User stuff
  * ---------------------------------------------------------------------------*/
-  Future updateUserData(String name, String surname, String phone, String email, List<dynamic> categories) async {
+  Future updateUserData(String name, String surname, String phone, String email, List<String> categories) async {
     return await userCollection.document(uid).setData({
       'name':name,
       'phoneNumber':phone,
       'surname' : surname,
 //      'location': location,
       'email' : email,
-      'categories' : categories,
+      'categories' : (categories).cast<String>(), // Really.
     });
   }
 
   Future updateCategory(List<String> categories) async{
     return await userCollection.document(uid).updateData({
-      'categories': categories,
+      'categories': (categories).cast<String>(),
     });
   }
 
 
   User _getUserFromSnapshot(DocumentSnapshot snapshot){
   var userData = snapshot.data; // This itself is a map
-//  print(userData);
+      print('!!!!!!!!');
+      print(userData['surname'].runtimeType);
+      print(userData['categories'].runtimeType);
+      print((userData['categories']).cast<String>().runtimeType);
 //    return snapshot.data.map((snapshot) {
       return User(uid: uid,
           name: userData['name'],
           email: userData['email'],
           phone: userData['phoneNumber'],
-          categories: userData['categories'],
+          categories:(userData['categories']).cast<String>(), //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
           surname: userData['surname'],
       );
 //    });
   }
 
   Stream<User> get userData{
-    return userCollection.document(uid).snapshots().map(_getUserFromSnapshot);
+    return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
   }
 
   // get user snapshot

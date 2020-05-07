@@ -31,7 +31,7 @@ class User {
         email = json['email'],
         surname = json['surname'],
         phone = json['phone'],
-        categories = json['categories'];
+        categories = (json['categories']).cast<String>();
   // age = json['age'];
 
   Map<String, dynamic> toJson() {
@@ -41,7 +41,7 @@ class User {
     data['email'] = this.email;
     data['surname'] = this.surname;
     data['phone'] = this.phone;
-    data['categories'] = this.categories;
+    data['categories'] = (this.categories).cast<String>();
     //data['age'] = this.age;
     return data;
   }

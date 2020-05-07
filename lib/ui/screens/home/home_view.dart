@@ -60,13 +60,13 @@ void dispose() {
 @override
   Widget build(BuildContext context) {
 
-    var localStorageService = locator<LocalStorageService>();
+//    var localStorageService = locator<LocalStorageService>();
 //    final Item item1 = localStorageService.item; //  Getter
 
     //TODO: get all from database here
-    List<String> chosenCategories;
+//    List<String> chosenCategories;
 
-    chosenCategories = localStorageService.category;
+//    chosenCategories = localStorageService.category;
 
 
 //    chosenCategories == null ? chosenCategories = DatabaseService().
@@ -82,7 +82,7 @@ void dispose() {
 //      tag: "New Request",
 //      child: Image.asset('split.png'),
 //    );
-    return StreamProvider.value(
+    return StreamProvider<User>.value(
       value: DatabaseService(uid: thisUser.uid).userData,
 
 //        StreamProvider<User>.value(value: DatabaseService(uid: thisUser.uid).userData), // Access stream
@@ -111,7 +111,7 @@ void dispose() {
 //                  children: <Widget>[
 //                    MenuDrawer(userData: thisUser,),
 //                    MyDrawer(),
-                    portrait: BorrowListPortrait(user: thisUser,),
+                    portrait: BorrowListPortrait(),
 
 //                  ],
 //                );

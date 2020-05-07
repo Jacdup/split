@@ -20,6 +20,14 @@ class UserItemDetails extends StatefulWidget {
 }
 
 class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProviderStateMixin{
+  final _categories = [
+    'Sport',
+    'Camp',
+    'Household',
+    'Automobile',
+    'Books',
+    'Boardgames'
+  ];
 
   TabController _tabController;
 //  ScrollController _scrollController;
@@ -39,19 +47,20 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
-    List<ItemAvailable> thisUserItemsAvailable;
-    List<Item> thisUserItemsRequested;
+
+    List<ItemAvailable> thisUserItemsAvailable = [];
+    List<Item> thisUserItemsRequested = [];
+
 
     // Assign items that this user posted
-    itemsAvailable.asMap().forEach((index,thisItem){
+    itemsAvailable.forEach((thisItem){
       if (thisItem.uid == userData.uid){
-        thisUserItemsAvailable[index] = thisItem;
+        thisUserItemsAvailable.add(thisItem);
       }
     });
-
-    items.asMap().forEach((index,thisItem){
+    items.forEach((thisItem){
       if (thisItem.uid == userData.uid){
-        thisUserItemsRequested[index] = thisItem;
+        thisUserItemsRequested.add(thisItem);
       }
     });
 
@@ -61,8 +70,10 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
               appBar: _profileAppBar(userData, userData.uid),
               body: new TabBarView(
                 children: <Widget>[
-                  AvailableList(chosenCategories: userData.categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
-                  RequestList(chosenCategories: userData.categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
+                  // TODO: will want to create new widgets for this, because of extra functionality required
+                  // OR, if possible, only supply flag to function that selects different functions/words to display
+                  new AvailableList(chosenCategories: _categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
+                  new RequestList(chosenCategories: _categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
 //              new RequestList(allItems: items, name: 'tab1', uid: uid,),
 //              new AvailableList(allItems: itemsAvailable, name: 'tab2', uid: uid),
                 ],
@@ -81,13 +92,15 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
     return PreferredSize(
       preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 4 )), // TODO
       child: Container(
-        padding: EdgeInsets.fromLTRB(0,30,0,0),
+        padding: EdgeInsets.fromLTRB(0,20,0,0),
         color: customBlue5,
+
 
 //        automaticallyImplyLeading: false,
 //        centerTitle: true,
         child: Column(
           children: <Widget>[
+            //IconButton(alignment: Alignment.topLeft,icon: Icon(Icons.arrow_back)),
             Hero(
               tag: 'profilePic$tag',
               child: CircleAvatar(

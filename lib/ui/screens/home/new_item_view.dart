@@ -100,16 +100,16 @@ class _NewItemState extends State<NewItem> {
                       labelColor: Colors.black87,
                       unselectedLabelColor: Colors.black38,
                       tabs: [
-                        new Tab(text: "Request an item"),
                         new Tab(text: "Post an item"),
+                        new Tab(text: "Request an item"),
                       ],
                     ),
                   ),
                 ),
                 body: new TabBarView(
                   children: <Widget>[
-                    _createFields('Requested usage date', _formKey1),
                     _createFields('Dates available', _formKey2),
+                    _createFields('Requested usage date', _formKey1),
                   ],
                 )),
           );

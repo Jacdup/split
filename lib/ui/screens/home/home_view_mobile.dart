@@ -19,8 +19,8 @@ import 'package:twofortwo/ui/screens/home/drawer.dart';
 
 class BorrowListPortrait extends StatefulWidget {
 //  final List<dynamic> chosenCategories;
-  final FUser user;
-  BorrowListPortrait({Key key, this.user}) : super(key: key);
+//  final FUser user;
+//  BorrowListPortrait({Key key, this.user}) : super(key: key);
 
   @override
   _BorrowListPortraitState createState() => _BorrowListPortraitState();
@@ -29,8 +29,8 @@ class BorrowListPortrait extends StatefulWidget {
 class _BorrowListPortraitState extends State<BorrowListPortrait>
     with SingleTickerProviderStateMixin {
   final AuthService _auth = AuthService();
-  final localStorageService = locator<LocalStorageService>();
-  List<dynamic> userCategories = [];
+//  final localStorageService = locator<LocalStorageService>();
+//  List<dynamic> userCategories = [];
 
   TabController _tabController;
   ScrollController _scrollController;
@@ -41,19 +41,26 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     _tabController = new TabController(length: 2, vsync: this);
   }
 
+  assumeStrings(List<Object> objects) {
+    List<String> strings = objects; // Runtime downcast check
+    String string = strings[0]; // Expect a String value
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
-    final User userData = Provider.of<User>(context) ?? [];
-
+    print('here before');
+    final User userData = Provider.of<User>(context) ?? []; // This motherf&**&er asserts at runtime
+    print('here after');
+//    assumeStrings(userData.categories);
 //    return StreamBuilder<User>(
 //        stream: DatabaseService(uid: widget.user.uid).userData, // Access stream
 //        builder: (context, snapshot) {
 //          print(snapshot);
           if (userData != null) {
 //            User userData = snapshot.data;
-            userCategories = userData.categories ?? [];
+//            userCategories = userData.categories ?? [];
 //            return DefaultTabController(
 //                length: 2,
 //                initialIndex: 0,
@@ -65,6 +72,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
             ),
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
+                 print(_scrollController.offset);
                   Navigator.pushNamed(context, NewItemRoute,
                       arguments:
                           userData.uid); // TODO: Can send userData to route
@@ -84,11 +92,11 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   body: new TabBarView(
                     children: <Widget>[
                       new AvailableList(
-                          chosenCategories: userCategories,
+                          chosenCategories: userData.categories == null ? <String>[] : userData.categories.cast<String>(),
                           allItems: itemsAvailable,
                           name: 'tab2'),
                       new RequestList(
-                          chosenCategories: userCategories,
+                          chosenCategories: userData.categories == null ? <String>[] : userData.categories.cast<String>(),
                           allItems: items,
                           name: 'tab1'),
                     ],
@@ -107,6 +115,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   }
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
+
     return SliverAppBar(
 //      snap: true,
 //    leading: IconButton(icon: Icon(Icons.menu),onPressed:(){ _buildDrawer(context);},),
@@ -115,15 +124,27 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       elevation: 8.0,
       forceElevated: innerBoxIsScrolled,
 //      leading: Icon(Icons.menu),
-      title:
-//        IconButton(icon: Icon(Icons.menu), color: Colors.white,),
-
-          Text(
+      title: //_getTitle(userName, scrollController),
+         Text(
         'Welcome $userName!',
         style: TextStyle(color: Colors.white, fontSize: 20.0),
-      ),
+          ),
+
+//        IconButton(icon: Icon(Icons.menu), color: Colors.white,),
+       // TODO: this become Search bar as user scrolls up
+
       centerTitle: true,
       expandedHeight: 200,
+
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: (){
+//            showSearch(context: context, delegate: ),
+          },
+        )
+      ],
+
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.all(10.0),
         centerTitle: true,
@@ -170,6 +191,16 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
     // );
   }
+
+//  _getTitle(String userName, ScrollController scrollController){
+//    print(scrollController);
+//    if (scrollController.offset < 90.0){
+//      return Text('Welcome $userName!',
+//        style: TextStyle(color: Colors.white, fontSize: 20.0),);
+//    }else{
+//      return Text('test');
+//    }
+//  }
 
   Widget _buildItemInfo(BuildContext context, int num, bool vis) {
     return AnchoredOverlay(

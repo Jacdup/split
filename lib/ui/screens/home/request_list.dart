@@ -9,7 +9,7 @@ import 'package:twofortwo/utils/routing_constants.dart';
 
 class RequestList extends StatefulWidget {
 
-  final List<dynamic> chosenCategories;
+  final List<String> chosenCategories;
   final List<Item> allItems;
   final String name;
   final String uid;
@@ -99,7 +99,7 @@ class _RequestListState extends State<RequestList> {
 
   }
 
-  Widget _buildBorrowList(List<dynamic> chosenCategories, List<Item> allItems, String name) {
+  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems, String name) {
 
     double _buildBox = 0;
     int i = 0;
@@ -110,17 +110,19 @@ class _RequestListState extends State<RequestList> {
 
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index == allItems.length -1){
+        if (index == allItems.length -1) {
           _buildBox = 80;
-          if (i == 0){
-            return Center(child: Text("No items in chosen categories"));
-          }
         }
-        if (chosenCategories.contains(allItems[index].category)){
+        if (chosenCategories.contains(allItems[index].category) ) {
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
-
+          if (index == allItems.length -1){
+            _buildBox = 80;
+            if (i == 0){
+              return Center(child: Text("No items in chosen categories"));
+            }
+          }
 //          if (index == allItems.length-1){
 //
 //          }

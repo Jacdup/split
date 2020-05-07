@@ -6,7 +6,7 @@ import 'package:twofortwo/utils/routing_constants.dart';
 
 class AvailableList extends StatefulWidget {
 
-  final List<dynamic> chosenCategories;
+  final List<String> chosenCategories;
   final List<ItemAvailable> allItems;
   final String name;
   final String uid;
@@ -45,7 +45,7 @@ class _AvailableListState extends State<AvailableList> {
     }
   }
 
-  Widget _buildBorrowList(List<dynamic> chosenCategories, List<ItemAvailable> allItems, String name) {
+  Widget _buildBorrowList(List<String> chosenCategories, List<ItemAvailable> allItems, String name) {
 
     double _buildBox = 0;
     int i = 0;
@@ -55,16 +55,19 @@ class _AvailableListState extends State<AvailableList> {
       padding: const EdgeInsets.all(10.0),
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index == allItems.length -1){
+        if (index == allItems.length -1) {
           _buildBox = 80;
-          if (i == 0) {
-            return Center(child: Text("No items in chosen categories"));
-          }
         }
-        if (chosenCategories.contains(allItems[index].category)){
+        if (chosenCategories.contains(allItems[index].category) )  {
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
+          if (index == allItems.length -1){
+            _buildBox = 80;
+            if (i == 0) {
+              return Center(child: Text("No items in chosen categories"));
+            }
+          }
 //          if (i == 0){
 //            i = i + 1;
 
@@ -87,49 +90,53 @@ class _AvailableListState extends State<AvailableList> {
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
       tag: "row$num 2",
-      child: Card(
-        margin: EdgeInsets.fromLTRB(0, 10, 0, buildBox),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        elevation: 4.0,
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.all(12.0),
-              title: Text(
-                itemName,
-                style: _itemFont,
-              ),
-              subtitle: Text(
-                description,
-              ),
-              trailing: Text(
-                date,
-              ),
-              onTap: () {
-                _toggleDropdown(num);
-              },
-            ),
+      child: Wrap(
+        children: <Widget>[
+          Card(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, buildBox),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            elevation: 4.0,
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  contentPadding: EdgeInsets.all(12.0),
+                  title: Text(
+                    itemName,
+                    style: _itemFont,
+                  ),
+                  subtitle: Text(
+                    description,
+                  ),
+                  trailing: Text(
+                    date,
+                  ),
+                  onTap: () {
+                    _toggleDropdown(num);
+                  },
+                ),
 
-            Visibility(
-              visible: _infoShow[num] ,
-              child: ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    child: const Text('Request to borrow'),
-                    onPressed: () {/* send ping to item user, with thisUser info */
-                      _confirmHelp(context);},
+                Visibility(
+                  visible: _infoShow[num] ,
+                  child: ButtonBar(
+                    children: <Widget>[
+                      FlatButton(
+                        child: const Text('Request to borrow'),
+                        onPressed: () {/* send ping to item user, with thisUser info */
+                          _confirmHelp(context);},
+                      ),
+                      FlatButton(
+                        child: const Text('Contact'),
+                        onPressed: () {
+                          print("row$num");
+                          Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);},
+                      ),
+                    ],
                   ),
-                  FlatButton(
-                    child: const Text('Contact'),
-                    onPressed: () {
-                      print("row$num");
-                      Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);},
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

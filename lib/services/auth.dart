@@ -65,7 +65,7 @@ class AuthService {
     try{
         AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
        FirebaseUser user = result.user;
-       List<String> temp = [];
+       List<String> temp = ['Sport'];
        // create a new document for the user with the uid
         await DatabaseService(uid: user.uid).updateUserData(name, surname, phone, email, temp); //setter TODO: update userdetails categories
 //        dynamic userAll = await DatabaseService(uid: user.uid).user; //getter
