@@ -201,7 +201,7 @@ class _UserListState extends State<UserList> {
                     loading = false;
                   });
                 } else {
-                  Navigator.pop(context);
+                  Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
                 }
                 //TODO
               },

@@ -223,7 +223,8 @@ class _NewItemState extends State<NewItem> {
           loading = false;
         });
       } else {
-        Navigator.pop(context);
+        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
+//        Navigator.pop(context);
       }
       Navigator.pop(context);
     }

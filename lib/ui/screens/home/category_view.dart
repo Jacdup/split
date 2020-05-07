@@ -96,6 +96,8 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 //                  error = 'Could not sign in, please check details';
                           loading = false;
                         });
+                      }else{
+                        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
                       }
                       Navigator.pop(context);
                     },
