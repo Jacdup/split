@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/utils/colours.dart';
 
 final List<String> categories = [
-  'Sport',
-  'Camp',
-  'Household',
+  'Sport & Leisure',
+  'Home & Garden',
+  'Electronics',
   'Automobile',
   'Books',
-  'Boardgames'
+  'Boardgames',
+  'Clothes',
+  'Other',
 ];
 
 

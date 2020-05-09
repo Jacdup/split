@@ -23,24 +23,20 @@ class ChooseCategory extends StatefulWidget {
 class _ChooseCategoryState extends State<ChooseCategory> {
   //int _counter = 0;
 
-
   var storageService = locator<LocalStorageService>();
   final List<String> _selectedCategories = [];
-  final _biggerFont = const TextStyle(fontSize: 25.0);
+  final _biggerFont = const TextStyle(fontSize: 24.0);
   bool loading = false;
 
   @override
   Widget build(BuildContext context) {
-    final FUser user = Provider.of<FUser>(context); // Firestore user (contains uid, email)
+    final FUser user =
+        Provider.of<FUser>(context); // Firestore user (contains uid, email)
 
-    final btnNxt = SizedBox(
-      height: screenHeightExcludingToolbar(context, dividedBy: 10),
-      width: screenWidth(context, dividedBy: 3, reducedBy: 0),
-      child: Center(
-        child: Text('Next',
-            style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
-      ),
-    );
+    double cardHeight =
+        screenHeight(context, dividedBy: (categories.length / 2));
+    int rowCardNum = 0;
+//    bool alreadySaved = false;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -51,86 +47,69 @@ class _ChooseCategoryState extends State<ChooseCategory> {
         ? Loading()
         : Scaffold(
             appBar: AppBar(
-              automaticallyImplyLeading: false,
+//              automaticallyImplyLeading: false,
               // Here we take the value from the MyHomePage object that was created by
               // the App.build method, and use it to set our appbar title.
               //title: Text(widget.title),
-              title: Text('Choose Category'),
+              title: Text('Choose Categories'), centerTitle: true,
             ),
-            body: Container(
-              padding: EdgeInsets.only(top: 40),
-              height: screenHeight(context, dividedBy: 1),
-              width: screenWidth(context, dividedBy: 1),
-              child: Column(
-                children: [
-                  //for (var item in _categories) _buildRow(item)
-                  //SizedBox(height: screenHeight(context, dividedBy: 3)),
-                  _buildRow(categories.sublist(0, 2)),
-                  _buildRow(categories.sublist(2, 4)),
-                  _buildRow(categories.sublist(4)),
 
-                  SizedBox(height: screenHeight(context, dividedBy: 16)),
-                  ButtonWidget(
-                    icon: Icons.arrow_forward,
-                    onPressed: () async {
-                      setState(() {
-                        loading = true;
-                      });
-                      dynamic result = await DatabaseService(uid: user.uid)
-                          .updateCategory(_selectedCategories);
-
-//                      storageService.hasSignedUp = true;
-//                      storageService.category = _selectedCategories;
-//                      print(_selectedCategories);
-//                      print(storageService.category);
-
-                      if (result == null) {
-                        setState(() {
-                          Fluttertoast.showToast(msg: 'Successfully updated categories.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-//                  error = 'Could not sign in, please check details';
-                          loading = false;
-                        });
-                      }else{
-                        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-                      }
-                      Navigator.pop(context);
-                    },
+            body: Column(
+              children: <Widget>[
+                new Expanded(
+                  child: GridView.count(
+//                  primary: false,
+                    padding: const EdgeInsets.all(10),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing: 0,
+                    children: List.generate(categories.length, (index) {
+//                      alreadySaved = _selectedCategories.contains(categories[index]);
+                      return Center(
+                        child: _buildCard(categories[index], cardHeight),
+                      );
+//                      );
+                    }),
                   ),
-//            RaisedButton(
-//              child: btnNxt,
-//              onPressed: () async {
-//
-//              },
-//            ),
-                  //  _buildNext(),
-                ],
-                // Column is also a layout widget. It takes a list of children and
-                // arranges them vertically. By default, it sizes itself to fit its
-                // children horizontally, and tries to be as tall as its parent.
-                //
-                // Invoke "debug painting" (press "p" in the console, choose the
-                // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                // to see the wireframe for each widget.
-                //
-                // Column has various properties to control how it sizes itself and
-                // how it positions its children. Here we use mainAxisAlignment to
-                // center the children vertically; the main axis here is the vertical
-                // axis because Columns are vertical (the cross axis would be
-                // horizontal).
-                //mainAxisAlignment: MainAxisAlignment.center,
-              ),
-            ),
-          );
+                ),
+//                    SizedBox(height: screenHeight(context, dividedBy: 40)),
+                Container(
+                  width: screenWidth(context),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.8),
+                        spreadRadius: 5,
+                        blurRadius: 10,
+                        offset: Offset(0, 3), // changes position of shadow]
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(
+                        screenWidth(context, dividedBy: 4), 0,
+                        screenWidth(context, dividedBy: 4),0),
+                    child: ButtonWidget(
+                      icon: Icons.arrow_forward,
+                      onPressed: () async {
+                        _onButtonPress(user.uid);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )
+            );
   }
 
   Widget _buildRow(List categories) {
     return Row(
-      children: [for (var item in categories) _buildCard(item)],
-    );
+//      children: [for (var item in categories) _buildCard(item)],
+        );
   }
 
-  Widget _buildCard(String category) {
+  Widget _buildCard(String category, double cardHeight) {
     // bool alreadySaved = false;
     //if (_selectedCategories.categories != null){
     final bool alreadySaved = _selectedCategories.contains(category);
@@ -143,21 +122,22 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       //color: Colors.cyan,
       //padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
       width: screenWidth(context, dividedBy: 2, reducedBy: 0),
-      height: screenHeight(context, dividedBy: 6),
-      //height: screenHeightExcludingToolbar(context, dividedBy: 5), //TODO: this causes pixel overflowing error
+//      height: cardHeight,
+//      height: screenHeightExcludingToolbar(context, dividedBy: 6), //TODO: this causes pixel overflowing error
       // color: Colors.cyan,
 
       child: Card(
         color: customBlue5,
+        elevation: 4.0,
         child: Container(
           decoration: BoxDecoration(
               border: Border.all(
                 width: 5,
-                color: alreadySaved ? Colors.red : Colors.transparent,
+                color: alreadySaved ? customYellow2 : Colors.transparent,
               ),
               borderRadius: BorderRadius.all(Radius.circular(5))),
           child: InkWell(
-            splashColor: Colors.blue.withAlpha(30),
+            splashColor: customBlue2.withAlpha(70),
             onTap: () {
               setState(() {
                 if (alreadySaved) {
@@ -169,8 +149,9 @@ class _ChooseCategoryState extends State<ChooseCategory> {
             },
             child: Center(
               child: Container(
-                child: Text(category, style: _biggerFont),
-              ),
+                  margin: const EdgeInsets.all(10.0),
+//                padding: EdgeInsets.all(15.0),
+                  child: Text(category, style: _biggerFont)),
             ),
           ),
         ),
@@ -178,33 +159,35 @@ class _ChooseCategoryState extends State<ChooseCategory> {
     );
   } // _buildCard
 
-  _onButtonPress() async {
-    // Save a value
-    //TODO: save selectedCategories either to storage, or firestore
-    // TODO: call a setstate that changes the value of home_view_mobile
-//                await DatabaseService(uid: user.uid).updateCategory(_selectedCategories);
-//                print("Has signed up value before:");
-//                print(storageService.hasSignedUp);
-//                storageService.category = _selectedCategories; // Setter
-    storageService.hasSignedUp = true;
-//                print("Has signed up value after:");
-//                print(storageService.hasSignedUp);
-    //set category(Category categoriesToSave)
-    //var mySavedUser = storageService.user;
+  _onButtonPress(String uid) async {
+    setState(() {
+      loading = true;
+    });
+    dynamic result =
+        await DatabaseService(uid: uid).updateCategory(_selectedCategories);
 
+//                      storageService.hasSignedUp = true;
+//                      storageService.category = _selectedCategories;
+//                      print(_selectedCategories);
+//                      print(storageService.category);
+
+    if (result == null) {
+      setState(() {
+        Fluttertoast.showToast(
+            msg: 'Successfully updated categories.',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            fontSize: 20.0);
+//                  error = 'Could not sign in, please check details';
+        loading = false;
+      });
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Hmm. Something went wrong.',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          fontSize: 20.0);
+    }
     Navigator.pop(context);
-//                Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: _selectedCategories);// Not to return to this function
-//Navigator.pushReplacementNamed(context, BorrowListRoute, arguments: savedCategory);// Not to return to this function
-/* if (borrowListBack == 'fromBorrowList'){
-                  showDialog(context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Are you sure?')
-                  ));
-                }*/
-/*Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ToBorrow()),
-                );*/
   }
 }

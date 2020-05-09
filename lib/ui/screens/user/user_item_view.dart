@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
-import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/ui/screens/user/user_item_list.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
-import '../home/request_list.dart';
-import '../home/available_list.dart';
 import 'package:twofortwo/shared/constants.dart';
 
 class UserItemDetails extends StatefulWidget {
