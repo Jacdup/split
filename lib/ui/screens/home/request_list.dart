@@ -113,7 +113,7 @@ class _RequestListState extends State<RequestList> {
         if (index == allItems.length -1) {
           _buildBox = 80;
         }
-        if (chosenCategories.contains(allItems[index].categories) ) {
+        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
