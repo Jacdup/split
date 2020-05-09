@@ -25,7 +25,8 @@ switch(settings.name){
 //    var chosenCategories = settings.arguments;
 //    return MaterialPageRoute(builder: (context) => HomeView(chosenCategories: chosenCategories));
   case CategoryRoute:
-    return MaterialPageRoute(builder: (context) => ChooseCategory());
+    var argument = settings.arguments;
+    return MaterialPageRoute(builder: (context) => ChooseCategory(itemDetails: argument,));
   case BorrowListRoute:
 //    var chosenCategories = settings.arguments;
     return MaterialPageRoute(builder: (context) { return HomeView(); });

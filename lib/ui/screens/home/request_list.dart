@@ -113,7 +113,7 @@ class _RequestListState extends State<RequestList> {
         if (index == allItems.length -1) {
           _buildBox = 80;
         }
-        if (chosenCategories.contains(allItems[index].category) ) {
+        if (chosenCategories.contains(allItems[index].categories) ) {
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
@@ -144,7 +144,7 @@ class _RequestListState extends State<RequestList> {
   }
 
   Widget _buildRow(Item item, int num, double buildBox) {
-    String category = item.category;
+    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
     String date = item.date;

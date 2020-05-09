@@ -74,20 +74,20 @@ class DatabaseService{
   /* --------------------------------------------------------------------------
   Item stuff
  * ---------------------------------------------------------------------------*/
-  Future addItemRequestedData(String itemName, String description, String usageDate, String category) async {
+  Future addItemRequestedData(String itemName, String description, String usageDate, List<String> categories) async {
     String thisDocRef = uuid.v4().toString();
 
     return await itemRequestCollection.document(thisDocRef).setData({
       'itemName' : itemName,
       'description': description,
       'usageDate' : usageDate,
-      'category' : category,
+      'categories' : categories,
       'uid' : uid,
       'docRef' : thisDocRef,
     });
   }
 
-  Future addItemAvailableData(String itemName, String description, String usageDate, String category) async {
+  Future addItemAvailableData(String itemName, String description, String usageDate, List<String> categories) async {
 //    itemCount = itemCount + 1; // Using sequential indexing atm
 //    var rng = new Random();
   String thisDocRef = uuid.v4().toString();
@@ -96,7 +96,7 @@ class DatabaseService{
       'itemName' : itemName,
       'description': description,
       'usageDate' : usageDate,
-      'category' : category,
+      'categories' : categories,
       'uid' : uid,
       'docRef' : thisDocRef,
     });
@@ -132,8 +132,9 @@ class DatabaseService{
   // requested item list from snapshot
   List<Item> _itemListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
+
       return Item( // Expects only positional arguments
-        doc.data['category'],
+        doc.data['categories'].cast<String>(),
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],
@@ -146,8 +147,10 @@ class DatabaseService{
   // requested item list from snapshot
   List<ItemAvailable> _itemAvailableListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
+//      print('!!!!!!!!');
+//      print(doc.data['category'].runtimeType);
       return ItemAvailable( // Expects only positional arguments
-        doc.data['category'],
+        doc.data['categories'].cast<String>(),
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],

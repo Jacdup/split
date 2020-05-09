@@ -6,6 +6,10 @@ import 'package:twofortwo/utils/screen_size.dart';
 class Loading extends StatelessWidget{
   @override
 
+//  const Loading({Key key, this.loading}) : super(key: key);
+//
+//  final ValueNotifier<bool> loading;
+
   Widget build(BuildContext context){
     return Container(
     color: customBlue5,

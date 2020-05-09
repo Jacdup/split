@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/shared/loading.dart';
+import 'package:twofortwo/utils/routing_constants.dart';
 import '../../../utils/service_locator.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
@@ -36,7 +37,6 @@ class _NewItemState extends State<NewItem> {
   String _selectedCategory;
   bool loading = false;
 
-  Item newItem;
 
   String itemName;
   String description;
@@ -154,41 +154,45 @@ class _NewItemState extends State<NewItem> {
                     hintText: dateDescription),
               ),
               SizedBox(height: 20),
-              //createDropDown(context),
-              DropdownButtonFormField(
-                decoration: textInputDecoration,
-//                InputDecoration(
-//                border:
-//                OutlineInputBorder(
-////                  isOutline: false,
-////                  gapPadding: 100.0,
-//                    borderRadius: borderRadius,
-//                    borderSide: BorderSide(color: Colors.white, width: 2.0)),
-//                    filled: true,
-//                  fillColor: Colors.white,
-////                  hintText: 'Please choose a category'
-//                ),
-                isDense: true,
-                hint: Text(
-                  'Please choose a category',
-                  style: textFont,
-                ), // Not necessary for Option 1
-                value: _selectedCategory,
-                onChanged: (newValue) {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  setState(() {
-                    _selectedCategory = newValue;
-                  });
-                },
-                items: categories.map((category) {
-                  return DropdownMenuItem(
-                    child: new Text(category, style: textFontDropDown),
-                    value: category,
-                  );
-                }).toList(),
+              Container(
+                child: IconButton(onPressed: (){AlertDialog(title: Text('Wait a little'),);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
               ),
+              //createDropDown(context),
+//              DropdownButtonFormField(
+//                decoration: textInputDecoration,
+////                InputDecoration(
+////                border:
+////                OutlineInputBorder(
+//////                  isOutline: false,
+//////                  gapPadding: 100.0,
+////                    borderRadius: borderRadius,
+////                    borderSide: BorderSide(color: Colors.white, width: 2.0)),
+////                    filled: true,
+////                  fillColor: Colors.white,
+//////                  hintText: 'Please choose a category'
+////                ),
+//                isDense: true,
+//                hint: Text(
+//                  'Please choose a category',
+//                  style: textFont,
+//                ), // Not necessary for Option 1
+//                value: _selectedCategory,
+//                onChanged: (newValue) {
+//                  FocusScope.of(context).requestFocus(FocusNode());
+//                  setState(() {
+//                    _selectedCategory = newValue;
+//                  });
+//                },
+//                items: categories.map((category) {
+//                  return DropdownMenuItem(
+//                    child: new Text(category, style: textFontDropDown),
+//                    value: category,
+//                  );
+//                }).toList(),
+//              ),
 
-              (type == _formKey1) ? ButtonWidget(icon: Icons.add, onPressed: onPressedBtn1) : ButtonWidget(icon: Icons.add, onPressed: onPressedBtn2),
+              (type == _formKey1) ? ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1)
+                  : ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2),
 
 
 
@@ -204,23 +208,27 @@ class _NewItemState extends State<NewItem> {
 
     if (_formKey1.currentState.validate()) {
       // Is correct
-      setState(() {
-        loading = true;
-      });
-//      newItem = new Item(_selectedCategory, itemName, date, description);
-      dynamic result = await DatabaseService(uid: widget.uid).addItemRequestedData(itemName, description, date, _selectedCategory);
+//      setState(() {
+//        loading = true;
+//      });
 
-      if (result == null) {
-        setState(() {
-          Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-//          error = 'Could not add item, please check details';
-          loading = false;
-        });
-      } else {
-        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-//        Navigator.pop(context);
-      }
-      Navigator.pop(context);
+      Item newItem = new Item(null, itemName, description, date, widget.uid, '1'); //TODO, send to category route
+      Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
+
+      // TODO, this in category view
+//      dynamic result = await DatabaseService(uid: widget.uid).addItemRequestedData(itemName, description, date, _selectedCategory);
+
+//      if (result == null) {
+//        setState(() {
+//          Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
+////          error = 'Could not add item, please check details';
+//          loading = false;
+//        });
+//      } else {
+//        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
+////        Navigator.pop(context);
+//      }
+//      Navigator.pop(context);
     }
 
   }
@@ -230,21 +238,26 @@ class _NewItemState extends State<NewItem> {
 
     if (_formKey2.currentState.validate()) {
       // Is correct
-      setState(() {
-        loading = true;
-      });
-//      newItem = new Item(_selectedCategory, itemName, date, description);
-      dynamic result = await DatabaseService(uid: widget.uid).addItemAvailableData(itemName, description, date, _selectedCategory);
+//      setState(() {
+//        loading = true;
+//      });
+    print('!!!!!!!!!!');
+    print(itemName);
+      ItemAvailable newItem = new ItemAvailable(null, itemName, description, date, widget.uid, '2');
+      Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
 
-      if (result == null) {
-        setState(() {
-          error = 'Could not add item, please check details';
-          loading = false;
-        });
-      } else {
-        Navigator.pop(context);
-      }
-      Navigator.pop(context);
+//      newItem = new Item(_selectedCategory, itemName, date, description);
+//      dynamic result = await DatabaseService(uid: widget.uid).addItemAvailableData(itemName, description, date, _selectedCategory);
+//
+//      if (result == null) {
+//        setState(() {
+//          Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
+//          loading = false;
+//        });
+//      } else {
+//        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
+//      }
+//      Navigator.pop(context);
     }
 
   }

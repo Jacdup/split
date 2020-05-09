@@ -47,9 +47,9 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
-    print('here before');
+//    print('here before');
     final User userData = Provider.of<User>(context) ?? []; // This motherf&**&er asserts at runtime
-    print('here after');
+//    print('here after');
 //    assumeStrings(userData.categories);
 //    return StreamBuilder<User>(
 //        stream: DatabaseService(uid: widget.user.uid).userData, // Access stream

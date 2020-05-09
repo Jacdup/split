@@ -49,6 +49,7 @@ class _AvailableListState extends State<AvailableList> {
 
     double _buildBox = 0;
     int i = 0;
+//    print(allItems[0].itemName);
 
     return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.builder(
       key: PageStorageKey<String>(name), // Keeps track of scroll position
@@ -58,7 +59,7 @@ class _AvailableListState extends State<AvailableList> {
         if (index == allItems.length -1) {
           _buildBox = 80;
         }
-        if (chosenCategories.contains(allItems[index].category) )  {
+        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
           i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
         }else{
@@ -83,7 +84,7 @@ class _AvailableListState extends State<AvailableList> {
   }
 
   Widget _buildRow(ItemAvailable item, int num, double buildBox) {
-    String category = item.category;
+    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
     String date = item.date;

@@ -17,6 +17,7 @@ import 'package:twofortwo/services/database.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
+ValueNotifier<bool> loading = ValueNotifier(false); // Global variable, to whole application
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
 //    var localStorageService = locator<LocalStorageService>();
 //    var userCategories = localStorageService.category;
 
@@ -43,7 +45,6 @@ class MyApp extends StatelessWidget {
         StreamProvider<FUser>.value(value: AuthService().user,), // Firebase user
         StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested),
         StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable),
-//
       ],
       child: MaterialApp(
         onGenerateRoute: (settings) {
