@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/auth.dart';
+import 'package:twofortwo/services/push_notifications.dart';
 import 'utils/service_locator.dart';
 import './services/localstorage_service.dart';
 import 'utils/colours.dart';
@@ -15,6 +16,10 @@ import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/services/database.dart';
 
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 // To use service locator:
 //var userService = locator<LocalStorageService>();
 ValueNotifier<bool> loading = ValueNotifier(false); // Global variable, to whole application
@@ -23,6 +28,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await setupLocator();
+
     runApp(MyApp()
 //      DevicePreview( // This is for testing UI
 //        builder: (context) => MyApp(),
@@ -68,30 +74,40 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  String _getStartupScreen(context) {
-    // TODO: this is for handling cases where user selected to stay logged in
-    var localStorageService = locator<LocalStorageService>();
-    var thisUser = Provider.of<User>(
-        context); // Provide does not work without build method
 
-//    print(localStorageService.hasSignedUp);
-//    print('test');
-//    locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
-//    locator<LocalStorageService>().hasSignedUp = false;
-    var alreadyLoggedIn = localStorageService.stayLoggedIn;
-    if (alreadyLoggedIn) {
-      User thisUser =
-          localStorageService.user; // Get user from storage, not firestore
-    } else {
-      final thisUser = Provider.of<User>(context);
-    }
-    if (thisUser == null) {
-      return AuthRoute;
-    } else {
-      return HomeViewRoute;
-//      return HomeView();
-    }
-  }
+
+
+
+
+
+
+
+
+
+//  String _getStartupScreen(context) {
+//    // TODO: this is for handling cases where user selected to stay logged in
+//    var localStorageService = locator<LocalStorageService>();
+//    var thisUser = Provider.of<User>(
+//        context); // Provide does not work without build method
+//
+////    print(localStorageService.hasSignedUp);
+////    print('test');
+////    locator<LocalStorageService>().hasLoggedIn = false; // Every time the app is opened the user is logged out
+////    locator<LocalStorageService>().hasSignedUp = false;
+//    var alreadyLoggedIn = localStorageService.stayLoggedIn;
+//    if (alreadyLoggedIn) {
+//      User thisUser =
+//          localStorageService.user; // Get user from storage, not firestore
+//    } else {
+//      final thisUser = Provider.of<User>(context);
+//    }
+//    if (thisUser == null) {
+//      return AuthRoute;
+//    } else {
+//      return HomeViewRoute;
+////      return HomeView();
+//    }
+//  }
 
 //    if (alreadyLoggedIn) {
 //      return HomeViewRoute; //TODO: pass thisUser to HomeViewRoute constructor
@@ -115,3 +131,4 @@ class MyApp extends StatelessWidget {
 //    return HomeViewRoute;
 //  }
 }
+

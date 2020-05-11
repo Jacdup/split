@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:twofortwo/utils/colours.dart';
 
 final List<String> categories = [
@@ -14,6 +15,8 @@ final List<String> categories = [
 
 
 const textColor = Colors.black54;
+final tabFont = GoogleFonts.dekko(fontSize: 22.0, fontWeight: FontWeight.w400);
+//const tabFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
 final itemFont =
 const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const textFont = const TextStyle(

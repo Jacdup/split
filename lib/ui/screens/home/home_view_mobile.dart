@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/ui/screens/home/request_list.dart';
@@ -178,8 +179,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
           labelColor: Colors.black87,
           unselectedLabelColor: Colors.black38,
           tabs: [
-            new Tab(text: "Items Available"),
-            new Tab(text: "Items Requested"),
+            new Tab(child: Text("Available", style: tabFont,), ),
+            new Tab(child: Text("Requested",style: tabFont,)),
           ],
           controller: _tabController,
         ),

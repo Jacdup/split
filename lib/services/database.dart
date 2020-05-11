@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -10,7 +13,6 @@ class DatabaseService{
   final String uid;
   DatabaseService({this. uid});
 
-//  var itemCount = 0;
   var uuid = Uuid();
 
   // collection reference
@@ -26,7 +28,6 @@ class DatabaseService{
       'name':name,
       'phoneNumber':phone,
       'surname' : surname,
-//      'location': location,
       'email' : email,
       'categories' : (categories).cast<String>(), // Really.
     });
@@ -60,19 +61,31 @@ class DatabaseService{
     return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
   }
 
-  // get user snapshot
-//  Future<User> get user async {
-//    return _getUserFromSnapshot(await userCollection.document(uid).get());
-////    userCollection.document(uid).get().then((DocumentSnapshot ds){
-////      return _getUserFromSnapshot(ds);
-////    }).catchError((e) => print('Error retrieving user data'));
-////    return null;
-////    return (userCollection.document(uid).snapshots().map(_getUserFromSnapshot)); // Get single document snapshot
-//  }
+
+  /* --------------------------------------------------------------------------
+  Push Notifications
+ * ---------------------------------------------------------------------------*/
+
+  Future saveDeviceToken(String fcmToken) async {
+
+    if (fcmToken != null){
+      //TODO: get user uid here
+      var tokenRef = userCollection.document(uid).collection('tokens').document(fcmToken);
+
+     return await tokenRef.setData({
+        'token': fcmToken,
+        'createdAt' : FieldValue.serverTimestamp(),
+        'platform' : Platform.operatingSystem,
+      });
+
+
+    }
+
+  }
 
 
   /* --------------------------------------------------------------------------
-  Item stuff
+  Items
  * ---------------------------------------------------------------------------*/
   Future addItemRequestedData(String itemName, String description, String usageDate, List<String> categories) async {
     String thisDocRef = uuid.v4().toString();
@@ -134,7 +147,7 @@ class DatabaseService{
     return snapshot.documents.map((doc){
 
       return Item( // Expects only positional arguments
-        doc.data['categories'].cast<String>(),
+        List<String>.from(doc.data['categories']), //.cast<String>()
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],
@@ -150,7 +163,7 @@ class DatabaseService{
 //      print('!!!!!!!!');
 //      print(doc.data['category'].runtimeType);
       return ItemAvailable( // Expects only positional arguments
-        doc.data['categories'].cast<String>(),
+        List<String>.from(doc.data['categories']), //.cast<String>(),
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],

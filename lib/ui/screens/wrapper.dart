@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twofortwo/services/push_notifications.dart';
 import 'package:twofortwo/ui/screens/home/home_view.dart';
 import 'authenticate/authenticate.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
@@ -42,6 +43,7 @@ class Wrapper extends StatelessWidget{
       return Authenticate();
 //      return AuthRoute;
     }else{
+      PushNotificationsManager().init(user.uid); //TODO: is this the right place to do this?
       return HomeView(user: user,);
     }
 

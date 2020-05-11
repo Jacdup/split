@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
+import 'package:twofortwo/services/push_notifications.dart';
 import 'package:twofortwo/ui/screens/home/drawer.dart';
 import '../../../utils/service_locator.dart';
 import 'package:flutter/services.dart';
@@ -60,32 +61,12 @@ void dispose() {
 @override
   Widget build(BuildContext context) {
 
-//    var localStorageService = locator<LocalStorageService>();
-//    final Item item1 = localStorageService.item; //  Getter
 
-    //TODO: get all from database here
-//    List<String> chosenCategories;
-
-//    chosenCategories = localStorageService.category;
-
-
-//    chosenCategories == null ? chosenCategories = DatabaseService().
-//    widget.chosenCategories == null ? chosenCategories = localStorageService.category : chosenCategories = widget.chosenCategories;
     FUser thisUser = widget.user;
-//    print(widget.chosenCategories);
-   // var appInfo = Provider.of<AppInfo>(context);
-//    var storageService = locator<LocalStorageService>();
-//    User thisUser = storageService.user; // Getter
-//    String userName = thisUser.name;
 
-//    Hero(
-//      tag: "New Request",
-//      child: Image.asset('split.png'),
-//    );
+
     return StreamProvider<User>.value(
       value: DatabaseService(uid: thisUser.uid).userData,
-
-//        StreamProvider<User>.value(value: DatabaseService(uid: thisUser.uid).userData), // Access stream
 
       child: WillPopScope(
         /* This function ensures the user cannot route back to categories with the back button */

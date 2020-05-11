@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
@@ -94,7 +95,7 @@ import 'package:twofortwo/services/auth.dart';
 //}
 class MenuDrawer extends StatelessWidget {
 
-  final userData;
+  final User userData;
 
 
   MenuDrawer({this.userData});

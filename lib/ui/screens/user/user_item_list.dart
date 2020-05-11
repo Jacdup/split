@@ -87,23 +87,24 @@ class _UserListState extends State<UserList> {
         if (index == allItems.length -1) {
           _buildBox = 80;
         }
-        if (chosenCategories.contains(allItems[index].category) )  {
-          i = i + 1;
-          return _buildRow(allItems[index], index, _buildBox, type);
-        }else{
-          if (index == allItems.length -1){
-            _buildBox = 80;
-            if (i == 0) {
-              return Center(child: Text("No items in chosen categories"));
-            }
-          }
-//          if (i == 0){
-//            i = i + 1;
-
-//          }else {
-          return Center();
+        return _buildRow(allItems[index], index, _buildBox, type);
+//        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {// Don't know why all this logic is here though
+//          i = i + 1;
+//          return _buildRow(allItems[index], index, _buildBox, type);
+//        }else{
+//          if (index == allItems.length -1){
+//            _buildBox = 80;
+//            if (i == 0) {
+//              return Center(child: Text("No items in chosen categories"));
+//            }
 //          }
-        }
+////          if (i == 0){
+////            i = i + 1;
+//
+////          }else {
+//          return Center();
+////          }
+//        }
 
       },
 //      separatorBuilder: (BuildContext context, int index) => const Divider(),
@@ -112,13 +113,16 @@ class _UserListState extends State<UserList> {
   }
 
   Widget _buildRow(dynamic item, int num, double buildBox, bool type) {
-    String category = item.category;
+    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
     String date = item.date;
     String itemRef = item.docRef;
+    int typeInt ;
+    type==true ? typeInt = 2 : typeInt = 1;
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
+//      tag: "row$num $typeInt",
       tag: "row$num 2",
       child: Wrap(
         children: <Widget>[
@@ -141,6 +145,7 @@ class _UserListState extends State<UserList> {
                     date,
                   ),
                   onTap: () {
+//                    print("row$num $typeInt");
                     _toggleDropdown(num);
                   },
                 ),

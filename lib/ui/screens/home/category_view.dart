@@ -29,7 +29,6 @@ class _ChooseCategoryState extends State<ChooseCategory> {
   var storageService = locator<LocalStorageService>();
   final List<String> _selectedCategories = [];
   final _biggerFont = const TextStyle(fontSize: 24.0);
-//  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +39,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
         screenHeight(context, dividedBy: (categories.length / 2));
     int rowCardNum = 0;
 
-
-
-//    bool alreadySaved = false;
+    //    bool alreadySaved = false;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -129,7 +126,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 //              _onButtonPress(user.uid);
             },
             icon: Icon(Icons.done),
-            label: Text('Done', style: _biggerFont,),
+            label: Text('Select', style: _biggerFont,),
             backgroundColor: customYellow1,
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

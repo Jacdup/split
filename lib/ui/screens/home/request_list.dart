@@ -144,7 +144,7 @@ class _RequestListState extends State<RequestList> {
   }
 
   Widget _buildRow(Item item, int num, double buildBox) {
-    List<String> category = item.categories;
+//    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
     String date = item.date;
