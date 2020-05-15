@@ -22,11 +22,26 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   TabController _tabController;
   ScrollController _scrollController;
+  int _currentIndex = 0;
   @override
   void initState() {
     super.initState();
     _scrollController = new ScrollController();
     _tabController = new TabController(length: 2, vsync: this);
+    _tabController.addListener(_handleTabIndex);
+  }
+
+  @override
+  void dispose() {
+    _tabController.removeListener(_handleTabIndex);
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  _handleTabIndex() {
+    setState(() {
+      //_currentIndex = _tabController.index;
+    });
   }
 
 
@@ -46,17 +61,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                 child: MenuDrawer(userData: userData,),
 //              child: _buildDrawer(context, userData),
             ),
-              floatingActionButton: FloatingActionButton.extended(
-                onPressed: () {
-                 print(_scrollController.offset);
-                  Navigator.pushNamed(context, NewItemRoute,
-                      arguments:
-                          userData.uid); // TODO: Can send userData to route
-                },
-                label: Text('Add item'),
-                icon: Icon(Icons.add),
-                backgroundColor: customYellow1,
-              ),
+              floatingActionButton: _actionButtons(userData.uid),
               body: NestedScrollView(
                   controller: _scrollController,
                   headerSliverBuilder:
@@ -166,6 +171,32 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     );
 
     // );
+  }
+
+  Widget _actionButtons(String uid){
+    return _tabController.index == 0 ?
+    FloatingActionButton.extended(
+      onPressed: () {
+//        print(_currentIndex);
+//        print(_scrollController.offset);
+        Navigator.pushNamed(context, NewItemRoute,
+            arguments: [uid, false]); // TODO: Can send userData to route
+      },
+      label: Text('Add item'),
+      icon: Icon(Icons.add),
+      backgroundColor: customYellow1,
+    )
+        : FloatingActionButton.extended(
+      onPressed: () {
+//        print(_scrollController.offset);
+
+        Navigator.pushNamed(context, NewItemRoute,
+            arguments: [uid,true]); // TODO: Can send userData to route
+      },
+      label: Text('Request item'),
+      icon: Icon(Icons.add),
+      backgroundColor: customYellow1,
+    );
   }
 
 //  _getTitle(String userName, ScrollController scrollController){

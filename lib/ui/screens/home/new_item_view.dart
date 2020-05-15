@@ -9,9 +9,11 @@ import 'package:twofortwo/shared/widgets.dart';
 
 class NewItem extends StatefulWidget {
 
-  final String uid;
+//  final String uid;
+//  final bool isTab1;
+  final List<Object> uidTab;
 
-  NewItem({this.uid});
+  NewItem({this.uidTab});
 
   @override
   _NewItemState createState() => _NewItemState();
@@ -19,18 +21,12 @@ class NewItem extends StatefulWidget {
 
 class _NewItemState extends State<NewItem> {
 
-//  List<String> _locations = [
-//    'Stellenbosch',
-//    'Rustenburg',
-//    'buenos aires'
-//  ]; // Option 2
-//  String _selectedLocation; // Option 2
-
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
 
-//  String _selectedCategory;
   bool loading = false;
+
+//  static String uid = widget.uidTab[0];
 
 
   String itemName;
@@ -59,7 +55,7 @@ class _NewItemState extends State<NewItem> {
         ? Loading()
         : DefaultTabController(
             length: 2,
-            initialIndex: 0,
+            initialIndex: widget.uidTab[1] ? 1 : 0,
             child: Scaffold(
                 backgroundColor: customBlue5,
                 appBar: PreferredSize(
@@ -150,7 +146,7 @@ class _NewItemState extends State<NewItem> {
               ),
               SizedBox(height: 20),
               Container(
-                child: IconButton(onPressed: (){AlertDialog(title: Text('Wait a little'),);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
+                child: IconButton(onPressed: (){print(widget.uidTab[1]);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
               ),
               //createDropDown(context),
 //              DropdownButtonFormField(
@@ -207,7 +203,7 @@ class _NewItemState extends State<NewItem> {
 //        loading = true;
 //      });
 //      Item newItem1 = new Item()
-      Item newItem = new Item(null, itemName, date, description, widget.uid, '1'); //TODO, send to category route
+      Item newItem = new Item(null, itemName, date, description, widget.uidTab[0], '1'); //TODO, send to category route
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
 
       // TODO, this in category view
@@ -238,7 +234,7 @@ class _NewItemState extends State<NewItem> {
 //      });
 //    print('!!!!!!!!!!');
 //    print(itemName);
-      ItemAvailable newItem = new ItemAvailable(null, itemName, date, description, widget.uid, '2');
+      ItemAvailable newItem = new ItemAvailable(null, itemName, date, description, widget.uidTab[0], '2');
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
 
 //      newItem = new Item(_selectedCategory, itemName, date, description);
