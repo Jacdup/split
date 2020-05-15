@@ -4,6 +4,7 @@ import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:twofortwo/shared/constants.dart';
 
 
 class UserList extends StatefulWidget {
@@ -134,13 +135,15 @@ class _UserListState extends State<UserList> {
                   contentPadding: EdgeInsets.all(12.0),
                   title: Text(
                     itemName,
-                    style: _itemFont,
+                    style: itemHeaderFont,
                   ),
                   subtitle: Text(
                     description,
+                    style: itemBodyFont,
                   ),
                   trailing: Text(
                     date,
+                    style: itemDate,
                   ),
                   onTap: () {
 //                    print("row$num $typeInt");

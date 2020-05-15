@@ -12,9 +12,6 @@ import 'package:twofortwo/ui/screens/home/available_list.dart';
 import 'package:twofortwo/ui/screens/home/drawer.dart';
 
 class BorrowListPortrait extends StatefulWidget {
-//  final List<dynamic> chosenCategories;
-//  final FUser user;
-//  BorrowListPortrait({Key key, this.user}) : super(key: key);
 
   @override
   _BorrowListPortraitState createState() => _BorrowListPortraitState();
@@ -22,9 +19,6 @@ class BorrowListPortrait extends StatefulWidget {
 
 class _BorrowListPortraitState extends State<BorrowListPortrait>
     with SingleTickerProviderStateMixin {
-//  final AuthService _auth = AuthService();
-//  final localStorageService = locator<LocalStorageService>();
-//  List<dynamic> userCategories = [];
 
   TabController _tabController;
   ScrollController _scrollController;
@@ -35,31 +29,17 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     _tabController = new TabController(length: 2, vsync: this);
   }
 
-//  assumeStrings(List<Object> objects) {
-//    List<String> strings = objects; // Runtime downcast check
-//    String string = strings[0]; // Expect a String value
-//  }
 
   @override
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
-//    print('here before');
     final User userData = Provider.of<User>(context).runtimeType == User
         ? Provider.of<User>(context)
         : null;
-//    print('here after');
-//    assumeStrings(userData.categories);
-//    return StreamBuilder<User>(
-//        stream: DatabaseService(uid: widget.user.uid).userData, // Access stream
-//        builder: (context, snapshot) {
-//          print(snapshot);
+
           if (userData != null) {
-//            User userData = snapshot.data;
-//            userCategories = userData.categories ?? [];
-//            return DefaultTabController(
-//                length: 2,
-//                initialIndex: 0,
+
             return new Scaffold(
               drawer: SizedBox(
               width: MediaQuery.of(context).size.width * 0.6, //20.0,

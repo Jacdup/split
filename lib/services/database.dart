@@ -66,21 +66,21 @@ class DatabaseService{
       );
 //    });
   }
+//
+//  Stream<User> get userData{
+//    return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
+//  }
 
   Stream<User> get userData{
-    return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
+    return userCollection.document(uid).get().then((snapshot){
+      try{
+        return _getUserFromSnapshot(snapshot);
+      }catch(e){
+        print(e);
+        return null;
+      }
+    }).asStream();
   }
-
-//  Stream<User> get userData{
-//    return userCollection.document(uid).get().then((snapshot){
-//      try{
-//        return User.fromSnapshot(snapshot);
-//      }catch(e){
-//        print(e);
-//        return null;
-//      }
-//    }).asStream();
-//  }
 
 
   /* --------------------------------------------------------------------------

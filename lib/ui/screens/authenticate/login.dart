@@ -80,7 +80,7 @@ class _LoginViewState extends State<Login> {
                     SizedBox(height: 10.0),
                     Text(
                       'Login',
-                      style: itemFont,
+                      style: headerFont,
                     ),
                     SizedBox(height: _space * 2),
                     TextFormField(

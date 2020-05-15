@@ -13,26 +13,6 @@ class User {
   final String email;
   final List<dynamic> categories;
 
-//  User.fromMap(Map<String, dynamic> data)
-//      : uid = data["uid"],
-//       name = data["name"],
-//        email = data['email'],
-//        surname = data['surname'],
-//        phone = data['phone'],
-//        categories = (data['categories']).cast<String>();
-//
-//  User.fromSnapshot(DocumentSnapshot snapshot)
-//      :
-////        documentID = snapshot.documentID,
-//        uid = snapshot['uid'],
-//        name = snapshot['name'],
-//        surname = snapshot['surname'],
-//        phone = snapshot['phoneNumber'],
-//        email = snapshot['email'],
-//        categories = List<String>.from(snapshot['categories']);
-//}
-//        reviewers = List.from(data['reviewers']);
-
   User({this.uid, this.name, this.surname, this.email, this.phone, this.categories}) : super();
 
 

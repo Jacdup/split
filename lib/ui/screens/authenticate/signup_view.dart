@@ -72,7 +72,7 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space / 2),
                     Text(
                       'Register',
-                      style: itemFont,
+                      style: headerFont,
                     ),
                     SizedBox(height: _space * 2),
                     TextFormField(

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
+import 'package:twofortwo/shared/constants.dart';
 
 
 class RequestList extends StatefulWidget {
@@ -20,7 +21,7 @@ class RequestList extends StatefulWidget {
 }
 
 class _RequestListState extends State<RequestList> {
-  final _itemFont = const TextStyle(fontSize: 15.0);
+
   List<bool> _infoShow = [];
 
   void _toggleDropdown(int num) {
@@ -160,13 +161,15 @@ class _RequestListState extends State<RequestList> {
               contentPadding: EdgeInsets.all(12.0),
               title: Text(
                 itemName,
-                style: _itemFont,
+                style: itemHeaderFont,
               ),
               subtitle: Text(
                 description,
+                style: itemBodyFont,
               ),
               trailing: Text(
                 date,
+                style: itemDate,
               ),
               onTap: () {
                 _toggleDropdown(num);
