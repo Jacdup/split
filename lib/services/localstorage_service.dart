@@ -78,13 +78,13 @@ class LocalStorageService {
     if (userJson == null) {
       return null;
     }
-
-    return User.fromJson(json.decode(userJson));
+    return null;
+//    return User.fromJson(json.decode(userJson));
   }
 
 /* Setter */
   set user(User userToSave) {
-    saveStringToDisk(UserKey, json.encode(userToSave.toJson()));
+//    saveStringToDisk(UserKey, json.encode(userToSave.toJson()));
   }
 
   /* Getter */

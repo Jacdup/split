@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
-import '../../../utils/service_locator.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/services/database.dart';
-import 'package:twofortwo/shared/constants.dart';
 
 class NewItem extends StatefulWidget {
 
@@ -34,7 +29,7 @@ class _NewItemState extends State<NewItem> {
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
 
-  String _selectedCategory;
+//  String _selectedCategory;
   bool loading = false;
 
 

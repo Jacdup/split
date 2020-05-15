@@ -1,18 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:twofortwo/services/auth.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
-import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/ui/screens/home/request_list.dart';
 import 'package:twofortwo/utils/colours.dart';
-import 'package:twofortwo/utils/overlay.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/ui/screens/home/available_list.dart';
-import 'package:overlay_container/overlay_container.dart';
 import 'package:twofortwo/ui/screens/home/drawer.dart';
 
 class BorrowListPortrait extends StatefulWidget {
@@ -26,7 +22,7 @@ class BorrowListPortrait extends StatefulWidget {
 
 class _BorrowListPortraitState extends State<BorrowListPortrait>
     with SingleTickerProviderStateMixin {
-  final AuthService _auth = AuthService();
+//  final AuthService _auth = AuthService();
 //  final localStorageService = locator<LocalStorageService>();
 //  List<dynamic> userCategories = [];
 
@@ -39,17 +35,19 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     _tabController = new TabController(length: 2, vsync: this);
   }
 
-  assumeStrings(List<Object> objects) {
-    List<String> strings = objects; // Runtime downcast check
-    String string = strings[0]; // Expect a String value
-  }
+//  assumeStrings(List<Object> objects) {
+//    List<String> strings = objects; // Runtime downcast check
+//    String string = strings[0]; // Expect a String value
+//  }
 
   @override
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
 //    print('here before');
-    final User userData = Provider.of<User>(context) ?? []; // This motherf&**&er asserts at runtime
+    final User userData = Provider.of<User>(context).runtimeType == User
+        ? Provider.of<User>(context)
+        : null;
 //    print('here after');
 //    assumeStrings(userData.categories);
 //    return StreamBuilder<User>(
@@ -200,36 +198,36 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //    }
 //  }
 
-  Widget _buildItemInfo(BuildContext context, int num, bool vis) {
-    return AnchoredOverlay(
-      showOverlay: true,
-      overlayBuilder: (context, offset) {
-        return CenterAbout(
-          position: Offset(offset.dx, offset.dy + 50.0),
-
-//      return Hero(
-//        tag: 'row$num',
-          child: ItemInfo(
-//            numType[1]: num,
-              ),
-
-//      child: Container(
+//  Widget _buildItemInfo(BuildContext context, int num, bool vis) {
+//    return AnchoredOverlay(
+//      showOverlay: true,
+//      overlayBuilder: (context, offset) {
+//        return CenterAbout(
+//          position: Offset(offset.dx, offset.dy + 50.0),
 //
-//        margin: const EdgeInsets.all(50.0),
-//        color: Colors.white,
-//        child: Center(
-//          child: Card(
+////      return Hero(
+////        tag: 'row$num',
+//          child: ItemInfo(
+////            numType[1]: num,
+//              ),
 //
-//            child: Text(
-//
-//              'test$num', style: TextStyle(color: Colors.black),
-//            ),
-//          ),
-//        ),
-//      ),
-//      );
-        );
-      },
-    );
-  }
+////      child: Container(
+////
+////        margin: const EdgeInsets.all(50.0),
+////        color: Colors.white,
+////        child: Center(
+////          child: Card(
+////
+////            child: Text(
+////
+////              'test$num', style: TextStyle(color: Colors.black),
+////            ),
+////          ),
+////        ),
+////      ),
+////      );
+//        );
+//      },
+//    );
+//  }
 }

@@ -34,7 +34,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     final User userData = widget.userData;
-    print(userData);
+//    print(userData);
 
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];

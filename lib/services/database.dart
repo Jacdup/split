@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
-//import 'dart:math';
 
 import 'package:uuid/uuid.dart';
 
@@ -41,18 +40,29 @@ class DatabaseService{
 
 
   User _getUserFromSnapshot(DocumentSnapshot snapshot){
-  var userData = snapshot.data; // This itself is a map
+//  var userData = snapshot.data; // This itself is a map
+//  List<String> categoriesFromDb = List<String>.from(snapshot.data['categories']);
+//    categoriesFromDb = snapshot.data['categories'].map<ItemCount>((item) {
+//      return ItemCount.fromMap(item);
+//    }).toList();
+//    User thisUser = User.fromMap(snapshot.data);
+//    print(thisUser.uid);
+//
+//    return thisUser;
+//  return User.fromSnapshot(snapshot);
+
+  List<String> categoriesFromDb = (snapshot.data['categories']).cast<String>();
 //      print('!!!!!!!!');
 //      print(userData['surname'].runtimeType);
-//      print(userData['categories'].runtimeType);
-//      print((userData['categories']).cast<String>().runtimeType);
+//      print(snapshot.data['categories'].runtimeType);
+//      print((categoriesFromDb).runtimeType);
 //    return snapshot.data.map((snapshot) {
       return User(uid: uid,
-          name: userData['name'],
-          email: userData['email'],
-          phone: userData['phoneNumber'],
-          categories:(userData['categories']).cast<String>(), //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
-          surname: userData['surname'],
+          name: snapshot.data['name'],
+          email: snapshot.data['email'],
+          phone: snapshot.data['phoneNumber'],
+          categories: categoriesFromDb, //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
+          surname: snapshot.data['surname'],
       );
 //    });
   }
@@ -60,6 +70,17 @@ class DatabaseService{
   Stream<User> get userData{
     return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
   }
+
+//  Stream<User> get userData{
+//    return userCollection.document(uid).get().then((snapshot){
+//      try{
+//        return User.fromSnapshot(snapshot);
+//      }catch(e){
+//        print(e);
+//        return null;
+//      }
+//    }).asStream();
+//  }
 
 
   /* --------------------------------------------------------------------------

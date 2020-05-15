@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/item_service.dart';
-import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 
 
@@ -43,27 +42,27 @@ class _RequestListState extends State<RequestList> {
 //      sigmaYVal = num;
     });
   }
-  OverlayEntry _overlayEntry;
-  OverlayState overlayState;
+//  OverlayEntry _overlayEntry;
+//  OverlayState overlayState;
 
-  void _insertOverlayEntry() async {
-    _overlayEntry = OverlayEntry(builder: (context){
-      print('test');
-      return ItemInfo(numType: [0,1],);
-    },
-    );
+//  void _insertOverlayEntry() async {
+//    _overlayEntry = OverlayEntry(builder: (context){
+//      print('test');
+//      return ItemInfo(numType: [0,1],);
+//    },
+//    );
 
-  }
+//  }
 
-    void _removeOverlayEntry() {
-      _overlayEntry?.remove();
-      _overlayEntry = null;
-    }
+//    void _removeOverlayEntry() {
+//      _overlayEntry?.remove();
+//      _overlayEntry = null;
+//    }
 
   @override
   Widget build(BuildContext context) {
 
-    overlayState = OverlayState();
+//    overlayState = OverlayState();
     var numItems = 0;
     if (widget.allItems != null){
       numItems = widget.allItems.length;

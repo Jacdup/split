@@ -1,15 +1,11 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
-import 'package:twofortwo/services/push_notifications.dart';
-import 'package:twofortwo/ui/screens/home/drawer.dart';
 import '../../../utils/service_locator.dart';
 import 'package:flutter/services.dart';
 import 'package:twofortwo/ui/responsive/screen_type_layout.dart';
 import 'package:twofortwo/ui/responsive/orientation_layout.dart';
 import 'home_view_mobile.dart';
-import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:provider/provider.dart';
@@ -30,11 +26,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin{
 
 AnimationController _animationController;
-static const double maxSlide = 200.0 ;//TODO, responsive
+//static const double maxSlide = 200.0 ;//TODO, responsive
 static const Duration toggleDuration = Duration(milliseconds: 250);
-static const double minDragStartEdge = 20;
-static const double maxDragStartEdge = maxSlide - 16;
-bool _canBeDragged = false;
+//static const double minDragStartEdge = 20;
+//static const double maxDragStartEdge = maxSlide - 16;
+//bool _canBeDragged = false;
 
 @override
 void initState(){
@@ -77,7 +73,7 @@ void dispose() {
             return _confirmLogout(context);
 //            return false;
 //          }
-          return true;
+//          return true;
 //          return _confirmLogout(context);
           //return false;
         }, // The page will not respond to back press
@@ -105,39 +101,39 @@ void dispose() {
       ),
     );
   }
-
-
-void _onDragStart(DragStartDetails details) {
-  bool isDragOpenFromLeft = _animationController.isDismissed;
-  bool isDragCloseFromRight = _animationController.isCompleted;
-  _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
-}
-
-void _onDragUpdate(DragUpdateDetails details) {
-  if (_canBeDragged) {
-    double delta = details.primaryDelta / maxSlide;
-    _animationController.value += delta;
-  }
-}
-
-void _onDragEnd(DragEndDetails details) {
-  //I have no idea what it means, copied from Drawer
-  double _kMinFlingVelocity = 365.0;
-
-  if (_animationController.isDismissed || _animationController.isCompleted) {
-    return;
-  }
-  if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
-    double visualVelocity = details.velocity.pixelsPerSecond.dx /
-        MediaQuery.of(context).size.width;
-
-    _animationController.fling(velocity: visualVelocity);
-  } else if (_animationController.value < 0.5) {
-    _animationController.reverse();
-  } else {
-    _animationController.forward();
-  }
-}
+//
+//
+//void _onDragStart(DragStartDetails details) {
+//  bool isDragOpenFromLeft = _animationController.isDismissed;
+//  bool isDragCloseFromRight = _animationController.isCompleted;
+//  _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
+//}
+//
+//void _onDragUpdate(DragUpdateDetails details) {
+//  if (_canBeDragged) {
+//    double delta = details.primaryDelta / maxSlide;
+//    _animationController.value += delta;
+//  }
+//}
+//
+//void _onDragEnd(DragEndDetails details) {
+//  //I have no idea what it means, copied from Drawer
+//  double _kMinFlingVelocity = 365.0;
+//
+//  if (_animationController.isDismissed || _animationController.isCompleted) {
+//    return;
+//  }
+//  if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
+//    double visualVelocity = details.velocity.pixelsPerSecond.dx /
+//        MediaQuery.of(context).size.width;
+//
+//    _animationController.fling(velocity: visualVelocity);
+//  } else if (_animationController.value < 0.5) {
+//    _animationController.reverse();
+//  } else {
+//    _animationController.forward();
+//  }
+//}
 
 
 

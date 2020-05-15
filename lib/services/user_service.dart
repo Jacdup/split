@@ -1,18 +1,8 @@
-import 'localstorage_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+
 
 // At the beginning, the user details should be obtained with the storage service
 // After that, the user should be accessed by this method
 // This method should store a copy of the user details, without continually fetching from the storage service
-
-class UserService {
-  final String userName;
-
-  const UserService({ this.userName}) : super();
-
-
-}
 
 class User {
 
@@ -23,28 +13,49 @@ class User {
   final String email;
   final List<dynamic> categories;
 
-  User({this.uid, this.name, this.surname, this.email, this.phone, this.categories});
+//  User.fromMap(Map<String, dynamic> data)
+//      : uid = data["uid"],
+//       name = data["name"],
+//        email = data['email'],
+//        surname = data['surname'],
+//        phone = data['phone'],
+//        categories = (data['categories']).cast<String>();
+//
+//  User.fromSnapshot(DocumentSnapshot snapshot)
+//      :
+////        documentID = snapshot.documentID,
+//        uid = snapshot['uid'],
+//        name = snapshot['name'],
+//        surname = snapshot['surname'],
+//        phone = snapshot['phoneNumber'],
+//        email = snapshot['email'],
+//        categories = List<String>.from(snapshot['categories']);
+//}
+//        reviewers = List.from(data['reviewers']);
 
-  User.fromJson(Map<String, dynamic> json)
-      : uid = json['uid'],
-        name = json['name'],
-        email = json['email'],
-        surname = json['surname'],
-        phone = json['phone'],
-        categories = (json['categories']).cast<String>();
-  // age = json['age'];
+  User({this.uid, this.name, this.surname, this.email, this.phone, this.categories}) : super();
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uid'] = this.uid;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['surname'] = this.surname;
-    data['phone'] = this.phone;
-    data['categories'] = (this.categories).cast<String>();
-    //data['age'] = this.age;
-    return data;
-  }
+
+//  User.fromJson(Map<String, dynamic> json)
+//      : uid = json['uid'],
+//        name = json['name'],
+//        email = json['email'],
+//        surname = json['surname'],
+//        phone = json['phone'],
+//        categories = (json['categories']).cast<String>();
+//  // age = json['age'];
+//
+//  Map<String, dynamic> toJson() {
+//    final Map<String, dynamic> data = new Map<String, dynamic>();
+//    data['uid'] = this.uid;
+//    data['name'] = this.name;
+//    data['email'] = this.email;
+//    data['surname'] = this.surname;
+//    data['phone'] = this.phone;
+//    data['categories'] = (this.categories).cast<String>();
+//    //data['age'] = this.age;
+//    return data;
+//  }
 }
 
 class FUser {

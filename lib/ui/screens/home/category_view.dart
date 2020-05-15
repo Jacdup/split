@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
-import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/button_presses.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';
@@ -37,7 +36,6 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 
     double cardHeight =
         screenHeight(context, dividedBy: (categories.length / 2));
-    int rowCardNum = 0;
 
     //    bool alreadySaved = false;
     // This method is rerun every time setState is called, for instance as done

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:twofortwo/utils/overlay.dart';
 
 class ItemInfo extends StatefulWidget {
 //  final int num;

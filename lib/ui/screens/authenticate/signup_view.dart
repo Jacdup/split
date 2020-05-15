@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -18,22 +17,22 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
-  List<String> _locations = [
-    'Stellenbosch',
-    'Rustenburg',
-    'buenos aires'
-  ]; // Option 2
-  String _selectedLocation = "Stellenbosch"; // Option 2
+//  List<String> _locations = [
+//    'Stellenbosch',
+//    'Rustenburg',
+//    'buenos aires'
+//  ]; // Option 2
+//  String _selectedLocation = "Stellenbosch"; // Option 2
   User userDetails;
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   bool _obscureText = true;
 
-  @override
-  void initState() {
-    _obscureText = true;
-  }
+//  @override
+//  void initState() {
+//    _obscureText = true;
+//  }
 
   String userName = '';
   String userLastName = '';
@@ -211,35 +210,35 @@ class _SignupViewState extends State<SignupView> {
   }
 
   // Not used at the moment
-  Widget _createDropDown() {
-    return DropdownButtonFormField(
-      decoration: textInputDecoration.copyWith(),
-      autovalidate: true,
-      validator: (_selectedLocation) =>
-      _selectedLocation.isEmpty
-          ? 'Please choose a location'
-          : null,
-      hint: Text(
-        'Please choose a location',
-        style: textFont,
-      ),
-      // Not necessary for Option 1
-      value: _selectedLocation,
-      onChanged: (newValue) {
-        setState(() {
-          _selectedLocation = newValue;
-        });
-      },
-      items: _locations.map((location) {
-        return DropdownMenuItem(
-          child: new Text(
-            location,
-            style: textFont,
-          ),
-          value: location,
-        );
-      }).toList(),
-    );
-  }
+//  Widget _createDropDown() {
+//    return DropdownButtonFormField(
+//      decoration: textInputDecoration.copyWith(),
+//      autovalidate: true,
+//      validator: (_selectedLocation) =>
+//      _selectedLocation.isEmpty
+//          ? 'Please choose a location'
+//          : null,
+//      hint: Text(
+//        'Please choose a location',
+//        style: textFont,
+//      ),
+//      // Not necessary for Option 1
+//      value: _selectedLocation,
+//      onChanged: (newValue) {
+//        setState(() {
+//          _selectedLocation = newValue;
+//        });
+//      },
+//      items: _locations.map((location) {
+//        return DropdownMenuItem(
+//          child: new Text(
+//            location,
+//            style: textFont,
+//          ),
+//          value: location,
+//        );
+//      }).toList(),
+//    );
+//  }
 
 }

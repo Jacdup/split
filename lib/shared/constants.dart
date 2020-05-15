@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:twofortwo/utils/colours.dart';
 
 final List<String> categories = [
   'Sport & Leisure',

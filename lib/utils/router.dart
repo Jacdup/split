@@ -31,7 +31,7 @@ switch(settings.name){
 //    var chosenCategories = settings.arguments;
     return MaterialPageRoute(builder: (context) { return HomeView(); });
   case LoginRoute:
-    var argument = settings.arguments;
+//    var argument = settings.arguments;
     return MaterialPageRoute(builder: (context) => Login());
   case SignupRoute:
     return MaterialPageRoute(builder: (context) => SignupView());

@@ -25,10 +25,10 @@ class _LoginViewState extends State<Login> {
   bool loading = false;
   bool _obscureText = true;
 
-  @override
-  void initState() {
-    _obscureText = true;
-  }
+//  @override
+//  void initState() {
+//    _obscureText = true;
+//  }
 
   bool rememberMe = false;
 

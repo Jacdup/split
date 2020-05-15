@@ -1,11 +1,8 @@
-import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
-import 'package:twofortwo/shared/loading.dart';
 
 /*
 This is to keep the 'business' logic separate from the widget construction.

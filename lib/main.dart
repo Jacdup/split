@@ -1,24 +1,14 @@
-//import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/auth.dart';
-import 'package:twofortwo/services/push_notifications.dart';
 import 'utils/service_locator.dart';
-import './services/localstorage_service.dart';
 import 'utils/colours.dart';
-import 'package:device_preview/device_preview.dart';
-import 'ui/screens/wrapper.dart';
 import 'package:twofortwo/utils/router.dart' as router;
 import 'package:twofortwo/utils/routing_constants.dart';
-import 'package:provider/provider.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/services/database.dart';
 
-
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
