@@ -57,6 +57,7 @@ class PushNotificationsManager {
         _firebaseMessaging.requestNotificationPermissions();
       }else{
 //        var fcmToken = _getDeviceToken();
+//      print("!!!!!!!!!!!!");
         String fcmToken = await _firebaseMessaging.getToken(); //TODO, abstract this to function
 //
         await DatabaseService(uid: uid).saveDeviceToken(fcmToken);

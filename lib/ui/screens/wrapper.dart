@@ -13,6 +13,7 @@ class Wrapper extends StatelessWidget{
 //    var localStorageService = locator<LocalStorageService>();
 
     final FUser user = Provider.of<FUser>(context); // Firestore user (contains uid, email)
+    bool _initialized = false;
 //    print(user.uid);
 //    Future<User> userAll = getUser(user.uid);
 //    userAll.then((User result){
@@ -38,7 +39,11 @@ class Wrapper extends StatelessWidget{
       return Authenticate();
 //      return AuthRoute;
     }else{ // We have a user, so initialize tokens
-      PushNotificationsManager().init(user.uid); //TODO: is this the right place to do this?
+        if (!_initialized) {
+          PushNotificationsManager().init(
+              user.uid); //TODO: is this the right place to do this?
+          _initialized = true;
+        }
       return HomeView(user: user,);
     }
 

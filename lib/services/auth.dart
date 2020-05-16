@@ -34,7 +34,7 @@ class AuthService {
   Stream<FUser> get user {
 //    dynamic userAll = DatabaseService(uid: user.).user;
     return _auth.onAuthStateChanged
-        .map((FirebaseUser user) => _userFromFirebaseUser(user)); //TODO: change so that database user is sent to stream
+        .map((FirebaseUser user) => _userFromFirebaseUser(user));
 //        .map(_userFromFirebaseUser()); // This does the same as above
 //        .map(FirebaseUser);
   }

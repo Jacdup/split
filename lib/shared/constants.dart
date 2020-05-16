@@ -14,11 +14,11 @@ final List<String> categories = [
 
 
 const textColor = Colors.black54;
-final tabFont = GoogleFonts.openSans(fontSize: 22.0, fontWeight: FontWeight.w600);
+final tabFont = GoogleFonts.muli(fontSize: 22.0, fontWeight: FontWeight.w600);
 //const tabFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
-final itemHeaderFont = GoogleFonts.openSans(fontSize:16.0, fontWeight: FontWeight.w600,);
-final itemBodyFont = GoogleFonts.openSans(fontSize: 12.0, color: Colors.black87);
-final itemDate     = GoogleFonts.openSansCondensed(fontSize: 15.0, fontWeight: FontWeight.w500);
+final itemHeaderFont = GoogleFonts.muli(fontSize:16.0, fontWeight: FontWeight.w600,);
+final itemBodyFont = GoogleFonts.muli(fontSize: 12.0, color: Colors.black87);
+final itemDate     = GoogleFonts.muli(fontSize: 12.0, fontWeight: FontWeight.w500);
 
 final headerFont =const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const textFont = const TextStyle(

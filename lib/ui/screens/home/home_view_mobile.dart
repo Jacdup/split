@@ -29,6 +29,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     _scrollController = new ScrollController();
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabIndex);
+    _tabController.animation.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
   }
 
   @override
@@ -49,7 +50,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   Widget build(BuildContext context) {
     final items = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
-    final User userData = Provider.of<User>(context).runtimeType == User
+    final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
         ? Provider.of<User>(context)
         : null;
 
@@ -174,16 +175,18 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   }
 
   Widget _actionButtons(String uid){
-    return _tabController.index == 0 ?
+
+//  print(tabPosition);
+    return _tabController.animation.value < 0.5 ?
     FloatingActionButton.extended(
       onPressed: () {
 //        print(_currentIndex);
 //        print(_scrollController.offset);
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid, false]); // TODO: Can send userData to route
+            arguments: [uid, false]);
       },
       label: Text('Add item'),
-      icon: Icon(Icons.add),
+      icon:  Icon(Icons.add),
       backgroundColor: customYellow1,
     )
         : FloatingActionButton.extended(
@@ -191,7 +194,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //        print(_scrollController.offset);
 
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid,true]); // TODO: Can send userData to route
+            arguments: [uid,true]);
       },
       label: Text('Request item'),
       icon: Icon(Icons.add),
