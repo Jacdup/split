@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
@@ -188,12 +189,13 @@ class _RequestListState extends State<RequestList> {
                   FlatButton(
                     child: const Text('Contact'),
                     onPressed: () {
-                      print("row$num");
-                      _toggleBlur(1,num);
+//                      print("row$num");
+//                      _toggleBlur(1,num);
+                      showContact.value = true;
 //                      _insertOverlayEntry();
 //                      overlayState.insert(_overlayEntry);
 //                      overlayState.insert(_overlayEntry);
-                      Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 1]);
+//                      Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 1]);
                       },
                   ),
                 ],

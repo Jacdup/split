@@ -39,8 +39,8 @@ switch(settings.name){
     var argument = settings.arguments;
     return MaterialPageRoute(builder: (context) => NewItem(uidTab: argument,));
     case getItemInfoRoute:
-      var argument = settings.arguments;
-      return MaterialPageRoute(builder: (context) => ItemInfo(numType: argument));
+//      var argument = settings.arguments;
+      return MaterialPageRoute(builder: (context) => ItemInfo());
 //num: argument, type: argument,
     case ProfileRoute:
       var argument = settings.arguments;

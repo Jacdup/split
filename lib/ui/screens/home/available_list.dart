@@ -139,8 +139,10 @@ class _AvailableListState extends State<AvailableList> {
                       FlatButton(
                         child: const Text('Contact'),
                         onPressed: () {
-                          print("row$num");
+//                          print("row$num");
                           showContact.value = true;
+                          // TODO, okay now we have a nice UI, but also a different problem
+                          // How to actually send [itemID] (and by extension item.uid, item.name) up the widget tree to home_view
 
 //                          setState(() {
 //                            _contactShow = true;
