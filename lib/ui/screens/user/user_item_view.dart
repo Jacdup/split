@@ -95,7 +95,8 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 //            IconButton(alignment: Alignment.centerLeft,icon: Icon(Icons.arrow_back)),
             Row(
               children: <Widget>[
-                IconButton(icon: Icon(Icons.arrow_back), iconSize: 32.0,onPressed: (){Navigator.pop(context);},),
+                BackButton(onPressed: (){Navigator.pop(context);}),
+//                IconButton(icon: Icon(Icons.arrow_back), iconSize: 32.0,onPressed: (){Navigator.pop(context);},),
 
                 Expanded(
                   child: Padding(

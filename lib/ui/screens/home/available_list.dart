@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
@@ -19,6 +22,8 @@ class AvailableList extends StatefulWidget {
 
 class _AvailableListState extends State<AvailableList> {
   List<bool> _infoShow = [];
+  bool _contactShow = false;
+
 
   void _toggleDropdown(int num) {
     setState(() {
@@ -40,7 +45,12 @@ class _AvailableListState extends State<AvailableList> {
     if (widget.allItems == null){
       return Center(child: Text("No items"),);
     }else{
-    return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
+//    return Stack(
+//      children: <Widget>[
+        return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
+//        _contactShow ?  _layer(): SizedBox.shrink() ,
+//      ],
+//    );
     }
   }
 
@@ -130,7 +140,21 @@ class _AvailableListState extends State<AvailableList> {
                         child: const Text('Contact'),
                         onPressed: () {
                           print("row$num");
-                          Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);},
+                          showContact.value = true;
+
+//                          setState(() {
+//                            _contactShow = true;
+////                            return Stack(
+////                              children: <Widget>[
+////                                _contact(),
+////                                //Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);
+////
+////                              ],
+////
+////                            );
+//                          });
+//                          Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);
+                          },
                       ),
                     ],
                   ),
@@ -171,5 +195,51 @@ class _AvailableListState extends State<AvailableList> {
     );
     // return false;
     //return true;
+  }
+
+  Widget _layer(){
+    print("here");
+
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(color: Colors.transparent,),)),
+      _contact(),
+      ],
+
+    );
+
+  }
+
+  Widget _contact(){
+
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black54,width: 3.0)
+      ),
+      margin: const EdgeInsets.fromLTRB(50.0, 200.0, 50.0, 200.0),
+//            position: Offset(offset.dx, offset.dy),
+//        color: Colors.white,
+      child: Center(
+        child: Hero(
+          tag: "row$num 2",
+          child: Card(
+
+//            child: Text(
+//              'test${widget.num}', style: TextStyle(color: Colors.black),
+//            ),
+              elevation: 4.0,
+              child: Column(
+                children: <Widget>[
+                  Center(child: Text("TODO"))
+                ],
+              )
+
+          ),
+        ),
+      ),
+
+    );
   }
 }

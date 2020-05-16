@@ -1,6 +1,11 @@
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
+import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/widgets.dart';
 import '../../../utils/service_locator.dart';
 import 'package:flutter/services.dart';
 import 'package:twofortwo/ui/responsive/screen_type_layout.dart';
@@ -28,6 +33,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 AnimationController _animationController;
 //static const double maxSlide = 200.0 ;//TODO, responsive
 static const Duration toggleDuration = Duration(milliseconds: 250);
+
 //static const double minDragStartEdge = 20;
 //static const double maxDragStartEdge = maxSlide - 16;
 //bool _canBeDragged = false;
@@ -88,7 +94,26 @@ void dispose() {
 //                  children: <Widget>[
 //                    MenuDrawer(userData: thisUser,),
 //                    MyDrawer(),
-                    portrait: BorrowListPortrait(),
+//  return ValueListenableBuilder( // listens to value of loading
+//  valueListenable: loading,
+//  builder: (context, value, child){
+
+                    portrait:
+                        Stack(
+                          children: <Widget>[
+                            BorrowListPortrait(),
+                            ValueListenableBuilder(
+                              valueListenable: showContact,
+                              builder: (context, value, child){
+                                if (value == true){
+                                  return _layer();}
+                                else{
+                                  return SizedBox.shrink();
+                                }
+                              },
+                            )
+                          ],
+                        ),
 
 //                  ],
 //                );
@@ -135,7 +160,70 @@ void dispose() {
 //  }
 //}
 
+  Widget _layer(){
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(color: Colors.transparent,),)),
+        _contact(),
+      ],
 
+    );
+
+  }
+
+  Widget _contact(){
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+      margin: const EdgeInsets.fromLTRB(50.0, 200.0, 50.0, 200.0),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(const Radius.circular(20.0)),
+          border: Border.all(color: Colors.grey,width: 3.0)
+      ),
+      child: Scaffold(
+//        appBar: PreferredSize(
+//          preferredSize: Size.fromHeight(5.0),
+//          child: AppBar(
+//            leading: IconButton(icon: Icon(Icons.close), onPressed: (){showContact.value = false;},),
+//            backgroundColor: Colors.white,
+//            elevation: 0.0,
+//
+//          ),
+//        ),
+        backgroundColor: Colors.white,
+        body: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.close), onPressed: (){showContact.value = false;},),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25.0, 0, 0,0),
+                  child: Text("Send a message", style: itemHeaderFont,),
+                ),
+//                IconButton(icon: Icon(Icons.arrow_back), iconSize: 32.0,onPressed: (){showContact.value = false;},),
+              ],
+            ),
+            Center(
+              child: Card(
+//            child: Text(
+//              'test${widget.num}', style: TextStyle(color: Colors. black),
+//            ),
+                  elevation: 4.0,
+                  child: Column(
+                    children: <Widget>[
+                      Center(child: Text("TODO"))
+                    ],
+                  )
+
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
 
 

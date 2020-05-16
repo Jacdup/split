@@ -85,15 +85,9 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                     controller: _tabController,
                   )),
             );
-//            );
           } else {
-//            print('in here');
-//            _auth.logOut();//TODO
-//            return Navigator.pushReplacementNamed(context, LoginRoute);
-//            return Login();
             return Loading();
           }
-//        });
   }
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
