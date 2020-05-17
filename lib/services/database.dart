@@ -40,23 +40,9 @@ class DatabaseService{
 
 
   User _getUserFromSnapshot(DocumentSnapshot snapshot){
-//  var userData = snapshot.data; // This itself is a map
-//  List<String> categoriesFromDb = List<String>.from(snapshot.data['categories']);
-//    categoriesFromDb = snapshot.data['categories'].map<ItemCount>((item) {
-//      return ItemCount.fromMap(item);
-//    }).toList();
-//    User thisUser = User.fromMap(snapshot.data);
-//    print(thisUser.uid);
-//
-//    return thisUser;
-//  return User.fromSnapshot(snapshot);
 
   List<String> categoriesFromDb = (snapshot.data['categories']).cast<String>();
-//      print('!!!!!!!!');
-//      print(userData['surname'].runtimeType);
-//      print(snapshot.data['categories'].runtimeType);
-//      print((categoriesFromDb).runtimeType);
-//    return snapshot.data.map((snapshot) {
+
       return User(uid: uid,
           name: snapshot.data['name'],
           email: snapshot.data['email'],
@@ -64,7 +50,6 @@ class DatabaseService{
           categories: categoriesFromDb, //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
           surname: snapshot.data['surname'],
       );
-//    });
   }
 //
 //  Stream<User> get userData{
@@ -84,9 +69,10 @@ class DatabaseService{
 
 
   /* --------------------------------------------------------------------------
-  Push Notifications
+  Notifications
  * ---------------------------------------------------------------------------*/
 
+  // Push notifications
   Future saveDeviceToken(String fcmToken) async {
 
     if (fcmToken != null){
@@ -98,12 +84,26 @@ class DatabaseService{
         'createdAt' : FieldValue.serverTimestamp(),
         'platform' : Platform.operatingSystem,
       });
+    }
+  }
 
+  // Message notifications
+  Future saveMessageToUserProfile(String messagePayload, String datePayload, String ownerUid, String itemName, String fromUid ) async {
+    String messageDocRef = uuid.v4().toString();
 
+    if (uid != null){
+      var messageRef = userCollection.document(ownerUid).collection('messages').document(messageDocRef);
+
+      return await messageRef.setData({
+        'forItem' : itemName,
+        'from' : fromUid,
+        'message' : messagePayload,
+        'dateRequested' : datePayload,
+        'timeStamp' : FieldValue.serverTimestamp(),
+      });
     }
 
   }
-
 
   /* --------------------------------------------------------------------------
   Items
@@ -139,8 +139,6 @@ class DatabaseService{
 
   Future deleteItem(String documentRef, bool type) async {
 
-//    dynamic result;
-
     await Firestore.instance.runTransaction((Transaction myTransaction) async {
       if (type){
         return await myTransaction.delete(itemAvailableCollection.document(documentRef));
@@ -149,18 +147,45 @@ class DatabaseService{
       }
     });
 
+
 //    if (result == null){
 //      await Firestore.instance.runTransaction((Transaction myTransaction) async {
 //
 //      });
 //    }
-
-
-
-
 //    return await itemAvailableCollection.document(documentRef).delete(); // Easier, but not best practice.
   }
 
+  Future contactItemOwner(String documentRef, String messagePayload, String datePayload, bool type) async {
+    dynamic result;
+
+    if (type){
+      await itemAvailableCollection.document(documentRef).get().then((value) {
+        result = value.data.map((key, value) {
+//          "uid" : value
+        }); // a map
+        print(result.uid);
+      });
+    }else{
+      await itemRequestCollection.document(documentRef).get().then((value) {
+        result = value.data;
+      });
+    }
+
+//
+//    await Firestore.instance.runTransaction((transaction) async{
+//      if (type){
+//        result = transaction.get(itemAvailableCollection.document(documentRef));
+//      }else{
+//        result = transaction.get(itemAvailableCollection.document(documentRef));
+//      }
+//    });
+
+    String ownerUid = result.uid; // Uid of item owner
+    String itemName = result.itemName;
+    await saveMessageToUserProfile(messagePayload, datePayload, ownerUid, itemName, uid); // Save message to user profile in database
+
+  }
 
 
   // requested item list from snapshot

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/widgets.dart';
+import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
 
@@ -193,7 +194,8 @@ class _RequestListState extends State<RequestList> {
 //                      print("row$num");
 //                      _toggleBlur(1,num);
 //                      showContact.value = "row$num 1";
-                      showContact.value = itemInfo();
+//                      showContact.value = itemInfo(item.docRef, context);
+                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,);
 //                      _insertOverlayEntry();
 //                      overlayState.insert(_overlayEntry);
 //                      overlayState.insert(_overlayEntry);

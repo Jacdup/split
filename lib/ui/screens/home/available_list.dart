@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/widgets.dart';
+import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
 
@@ -23,7 +24,7 @@ class AvailableList extends StatefulWidget {
 
 class _AvailableListState extends State<AvailableList> {
   List<bool> _infoShow = [];
-  bool _contactShow = false;
+//  bool _contactShow = false;
 
 
   void _toggleDropdown(int num) {
@@ -142,7 +143,8 @@ class _AvailableListState extends State<AvailableList> {
                         onPressed: () {
 //                          print("row$num");
 //                          showContact.value = "row$num 2";
-                            showContact.value = itemInfo();
+//                            showContact.value = itemInfo(item.docRef, context);
+                            showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,);
                           // TODO, okay now we have a nice UI, but also a different problem
                           // How to actually send [itemID] (and by extension item.uid, item.name) up the widget tree to home_view
                           // I propose that showContact is a string, containing itemID, and check if it's null

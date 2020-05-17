@@ -87,3 +87,26 @@ onUpdateCategories(String uid, List<String> selectedCategories) async {
   }
 //  Navigator.pop(context);
 }
+
+onSendMessage(String messageUid, String documentRef, String messagePayload, String datePayload, bool type) async{
+
+  dynamic result = await DatabaseService(uid: messageUid).contactItemOwner(documentRef, messagePayload, datePayload, type);
+  if (result == null) {
+    loading.value = false;
+//    setState(() {
+    Fluttertoast.showToast(
+        msg: 'Successfully sent message.',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        fontSize: 20.0);
+//                  error = 'Could not sign in, please check details';
+//      loading.value = false;
+//    });
+  } else {
+    Fluttertoast.showToast(
+        msg: 'Hmm. Something went wrong.',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        fontSize: 20.0);
+  }
+}
