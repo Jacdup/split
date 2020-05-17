@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
 
@@ -140,9 +141,11 @@ class _AvailableListState extends State<AvailableList> {
                         child: const Text('Contact'),
                         onPressed: () {
 //                          print("row$num");
-                          showContact.value = true;
+//                          showContact.value = "row$num 2";
+                            showContact.value = itemInfo();
                           // TODO, okay now we have a nice UI, but also a different problem
                           // How to actually send [itemID] (and by extension item.uid, item.name) up the widget tree to home_view
+                          // I propose that showContact is a string, containing itemID, and check if it's null
 
 //                          setState(() {
 //                            _contactShow = true;

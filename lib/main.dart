@@ -13,7 +13,7 @@ import 'package:twofortwo/services/database.dart';
 // To use service locator:
 //var userService = locator<LocalStorageService>();
 ValueNotifier<bool> loading = ValueNotifier(false); // Global variable, to whole application
-ValueNotifier<bool> showContact = ValueNotifier(false); // Global variable, to whole application
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
 
@@ -191,7 +192,8 @@ class _RequestListState extends State<RequestList> {
                     onPressed: () {
 //                      print("row$num");
 //                      _toggleBlur(1,num);
-                      showContact.value = true;
+//                      showContact.value = "row$num 1";
+                      showContact.value = itemInfo();
 //                      _insertOverlayEntry();
 //                      overlayState.insert(_overlayEntry);
 //                      overlayState.insert(_overlayEntry);

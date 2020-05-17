@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/ui/screens/home/item_info_view.dart';
 import '../../../utils/service_locator.dart';
 import 'package:flutter/services.dart';
@@ -82,14 +83,25 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                         Stack(
                           children: <Widget>[
                             BorrowListPortrait(),
-                            ValueListenableBuilder(
+                            ValueListenableBuilder( // If user clicks on 'contact', the contact screen is pushed on the stack
                               valueListenable: showContact,
                               builder: (context, value, child){
-                                if (value == true){
-                                  return ItemInfo();}
-                                else{
-                                  return SizedBox.shrink();
-                                }
+                                return AnimatedSwitcher(
+                                     duration: const Duration(milliseconds: 150),
+                                     transitionBuilder: (Widget child,
+                                     Animation<double> animation) =>
+                                         ScaleTransition(scale: animation,child:child,alignment: Alignment.bottomRight,),
+//                                         AlignTransition(alignment: animation, )
+                                     child: value);
+//                                };
+//                                if (value != null){
+//                                 return AnimatedSwitcher(
+//                                     duration: const Duration(seconds: 1),
+//                                     child: itemInfo());
+//                                }
+//                                else{
+//                                  return SizedBox.shrink();
+//                                }
                               },
                             )
                           ],
