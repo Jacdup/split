@@ -158,6 +158,14 @@ class MenuDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, UpdateItemRoute, arguments: userData);
               }),
           ListTile(
+              leading: Icon(Icons.message),
+//              leading: Icon(Icons.edit_attributes),
+              title: Text('Messages', style: textFont),
+              onTap: () {
+                Navigator.pop(context); // This one for the drawer
+                Navigator.pushNamed(context, MessagesRoute , arguments: userData);
+              }),
+          ListTile(
 
               leading: Icon(Icons.person),
               title: Text('Profile', style: textFont),

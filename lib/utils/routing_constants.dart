@@ -9,3 +9,4 @@ const String AuthRoute = 'auth';
 const String ProfileRoute = 'userUpdate';
 const String getItemInfoRoute = 'itemInfo';
 const String UpdateItemRoute = 'UpdateItemsRoute';
+const String MessagesRoute = 'Messages';

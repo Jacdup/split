@@ -67,6 +67,10 @@ class DatabaseService{
     }).asStream();
   }
 
+//  getUserMessages(){
+//    userCollection.document(uid).collection('messages').document()
+//  }
+
 
   /* --------------------------------------------------------------------------
   Notifications
