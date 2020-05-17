@@ -92,6 +92,7 @@ class DatabaseService{
     String messageDocRef = uuid.v4().toString();
 
     if (uid != null){
+
       var messageRef = userCollection.document(ownerUid).collection('messages').document(messageDocRef);
 
       return await messageRef.setData({
@@ -161,16 +162,17 @@ class DatabaseService{
 
     if (type){
       await itemAvailableCollection.document(documentRef).get().then((value) {
-        result = value.data.map((key, value) {
-//          "uid" : value
-        }); // a map
-        print(result.uid);
+        result = value.data;
+//        print(result['uid']);
       });
     }else{
       await itemRequestCollection.document(documentRef).get().then((value) {
         result = value.data;
       });
     }
+    print('!!!!!!');
+    print(uid);
+    print(messagePayload);
 
 //
 //    await Firestore.instance.runTransaction((transaction) async{
@@ -181,8 +183,9 @@ class DatabaseService{
 //      }
 //    });
 
-    String ownerUid = result.uid; // Uid of item owner
-    String itemName = result.itemName;
+    String ownerUid = result["uid"]; // Uid of item owner
+    String itemName = result["itemName"];
+    print(ownerUid);
     await saveMessageToUserProfile(messagePayload, datePayload, ownerUid, itemName, uid); // Save message to user profile in database
 
   }

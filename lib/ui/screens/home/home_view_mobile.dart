@@ -71,15 +71,15 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                       _createHeader(userData.name, innerBoxIsScrolled),
                     ];
                   },
-                  body: new TabBarView(
+                  body: TabBarView(
                     children: <Widget>[
-                      new AvailableList(
+                       AvailableList(
                           chosenCategories: userData.categories == null ? <String>[] : userData.categories.cast<String>(),
-                          allItems: itemsAvailable,
+                          allItems: itemsAvailable,uid: userData.uid,
                           name: 'tab2'),
-                      new RequestList(
+                       RequestList(
                           chosenCategories: userData.categories == null ? <String>[] : userData.categories.cast<String>(),
-                          allItems: items,
+                          allItems: items ,uid: userData.uid,
                           name: 'tab1'),
                     ],
                     controller: _tabController,

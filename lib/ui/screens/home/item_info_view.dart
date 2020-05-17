@@ -1,5 +1,6 @@
 //import 'dart:ui';
 //
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,12 +8,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/utils/button_presses.dart';
+import 'package:twofortwo/utils/screen_size.dart';
 //
 class ItemInfo extends StatefulWidget {
-  ItemInfo({this.itemID, this.userUid});
+  ItemInfo({this.itemID, this.userUid, this.type});
 
   final String userUid;
   final String itemID;
+  final bool type; // if a request, or available. "True" = available
 
   @override
   _ItemInfoState createState() => _ItemInfoState();
@@ -20,9 +23,13 @@ class ItemInfo extends StatefulWidget {
 
 class _ItemInfoState extends State<ItemInfo> {
 
-  double bottomInset = 200.0;
+  double bottomInset = 150.0;
+
   FocusNode _messageNode;
   FocusNode _dateNode;
+
+  String message;
+  String date;
 
   @override
   void initState() {
@@ -43,8 +50,7 @@ class _ItemInfoState extends State<ItemInfo> {
   Widget build(BuildContext context) {
 
 //Widget itemInfo(String itemID, BuildContext context) {
-    String message;
-    String date;
+
 
 
     void _listener(){ // This listener ensures the Column is not bunched up when keyboard opens, by decreasing the bottom edgeInset
@@ -56,7 +62,7 @@ class _ItemInfoState extends State<ItemInfo> {
       }
       else{
         setState((){
-          bottomInset = 200.0;
+          bottomInset = 150.0;
         });
         // keyboard dismissed
       }
@@ -87,7 +93,7 @@ class _ItemInfoState extends State<ItemInfo> {
             floatingActionButton: ButtonWidget(
               icon: Icons.navigate_next,
               onPressed: (){
-                onSendMessage(widget.userUid, widget.itemID, message,date, true);
+                onSendMessage(widget.userUid, widget.itemID, message,date, widget.type);
                 showContact.value = SizedBox.shrink();
                 }, //"true" is available items
             ),

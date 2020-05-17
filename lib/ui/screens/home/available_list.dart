@@ -57,6 +57,7 @@ class _AvailableListState extends State<AvailableList> {
   }
 
   Widget _buildBorrowList(List<String> chosenCategories, List<ItemAvailable> allItems, String name) {
+ // TODO: this is too expensive, and it would make a lot more sense if the items are filtered before the available_list is built
 
     double _buildBox = 0;
     int i = 0;
@@ -144,7 +145,8 @@ class _AvailableListState extends State<AvailableList> {
 //                          print("row$num");
 //                          showContact.value = "row$num 2";
 //                            showContact.value = itemInfo(item.docRef, context);
-                            showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,);
+//                        print(widget.uid);
+                            showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,type: true,);
                           // TODO, okay now we have a nice UI, but also a different problem
                           // How to actually send [itemID] (and by extension item.uid, item.name) up the widget tree to home_view
                           // I propose that showContact is a string, containing itemID, and check if it's null

@@ -195,7 +195,7 @@ class _RequestListState extends State<RequestList> {
 //                      _toggleBlur(1,num);
 //                      showContact.value = "row$num 1";
 //                      showContact.value = itemInfo(item.docRef, context);
-                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,);
+                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false,);
 //                      _insertOverlayEntry();
 //                      overlayState.insert(_overlayEntry);
 //                      overlayState.insert(_overlayEntry);
