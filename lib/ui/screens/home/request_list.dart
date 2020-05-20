@@ -12,12 +12,11 @@ import 'package:twofortwo/shared/constants.dart';
 
 class RequestList extends StatefulWidget {
 
-  final List<String> chosenCategories;
   final List<Item> allItems;
   final String name;
   final String uid;
 
-  RequestList({this.chosenCategories, this. allItems, this.name, this.uid});
+  RequestList({this. allItems, this.name, this.uid});
 
   @override
   _RequestListState createState() => _RequestListState();
@@ -78,7 +77,7 @@ class _RequestListState extends State<RequestList> {
     if (widget.allItems == null){
       return Center(child: Text("No items"),);
     }else{
-      return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
+      return _buildBorrowList(widget.allItems, widget.name);
     }
 //      child: Stack(
 //      index: indexStack,
@@ -102,7 +101,7 @@ class _RequestListState extends State<RequestList> {
 
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, List<Item> allItems, String name) {
+  Widget _buildBorrowList(List<Item> allItems, String name) {
 
     double _buildBox = 0;
     int i = 0;
@@ -116,10 +115,10 @@ class _RequestListState extends State<RequestList> {
         if (index == allItems.length -1) {
           _buildBox = 80;
         }
-        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
-          i = i + 1;
+//        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
+//          i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
-        }else{
+//        }else{
           if (index == allItems.length -1){
             _buildBox = 80;
             if (i == 0){
@@ -136,7 +135,7 @@ class _RequestListState extends State<RequestList> {
 //          }else {
             return Center();
 //          }
-        }
+//        }
 
 
 

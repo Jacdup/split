@@ -11,12 +11,11 @@ import 'package:twofortwo/shared/constants.dart';
 
 class AvailableList extends StatefulWidget {
 
-  final List<String> chosenCategories;
   final List<ItemAvailable> allItems;
   final String name;
   final String uid;
 
-  AvailableList({this.chosenCategories, this. allItems, this.name, this.uid});
+  AvailableList({this. allItems, this.name, this.uid});
 
   @override
   _AvailableListState createState() => _AvailableListState();
@@ -24,7 +23,6 @@ class AvailableList extends StatefulWidget {
 
 class _AvailableListState extends State<AvailableList> {
   List<bool> _infoShow = [];
-//  bool _contactShow = false;
 
 
   void _toggleDropdown(int num) {
@@ -49,14 +47,14 @@ class _AvailableListState extends State<AvailableList> {
     }else{
 //    return Stack(
 //      children: <Widget>[
-        return _buildBorrowList(widget.chosenCategories, widget.allItems, widget.name);
+        return _buildBorrowList(widget.allItems, widget.name);
 //        _contactShow ?  _layer(): SizedBox.shrink() ,
 //      ],
 //    );
     }
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, List<ItemAvailable> allItems, String name) {
+  Widget _buildBorrowList(List<ItemAvailable> allItems, String name) {
  // TODO: this is too expensive, and it would make a lot more sense if the items are filtered before the available_list is built
 
     double _buildBox = 0;
@@ -71,10 +69,10 @@ class _AvailableListState extends State<AvailableList> {
         if (index == allItems.length -1) {
           _buildBox = 80;
         }
-        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
-          i = i + 1;
+//        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
+//          i = i + 1;
           return _buildRow(allItems[index], index, _buildBox);
-        }else{
+//        }else{
           if (index == allItems.length -1){
             _buildBox = 80;
             if (i == 0) {
@@ -87,7 +85,7 @@ class _AvailableListState extends State<AvailableList> {
 //          }else {
             return Center();
 //          }
-        }
+//        }
 
       },
 //      separatorBuilder: (BuildContext context, int index) => const Divider(),

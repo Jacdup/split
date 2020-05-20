@@ -55,10 +55,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
         ? Provider.of<User>(context)
         : null;
 
-    final items = Filter().sortRequestedByDate(itemsTemp);
-    final itemsAvailable = Filter().sortAvailableByDate(itemsAvailableTemp);
+    final items1 = Filter().sortRequestedByDate(itemsTemp);
+    final itemsAvailable1 = Filter().sortAvailableByDate(itemsAvailableTemp);
 
           if (userData != null) {
+
+            final items = Filter().filterRequestedByCategory(items1, userData.categories);
+            final itemsAvailable = Filter().filterAvailableByCategory(itemsAvailable1, userData.categories);
 
             return new Scaffold(
               drawer: SizedBox(
@@ -78,11 +81,9 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   body: TabBarView(
                     children: <Widget>[ // TODO: filter before sending items through
                        AvailableList(
-                          chosenCategories: userData.categories == null ? <String>[] : userData.categories.cast<String>(),
                           allItems: itemsAvailable,uid: userData.uid,
                           name: 'tab2'),
                        RequestList(
-                          chosenCategories: userData.categories == null ? <String>[] : userData.categories.cast<String>(),
                           allItems: items ,uid: userData.uid,
                           name: 'tab1'),
                     ],
