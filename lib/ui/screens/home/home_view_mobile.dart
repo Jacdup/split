@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
@@ -48,11 +49,14 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   @override
   Widget build(BuildContext context) {
-    final items = Provider.of<List<Item>>(context) ?? [];
-    final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
+    final itemsTemp = Provider.of<List<Item>>(context) ?? [];
+    final itemsAvailableTemp = Provider.of<List<ItemAvailable>>(context) ?? [];
     final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
         ? Provider.of<User>(context)
         : null;
+
+    final items = Filter().sortRequestedByDate(itemsTemp);
+    final itemsAvailable = Filter().sortAvailableByDate(itemsAvailableTemp);
 
           if (userData != null) {
 
