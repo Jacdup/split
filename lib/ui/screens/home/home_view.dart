@@ -87,7 +87,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                               valueListenable: showContact,
                               builder: (context, value, child){
                                 return AnimatedSwitcher(
-                                     duration: const Duration(milliseconds: 200),
+                                     duration: const Duration(milliseconds: 150),
                                      transitionBuilder: (Widget child,
                                      Animation<double> animation) =>
                                          ScaleTransition(scale: animation,child:child,alignment: Alignment.bottomRight,),

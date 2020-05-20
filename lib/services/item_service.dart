@@ -16,8 +16,9 @@ class Item {
   final List<String> categories;
   final String uid;
   final String docRef;
+  final DateTime createdAt;
 
-  const Item(this.categories, this.itemName, this.date, this.description, this.uid, this.docRef);
+  const Item(this.categories, this.itemName, this.date, this.description, this.uid, this.docRef, this.createdAt);
 
   Item.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
@@ -25,7 +26,8 @@ class Item {
         description = json['description'],
         categories = json['categories'],
         uid = json['uid'],
-        docRef = json['docRef'];
+        docRef = json['docRef'],
+        createdAt = json['createdAt'];
 
   // age = json['age'];
 
@@ -51,8 +53,9 @@ class ItemAvailable {
   final List<String> categories;
   final String uid;
   final String docRef;
+  final DateTime createdAt;
 
-  const ItemAvailable(this.categories, this.itemName, this.date, this.description, this.uid, this.docRef);
+  const ItemAvailable(this.categories, this.itemName, this.date, this.description, this.uid, this.docRef, this.createdAt);
 
   ItemAvailable.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
@@ -60,7 +63,8 @@ class ItemAvailable {
         description = json['description'],
         categories = json['categories'],
         uid = json['uid'],
-        docRef = json['docRef'];
+        docRef = json['docRef'],
+        createdAt = json['createdAt'];
   // age = json['age'];
 
   Map<String, dynamic> toJson() {

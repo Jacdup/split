@@ -203,7 +203,7 @@ class _NewItemState extends State<NewItem> {
 //        loading = true;
 //      });
 //      Item newItem1 = new Item()
-      Item newItem = new Item(null, itemName, date, description, widget.uidTab[0], '1'); //TODO, send to category route
+      Item newItem = new Item(null, itemName, date, description, widget.uidTab[0], '1', DateTime.now()); //TODO, send to category route
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
 
       // TODO, this in category view
@@ -234,7 +234,7 @@ class _NewItemState extends State<NewItem> {
 //      });
 //    print('!!!!!!!!!!');
 //    print(itemName);
-      ItemAvailable newItem = new ItemAvailable(null, itemName, date, description, widget.uidTab[0], '2');
+      ItemAvailable newItem = new ItemAvailable(null, itemName, date, description, widget.uidTab[0], '2',DateTime.now());
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
 
 //      newItem = new Item(_selectedCategory, itemName, date, description);

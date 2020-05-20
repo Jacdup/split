@@ -72,7 +72,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                     ];
                   },
                   body: TabBarView(
-                    children: <Widget>[
+                    children: <Widget>[ // TODO: filter before sending items through
                        AvailableList(
                           chosenCategories: userData.categories == null ? <String>[] : userData.categories.cast<String>(),
                           allItems: itemsAvailable,uid: userData.uid,

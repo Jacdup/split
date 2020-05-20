@@ -19,7 +19,7 @@ onSelectRequestedItemCategories(String uid, Item item, List<String> selectedCate
 ////      Navigator.pushReplacementNamed(context,CategoryRoute);
 //
 //    // TODO, this in category view
-    dynamic result = await DatabaseService(uid: uid).addItemRequestedData(item.itemName, item.description, item.date, selectedCategories);
+    dynamic result = await DatabaseService(uid: uid).addItemRequestedData(item.itemName, item.description, item.date, selectedCategories, item.createdAt);
 //
     if (result == null) {
         Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
@@ -39,7 +39,7 @@ onSelectAvailableItemCategories(String uid, ItemAvailable item, List<String> sel
 //      loading.value = true;
 //
 ////      newItem = new Item(_selectedCategory, itemName, date, description);
-    dynamic result = await DatabaseService(uid: uid).addItemAvailableData(item.itemName, item.description, item.date, selectedCategories);
+    dynamic result = await DatabaseService(uid: uid).addItemAvailableData(item.itemName, item.description, item.date, selectedCategories,item.createdAt);
 
     if (result == null) {
         Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);

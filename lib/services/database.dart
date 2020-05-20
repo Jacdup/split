@@ -113,7 +113,7 @@ class DatabaseService{
   /* --------------------------------------------------------------------------
   Items
  * ---------------------------------------------------------------------------*/
-  Future addItemRequestedData(String itemName, String description, String usageDate, List<String> categories) async {
+  Future addItemRequestedData(String itemName, String description, String usageDate, List<String> categories, DateTime createdAt) async {
     String thisDocRef = uuid.v4().toString();
 
     return await itemRequestCollection.document(thisDocRef).setData({
@@ -123,10 +123,11 @@ class DatabaseService{
       'categories' : categories,
       'uid' : uid,
       'docRef' : thisDocRef,
+      'createdAt' : createdAt,
     });
   }
 
-  Future addItemAvailableData(String itemName, String description, String usageDate, List<String> categories) async {
+  Future addItemAvailableData(String itemName, String description, String usageDate, List<String> categories, DateTime createdAt) async {
 //    itemCount = itemCount + 1; // Using sequential indexing atm
 //    var rng = new Random();
   String thisDocRef = uuid.v4().toString();
@@ -138,6 +139,7 @@ class DatabaseService{
       'categories' : categories,
       'uid' : uid,
       'docRef' : thisDocRef,
+      'createdAt' : createdAt,
     });
   }
 
@@ -206,6 +208,7 @@ class DatabaseService{
         doc.data['description'],
         doc.data['uid'],
         doc.data['docRef'],
+        doc.data['createdAt'].toDate(),
       );
     }).toList();
   }
@@ -222,6 +225,7 @@ class DatabaseService{
         doc.data['description'],
         doc.data['uid'],
         doc.data['docRef'],
+        doc.data['createdAt'].toDate(),
       );
     }).toList();
   }
