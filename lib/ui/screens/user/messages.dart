@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:twofortwo/services/database.dart';
+import 'package:twofortwo/services/message_service.dart';
+import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -40,15 +45,32 @@ class _UserMessagesState extends State<UserMessages> {
 //        stream: DatabaseService(uid: fUser.uid).userData,
 //        builder: (context, snapshot) {
 //        if (snapshot.hasData){
-    return Scaffold(
-      appBar: _profileAppBar(userData, tag),
-      body: Container(
+    return StreamProvider<List<Message>>.value(
+      value: DatabaseService(uid: userData.uid).messages,
+      child: Scaffold(
+        appBar: _profileAppBar(userData, tag),
+        body: Container(
 
-        child: Text("Messages"),
+          child: Column(
+            children: <Widget>[
+              Center(child: Text("Messages", style: headerFont)),
+              Consumer<List<Message>>(
+                builder: (context, value, child) {
+                  if (value != null) {
+                    return _messageBuilder(value);
+                  } else {
+                    return Center(child: Text("No Messages"),);
+                  }
+                }
+              ),
+
+            ],
+          ),
 
 
+        ),
+        floatingActionButton: FloatingActionButton(onPressed: (){print('profilePic$tag');},),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){print('profilePic$tag');},),
     );
 //        }
 //    else {
@@ -61,6 +83,52 @@ class _UserMessagesState extends State<UserMessages> {
 //    }
 //      );
 
+  }
+
+  _messageBuilder(List<Message> thisMessage){
+
+
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(10.0),
+      itemCount: thisMessage.length,
+      itemBuilder: (BuildContext context, int index) {
+
+        String message = thisMessage[index].message;
+        String from = thisMessage[index].uidFrom;
+        String forItem = thisMessage[index].forItem;
+//        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
+//          i = i + 1;
+        return Card(
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          elevation: 4.0,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                contentPadding: EdgeInsets.all(12.0),
+                title: Text(
+                  from,
+                  style: itemHeaderFont,
+                ),
+                subtitle: Text(
+                  message,
+                  style: itemBodyFont,
+                ),
+                trailing: Text(
+                  forItem,
+                  style: itemDate,
+                ),
+                onTap: () {
+                },
+              ),
+            ],
+          ),
+        );
+      },
+//      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    );
   }
 
 

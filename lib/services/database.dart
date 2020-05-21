@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/services/message_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 
 import 'package:uuid/uuid.dart';
@@ -112,6 +113,22 @@ class DatabaseService{
 
   }
 
+  List<Message> _messagesFromSnapshot(QuerySnapshot snapshot){
+    return snapshot.documents.map((doc){
+      return Message(
+      message: doc.data['message'],
+      uidFrom : doc.data['from'],
+      dateSent : doc.data['timeStamp'].toString(),
+      dateRequested: doc.data['dateRequested'],
+      forItem : doc.data['forItem'],
+      );
+    }).toList();
+  }
+
+  Stream<List<Message>> get messages{
+    return Firestore.instance.collection('users').document(uid).collection('messages').snapshots().map(_messagesFromSnapshot);
+  }
+
   /* --------------------------------------------------------------------------
   Items
  * ---------------------------------------------------------------------------*/
@@ -204,8 +221,7 @@ class DatabaseService{
     return snapshot.documents.map((doc){
 
       return Item( // Expects only positional arguments
-        List<String>.from(
-            List<String>.from(doc.data['categories'])), //.cast<String>()
+        List<String>.from(doc.data['categories']), //.cast<String>()
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],
