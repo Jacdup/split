@@ -71,10 +71,10 @@ class ButtonPresses{
   }
 
 
-  onUpdateCategories(String uid, List<String> selectedCategories) async {
+  onUpdateCategories(BuildContext context, String uid, List<String> selectedCategories) async {
     loading.value = true; // Should do the job of setState
-
-
+    var categories = Provider.of<CategoryService>(context, listen: false);
+    categories.updateWith(selectedCategories);
 //    CategoryService thisCat = CategoryService();
 //   CategoryService().updateWith(selectedCategories); // Notifies listeners
 //    thisCat.updateWith(selectedCategories);

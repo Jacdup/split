@@ -9,7 +9,6 @@ import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/shared/loading.dart';
-import 'package:twofortwo/shared/constants.dart';
 //TODO: this should save categories specific to the user on the hard disk
 
 class ChooseCategory extends StatefulWidget {
@@ -34,8 +33,6 @@ class _ChooseCategoryState extends State<ChooseCategory> {
   Widget build(BuildContext context) {
     final FUser user =
         Provider.of<FUser>(context); // Firestore user (contains uid, email)
-    var categories = Provider.of<CategoryService>(context);
-
 
     double cardHeight =
         screenHeight(context, dividedBy: (CategoryService().categories.length / 2));
@@ -115,9 +112,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 //              print(widget.itemDetails);
 //              print(widget.itemDetails.itemName);
               if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
-                categories.updateWith(_selectedCategories);
-                ButtonPresses().onUpdateCategories(user.uid, _selectedCategories);
-
+                ButtonPresses().onUpdateCategories(context, user.uid, _selectedCategories);
               }else{
                 if (widget.itemDetails.docRef == '1'){ // Requested item
                   ButtonPresses().onSelectRequestedItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
