@@ -2,6 +2,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 
@@ -202,7 +204,8 @@ class DatabaseService{
     return snapshot.documents.map((doc){
 
       return Item( // Expects only positional arguments
-        List<String>.from(doc.data['categories']), //.cast<String>()
+        List<String>.from(
+            List<String>.from(doc.data['categories'])), //.cast<String>()
         doc.data['itemName'] ,
         doc.data['usageDate'] ,
         doc.data['description'],
@@ -213,7 +216,6 @@ class DatabaseService{
     }).toList();
   }
 
-  // requested item list from snapshot
   List<ItemAvailable> _itemAvailableListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
 //      print('!!!!!!!!');
@@ -230,6 +232,8 @@ class DatabaseService{
     }).toList();
   }
 
+
+
   // get requested item stream
   Stream<List<Item>> get itemsRequested{
     return itemRequestCollection.snapshots().map(_itemListFromSnapshot);
@@ -239,5 +243,15 @@ class DatabaseService{
   Stream<List<ItemAvailable>> get itemsAvailable{
     return itemAvailableCollection.snapshots().map(_itemAvailableListFromSnapshot);
   }
+
+//  Future<List<ItemAvailable>> get itemsAvailable async{
+//    final response = await itemAvailableCollection.getDocuments();
+//
+//    return ItemAvailable.itemAvailableListFromSnapshot(response.documents.asMap();)
+//
+//    return itemAvailableCollection.snapshots().map({
+//      "categories":
+//    })
+//  }
 
 }

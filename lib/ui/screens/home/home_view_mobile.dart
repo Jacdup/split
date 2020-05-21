@@ -25,7 +25,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   TabController _tabController;
   ScrollController _scrollController;
-  RefreshController _refreshController;
+//  RefreshController _refreshController;
 
   int _currentIndex = 0;
   @override
@@ -35,7 +35,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabIndex);
     _tabController.animation.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
-    _refreshController = RefreshController(initialRefresh: false);
+//    _refreshController = RefreshController(initialRefresh: false);
   }
 
   @override
@@ -88,13 +88,12 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   body: Consumer<CategoryService>(
                       builder: (context, categoryModel, child) =>TabBarView(
                       children: <Widget>[
-//                        Text("${categoryModel.userCategories}"),
-
                          AvailableList(
-                            allItems: Filter().filterAvailableByCategory(itemsAvailable1, categoryModel.userCategories),uid: userData.uid,
+                            allItems: Filter().filterAvailableByCategory(itemsAvailable1, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
+    uid: userData.uid,
                             name: 'tab2'),
                          RequestList(
-                            allItems: Filter().filterRequestedByCategory(items1, categoryModel.userCategories) ,uid: userData.uid,
+                            allItems: Filter().filterRequestedByCategory(items1, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories) ,uid: userData.uid,
                             name: 'tab1'),
                       ],
                       controller: _tabController,

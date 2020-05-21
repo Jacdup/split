@@ -85,26 +85,6 @@ class _RequestListState extends State<RequestList> {
           child: _buildBorrowList(widget.allItems, widget.name)
       );
     }
-//      child: Stack(
-//      index: indexStack,
-//      fit: StackFit.loose,
-//        children: <Widget>[
-
-
-//        ItemInfo(numType: numType),
-//        Positioned.fill(
-//          child: BackdropFilter(
-//              filter: ImageFilter.blur(sigmaX: sigmaXVal, sigmaY: sigmaYVal),
-//              child: Container(color: Colors.transparent),// Insert into stack only on button press
-//          ),
-//        ),
-//        ],
-//      ),
-
-
-
-
-
   }
 
   Widget _buildBorrowList(List<Item> allItems, String name) {

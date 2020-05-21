@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
+import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/ui/screens/home/item_info_view.dart';
@@ -25,10 +27,14 @@ class AvailableList extends StatefulWidget {
 class _AvailableListState extends State<AvailableList> {
   List<bool> _infoShow = [];
   RefreshController _refreshController =  RefreshController(initialRefresh: false);
+  List<ItemAvailable> items;
+
   void _onRefresh() async{
     // monitor network fetch
     //TODO
-    await Future.delayed(Duration(milliseconds: 1000));
+//    items = Provider.of<List<ItemAvailable>>(context, listen: false) ?? []; // This is stupid. It just gets the same list.
+//    print(items);
+    await Future.delayed(Duration(milliseconds: 500));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
@@ -36,7 +42,13 @@ class _AvailableListState extends State<AvailableList> {
   void _onLoading() async{
     // monitor network fetch
     //TODO
-    await Future.delayed(Duration(milliseconds: 1000));
+//    items = Provider.of<List<ItemAvailable>>(context, listen: false) ?? [];
+//    print(items);
+//    ProxyProvider(update: (context, value, previous) {
+//      return Provider.of<List<ItemAvailable>>(context);
+//    });
+
+    await Future.delayed(Duration(milliseconds: 500));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
 //    items.add((items.length+1).toString());
     if(mounted)
@@ -60,6 +72,7 @@ class _AvailableListState extends State<AvailableList> {
   @override
   Widget build(BuildContext context) {
 
+//    items = widget.allItems;
     var numItems = 0;
     if (widget.allItems != null){
       numItems = widget.allItems.length;

@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BorrowList {
   final String date;
   final String description;
@@ -43,6 +47,8 @@ class Item {
     return data;
   }
 
+
+
 }
 
 class ItemAvailable {
@@ -78,5 +84,48 @@ class ItemAvailable {
     //data['age'] = this.age;
     return data;
   }
+
+  // requested item list from snapshot
+//   itemAvailableListFromSnapshot(QuerySnapshot snapshot){
+//    return snapshot.documents.map((doc){
+////      print('!!!!!!!!');
+////      print(doc.data['category'].runtimeType);
+//      return ItemAvailable( // Expects only positional arguments
+//        categories: List<String>.from(doc.data['categories']), //.cast<String>(),
+//        itemName: doc.data['itemName'] ,
+//        date: doc.data['usageDate'] ,
+//        description: doc.data['description'],
+//        uid: doc.data['uid'],
+//        docRef: doc.data['docRef'],
+//        createdAt: doc.data['createdAt'].toDate(),
+//      );
+//    }).toList();
+//  }
+
+
+}
+
+class ItemsAvailableModel{
+  Stream<List<ItemAvailable>> stream;
+  bool hasMore;
+
+  bool _isLoading;
+  List<Map> _data;
+  StreamController<List<Map>> _controller;
+
+  ItemsAvailableModel(){
+    _data = List<Map>();
+    _controller = StreamController<List<Map>>.broadcast();
+    _isLoading = false;
+//    stream = _controller.stream.map((List<Map> itemsData){
+////      return itemsData.map((Map itemData );
+////      return itemAvailable.from)
+//    });
+
+}
+
+
+
+
 
 }

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
+import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
@@ -68,8 +69,9 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     FUser thisUser = widget.user;
 
 
+
     return StreamProvider<User>.value(
-      value: DatabaseService(uid: thisUser.uid).userData,
+      value: DatabaseService(uid: thisUser.uid).userData, //TODO: really don't need this as a stream. Only need it once for the userData.
 
       child: WillPopScope(
         /* This function ensures the user cannot route back to categories with the back button */
