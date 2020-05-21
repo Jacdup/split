@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
@@ -68,7 +69,7 @@ class AuthService {
        FirebaseUser user = result.user;
 //       List<String> temp = ['Sport'];
        // create a new document for the user with the uid
-        await DatabaseService(uid: user.uid).updateUserData(name, surname, phone, email, categories); //setter TODO: update userdetails categories
+        await DatabaseService(uid: user.uid).updateUserData(name, surname, phone, email, CategoryService().categories); //setter TODO: update userdetails categories
 //        dynamic userAll = await DatabaseService(uid: user.uid).user; //getter
 
 //        return userAll;

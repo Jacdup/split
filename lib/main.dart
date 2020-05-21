@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/auth.dart';
+import 'package:twofortwo/services/category_service.dart';
 import 'utils/service_locator.dart';
 import 'utils/colours.dart';
 import 'package:twofortwo/utils/router.dart' as router;
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         StreamProvider<FUser>.value(value: AuthService().user,), // Firebase user
         StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested),
         StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable),
+        ChangeNotifierProvider<CategoryService>(create:(context) =>  CategoryService()),
       ],
       child: MaterialApp(
         onGenerateRoute: (settings) {

@@ -32,6 +32,7 @@ class Filter {
   }
 
   List<ItemAvailable> filterAvailableByCategory(List<ItemAvailable> itemsAvailable, List<String> chosenCategories){
+    print(chosenCategories);
     return itemsAvailable.where((element) =>
     (chosenCategories.any((item) => element.categories.contains(item)))
     ).toList();

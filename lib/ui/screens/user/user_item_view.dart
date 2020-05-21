@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/ui/screens/user/user_item_list.dart';
@@ -62,8 +63,8 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
               body: new TabBarView(
                 children: <Widget>[
 
-                  new UserList(chosenCategories: categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
-                  new UserList(chosenCategories: categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
+                  new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
+                  new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
 //                  new AvailableList(chosenCategories: _categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
 //                  new RequestList(chosenCategories: _categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
 //              new RequestList(allItems: items, name: 'tab1', uid: uid,),

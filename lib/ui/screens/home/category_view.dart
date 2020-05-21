@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
-import 'package:twofortwo/utils/button_presses.dart';
+import 'package:twofortwo/services/category_service.dart';
+import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
@@ -33,9 +34,11 @@ class _ChooseCategoryState extends State<ChooseCategory> {
   Widget build(BuildContext context) {
     final FUser user =
         Provider.of<FUser>(context); // Firestore user (contains uid, email)
+    var categories = Provider.of<CategoryService>(context);
+
 
     double cardHeight =
-        screenHeight(context, dividedBy: (categories.length / 2));
+        screenHeight(context, dividedBy: (CategoryService().categories.length / 2));
 
     //    bool alreadySaved = false;
     // This method is rerun every time setState is called, for instance as done
@@ -68,10 +71,10 @@ class _ChooseCategoryState extends State<ChooseCategory> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 0,
-                      children: List.generate(categories.length, (index) {
+                      children: List.generate(CategoryService().categories.length, (index) {
 //                      alreadySaved = _selectedCategories.contains(categories[index]);
                         return Center(
-                          child: _buildCard(categories[index], cardHeight),
+                          child: _buildCard(CategoryService().categories[index], cardHeight),
                         );
 //                      );
                       }),
@@ -112,12 +115,14 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 //              print(widget.itemDetails);
 //              print(widget.itemDetails.itemName);
               if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
-                onUpdateCategories(user.uid, _selectedCategories);
+                categories.updateWith(_selectedCategories);
+                ButtonPresses().onUpdateCategories(user.uid, _selectedCategories);
+
               }else{
                 if (widget.itemDetails.docRef == '1'){ // Requested item
-                  onSelectRequestedItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
+                  ButtonPresses().onSelectRequestedItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
                 }else{ // Available item
-                  onSelectAvailableItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
+                  ButtonPresses().onSelectAvailableItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
                 }
               }
               Navigator.pop(context);

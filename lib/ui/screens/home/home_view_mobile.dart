@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twofortwo/services/button_presses.dart';
+import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
@@ -19,7 +21,7 @@ class BorrowListPortrait extends StatefulWidget {
 }
 
 class _BorrowListPortraitState extends State<BorrowListPortrait>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin{
 
   TabController _tabController;
   ScrollController _scrollController;
@@ -46,6 +48,12 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     });
   }
 
+//  void _listener(){
+//    setState(() {
+//      //_currentIndex = _tabController.index;
+//    });
+//  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +67,10 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     final itemsAvailable1 = Filter().sortAvailableByDate(itemsAvailableTemp);
 
           if (userData != null) {
+//            print(userData.categories);
 
-            final items = Filter().filterRequestedByCategory(items1, userData.categories);
-            final itemsAvailable = Filter().filterAvailableByCategory(itemsAvailable1, userData.categories);
+//            final items = Filter().filterRequestedByCategory(items1, userData.categories);
+//            final itemsAvailable = Filter().filterAvailableByCategory(itemsAvailable1, userData.categories);
 
             return new Scaffold(
               drawer: SizedBox(
@@ -78,17 +87,21 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                       _createHeader(userData.name, innerBoxIsScrolled),
                     ];
                   },
-                  body: TabBarView(
-                    children: <Widget>[ // TODO: filter before sending items through
-                       AvailableList(
-                          allItems: itemsAvailable,uid: userData.uid,
-                          name: 'tab2'),
-                       RequestList(
-                          allItems: items ,uid: userData.uid,
-                          name: 'tab1'),
-                    ],
-                    controller: _tabController,
-                  )),
+                  body: Consumer<CategoryService>(
+                      builder: (context, categoryModel, child) =>TabBarView(
+                      children: <Widget>[
+//                        Text("${categoryModel.userCategories}"),
+                         AvailableList(
+                            allItems: Filter().filterAvailableByCategory(itemsAvailable1, categoryModel.userCategories),uid: userData.uid,
+                            name: 'tab2'),
+                         RequestList(
+                            allItems: Filter().filterRequestedByCategory(items1, categoryModel.userCategories) ,uid: userData.uid,
+                            name: 'tab1'),
+                      ],
+                      controller: _tabController,
+                    ),
+                  ),
+              ),
             );
           } else {
             return Loading();

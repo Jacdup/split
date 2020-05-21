@@ -3,16 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-final List<String> categories = [
-  'Sport & Leisure',
-  'Home & Garden',
-  'Electronics',
-  'Automobile',
-  'Books',
-  'Boardgames',
-  'Clothes',
-  'Other',
-];
+
 
 
 const textColor = Colors.black54;

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/utils/button_presses.dart';
+import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 //
 class ItemInfo extends StatefulWidget {
@@ -93,7 +93,7 @@ class _ItemInfoState extends State<ItemInfo> {
             floatingActionButton: ButtonWidget(
               icon: Icons.navigate_next,
               onPressed: (){
-                onSendMessage(widget.userUid, widget.itemID, message,date, widget.type);
+                ButtonPresses().onSendMessage(widget.userUid, widget.itemID, message,date, widget.type);
                 showContact.value = SizedBox.shrink();
                 }, //"true" is available items
             ),
