@@ -61,8 +61,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
         ? Provider.of<User>(context)
         : null;
 
-    final items1 = Filter().sortRequestedByDate(itemsTemp);
-    final itemsAvailable1 = Filter().sortAvailableByDate(itemsAvailableTemp);
+    List<Item> items1 = Filter().sortRequestedByDate(itemsTemp);
+    List<ItemAvailable> itemsAvailable1 = Filter().sortAvailableByDate(itemsAvailableTemp);
 
           if (userData != null) {
 //            print(userData.categories);

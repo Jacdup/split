@@ -59,7 +59,9 @@ class PushNotificationsManager {
 //        var fcmToken = _getDeviceToken();
 //      print("!!!!!!!!!!!!");
         String fcmToken = await _firebaseMessaging.getToken(); //TODO, abstract this to function
-//
+        _firebaseMessaging.subscribeToTopic("itemsRequested"); // All users subscribed to this topic. TODO: option to unsubscribe in profile
+//        _firebaseMessaging.subscribeToTopic("users/$uid/messages");
+
         await DatabaseService(uid: uid).saveDeviceToken(fcmToken);
       }
 
