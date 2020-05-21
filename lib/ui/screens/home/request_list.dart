@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/widgets.dart';
@@ -25,42 +26,40 @@ class RequestList extends StatefulWidget {
 class _RequestListState extends State<RequestList> {
 
   List<bool> _infoShow = [];
+  RefreshController _refreshController =  RefreshController(initialRefresh: false);
+
+  void _onRefresh() async{
+    // monitor network fetch
+    //TODO
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    //TODO
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+//    items.add((items.length+1).toString());
+    if(mounted)
+      setState(() {
+      });
+    _refreshController.loadComplete();
+  }
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+
 
   void _toggleDropdown(int num) {
     setState(() {
       _infoShow[num] = !_infoShow[num];
     });
   }
-
-  double sigmaXVal = 10;
-  double sigmaYVal = 10;
-  List<int> numType = [0,1];
-  int indexStack = 0;
-  void _toggleBlur(int num, int rowNum){
-    setState(() {
-      indexStack = num;
-      numType[0] = rowNum;
-//      numType[1] = 1;
-//      sigmaXVal = num;
-//      sigmaYVal = num;
-    });
-  }
-//  OverlayEntry _overlayEntry;
-//  OverlayState overlayState;
-
-//  void _insertOverlayEntry() async {
-//    _overlayEntry = OverlayEntry(builder: (context){
-//      print('test');
-//      return ItemInfo(numType: [0,1],);
-//    },
-//    );
-
-//  }
-
-//    void _removeOverlayEntry() {
-//      _overlayEntry?.remove();
-//      _overlayEntry = null;
-//    }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +76,14 @@ class _RequestListState extends State<RequestList> {
     if (widget.allItems == null){
       return Center(child: Text("No items"),);
     }else{
-      return _buildBorrowList(widget.allItems, widget.name);
+      return SmartRefresher(
+          enablePullDown: true,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          controller: _refreshController,
+          header: WaterDropMaterialHeader(),
+          child: _buildBorrowList(widget.allItems, widget.name)
+      );
     }
 //      child: Stack(
 //      index: indexStack,

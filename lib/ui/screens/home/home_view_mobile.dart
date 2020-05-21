@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:twofortwo/services/button_presses.dart';
 import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
@@ -13,6 +12,7 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/ui/screens/home/available_list.dart';
 import 'package:twofortwo/ui/screens/home/drawer.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BorrowListPortrait extends StatefulWidget {
 
@@ -25,6 +25,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   TabController _tabController;
   ScrollController _scrollController;
+  RefreshController _refreshController;
+
   int _currentIndex = 0;
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabIndex);
     _tabController.animation.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
+    _refreshController = RefreshController(initialRefresh: false);
   }
 
   @override
@@ -48,11 +51,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     });
   }
 
-//  void _listener(){
-//    setState(() {
-//      //_currentIndex = _tabController.index;
-//    });
-//  }
 
 
   @override
@@ -91,6 +89,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                       builder: (context, categoryModel, child) =>TabBarView(
                       children: <Widget>[
 //                        Text("${categoryModel.userCategories}"),
+
                          AvailableList(
                             allItems: Filter().filterAvailableByCategory(itemsAvailable1, categoryModel.userCategories),uid: userData.uid,
                             name: 'tab2'),
@@ -102,6 +101,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                     ),
                   ),
               ),
+
             );
           } else {
             return Loading();

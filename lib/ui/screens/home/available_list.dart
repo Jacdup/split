@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/widgets.dart';
@@ -23,6 +24,31 @@ class AvailableList extends StatefulWidget {
 
 class _AvailableListState extends State<AvailableList> {
   List<bool> _infoShow = [];
+  RefreshController _refreshController =  RefreshController(initialRefresh: false);
+  void _onRefresh() async{
+    // monitor network fetch
+    //TODO
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    //TODO
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+//    items.add((items.length+1).toString());
+    if(mounted)
+      setState(() {
+      });
+    _refreshController.loadComplete();
+  }
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
 
 
   void _toggleDropdown(int num) {
@@ -47,7 +73,14 @@ class _AvailableListState extends State<AvailableList> {
     }else{
 //    return Stack(
 //      children: <Widget>[
-        return _buildBorrowList(widget.allItems, widget.name);
+        return SmartRefresher(
+          enablePullDown: true,
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
+            controller: _refreshController,
+            header: WaterDropMaterialHeader(),
+            child: _buildBorrowList(widget.allItems, widget.name)
+        );
 //        _contactShow ?  _layer(): SizedBox.shrink() ,
 //      ],
 //    );
@@ -55,7 +88,6 @@ class _AvailableListState extends State<AvailableList> {
   }
 
   Widget _buildBorrowList(List<ItemAvailable> allItems, String name) {
- // TODO: this is too expensive, and it would make a lot more sense if the items are filtered before the available_list is built
 
     double _buildBox = 0;
     int i = 0;

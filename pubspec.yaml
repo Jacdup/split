@@ -23,6 +23,7 @@ dependencies:
   # dependency injection
   get_it: ^1.0.3
   shared_preferences: ^0.5.6+3
+  pull_to_refresh: ^1.5.8
   device_preview: ^0.3.0+1
   # Firebase
   cloud_firestore: ^0.13.4+2
