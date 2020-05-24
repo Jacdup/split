@@ -32,7 +32,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
   @override
   Widget build(BuildContext context) {
     final FUser user =
-        Provider.of<FUser>(context); // Firestore user (contains uid, email)
+        Provider.of<FUser>(context, listen: false); // Firestore user (contains uid, email)
 
     double cardHeight =
         screenHeight(context, dividedBy: (CategoryService().categories.length / 2));

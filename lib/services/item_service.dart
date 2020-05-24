@@ -14,19 +14,23 @@ class BorrowList {
 
 class Item {
 
-  final String date;
+//  final String date;
   final String description;
   final String itemName;
   final List<String> categories;
   final String uid;
   final String docRef;
   final DateTime createdAt;
+  final String startDate;
+  final String endDate;
 
-  const Item(this.categories, this.itemName, this.date, this.description, this.uid, this.docRef, this.createdAt);
+  const Item(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt);
 
   Item.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
-        date = json['date'],
+        startDate = json['startDate'],
+        endDate = json['endDate'],
+//        date = json['date'],
         description = json['description'],
         categories = json['categories'],
         uid = json['uid'],
@@ -38,7 +42,9 @@ class Item {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['itemName'] = this.itemName;
-    data['date'] = this.date;
+//    data['date'] = this.date;
+    data['startDate'] = this.startDate;
+    data['endDate'] = this.endDate;
     data['description'] = this.description;
     data['categories'] = this.categories;
     data['uid'] = this.uid;
@@ -53,19 +59,21 @@ class Item {
 
 class ItemAvailable {
 
-  final String date;
   final String description;
   final String itemName;
   final List<String> categories;
   final String uid;
   final String docRef;
   final DateTime createdAt;
+  final String startDate;
+  final String endDate;
 
-  const ItemAvailable(this.categories, this.itemName, this.date, this.description, this.uid, this.docRef, this.createdAt);
+  const ItemAvailable(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt);
 
   ItemAvailable.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
-        date = json['date'],
+        startDate = json['startDate'],
+        endDate = json['endDate'],
         description = json['description'],
         categories = json['categories'],
         uid = json['uid'],
@@ -76,7 +84,8 @@ class ItemAvailable {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['itemName'] = this.itemName;
-    data['date'] = this.date;
+    data['startDate'] = this.startDate;
+    data['endDate'] = this.endDate;
     data['description'] = this.description;
     data['categories'] = this.categories;
     data['uid'] = this.uid;

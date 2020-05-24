@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 const textColor = Colors.black54;
 final tabFont = GoogleFonts.muli(fontSize: 22.0, fontWeight: FontWeight.w600);
+final titleDescriptionFont = GoogleFonts.muli(fontSize: 22.0, fontWeight: FontWeight.bold);
 //const tabFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
 final itemHeaderFont = GoogleFonts.muli(fontSize:16.0, fontWeight: FontWeight.w600,);
 final itemBodyFont = GoogleFonts.muli(fontSize: 12.0, color: Colors.black87);
@@ -31,7 +32,7 @@ final textFontDropDown = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.
 const borderColour = Colors.white;
 const borderWidth = 1.2;
 const borderWidthFocused = 1.2;
-const bRad = 20.0;
+const bRad = 16.0;
 const borderRadius = const BorderRadius.all(const Radius.circular(bRad));
 
 
@@ -41,7 +42,7 @@ const textInputDecoration = InputDecoration(
 //  focusColor: Colors.amberAccent,
 //  hoverColor: Colors.white,
 // hintText: 'test',
-hintStyle: textFont,
+   hintStyle: textFont,
 // border: OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: borderWidthFocused)),
 //  icon: Icon(Icons.map),
   focusedBorder: OutlineInputBorder(

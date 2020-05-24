@@ -1,7 +1,7 @@
 
 //import 'dart:js';
 import 'package:flutter/material.dart';
-import 'package:twofortwo/ui/screens/home/item_info_view.dart';
+import 'package:twofortwo/ui/screens/home/contact_item.dart';
 import 'package:twofortwo/ui/screens/home/splash_screen.dart';
 import 'package:twofortwo/ui/screens/authenticate/signup_view.dart';
 import 'package:twofortwo/ui/screens/user/messages.dart';

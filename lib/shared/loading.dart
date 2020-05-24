@@ -4,7 +4,11 @@ import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 
 class Loading extends StatelessWidget{
-  @override
+//  @override
+
+  final Color backgroundColor;
+
+  Loading({this.backgroundColor});
 
 //  const Loading({Key key, this.loading}) : super(key: key);
 //
@@ -12,7 +16,7 @@ class Loading extends StatelessWidget{
 
   Widget build(BuildContext context){
     return Container(
-    color: customBlue5,
+    color: backgroundColor == null ? customBlue5 : backgroundColor,
       child: Center(
         child: SpinKitDualRing(
           color: Colors.amberAccent,

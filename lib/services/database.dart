@@ -13,7 +13,8 @@ import 'package:uuid/uuid.dart';
 class DatabaseService{
 
   final String uid;
-  DatabaseService({this. uid});
+  final String itemID;
+  DatabaseService({this. uid, this.itemID});
 
   var uuid = Uuid();
 
@@ -132,13 +133,14 @@ class DatabaseService{
   /* --------------------------------------------------------------------------
   Items
  * ---------------------------------------------------------------------------*/
-  Future addItemRequestedData(String itemName, String description, String usageDate, List<String> categories, DateTime createdAt) async {
+  Future addItemRequestedData(String itemName, String description,String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt) async {
     String thisDocRef = uuid.v4().toString();
 
     return await itemRequestCollection.document(thisDocRef).setData({
       'itemName' : itemName,
       'description': description,
-      'usageDate' : usageDate,
+      'startDate' : usageDateStart,
+      'endDate'   : usageDateEnd,
       'categories' : categories,
       'uid' : uid,
       'docRef' : thisDocRef,
@@ -146,7 +148,7 @@ class DatabaseService{
     });
   }
 
-  Future addItemAvailableData(String itemName, String description, String usageDate, List<String> categories, DateTime createdAt) async {
+  Future addItemAvailableData(String itemName, String description, String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt) async {
 //    itemCount = itemCount + 1; // Using sequential indexing atm
 //    var rng = new Random();
   String thisDocRef = uuid.v4().toString();
@@ -154,7 +156,8 @@ class DatabaseService{
     return await itemAvailableCollection.document(thisDocRef).setData({
       'itemName' : itemName,
       'description': description,
-      'usageDate' : usageDate,
+      'startDate' : usageDateStart,
+      'endDate'   : usageDateEnd,
       'categories' : categories,
       'uid' : uid,
       'docRef' : thisDocRef,
@@ -195,10 +198,6 @@ class DatabaseService{
         result = value.data;
       });
     }
-    print('!!!!!!');
-    print(uid);
-    print(messagePayload);
-
 //
 //    await Firestore.instance.runTransaction((transaction) async{
 //      if (type){
@@ -223,7 +222,8 @@ class DatabaseService{
       return Item( // Expects only positional arguments
         List<String>.from(doc.data['categories']), //.cast<String>()
         doc.data['itemName'] ,
-        doc.data['usageDate'] ,
+        doc.data['startDate'],
+        doc.data['endDate'],
         doc.data['description'],
         doc.data['uid'],
         doc.data['docRef'],
@@ -239,13 +239,23 @@ class DatabaseService{
       return ItemAvailable( // Expects only positional arguments
         List<String>.from(doc.data['categories']), //.cast<String>(),
         doc.data['itemName'] ,
-        doc.data['usageDate'] ,
+        doc.data['startDate'],
+        doc.data['endDate'],
         doc.data['description'],
         doc.data['uid'],
         doc.data['docRef'],
         doc.data['createdAt'].toDate(),
       );
     }).toList();
+  }
+
+  List<String> _userDetailsFromData(DocumentSnapshot snapshot){
+
+    return List<String>(
+      snapshot.data['name']
+
+    ).toList();
+
   }
 
 
@@ -260,6 +270,46 @@ class DatabaseService{
     return itemAvailableCollection.snapshots().map(_itemAvailableListFromSnapshot);
   }
 
+  
+  Future<UserContact> get itemOwnerDetailsAvail async{
+    UserContact response;
+    String thisItemUid;
+
+    // Fetch the uid of item
+      thisItemUid = await itemAvailableCollection.document(itemID).get().then((value) {
+        try{
+          print(value.data);
+          return value.data['uid'];
+
+        }catch(e){
+          print(e);
+          return null;
+        }
+      });
+
+    // Fetch the user details of item owner
+    response = await userCollection.document(thisItemUid).get().then((value){
+      try{
+        return UserContact.fromDoc(value);
+      }catch(e){
+        return null;
+      }
+    });
+
+    return response;
+  }
+  Future<UserContact> get itemOwnerDetailsReq async {
+    UserContact response;
+    response = await itemRequestCollection.document(itemID).get().then((value) {
+      try{
+        return UserContact.fromDoc(value);
+      }catch(e){
+        print(e);
+        return null;
+      }
+    });
+    return response;
+  }
 //  Future<List<ItemAvailable>> get itemsAvailable async{
 //    final response = await itemAvailableCollection.getDocuments();
 //

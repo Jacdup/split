@@ -28,12 +28,25 @@ class _NewItemState extends State<NewItem> {
 
 //  static String uid = widget.uidTab[0];
 
+  DateTime selectedDate = DateTime.now();
+  DateTime selectedStartDate;
+  DateTime selectedEndDate;
 
   String itemName;
   String description;
   String date;
   final category = TextEditingController();
   String error = '';
+  bool _doesntMatter;
+//  bool _isButtonDisabled;
+//  String text = "Availability";
+
+  @override
+  void initState() {
+    super.initState();
+    _doesntMatter = false;
+//    _isButtonDisabled = false;
+  }
 
   @override
   void dispose() {
@@ -48,7 +61,7 @@ class _NewItemState extends State<NewItem> {
   @override
   Widget build(BuildContext context) {
 
-
+//    (widget. == _formKey1) ? text = "Availability" : text = "When do you need it?";
 
 
     return loading
@@ -60,12 +73,12 @@ class _NewItemState extends State<NewItem> {
                 backgroundColor: customBlue5,
                 appBar: PreferredSize(
                   preferredSize:
-                      Size.fromHeight(screenHeight(context, dividedBy: 4)),
+                      Size.fromHeight(screenHeight(context, dividedBy: 5)),
                   child: AppBar(
                     automaticallyImplyLeading: false,
                     elevation: 0.0,
                     flexibleSpace: FlexibleSpaceBar(
-                      titlePadding: const EdgeInsets.all(10.0),
+                      titlePadding: const EdgeInsets.all(8.0),
                       centerTitle: true,
                       title: Center(
                         child: Column(
@@ -107,85 +120,110 @@ class _NewItemState extends State<NewItem> {
       child: SingleChildScrollView(
         child: Container(
           width: screenWidth(context, dividedBy: 4),
-          margin: EdgeInsets.all(50.0),
+          margin: EdgeInsets.all(20.0),
           child: Column(
             children: <Widget>[
 //              SizedBox(height: 20.0),
-              TextFormField(
-                validator: (val) => val.isEmpty ? 'Please enter a name' : null,
-                onChanged: (val) {
-                  setState(() {
-                    itemName = val;
-                  });
-                },
-                decoration: textInputDecoration.copyWith(hintText: 'Item name'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Item Name", style: titleDescriptionFont),
+                  SizedBox(height: 8.0,),
+                  TextFormField(
+                    validator: (val) => val.isEmpty ? 'Please enter a name' : null,
+                    onChanged: (val) {
+                      setState(() {
+                        itemName = val;
+                      });
+                    },
+                    decoration: textInputDecoration.copyWith(hintText: 'e.g. "Mountain bike"', hintStyle: itemBodyFont),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Description", style:titleDescriptionFont,),
+                    SizedBox(height: 8.0,),
+                    TextFormField(
+                      validator: (val) => val.isEmpty ? 'Please provide a description' : null,
+                      keyboardType: TextInputType.multiline,
+                      onChanged: (val) {
+                        setState(() {
+                          description = val;
+                        });
+                      },
+                      textAlignVertical: TextAlignVertical.top,
+                      minLines: 5,
+                      maxLines: 10,
+                      decoration: textInputDecoration.copyWith(hintText: 'e.g. "Giant 29inch wheels"', hintStyle: itemBodyFont),
+//                      maxLines: null,
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 20),
-              TextFormField(
-                validator: (val) => val.isEmpty ? 'Please provide a description' : null,
-                keyboardType: TextInputType.multiline,
-                onChanged: (val) {
-                  setState(() {
-                    description = val;
-                  });
-                },
-                decoration: textInputDecoration.copyWith(hintText: 'Description'),
-                maxLines: null,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(dateDescription, style: titleDescriptionFont,),
+                  SizedBox(height: 8.0,),
+                  Container(
+                    decoration: BoxDecoration(color: Colors.white,border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(16.0)),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            RaisedButton(
+                              elevation: 4.0,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                              color: _doesntMatter == true ? Colors.grey : Colors.white70,
+                              onPressed: () => _doesntMatter == true ? null : _datePicker(context, true),
+                              child: Text(selectedStartDate == null ? "Start Date" : "${selectedStartDate.toString().split(' ')[0]}",style: textFont,),
+                            ),
+                            SizedBox(width: 8.0,),
+                            Text("to", style: textFont,),
+                            SizedBox(width: 8.0,),
+                            RaisedButton(
+                              elevation: 4.0,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                              color: _doesntMatter == true ? Colors.grey : Colors.white70,
+                              onPressed: () => _doesntMatter == true ? null : _datePicker(context, false),
+                              child: Text(selectedEndDate == null ? "End Date": "${selectedEndDate.toString().split(' ')[0]}" ,style: textFont,),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(" Doesn't matter", style: textFont,),
+                            Checkbox(
+                              value: _doesntMatter,
+
+                              tristate: false,onChanged: (bool newValue) {
+                              setState(() {
+                                _doesntMatter = newValue;
+//                                _isButtonDisabled = !_isButtonDisabled;
+//                                print(_isButtonDisabled);
+                              });
+                            },),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 20),
-              TextFormField(
-                validator: (val) => val.isEmpty ? 'Enter a date. Dates can be formatted dd/mm/yy or dd/mm/yyyy or some other variation. We are really not picky!' : null,
-                keyboardType: TextInputType.datetime,
-                onChanged: (val) {
-                  setState(() {
-                    date = val;
-                  });
-                },
-                decoration: textInputDecoration.copyWith(
-                    hintText: dateDescription),
-              ),
-              SizedBox(height: 20),
-              Container(
-                child: IconButton(onPressed: (){print(widget.uidTab[1]);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
-              ),
-              //createDropDown(context),
-//              DropdownButtonFormField(
-//                decoration: textInputDecoration,
-////                InputDecoration(
-////                border:
-////                OutlineInputBorder(
-//////                  isOutline: false,
-//////                  gapPadding: 100.0,
-////                    borderRadius: borderRadius,
-////                    borderSide: BorderSide(color: Colors.white, width: 2.0)),
-////                    filled: true,
-////                  fillColor: Colors.white,
-//////                  hintText: 'Please choose a category'
-////                ),
-//                isDense: true,
-//                hint: Text(
-//                  'Please choose a category',
-//                  style: textFont,
-//                ), // Not necessary for Option 1
-//                value: _selectedCategory,
-//                onChanged: (newValue) {
-//                  FocusScope.of(context).requestFocus(FocusNode());
-//                  setState(() {
-//                    _selectedCategory = newValue;
-//                  });
-//                },
-//                items: categories.map((category) {
-//                  return DropdownMenuItem(
-//                    child: new Text(category, style: textFontDropDown),
-//                    value: category,
-//                  );
-//                }).toList(),
+//              Container(
+//                child: IconButton(onPressed: (){print(widget.uidTab[1]);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
 //              ),
 
               (type == _formKey1) ? ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1)
                   : ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2),
-
-
 
             ], // Children
           ),
@@ -194,61 +232,45 @@ class _NewItemState extends State<NewItem> {
     );
   }
 
+  Future<Null>_datePicker(BuildContext context, bool start) async{
+    DateTime endVal;
+    DateTime startVal;
+    // This does the job of validation for startDate < endDate
+    if (start == false){
+      endVal = DateTime(2101);
+       selectedStartDate == null ? startVal = DateTime.now() : startVal = selectedStartDate; // Value can't be smaller than selectedStartDate
+    }else{
+      startVal = DateTime.now();
+//        selectedEndDate == null ? startVal = DateTime.now() : startVal = selectedEndDate;
+        selectedEndDate == null ? endVal = DateTime(2101) : endVal = selectedEndDate; // Value can't be larger than selectedEndDate
+      }
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: startVal,
+        firstDate: startVal ,
+        lastDate: endVal,
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        (start == true) ? selectedStartDate = picked : selectedEndDate = picked;
+//        selectedDate = picked;
+      });
+  }
+
 
   onPressedBtn1() async {
-
     if (_formKey1.currentState.validate()) {
-      // Is correct
-//      setState(() {
-//        loading = true;
-//      });
-//      Item newItem1 = new Item()
-      Item newItem = new Item(null, itemName, date, description, widget.uidTab[0], '1', DateTime.now()); //TODO, send to category route
+      Item newItem = new Item(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , description, widget.uidTab[0], '1', DateTime.now());
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
-
-      // TODO, this in category view
-//      dynamic result = await DatabaseService(uid: widget.uid).addItemRequestedData(itemName, description, date, _selectedCategory);
-
-//      if (result == null) {
-//        setState(() {
-//          Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-////          error = 'Could not add item, please check details';
-//          loading = false;
-//        });
-//      } else {
-//        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-////        Navigator.pop(context);
-//      }
-//      Navigator.pop(context);
     }
 
   }
 
 
   onPressedBtn2() async {
-
     if (_formKey2.currentState.validate()) {
-      // Is correct
-//      setState(() {
-//        loading = true;
-//      });
-//    print('!!!!!!!!!!');
-//    print(itemName);
-      ItemAvailable newItem = new ItemAvailable(null, itemName, date, description, widget.uidTab[0], '2',DateTime.now());
+      ItemAvailable newItem = new ItemAvailable(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,description, widget.uidTab[0], '2',DateTime.now());
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
-
-//      newItem = new Item(_selectedCategory, itemName, date, description);
-//      dynamic result = await DatabaseService(uid: widget.uid).addItemAvailableData(itemName, description, date, _selectedCategory);
-//
-//      if (result == null) {
-//        setState(() {
-//          Fluttertoast.showToast(msg: 'Success! Item added.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-//          loading = false;
-//        });
-//      } else {
-//        Fluttertoast.showToast(msg: 'Hmm. Something went wrong.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, fontSize: 20.0);
-//      }
-//      Navigator.pop(context);
     }
 
   }

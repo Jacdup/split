@@ -7,7 +7,7 @@ import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/ui/screens/home/item_info_view.dart';
+import 'package:twofortwo/ui/screens/home/contact_item.dart';
 import '../../../utils/service_locator.dart';
 import 'package:flutter/services.dart';
 import 'package:twofortwo/ui/responsive/screen_type_layout.dart';

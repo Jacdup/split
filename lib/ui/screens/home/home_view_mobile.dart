@@ -42,6 +42,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   void dispose() {
     _tabController.removeListener(_handleTabIndex);
     _tabController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 

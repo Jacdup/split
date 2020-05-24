@@ -5,17 +5,21 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:twofortwo/services/database.dart';
+import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 //
 class ItemInfo extends StatefulWidget {
-  ItemInfo({this.itemID, this.userUid, this.type});
+  ItemInfo({this.itemID, this.userUid, this.type, this.itemUserDetails});
 
   final String userUid;
   final String itemID;
   final bool type; // if a request, or available. "True" = available
+  final UserContact itemUserDetails;
 
   @override
   _ItemInfoState createState() => _ItemInfoState();
@@ -25,17 +29,20 @@ class _ItemInfoState extends State<ItemInfo> {
 
   double bottomInset = 150.0;
 
+  final _formKey = GlobalKey<FormState>();
   FocusNode _messageNode;
   FocusNode _dateNode;
 
   String message;
   String date;
+  Future<UserContact> itemOwnerDetails;
 
   @override
   void initState() {
     super.initState();
     _messageNode = FocusNode();
     _dateNode = FocusNode();
+    itemOwnerDetails = _fetchUserInfo(widget.itemID);
   }
 
   @override
@@ -93,8 +100,12 @@ class _ItemInfoState extends State<ItemInfo> {
             floatingActionButton: ButtonWidget(
               icon: Icons.navigate_next,
               onPressed: (){
-                ButtonPresses().onSendMessage(widget.userUid, widget.itemID, message,date, widget.type);
-                showContact.value = SizedBox.shrink();
+                if (_formKey.currentState.validate()) {
+                  ButtonPresses().onSendMessage(
+                      widget.userUid, widget.itemID, message, date,
+                      widget.type);
+                  showContact.value = SizedBox.shrink();
+                }
                 }, //"true" is available items
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -125,40 +136,65 @@ class _ItemInfoState extends State<ItemInfo> {
                     ],
                   ),
                   Divider(thickness: 2.0,),
-                  Center(
-                    child: Column(
-                      children: <Widget>[
+                  Form(
+                    key: _formKey,
+                    child: Center(
+                      child: Column(
+                        children: <Widget>[
 //                        Center(child: Text("TODO")),
-                        TextFormField(
-                          focusNode: _messageNode,
-                          maxLines: null,
-                          validator: (val) => val.isEmpty ? 'Message to item owner' : null,
-                          onChanged: (val) {
+                          TextFormField(
+                            focusNode: _messageNode,
+                            maxLines: null,
+                            validator: (val) => val.isEmpty ? 'Message to item owner' : null,
+                            onChanged: (val) {
 //                            setState(() {
-                            message = val;
+                              message = val;
 //                            });
-                          },
-                          decoration: textInputDecoration.copyWith(hintText: 'Message'),
-                        ),
-                        Divider(),
-                        TextFormField(
-                          focusNode: _dateNode,
-                          validator: (val) => val.isEmpty ? 'Enter the dates requested' : null,
-                          onChanged: (val) {
+                            },
+                            decoration: textInputDecoration.copyWith(hintText: 'Message'),
+                          ),
+                          Divider(),
+                          TextFormField(
+                            focusNode: _dateNode,
+                            validator: (val) => val.isEmpty ? 'Enter the dates requested' : null,
+                            onChanged: (val) {
 //                            setState(() {
-                            date = val;
+                              date = val;
 //                            });
-                          },
-                          decoration: textInputDecoration.copyWith(hintText: 'Requested dates'),
-                        ),
-                        SizedBox(height: 20),
-                        Text("OR", style: itemHeaderFont,),
-                        SizedBox(height: 20),
-                        Text("Owner email address: 19083688@sun.ac.za", style : GoogleFonts.muli(fontSize: 13.0, color: Colors.black87)),
-                        SizedBox(height: 10),
-                        Text("Owner phone: 079 775 0814", style : GoogleFonts.muli(fontSize: 13.0, color: Colors.black87)),
+                            },
+                            decoration: textInputDecoration.copyWith(hintText: 'Requested dates'),
+                          ),
+                          FutureBuilder<UserContact>(
+                            future: itemOwnerDetails,
+//                            initialData: Loading(),
+                            builder: (BuildContext context, AsyncSnapshot<UserContact> snapshot) {
+                              if (snapshot.hasData) {
+                                return Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 20),
+                                    Text("OR", style: itemHeaderFont,),
+                                    SizedBox(height: 20),
+                                    Text("Owner email address: ${snapshot.data
+                                        .email}",
+                                        style: GoogleFonts.muli(fontSize: 13.0,
+                                            color: Colors.black87)),
+                                    SizedBox(height: 10),
+                                    Text("Owner phone: ${snapshot.data.phone}",
+                                        style: GoogleFonts.muli(
+                                            fontSize: 13.0,
+                                            color: Colors.black87)),
+                                  ],
+                                );
+                              }else{
+                                return Loading(backgroundColor: Colors.white,);
+                              }
+//                              ],
+                            }
+                          ),
+
 //                        contactItemOwner(String messageUid, String documentRef, String messagePayload, String datePayload, bool type)
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -170,6 +206,11 @@ class _ItemInfoState extends State<ItemInfo> {
     );
 
   }
+}
+
+Future<UserContact> _fetchUserInfo(String itemID) async {
+  UserContact itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsAvail;
+  return itemUser;
 }
 
 //class ItemInfo extends StatefulWidget {

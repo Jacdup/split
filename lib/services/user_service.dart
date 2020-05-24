@@ -4,6 +4,9 @@
 // After that, the user should be accessed by this method
 // This method should store a copy of the user details, without continually fetching from the storage service
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+
 class User {
 
   final String uid;
@@ -36,6 +39,27 @@ class User {
 //    //data['age'] = this.age;
 //    return data;
 //  }
+}
+
+class UserContact{
+  final String name;
+  final String surname;
+  final String email;
+  final String phone;
+
+  UserContact({this.name, this.phone, this.email, this.surname});
+
+
+  factory UserContact.fromDoc(DocumentSnapshot snapshot){
+    return UserContact(
+      name: snapshot.data['name'],
+      surname: snapshot.data['surname'],
+      email: snapshot.data['email'],
+      phone: snapshot.data['phoneNumber'],
+    );
+  }
+
+
 }
 
 class FUser {

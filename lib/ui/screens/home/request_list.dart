@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
+import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/ui/screens/home/item_info_view.dart';
+import 'package:twofortwo/ui/screens/home/contact_item.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
 
@@ -135,7 +137,7 @@ class _RequestListState extends State<RequestList> {
 //    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
-    String date = item.date;
+    String date = item.startDate;
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
       tag: "row$num 1",
@@ -156,7 +158,7 @@ class _RequestListState extends State<RequestList> {
                 style: itemBodyFont,
               ),
               trailing: Text(
-                date,
+                date == null ? "Doesn't matter" : date,
                 style: itemDate,
               ),
               onTap: () {
@@ -175,12 +177,13 @@ class _RequestListState extends State<RequestList> {
                   ),
                   FlatButton(
                     child: const Text('Contact'),
-                    onPressed: () {
+                    onPressed: () async {
 //                      print("row$num");
 //                      _toggleBlur(1,num);
 //                      showContact.value = "row$num 1";
 //                      showContact.value = itemInfo(item.docRef, context);
-                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false,);
+                      UserContact itemUser = await DatabaseService(itemID: item.docRef).itemOwnerDetailsReq;
+                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false,itemUserDetails: itemUser);
 //                      _insertOverlayEntry();
 //                      overlayState.insert(_overlayEntry);
 //                      overlayState.insert(_overlayEntry);

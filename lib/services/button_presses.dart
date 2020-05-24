@@ -23,7 +23,7 @@ class ButtonPresses{
 //
 //    // TODO, this in category view
     dynamic result = await DatabaseService(uid: uid).addItemRequestedData(
-        item.itemName, item.description, item.date, selectedCategories,
+        item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
         item.createdAt);
 //
     if (result == null) {
@@ -51,7 +51,7 @@ class ButtonPresses{
 //
 ////      newItem = new Item(_selectedCategory, itemName, date, description);
     dynamic result = await DatabaseService(uid: uid).addItemAvailableData(
-        item.itemName, item.description, item.date, selectedCategories,
+        item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
         item.createdAt);
 
     if (result == null) {

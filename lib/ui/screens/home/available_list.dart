@@ -7,8 +7,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/ui/screens/home/item_info_view.dart';
+import 'package:twofortwo/ui/screens/home/contact_item.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
 
@@ -142,7 +143,7 @@ class _AvailableListState extends State<AvailableList> {
 //    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
-    String date = item.date;
+    String date = item.startDate;
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
       tag: "row$num 2",
@@ -165,7 +166,7 @@ class _AvailableListState extends State<AvailableList> {
                     style: itemBodyFont,
                   ),
                   trailing: Text(
-                    date,
+                    date == null ? "Doesn't matter" : date,
                     style: itemDate,
                   ),
                   onTap: () {
@@ -189,10 +190,8 @@ class _AvailableListState extends State<AvailableList> {
 //                          showContact.value = "row$num 2";
 //                            showContact.value = itemInfo(item.docRef, context);
 //                        print(widget.uid);
+//                          UserContact itemUser = await DatabaseService(itemID: item.docRef).itemOwnerDetailsAvail;
                             showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,type: true,);
-                          // TODO, okay now we have a nice UI, but also a different problem
-                          // How to actually send [itemID] (and by extension item.uid, item.name) up the widget tree to home_view
-                          // I propose that showContact is a string, containing itemID, and check if it's null
 
 //                          setState(() {
 //                            _contactShow = true;
@@ -249,49 +248,34 @@ class _AvailableListState extends State<AvailableList> {
     //return true;
   }
 
-  Widget _layer(){
-    print("here");
-
-    return Stack(
-      children: <Widget>[
-        Positioned.fill(child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Container(color: Colors.transparent,),)),
-      _contact(),
-      ],
-
-    );
-
-  }
-
-  Widget _contact(){
-
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black54,width: 3.0)
-      ),
-      margin: const EdgeInsets.fromLTRB(50.0, 200.0, 50.0, 200.0),
-//            position: Offset(offset.dx, offset.dy),
-//        color: Colors.white,
-      child: Center(
-        child: Hero(
-          tag: "row$num 2",
-          child: Card(
-
-//            child: Text(
-//              'test${widget.num}', style: TextStyle(color: Colors.black),
-//            ),
-              elevation: 4.0,
-              child: Column(
-                children: <Widget>[
-                  Center(child: Text("TODO"))
-                ],
-              )
-
-          ),
-        ),
-      ),
-
-    );
-  }
+//  Widget _contact(){
+//
+//    return Container(
+//      decoration: BoxDecoration(
+//          color: Colors.white,
+//          border: Border.all(color: Colors.black54,width: 3.0)
+//      ),
+//      margin: const EdgeInsets.fromLTRB(50.0, 200.0, 50.0, 200.0),
+////            position: Offset(offset.dx, offset.dy),
+////        color: Colors.white,
+//      child: Center(
+//        child: Hero(
+//          tag: "row$num 2",
+//          child: Card(
+////            child: Text(
+////              'test${widget.num}', style: TextStyle(color: Colors.black),
+////            ),
+//              elevation: 4.0,
+//              child: Column(
+//                children: <Widget>[
+//                  Center(child: Text("TODO"))
+//                ],
+//              )
+//
+//          ),
+//        ),
+//      ),
+//
+//    );
+//  }
 }
