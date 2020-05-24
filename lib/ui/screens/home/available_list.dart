@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
@@ -143,7 +144,8 @@ class _AvailableListState extends State<AvailableList> {
 //    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
-    String date = item.startDate;
+    String startDate = item.startDate;
+    String endDate = item.endDate;
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
       tag: "row$num 2",
@@ -165,10 +167,16 @@ class _AvailableListState extends State<AvailableList> {
                     description,
                     style: itemBodyFont,
                   ),
-                  trailing: Text(
-                    date == null ? " " : date,
-                    style: itemDate,
-                  ),
+                  trailing:
+                  startDate == null ? Text('') : _buildDatesTrailing(startDate, endDate),
+//                        Text(
+//                          startDate == null ? " " : startDate,
+//                          style: itemDate,
+//                        ),
+//                        Text(endDate == null ? " " : endDate,
+//                          style: itemDate,),
+//                    ],
+//                  ),
                   onTap: () {
                     _toggleDropdown(num);
                   },
@@ -216,6 +224,32 @@ class _AvailableListState extends State<AvailableList> {
         ],
       ),
     );
+  }
+
+  Widget _buildDatesTrailing(String startDate, String endDate){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+    Text("Availability", style: textFont,),
+    RichText(
+    text: TextSpan(text: "From: ",
+    style: GoogleFonts.muli(fontSize: 13.0,
+    color: Colors.black87, fontWeight: FontWeight.bold),
+    children: <TextSpan>[
+    TextSpan(text: startDate == null ? " " : startDate,
+    style: itemDate, ),
+    ]),
+    ),
+    RichText(
+    text: TextSpan(text: "To: ",
+    style: GoogleFonts.muli(fontSize: 13.0,
+    color: Colors.black87, fontWeight: FontWeight.bold),
+    children: <TextSpan>[
+    TextSpan(text: endDate == null ? " " : endDate,
+    style: itemDate,),
+    ]),
+    ),
+    ],);
   }
 
   _confirmHelp(context) {

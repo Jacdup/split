@@ -71,6 +71,18 @@ class DatabaseService{
     }).asStream();
   }
 
+  // The same as above but as a Future
+  Future<User> userMessageData(String uid){
+    return userCollection.document(uid).get().then((snapshot){
+      try{
+        return _getUserFromSnapshot(snapshot);
+      }catch(e){
+        print(e);
+        return null;
+      }
+    });
+  }
+
 //  getUserMessages(){
 //    userCollection.document(uid).collection('messages').document()
 //  }
@@ -96,8 +108,13 @@ class DatabaseService{
   }
 
   // Message notifications
-  Future saveMessageToUserProfile(String messagePayload, String datePayload, String ownerUid, String itemName, String fromUid ) async {
+  Future saveMessageToUserProfile(String messagePayload, String datePayload, String ownerUid, String itemName, String fromUid) async {
     String messageDocRef = uuid.v4().toString();
+
+    final User fromUser = await userMessageData(fromUid);
+    final String nameFrom = fromUser.name;
+    final String surnameFrom = fromUser.surname;
+    final String phoneFrom = fromUser.phone;
 
     if (uid != null){
 
@@ -105,7 +122,10 @@ class DatabaseService{
 
       return await messageRef.setData({
         'forItem' : itemName,
-        'from' : fromUid,
+        'from' : fromUser.uid,
+        'nameFrom' : nameFrom,
+        'surnameFrom' : surnameFrom,
+        'phoneFrom' : phoneFrom,
         'message' : messagePayload,
         'dateRequested' : datePayload,
         'timeStamp' : FieldValue.serverTimestamp(),
@@ -119,6 +139,9 @@ class DatabaseService{
       return Message(
       message: doc.data['message'],
       uidFrom : doc.data['from'],
+      nameFrom: doc.data['nameFrom'],
+      surnameFrom : doc.data['surnameFrom'],
+      phoneFrom: doc.data['phoneFrom'],
       dateSent : doc.data['timeStamp'].toString(),
       dateRequested: doc.data['dateRequested'],
       forItem : doc.data['forItem'],
@@ -209,7 +232,7 @@ class DatabaseService{
 
     String ownerUid = result["uid"]; // Uid of item owner
     String itemName = result["itemName"];
-    print(ownerUid);
+
     await saveMessageToUserProfile(messagePayload, datePayload, ownerUid, itemName, uid); // Save message to user profile in database
 
   }

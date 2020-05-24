@@ -1,12 +1,17 @@
+import 'package:twofortwo/services/user_service.dart';
+
 class Message{
 
   final String message;
   final String uidFrom;
+  final String nameFrom;
+  final String surnameFrom;
+  final String phoneFrom;
   final String dateSent;
   final String dateRequested;
   final String forItem;
 
-  Message({this.message, this.uidFrom, this.dateSent, this.forItem, this.dateRequested});
+  Message({this.message, this.uidFrom, this.nameFrom, this.surnameFrom, this.phoneFrom, this.dateSent, this.forItem, this.dateRequested});
 
 
 

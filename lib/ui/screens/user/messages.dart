@@ -96,7 +96,10 @@ class _UserMessagesState extends State<UserMessages> {
       itemBuilder: (BuildContext context, int index) {
 
         String message = thisMessage[index].message;
-        String from = thisMessage[index].uidFrom;
+        String nameFrom = thisMessage[index].nameFrom;
+        String surnameFrom = thisMessage[index].surnameFrom;
+        String phoneFrom = thisMessage[index].phoneFrom;
+//        String from = thisMessage[index].uidFrom;
         String forItem = thisMessage[index].forItem;
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
 //          i = i + 1;
@@ -107,9 +110,19 @@ class _UserMessagesState extends State<UserMessages> {
           child: Column(
             children: <Widget>[
               ListTile(
+                leading: CircleAvatar(
+                  radius: 40.0,
+                  backgroundColor: Colors.deepOrangeAccent,
+//              child: Image.asset('split_new_blue1.png'),
+                  child: Text(
+                    nameFrom.substring(0, 1) +
+                        surnameFrom.substring(0, 1),
+                    style: TextStyle(fontSize: 25.0, color: Colors.white),
+                  ),
+                ),
                 contentPadding: EdgeInsets.all(12.0),
                 title: Text(
-                  from,
+                  nameFrom,
                   style: itemHeaderFont,
                 ),
                 subtitle: Text(
