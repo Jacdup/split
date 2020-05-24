@@ -11,8 +11,7 @@ import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
-import 'package:twofortwo/utils/screen_size.dart';
-//
+
 class ItemInfo extends StatefulWidget {
   ItemInfo({this.itemID, this.userUid, this.type});
 
@@ -55,10 +54,6 @@ class _ItemInfoState extends State<ItemInfo> {
   @override
   Widget build(BuildContext context) {
 
-//Widget itemInfo(String itemID, BuildContext context) {
-
-
-
     void _listener(){ // This listener ensures the Column is not bunched up when keyboard opens, by decreasing the bottom edgeInset
       if(_messageNode.hasFocus || _dateNode.hasFocus){
         setState((){
@@ -77,10 +72,6 @@ class _ItemInfoState extends State<ItemInfo> {
     _messageNode.addListener(() {_listener();});
     _dateNode.addListener(() {_listener();});
 
-//    int num = widget.numType[0];
-//    int type = widget.numType[1];
-//  print('in item info');
-//  print(widget.heroTag);
     print(bottomInset);
     return Stack(
 
@@ -109,20 +100,19 @@ class _ItemInfoState extends State<ItemInfo> {
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 //          resizeToAvoidBottomPadding: true,
-//resizeToAvoidBottomInset: true,
-//        appBar: PreferredSize(
-//          preferredSize: Size.fromHeight(5.0),
-//          child: AppBar(
-//            leading: IconButton(icon: Icon(Icons.close), onPressed: (){showContact.value = false;},),
-//            backgroundColor: Colors.white,
-//            elevation: 0.0,
-//
-//          ),
-//        ),
+////resizeToAvoidBottomInset: true,
+////        appBar: PreferredSize(
+////          preferredSize: Size.fromHeight(5.0),
+////          child: AppBar(
+////            leading: IconButton(icon: Icon(Icons.close), onPressed: (){showContact.value = false;},),
+////            backgroundColor: Colors.white,
+////            elevation: 0.0,
+////
+////          ),
+////        ),
             backgroundColor: Colors.white,
             body: SingleChildScrollView(
               child: Column(
-//              mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
@@ -175,15 +165,23 @@ class _ItemInfoState extends State<ItemInfo> {
                                   children: <Widget>[
 
                                     SizedBox(height: 20),
-                                    Text("Email address: ${snapshot.data
-                                        .email}",
-                                        style: GoogleFonts.muli(fontSize: 13.0,
-                                            color: Colors.black87)),
+                                    RichText(
+                                      text: TextSpan(text: "Email address: ",
+                                          style: GoogleFonts.muli(fontSize: 13.0,
+                                              color: Colors.black87),
+                                      children: <TextSpan>[
+                                          TextSpan(text: '${snapshot.data.email}', style: itemHeaderFont ),
+                                          ]),
+                                    ),
                                     SizedBox(height: 10),
-                                    Text("Phone: ${snapshot.data.phone}",
-                                        style: GoogleFonts.muli(
-                                            fontSize: 13.0,
-                                            color: Colors.black87)),
+                                    RichText(
+                                      text: TextSpan(text: "Phone number: ",
+                                          style: GoogleFonts.muli(fontSize: 13.0,
+                                              color: Colors.black87),
+                                          children: <TextSpan>[
+                                            TextSpan(text: '${snapshot.data.phone}', style: itemHeaderFont ),
+                                          ]),
+                                    ),
                                   ],
                                 );
                               }else{
