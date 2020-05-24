@@ -142,7 +142,7 @@ class DatabaseService{
       nameFrom: doc.data['nameFrom'],
       surnameFrom : doc.data['surnameFrom'],
       phoneFrom: doc.data['phoneFrom'],
-      dateSent : doc.data['timeStamp'].toString(),
+      dateSent : doc.data['timeStamp'].toDate(),
       dateRequested: doc.data['dateRequested'],
       forItem : doc.data['forItem'],
       );

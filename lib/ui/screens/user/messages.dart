@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/message_service.dart';
+import 'package:twofortwo/services/url_launching.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/utils/colours.dart';
@@ -20,9 +23,18 @@ class UserMessages extends StatefulWidget {
 }
 
 class _UserMessagesState extends State<UserMessages> {
+  List<bool> _infoShow = [];
+
+  void _toggleDropdown(int num) {
+    setState(() {
+      _infoShow[num] = !_infoShow[num];
+    });
+  }
 
 
   Widget build(BuildContext context) {
+
+
 
     /* Providers are scoped.
     If they are inserted inside a route, other routes cannot access the value.
@@ -56,6 +68,11 @@ class _UserMessagesState extends State<UserMessages> {
               Center(child: Text("Messages", style: headerFont)),
               Consumer<List<Message>>(
                 builder: (context, value, child) {
+                  for (var i = 0; i <= value.length; i++){
+                    _infoShow.add(false) ;
+                  }
+
+
                   if (value != null) {
                     return _messageBuilder(value);
                   } else {
@@ -99,6 +116,7 @@ class _UserMessagesState extends State<UserMessages> {
         String nameFrom = thisMessage[index].nameFrom;
         String surnameFrom = thisMessage[index].surnameFrom;
         String phoneFrom = thisMessage[index].phoneFrom;
+        DateTime dateSent = thisMessage[index].dateSent;
 //        String from = thisMessage[index].uidFrom;
         String forItem = thisMessage[index].forItem;
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
@@ -129,22 +147,73 @@ class _UserMessagesState extends State<UserMessages> {
                   message,
                   style: itemBodyFont,
                 ),
-                trailing: Text(
-                  forItem,
-                  style: itemDate,
-                ),
-                onTap: () {
+                trailing: _buildTrailing(forItem, dateSent),
+                onTap: () { // TODO: open message
+                  _toggleDropdown(1);
                 },
               ),
+              Visibility(
+                visible: _infoShow[1] ,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(text: "Re: ",
+                            style: GoogleFonts.muli(fontSize: 13.0,
+                                color: Colors.black87, fontWeight: FontWeight.bold),
+                            children: <TextSpan>[
+                              TextSpan(text: forItem == null ? " " : forItem,
+                                style: itemDate, ),
+                            ]),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text("$nameFrom's number: "),
+                          Expanded(child: Text(phoneFrom, style: itemHeaderFont)),
+                          IconButton(onPressed: (){
+                            LaunchWhatsapp(phoneNumber: phoneFrom, message: message).launchWhatsApp();
+                            print("in here!");
+                          },
+                            icon: FaIcon(FontAwesomeIcons.whatsapp),
+                            color: Colors.green,)
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              )
+
+
             ],
+
           ),
+
         );
       },
 //      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 
+  Widget _buildTrailing(String forItem, DateTime date){
 
+    String yymmdd = date.year.toString() + '/' + date.month.toString() + '/' + date.day.toString();
+    String time   = date.hour.toString() + ':' + date.minute.toString();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+//      Text("Availability", style: textFont,),
+        Text(time,
+          style: itemDate,),
+                Text(yymmdd,
+                  style: itemDate,),
+    ],
+                );
+
+
+  }
 
   _profileAppBar(User userData, String tag){
     return PreferredSize(

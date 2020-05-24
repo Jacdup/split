@@ -7,7 +7,7 @@ class Message{
   final String nameFrom;
   final String surnameFrom;
   final String phoneFrom;
-  final String dateSent;
+  final DateTime dateSent;
   final String dateRequested;
   final String forItem;
 

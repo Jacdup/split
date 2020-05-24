@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LaunchWhatsapp {
@@ -13,6 +14,7 @@ class LaunchWhatsapp {
     if (await canLaunch(whatsappUrl)) {
       await launch(whatsappUrl);
     } else {
+      AlertDialog(title: Text('Error'), content: Text("Trouble getting to Whatsapp. Please make sure you have it installed."),);
       throw 'Could not launch $whatsappUrl';
     }
   }
