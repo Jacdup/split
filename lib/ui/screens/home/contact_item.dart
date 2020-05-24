@@ -14,12 +14,11 @@ import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_pre
 import 'package:twofortwo/utils/screen_size.dart';
 //
 class ItemInfo extends StatefulWidget {
-  ItemInfo({this.itemID, this.userUid, this.type, this.itemUserDetails});
+  ItemInfo({this.itemID, this.userUid, this.type});
 
   final String userUid;
   final String itemID;
   final bool type; // if a request, or available. "True" = available
-  final UserContact itemUserDetails;
 
   @override
   _ItemInfoState createState() => _ItemInfoState();
@@ -42,7 +41,7 @@ class _ItemInfoState extends State<ItemInfo> {
     super.initState();
     _messageNode = FocusNode();
     _dateNode = FocusNode();
-    itemOwnerDetails = _fetchUserInfo(widget.itemID);
+    itemOwnerDetails = _fetchUserInfo(widget.itemID, widget.type);
   }
 
   @override
@@ -164,29 +163,36 @@ class _ItemInfoState extends State<ItemInfo> {
                             },
                             decoration: textInputDecoration.copyWith(hintText: 'Requested dates'),
                           ),
+                          SizedBox(height: 20),
+                          Text("OR", style: itemHeaderFont,),
                           FutureBuilder<UserContact>(
                             future: itemOwnerDetails,
 //                            initialData: Loading(),
                             builder: (BuildContext context, AsyncSnapshot<UserContact> snapshot) {
                               if (snapshot.hasData) {
                                 return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
+
                                     SizedBox(height: 20),
-                                    Text("OR", style: itemHeaderFont,),
-                                    SizedBox(height: 20),
-                                    Text("Owner email address: ${snapshot.data
+                                    Text("Email address: ${snapshot.data
                                         .email}",
                                         style: GoogleFonts.muli(fontSize: 13.0,
                                             color: Colors.black87)),
                                     SizedBox(height: 10),
-                                    Text("Owner phone: ${snapshot.data.phone}",
+                                    Text("Phone: ${snapshot.data.phone}",
                                         style: GoogleFonts.muli(
                                             fontSize: 13.0,
                                             color: Colors.black87)),
                                   ],
                                 );
                               }else{
-                                return Loading(backgroundColor: Colors.white,);
+                                return Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 20),
+                                    Loading(backgroundColor: Colors.white,),
+                                  ],
+                                );
                               }
 //                              ],
                             }
@@ -208,8 +214,15 @@ class _ItemInfoState extends State<ItemInfo> {
   }
 }
 
-Future<UserContact> _fetchUserInfo(String itemID) async {
-  UserContact itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsAvail;
+Future<UserContact> _fetchUserInfo(String itemID, bool type) async {
+  UserContact itemUser;
+
+  if (type){
+    itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsAvail;
+  }else{
+    itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsReq;
+  }
+
   return itemUser;
 }
 

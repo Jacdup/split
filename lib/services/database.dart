@@ -270,7 +270,9 @@ class DatabaseService{
     return itemAvailableCollection.snapshots().map(_itemAvailableListFromSnapshot);
   }
 
-  
+
+
+  /* Get contact details of user owning item*/
   Future<UserContact> get itemOwnerDetailsAvail async{
     UserContact response;
     String thisItemUid;
@@ -278,9 +280,7 @@ class DatabaseService{
     // Fetch the uid of item
       thisItemUid = await itemAvailableCollection.document(itemID).get().then((value) {
         try{
-          print(value.data);
           return value.data['uid'];
-
         }catch(e){
           print(e);
           return null;
@@ -300,16 +300,32 @@ class DatabaseService{
   }
   Future<UserContact> get itemOwnerDetailsReq async {
     UserContact response;
-    response = await itemRequestCollection.document(itemID).get().then((value) {
+    String thisItemUid;
+
+
+    thisItemUid = await itemRequestCollection.document(itemID).get().then((value) {
       try{
-        return UserContact.fromDoc(value);
+        return value.data['uid'];
       }catch(e){
         print(e);
         return null;
       }
     });
+
+    // Fetch the user details of item owner
+    response = await userCollection.document(thisItemUid).get().then((value){
+      try{
+        return UserContact.fromDoc(value);
+      }catch(e){
+        return null;
+      }
+    });
+
     return response;
   }
+
+
+
 //  Future<List<ItemAvailable>> get itemsAvailable async{
 //    final response = await itemAvailableCollection.getDocuments();
 //
