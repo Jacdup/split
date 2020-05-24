@@ -6,11 +6,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:twofortwo/services/database.dart';
+import 'package:twofortwo/services/url_launching.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ItemInfo extends StatefulWidget {
   ItemInfo({this.itemID, this.userUid, this.type});
@@ -174,14 +176,25 @@ class _ItemInfoState extends State<ItemInfo> {
                                           ]),
                                     ),
                                     SizedBox(height: 10),
-                                    RichText(
-                                      text: TextSpan(text: "Phone number: ",
-                                          style: GoogleFonts.muli(fontSize: 13.0,
-                                              color: Colors.black87),
-                                          children: <TextSpan>[
-                                            TextSpan(text: '${snapshot.data.phone}', style: itemHeaderFont ),
-                                          ]),
+                                    Row(
+                                      children: <Widget>[
+                                        RichText(
+                                          text: TextSpan(text: "Phone number: ",
+                                              style: GoogleFonts.muli(fontSize: 13.0,
+                                                  color: Colors.black87),
+                                              children: <TextSpan>[
+                                                TextSpan(text: '${snapshot.data.phone}', style: itemHeaderFont ),
+                                              ]),
+                                        ),
+                                        IconButton(onPressed: (){
+                                          LaunchWhatsapp(phoneNumber: snapshot.data.phone, message: message).launchWhatsApp();
+                                          print("in here!");
+                                        },
+                                          icon: FaIcon(FontAwesomeIcons.whatsapp),
+                                        color: Colors.green,)
+                                      ],
                                     ),
+
                                   ],
                                 );
                               }else{
@@ -192,10 +205,8 @@ class _ItemInfoState extends State<ItemInfo> {
                                   ],
                                 );
                               }
-//                              ],
                             }
                           ),
-
 //                        contactItemOwner(String messageUid, String documentRef, String messagePayload, String datePayload, bool type)
                         ],
                       ),

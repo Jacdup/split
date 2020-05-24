@@ -6,7 +6,6 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/ui/screens/user/user_item_list.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
-import 'package:twofortwo/shared/constants.dart';
 
 class UserItemDetails extends StatefulWidget {
 

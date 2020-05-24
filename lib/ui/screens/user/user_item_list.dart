@@ -115,7 +115,7 @@ class _UserListState extends State<UserList> {
 //    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
-    String date = item.date;
+    String date = item.startDate;
     String itemRef = item.docRef;
 //    int typeInt;
 //    type==true ? typeInt = 2 : typeInt = 1;
@@ -142,7 +142,7 @@ class _UserListState extends State<UserList> {
                     style: itemBodyFont,
                   ),
                   trailing: Text(
-                    date,
+                    date == null ? " " : date,
                     style: itemDate,
                   ),
                   onTap: () {

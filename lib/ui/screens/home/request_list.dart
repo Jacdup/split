@@ -158,7 +158,7 @@ class _RequestListState extends State<RequestList> {
                 style: itemBodyFont,
               ),
               trailing: Text(
-                date == null ? "Doesn't matter" : date,
+                date == null ? " " : date,
                 style: itemDate,
               ),
               onTap: () {

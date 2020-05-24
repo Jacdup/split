@@ -89,9 +89,11 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   body: Consumer<CategoryService>(
                       builder: (context, categoryModel, child) =>TabBarView(
                       children: <Widget>[
+//                        AvailableList(allItems: itemsAvailableTemp, uid: userData.uid, name: 'tab2',),
+//                        RequestList(allItems: itemsTemp, uid: userData.uid, name: 'tab1',),
                          AvailableList(
                             allItems: Filter().filterAvailableByCategory(itemsAvailable1, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
-    uid: userData.uid,
+                             uid: userData.uid,
                             name: 'tab2'),
                          RequestList(
                             allItems: Filter().filterRequestedByCategory(items1, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories) ,uid: userData.uid,

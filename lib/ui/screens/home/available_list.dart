@@ -166,7 +166,7 @@ class _AvailableListState extends State<AvailableList> {
                     style: itemBodyFont,
                   ),
                   trailing: Text(
-                    date == null ? "Doesn't matter" : date,
+                    date == null ? " " : date,
                     style: itemDate,
                   ),
                   onTap: () {
