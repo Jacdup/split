@@ -177,11 +177,15 @@ class _RequestListState extends State<RequestList> {
                   FlatButton(
                     child: const Text('Contact'),
                     onPressed: () async {
-//                      print("row$num");
-//                      _toggleBlur(1,num);
-//                      showContact.value = "row$num 1";
-//                      showContact.value = itemInfo(item.docRef, context);
-                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false);
+
+                      Navigator.of(context).push(PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (BuildContext context, _, __){
+                            return ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false);
+                          }
+                      ));
+
+//                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false);
 //                      _insertOverlayEntry();
 //                      overlayState.insert(_overlayEntry);
 //                      overlayState.insert(_overlayEntry);

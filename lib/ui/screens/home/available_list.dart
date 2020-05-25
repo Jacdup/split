@@ -13,6 +13,7 @@ import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/ui/screens/home/contact_item.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/utils/screen_size.dart';
 
 class AvailableList extends StatefulWidget {
 
@@ -186,15 +187,14 @@ class _AvailableListState extends State<AvailableList> {
                   visible: _infoShow[num] ,
                   child: Row(
                     children: <Widget>[
+                      FlatButton(
+                        child: Text('spam', style: spamFont,textAlign: TextAlign.left,),
+                        onPressed: () => AlertDialog(),
+                      ),
+                      Spacer(),
                       ButtonBar(
                         children: <Widget>[
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: FlatButton(
-                              child: Text('spam', style: spamFont,textAlign: TextAlign.left,),
-                            ),
-                          ),
-//                          FractionallySizedBox(widthFactor: 0.2,),
+
                           FlatButton(
                             child: const Text('Request to borrow'),
                             onPressed: () {/* send ping to item user, with thisUser info */
@@ -203,9 +203,24 @@ class _AvailableListState extends State<AvailableList> {
                           FlatButton(
                             child: const Text('Contact'),
                             onPressed: () {
-                                showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,type: true,);
-                              },
+                              // There are multiple ways of overlaying a widget unto blurry screen.
+                              // This seems to be easiest, and fastest
+                              Navigator.of(context).push(PageRouteBuilder( //TODO: see if this can be animated as the previous one
+                                opaque: false,
+                                pageBuilder: (BuildContext context, _, __){
+                                  return ItemInfo(userUid: widget.uid, itemID: item.docRef,type: true);
+                                }
+                              ));
+
+//    showDialog(
+//    context: context,
+//    builder: (BuildContext context) {return AlertDialog(content: createContactDialog(context),);});
+
+//                              showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,type: true,);
+                            },
                           ),
+
+
                         ],
                       ),
                     ],

@@ -118,7 +118,10 @@ class _ItemInfoState extends State<ItemInfo> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      IconButton(icon: Icon(Icons.close), onPressed: (){showContact.value = SizedBox.shrink();},),
+                      IconButton(icon: Icon(Icons.close), onPressed: (){
+//                        showContact.value = SizedBox.shrink();
+                        Navigator.pop(context);
+                        },),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(25.0, 0, 0,0),
                         child: Text("Send a message", style: itemHeaderFont,),
