@@ -191,10 +191,12 @@ class _ItemInfoState extends State<ItemInfo> {
                                           print("in here!");
                                         },
                                           icon: FaIcon(FontAwesomeIcons.whatsapp),
-                                        color: Colors.green,)
+                                        color: Colors.green,
+                                        visualDensity: VisualDensity.compact,),
+                                        FaIcon(FontAwesomeIcons.externalLinkAlt, size: 12.0,),
                                       ],
                                     ),
-
+                                    SizedBox(height: 20),
                                   ],
                                 );
                               }else{
@@ -202,6 +204,7 @@ class _ItemInfoState extends State<ItemInfo> {
                                   children: <Widget>[
                                     SizedBox(height: 20),
                                     Loading(backgroundColor: Colors.white,),
+                                    SizedBox(height: 20),
                                   ],
                                 );
                               }

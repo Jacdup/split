@@ -201,7 +201,7 @@ class _RequestListState extends State<RequestList> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
-        Text("Requested dates", style: textFont,),
+        Text("Requested dates", style: itemDateTitle,),
         RichText(
           text: TextSpan(text: "From: ",
               style: GoogleFonts.muli(fontSize: 13.0,

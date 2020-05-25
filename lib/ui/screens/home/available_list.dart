@@ -230,7 +230,7 @@ class _AvailableListState extends State<AvailableList> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-    Text("Availability", style: textFont,),
+    Text("Availability", style: itemDateTitle,),
     RichText(
     text: TextSpan(text: "From: ",
     style: GoogleFonts.muli(fontSize: 13.0,

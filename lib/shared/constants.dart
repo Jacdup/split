@@ -13,6 +13,7 @@ final titleDescriptionFont = GoogleFonts.muli(fontSize: 22.0, fontWeight: FontWe
 final itemHeaderFont = GoogleFonts.muli(fontSize:16.0, fontWeight: FontWeight.w600,);
 final itemBodyFont = GoogleFonts.muli(fontSize: 12.0, color: Colors.black87);
 final itemDate     = GoogleFonts.muli(fontSize: 12.0, fontWeight: FontWeight.w500);
+final itemDateTitle = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: textColor);
 
 final headerFont =const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const textFont = const TextStyle(
