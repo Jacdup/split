@@ -25,6 +25,8 @@ class UserMessages extends StatefulWidget {
 class _UserMessagesState extends State<UserMessages> {
   List<bool> _infoShow = [];
 
+//  ScrollController _scrollController;
+
   void _toggleDropdown(int num) {
     setState(() {
       _infoShow[num] = !_infoShow[num];
@@ -62,18 +64,16 @@ class _UserMessagesState extends State<UserMessages> {
       child: Scaffold(
         appBar: _profileAppBar(userData, tag),
         body: Container(
-
           child: Column(
             children: <Widget>[
               Center(child: Text("Messages", style: headerFont)),
               Consumer<List<Message>>(
                 builder: (context, value, child) {
-                  for (var i = 0; i <= value.length; i++){
-                    _infoShow.add(false) ;
-                  }
-
 
                   if (value != null) {
+                    for (var i = 0; i <= value.length; i++){
+                      _infoShow.add(false) ;
+                    }
                     return _messageBuilder(value);
                   } else {
                     return Center(child: Text("No Messages"),);
@@ -83,8 +83,6 @@ class _UserMessagesState extends State<UserMessages> {
 
             ],
           ),
-
-
         ),
         floatingActionButton: FloatingActionButton(onPressed: (){print('profilePic$tag');},),
       ),
@@ -105,94 +103,96 @@ class _UserMessagesState extends State<UserMessages> {
   _messageBuilder(List<Message> thisMessage){
 
 
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(10.0),
-      itemCount: thisMessage.length,
-      itemBuilder: (BuildContext context, int index) {
+    return Expanded(
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(10.0),
+        itemCount: thisMessage.length,
+        itemBuilder: (BuildContext context, int index) {
 
-        String message = thisMessage[index].message;
-        String nameFrom = thisMessage[index].nameFrom;
-        String surnameFrom = thisMessage[index].surnameFrom;
-        String phoneFrom = thisMessage[index].phoneFrom;
-        DateTime dateSent = thisMessage[index].dateSent;
+          String message = thisMessage[index].message;
+          String nameFrom = thisMessage[index].nameFrom;
+          String surnameFrom = thisMessage[index].surnameFrom;
+          String phoneFrom = thisMessage[index].phoneFrom;
+          DateTime dateSent = thisMessage[index].dateSent;
 //        String from = thisMessage[index].uidFrom;
-        String forItem = thisMessage[index].forItem;
+          String forItem = thisMessage[index].forItem;
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
 //          i = i + 1;
-        return Card(
-          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          elevation: 4.0,
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                leading: CircleAvatar(
-                  radius: 40.0,
-                  backgroundColor: Colors.deepOrangeAccent,
+          return Card(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            elevation: 4.0,
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: CircleAvatar(
+                    radius: 40.0,
+                    backgroundColor: Colors.deepOrangeAccent,
 //              child: Image.asset('split_new_blue1.png'),
-                  child: Text(
-                    nameFrom.substring(0, 1) +
-                        surnameFrom.substring(0, 1),
-                    style: TextStyle(fontSize: 25.0, color: Colors.white),
+                    child: Text(
+                      nameFrom.substring(0, 1) +
+                          surnameFrom.substring(0, 1),
+                      style: TextStyle(fontSize: 25.0, color: Colors.white),
+                    ),
                   ),
-                ),
-                contentPadding: EdgeInsets.all(12.0),
-                title: Text(
-                  nameFrom,
-                  style: itemHeaderFont,
-                ),
-                subtitle: Text(
-                  message,
-                  style: itemBodyFont,
-                ),
-                trailing: _buildTrailing(forItem, dateSent),
-                onTap: () { // TODO: open message
-                  _toggleDropdown(1);
-                },
-              ),
-              Visibility(
-                visible: _infoShow[1] ,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(text: "Re: ",
-                            style: GoogleFonts.muli(fontSize: 13.0,
-                                color: Colors.black87, fontWeight: FontWeight.bold),
-                            children: <TextSpan>[
-                              TextSpan(text: forItem == null ? " " : forItem,
-                                style: itemDate, ),
-                            ]),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Text("$nameFrom's number: "),
-                          Expanded(child: Text(phoneFrom, style: itemHeaderFont)),
-                          IconButton(onPressed: (){
-                            LaunchWhatsapp(phoneNumber: phoneFrom, message: message).launchWhatsApp();
-                            print("in here!");
-                          },
-                            icon: FaIcon(FontAwesomeIcons.whatsapp),
-                            color: Colors.green,)
-                        ],
-                      ),
-                    ],
+                  contentPadding: EdgeInsets.all(12.0),
+                  title: Text(
+                    nameFrom,
+                    style: itemHeaderFont,
                   ),
+                  subtitle: Text(
+                    message,
+                    style: itemBodyFont,
+                  ),
+                  trailing: _buildTrailing(forItem, dateSent),
+                  onTap: () { // TODO: open message
+                    _toggleDropdown(index);
+                  },
+                ),
+                Visibility(
+                  visible: _infoShow[index] ,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(text: "Re: ",
+                              style: GoogleFonts.muli(fontSize: 13.0,
+                                  color: Colors.black87, fontWeight: FontWeight.bold),
+                              children: <TextSpan>[
+                                TextSpan(text: forItem == null ? " " : forItem,
+                                  style: itemDate, ),
+                              ]),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text("$nameFrom's number: "),
+                            Expanded(child: Text(phoneFrom, style: itemHeaderFont)),
+                            IconButton(onPressed: (){
+                              LaunchWhatsapp(phoneNumber: phoneFrom, message: message).launchWhatsApp();
+                              print("in here!");
+                            },
+                              icon: FaIcon(FontAwesomeIcons.whatsapp),
+                              color: Colors.green,)
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 )
-              )
 
 
-            ],
+              ],
 
-          ),
+            ),
 
-        );
-      },
+          );
+        },
 //      separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ),
     );
   }
 
@@ -226,18 +226,28 @@ class _UserMessagesState extends State<UserMessages> {
 //        centerTitle: true,
         child: Column(
           children: <Widget>[
-            Hero(
-              tag: 'profilePic$tag',
-              child: CircleAvatar(
-                radius: 40.0,
-                backgroundColor: Colors.deepOrangeAccent,
+            Row(
+              children: <Widget>[
+                BackButton(onPressed: (){Navigator.pop(context);}),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 48.0),//TODO, responsive. Well, an IconButton has a min size of 48 pixels.
+                    child: Hero(
+                      tag: 'profilePic$tag',
+                      child: CircleAvatar(
+                        radius: 40.0,
+                        backgroundColor: Colors.deepOrangeAccent,
 //              child: Image.asset('split_new_blue1.png'),
-                child: Text(
-                  userData.name.substring(0, 1) +
-                      userData.surname.substring(0, 1),
-                  style: TextStyle(fontSize: 25.0, color: Colors.white),
+                        child: Text(
+                          userData.name.substring(0, 1) +
+                              userData.surname.substring(0, 1),
+                          style: TextStyle(fontSize: 25.0, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
             Text(userData.email),
             Text(userData.phone)

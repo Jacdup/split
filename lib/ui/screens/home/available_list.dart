@@ -184,36 +184,29 @@ class _AvailableListState extends State<AvailableList> {
 
                 Visibility(
                   visible: _infoShow[num] ,
-                  child: ButtonBar(
+                  child: Row(
                     children: <Widget>[
-                      FlatButton(
-                        child: const Text('Request to borrow'),
-                        onPressed: () {/* send ping to item user, with thisUser info */
-                          _confirmHelp(context);},
-                      ),
-                      FlatButton(
-                        child: const Text('Contact'),
-                        onPressed: () {
-//                          print("row$num");
-//                          showContact.value = "row$num 2";
-//                            showContact.value = itemInfo(item.docRef, context);
-//                        print(widget.uid);
-//                          UserContact itemUser = await DatabaseService(itemID: item.docRef).itemOwnerDetailsAvail;
-                            showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,type: true,);
-
-//                          setState(() {
-//                            _contactShow = true;
-////                            return Stack(
-////                              children: <Widget>[
-////                                _contact(),
-////                                //Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);
-////
-////                              ],
-////
-////                            );
-//                          });
-//                          Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);
-                          },
+                      ButtonBar(
+                        children: <Widget>[
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: FlatButton(
+                              child: Text('spam', style: spamFont,textAlign: TextAlign.left,),
+                            ),
+                          ),
+//                          FractionallySizedBox(widthFactor: 0.2,),
+                          FlatButton(
+                            child: const Text('Request to borrow'),
+                            onPressed: () {/* send ping to item user, with thisUser info */
+                              _confirmHelp(context);},
+                          ),
+                          FlatButton(
+                            child: const Text('Contact'),
+                            onPressed: () {
+                                showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,type: true,);
+                              },
+                          ),
+                        ],
                       ),
                     ],
                   ),

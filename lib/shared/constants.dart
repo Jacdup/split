@@ -14,6 +14,7 @@ final itemHeaderFont = GoogleFonts.muli(fontSize:16.0, fontWeight: FontWeight.w6
 final itemBodyFont = GoogleFonts.muli(fontSize: 12.0, color: Colors.black87);
 final itemDate     = GoogleFonts.muli(fontSize: 12.0, fontWeight: FontWeight.w500);
 final itemDateTitle = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: textColor);
+final spamFont = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold,color: Colors.red);
 
 final headerFont =const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const textFont = const TextStyle(

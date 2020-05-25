@@ -100,7 +100,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 50.0),//TODO, responsive
+                    padding: const EdgeInsets.only(right: 48.0),//TODO, responsive. Well, an IconButton has a min size of 48 pixels.
                     child: Hero(
                       tag: 'profilePic$tag',
                       child: CircleAvatar(
