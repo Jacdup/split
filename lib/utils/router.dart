@@ -39,10 +39,25 @@ switch(settings.name){
   case NewItemRoute:
     var argument = settings.arguments;
     return MaterialPageRoute(builder: (context) => NewItem(uidTab: argument,));
-//    case getItemInfoRoute:
-////      var argument = settings.arguments;
-//      return MaterialPageRoute(builder: (context) => ItemInfo());
-//num: argument, type: argument,
+    case contactItemOwnerRoute:
+      var argument = settings.arguments;
+      return PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __){
+            return ContactItemOwner(userItemDetails: argument,);
+          },
+          transitionsBuilder: (context, animation, sA, child){// https://flutter.dev/docs/cookbook/animation/page-route-animation
+            var curvedAnimation = CurvedAnimation(
+              parent: animation,
+              curve: Curves.fastLinearToSlowEaseIn,
+              reverseCurve: Curves.fastOutSlowIn,
+            );
+            return ScaleTransition(
+              scale: curvedAnimation,
+                alignment: Alignment.bottomRight,
+                child: child);
+      }
+      );//);
     case MessagesRoute:
       var argument = settings.arguments;
       return MaterialPageRoute(builder: (context) => UserMessages(userData: argument,));

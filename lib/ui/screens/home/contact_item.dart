@@ -14,20 +14,28 @@ import 'package:twofortwo/shared/widgets.dart';
 import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ItemInfo extends StatefulWidget {
-  ItemInfo({this.itemID, this.userUid, this.type});
+class ContactItemOwner extends StatefulWidget {
+//  ItemInfo({this.itemID, this.userUid, this.type});
+ContactItemOwner({this.userItemDetails});
 
-  final String userUid;
-  final String itemID;
-  final bool type; // if a request, or available. "True" = available
+  final dynamic userItemDetails;
+
+//  final String userUid;
+//  final String itemID;
+//  final bool type; // if a request, or available. "True" = available
 
   @override
-  _ItemInfoState createState() => _ItemInfoState();
+  _ContactItemOwnerState createState() => _ContactItemOwnerState();
 }
 
-class _ItemInfoState extends State<ItemInfo> {
+class _ContactItemOwnerState extends State<ContactItemOwner> {
 
   double bottomInset = 150.0;
+
+
+  String itemID ;
+  bool type;
+  String userUid;
 
   final _formKey = GlobalKey<FormState>();
   FocusNode _messageNode;
@@ -42,7 +50,10 @@ class _ItemInfoState extends State<ItemInfo> {
     super.initState();
     _messageNode = FocusNode();
     _dateNode = FocusNode();
-    itemOwnerDetails = _fetchUserInfo(widget.itemID, widget.type);
+    itemID = widget.userItemDetails["docRef"];
+    type= widget.userItemDetails["type"];
+    userUid = widget.userItemDetails["uid"];
+    itemOwnerDetails = _fetchUserInfo(itemID, type);
   }
 
   @override
@@ -74,7 +85,6 @@ class _ItemInfoState extends State<ItemInfo> {
     _messageNode.addListener(() {_listener();});
     _dateNode.addListener(() {_listener();});
 
-    print(bottomInset);
     return Stack(
 
       children: <Widget>[
@@ -82,7 +92,7 @@ class _ItemInfoState extends State<ItemInfo> {
           child: Container(color: Colors.transparent,),)),
         Container(
           padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          margin: EdgeInsets.fromLTRB(50.0, 100.0, 50.0, bottomInset),
+          margin: EdgeInsets.fromLTRB(50.0, 120.0, 50.0, bottomInset),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(const Radius.circular(20.0)),
@@ -94,9 +104,9 @@ class _ItemInfoState extends State<ItemInfo> {
               onPressed: (){
                 if (_formKey.currentState.validate()) {
                   ButtonPresses().onSendMessage(
-                      widget.userUid, widget.itemID, message, date,
-                      widget.type);
-                  showContact.value = SizedBox.shrink();
+                      userUid, itemID, message, date,
+                      type);
+//                  showContact.value = SizedBox.shrink();
                 }
                 }, //"true" is available items
             ),

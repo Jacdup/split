@@ -205,12 +205,8 @@ class _AvailableListState extends State<AvailableList> {
                             onPressed: () {
                               // There are multiple ways of overlaying a widget unto blurry screen.
                               // This seems to be easiest, and fastest
-                              Navigator.of(context).push(PageRouteBuilder( //TODO: see if this can be animated as the previous one
-                                opaque: false,
-                                pageBuilder: (BuildContext context, _, __){
-                                  return ItemInfo(userUid: widget.uid, itemID: item.docRef,type: true);
-                                }
-                              ));
+                              Object arg = {"uid": widget.uid, "docRef" : item.docRef, "type" : true};
+                              Navigator.of(context).pushNamed(contactItemOwnerRoute,arguments: arg );
 
 //    showDialog(
 //    context: context,

@@ -7,6 +7,6 @@ const String NewItemRoute = 'newItem';
 const String SplashRoute = 'splash';
 const String AuthRoute = 'auth';
 const String ProfileRoute = 'userUpdate';
-const String getItemInfoRoute = 'itemInfo';
+const String contactItemOwnerRoute = 'contactItemOwnerRoute';
 const String UpdateItemRoute = 'UpdateItemsRoute';
 const String MessagesRoute = 'Messages';

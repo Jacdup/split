@@ -178,12 +178,15 @@ class _RequestListState extends State<RequestList> {
                     child: const Text('Contact'),
                     onPressed: () async {
 
-                      Navigator.of(context).push(PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder: (BuildContext context, _, __){
-                            return ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false);
-                          }
-                      ));
+                      Object arg = {"uid": widget.uid, "docRef" : item.docRef, "type" : false};
+                      Navigator.of(context).pushNamed(contactItemOwnerRoute,arguments: arg );
+
+//                      Navigator.of(context).push(PageRouteBuilder(
+//                          opaque: false,
+//                          pageBuilder: (BuildContext context, _, __){
+//                            return ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false);
+//                          }
+//                      ));
 
 //                      showContact.value = ItemInfo(userUid: widget.uid, itemID: item.docRef,type: false);
 //                      _insertOverlayEntry();
