@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-
+const dialogPadding = 25.0;
+const AvatarPadding = 40.0;
 
 const textColor = Colors.black54;
 final tabFont = GoogleFonts.muli(fontSize: 22.0, fontWeight: FontWeight.w600);

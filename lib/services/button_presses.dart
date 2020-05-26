@@ -133,4 +133,29 @@ class ButtonPresses{
     }
   }
 
+
+  Future onMarkAsUnavailable(String itemID, bool type) async {
+    dynamic result = await DatabaseService().updateItemAvailability(itemID, type);
+    if (result == null) {
+      loading.value = false;
+//    setState(() {
+      Fluttertoast.showToast(
+          msg: 'Success',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          fontSize: 20.0);
+//                  error = 'Could not sign in, please check details';
+//      loading.value = false;
+//    });
+    } else {
+      Fluttertoast.showToast(
+          msg: 'Hmm. Something went wrong.',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          fontSize: 20.0);
+    }
+    return result;
+
+  }
+
 }

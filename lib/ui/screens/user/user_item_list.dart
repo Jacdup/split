@@ -5,7 +5,8 @@ import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/shared/constants.dart';
-
+import 'package:twofortwo/shared/widgets.dart';
+import 'package:twofortwo/services/button_presses.dart';
 
 class UserList extends StatefulWidget {
 
@@ -23,13 +24,20 @@ class UserList extends StatefulWidget {
 }
 
 class _UserListState extends State<UserList> {
-  final _itemFont = const TextStyle(fontSize: 15.0);
+
   List<bool> _infoShow = [];
+  List<bool> _notAvailableVal = [];
   bool loading = false;
 
   void _toggleDropdown(int num) {
     setState(() {
       _infoShow[num] = !_infoShow[num];
+    });
+  }
+
+  void _toggleAvailable(int num) {
+    setState((){
+      _notAvailableVal[num] = !_notAvailableVal[num];
     });
   }
 
@@ -43,7 +51,8 @@ class _UserListState extends State<UserList> {
        numItems = widget.allAvailableItems.length;
      }
      for (var i = 0; i <= numItems; i++){
-       _infoShow.add(false) ;
+       _infoShow.add(false);
+       _notAvailableVal.add(false);
      }
      if (widget.allAvailableItems == null){
        return Center(child: Text("No items"),);
@@ -60,6 +69,7 @@ class _UserListState extends State<UserList> {
 
      for (var i = 0; i <= numItems; i++){
        _infoShow.add(false) ;
+       _notAvailableVal.add(false);
      }
      if (widget.allRequestedItems == null){
        return Center(child: Text("No items"),);
@@ -153,21 +163,42 @@ class _UserListState extends State<UserList> {
 
                 Visibility(
                   visible: _infoShow[num] ,
-                  child: ButtonBar(
+                  child: Column(
                     children: <Widget>[
-                      FlatButton(
-                        child: const Text('Edit item details'),
-                        onPressed: () {/* send ping to item user, with thisUser info */
+                      CheckboxListTile(value: _notAvailableVal[num], title: Text("Item is currently not available"),
+                        onChanged:(newValue){_toggleAvailable(num);
+                        if (_notAvailableVal[num]){
+                          showDialog(context: context,child:
+                             CustomDialog(
+                          title: "Confirmation",
+                          description: "This will hide this item from other users until you mark this item as available again. Proceed?",
+                               buttonText1: "Okay",
+                               buttonText2: "Cancel",
+                                type: type,
+                                item: item,
+//                               onPressedBtn1:
+//                               onPressedBtn2: _popDialog(context, num),
+                             ));
+                        };
+
+                        }, ),
+                      ButtonBar(
+                        children: <Widget>[
+                          FlatButton(
+                            child: const Text('Edit item details'),
+                            onPressed: () {/* send ping to item user, with thisUser info */
 //                          _confirmHelp(context);
-                          },
-                      ),
-                      FlatButton(
-                        child: const Text('Delete item'),
-                        onPressed: () {
+                              },
+                          ),
+                          FlatButton(
+                            child: const Text('Delete item'),
+                            onPressed: () {
 //                          print("row$num");
-                          _confirmDelete(context, itemRef, type);
+                              _confirmDelete(context, itemRef, type);
 //                          Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);
-                          },
+                              },
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -227,4 +258,14 @@ class _UserListState extends State<UserList> {
     // return false;
     //return true;
   }
+
+  _popDialog(BuildContext context, int num){
+//TODO: why is this called forever
+    setState(() {
+      _notAvailableVal[num] = false;
+    });
+
+  }
 }
+
+

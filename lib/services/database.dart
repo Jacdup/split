@@ -199,7 +199,6 @@ class DatabaseService{
       }
     });
 
-
 //    if (result == null){
 //      await Firestore.instance.runTransaction((Transaction myTransaction) async {
 //
@@ -207,6 +206,29 @@ class DatabaseService{
 //    }
 //    return await itemAvailableCollection.document(documentRef).delete(); // Easier, but not best practice.
   }
+
+  Future updateItemAvailability(String documentRef, bool type) async {
+
+  dynamic response;
+    if (type) {
+      response = itemAvailableCollection.document(documentRef).updateData({ // Hopefully If 'available' does not exist, create it.
+        'available': false});
+//      if (response != null) {
+//        response = itemAvailableCollection.document(documentRef).setData({
+//          'available': false
+//        });
+//      }
+    }else{
+      response = itemRequestCollection.document(documentRef).updateData({
+        'available': false});
+//      if (response != null) {
+//        response = itemRequestCollection.document(documentRef).setData({
+//          'available': false
+//        });
+//      }
+    }
+  }
+
 
   Future contactItemOwner(String documentRef, String messagePayload, String datePayload, bool type) async {
     dynamic result;
@@ -221,15 +243,6 @@ class DatabaseService{
         result = value.data;
       });
     }
-//
-//    await Firestore.instance.runTransaction((transaction) async{
-//      if (type){
-//        result = transaction.get(itemAvailableCollection.document(documentRef));
-//      }else{
-//        result = transaction.get(itemAvailableCollection.document(documentRef));
-//      }
-//    });
-
     String ownerUid = result["uid"]; // Uid of item owner
     String itemName = result["itemName"];
 
