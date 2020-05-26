@@ -80,41 +80,15 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
         }, // The page will not respond to back press
         child: ScreenTypeLayout(
           mobile: OrientationLayout(
-
                     portrait:
-                        Stack(
-                          children: <Widget>[
                             BorrowListPortrait(),
-                            ValueListenableBuilder( // If user clicks on 'contact', the contact screen is pushed on the stack
-                              valueListenable: showContact,
-                              builder: (context, value, child){
-                                return AnimatedSwitcher(
-                                     duration: const Duration(milliseconds: 150),
-                                     transitionBuilder: (Widget child,
-                                     Animation<double> animation) =>
-                                         ScaleTransition(scale: animation,child:child,alignment: Alignment.bottomRight,),
-//                                         AlignTransition(alignment: animation, )
-                                     child: value);
-//                                };
-//                                if (value != null){
-//                                 return AnimatedSwitcher(
-//                                     duration: const Duration(seconds: 1),
-//                                     child: itemInfo());
-//                                }
-//                                else{
-//                                  return SizedBox.shrink();
-//                                }
-                              },
-                            )
-                          ],
                         ),
-
             //landscape: //TODO,
           ),
         ),
 
-      ),
-    );
+      );
+//    );
   }
 //
 //
