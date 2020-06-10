@@ -40,11 +40,19 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
   String itemName;
   String description;
   String date;
+  String title;
   final category = TextEditingController();
   String error = '';
   bool _doesntMatter;
   List<Widget> tabs;
   List<Widget> tabViews ;
+  String startDateText;
+  String endDateText ;
+  DateTime endDateRange;
+  DateTime startDateRange;
+
+  Widget _startDateText; // This is just so that the text can be updated in the setState callback of the datepicker
+  Widget _endDateText;
 
 //  bool _isButtonDisabled;
 //  String text = "Availability";
@@ -52,14 +60,15 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
+//    startDateText = "Start Date";
+//    endDateText = "End Date";
+//    _startDateText = Text("Start Date");
+//    _endDateText = Text("End Date");
+//    startDateRange = DateTime.now();
+//    endDateRange = DateTime(2101);
      tabs = (widget.uidTab[1] == 2) ? List(1) : List(2) ;
      tabViews = (widget.uidTab[1] == 2) ? List(1) : List(2) ;
-//     print("!!!!!!!!");
-//     print(tabs.length);
     _doesntMatter = false;
-//    _tabController = new TabController(vsync: this, length:  2, initialIndex: (widget.uidTab[1] == 1) ? 1 : 0);
-//    _tabController = new TabController(vsync: this, length:  tabs.length, initialIndex: (widget.uidTab[1] == 1) ? 1 : 0);
-//    _isButtonDisabled = false;
   }
 
   @override
@@ -75,29 +84,21 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
 
-//    (widget. == _formKey1) ? text = "Availability" : text = "When do you need it?";
   if (widget.uidTab[2] != null){
-      tabs[0] = (new Tab(text: "Update item"));
+      title = "Update Item";
+      tabs[0] = (new Tab(text: "                   "));
       tabViews[0] = (_createFields('Dates', _formKey1, widget.uidTab[2]));
   }else{
-//    tabs[0] = ();
-//    tabs[1] = ();
+    title = "Add item";
     tabs = [new Tab(text: "Post an item"), new Tab(text: "Request an item")];
-    print("in here!!!!");
-    print(tabs[0]);
-    print(tabs[1]);
-    print(tabs.length);
-    tabViews[0] = (_createFields('Dates available', _formKey2, widget.uidTab[2]));
-    tabViews[1] = (_createFields('Requested usage date', _formKey1, widget.uidTab[2]));
+    tabViews[0] = (_createFields('Dates available', _formKey2, null));
+    tabViews[1] = (_createFields('Requested usage date', _formKey1, null));
   }
 
 
     return loading
         ? Loading()
         : DefaultTabController(
-//        : TabBarView(
-//      controller: _tabController,
-//            length: (widget.uidTab[1] == 2) ? 1 : 2,
             length: tabs.length,
             initialIndex: (widget.uidTab[1] == 1) ? 1 : 0,
             child: Scaffold(
@@ -116,7 +117,7 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'Add item',
+                              title,
                               style: titleFont,
                             ),
                           ],
@@ -124,38 +125,41 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
                       ),
                     ),
                     bottom: TabBar(
-//                      controller: _tabController,
                       indicatorColor: customYellow2,
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorWeight: 4.0,
                       labelColor: Colors.black87,
                       unselectedLabelColor: Colors.black38,
                       tabs: tabs,
-//                       [
-//                        new Tab(child: Text( "Post an item")),
-//                        new Tab(child:  Text( "Request an item")),
-//                      ],
                     ),
                   ),
                 ),
                 body: new TabBarView(
-//                  controller: _tabController,
                   children: tabViews,
-//                  <Widget>[
-////                    if (widget.uidTab[2] == null){
-//                      _createFields('Dates available', _formKey2, null),
-//                      _createFields('Requested usage date', _formKey1, widget.uidTab[2]),
-////                    }.toList();
-////
-//                  ],
                 )),
-//    ],
           );
   }
 
-  Widget _createFields(String dateDescription, GlobalKey type, dynamic item) {
+  Widget _createFields(String dateDescription, GlobalKey itemTypeKey, dynamic item) {
+    DateTime itemStartDate;
+    DateTime itemEndDate;
+
+    print("loook here");
+    print(selectedStartDate);
+    print("stop looking here");
+
+    if (item != null){
+      if (item.startDate != null) {
+//      print(item.startDate);
+        itemStartDate = DateTime.parse(item.startDate);
+        itemEndDate = DateTime.parse(item.endDate);
+//        startDateText = "${itemStartDate.toString().split(' ')[0]}";
+//        endDateText = "${itemEndDate.toString().split(' ')[0]}";
+      }
+    }
+
     return Form(
-      key: type, // Keep track of form
+      key: itemTypeKey, // Keep track of form
       child: SingleChildScrollView(
         child: Container(
           width: screenWidth(context, dividedBy: 4),
@@ -169,6 +173,7 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
                   Text("Item Name", style: titleDescriptionFont),
                   SizedBox(height: 8.0,),
                   TextFormField(
+                    initialValue: item == null ? '' : item.itemName,
                     validator: (val) => val.isEmpty ? 'Please enter a name' : null,
                     onChanged: (val) {
                       setState(() {
@@ -187,6 +192,7 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
                     Text("Description", style:titleDescriptionFont,),
                     SizedBox(height: 8.0,),
                     TextFormField(
+                      initialValue: item == null ? '' : item.description,
                       validator: (val) => val.isEmpty ? 'Please provide a description' : null,
                       keyboardType: TextInputType.multiline,
                       onChanged: (val) {
@@ -222,6 +228,8 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                               color: _doesntMatter == true ? Colors.grey : Colors.white70,
                               onPressed: () => _doesntMatter == true ? null : _datePicker(context, true),
+//                              child: _startDateText,
+//                              child: Text(startDateText, style: textFont,),
                               child: Text(selectedStartDate == null ? "Start Date" : "${selectedStartDate.toString().split(' ')[0]}",style: textFont,),
                             ),
                             SizedBox(width: 8.0,),
@@ -232,6 +240,8 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                               color: _doesntMatter == true ? Colors.grey : Colors.white70,
                               onPressed: () => _doesntMatter == true ? null : _datePicker(context, false),
+//                              child: _endDateText,
+//                              child: Text(endDateText ,style: textFont,),
                               child: Text(selectedEndDate == null ? "End Date": "${selectedEndDate.toString().split(' ')[0]}" ,style: textFont,),
                             ),
                           ],
@@ -261,7 +271,7 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
 //                child: IconButton(onPressed: (){print(widget.uidTab[1]);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
 //              ),
 
-              (type == _formKey1) ? ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1)
+              (itemTypeKey == _formKey1) ? ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1)
                   : ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2),
 
             ], // Children
@@ -277,17 +287,17 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
     // This does the job of validation for startDate < endDate
     if (start == false){
       endVal = DateTime(2101);
-       selectedStartDate == null ? startVal = DateTime.now() : startVal = selectedStartDate; // Value can't be smaller than selectedStartDate
+      selectedStartDate == null ? startVal = DateTime.now() : startVal = selectedStartDate; // Value can't be smaller than selectedStartDate
     }else{
       startVal = DateTime.now();
 //        selectedEndDate == null ? startVal = DateTime.now() : startVal = selectedEndDate;
-        selectedEndDate == null ? endVal = DateTime(2101) : endVal = selectedEndDate; // Value can't be larger than selectedEndDate
-      }
+      selectedEndDate == null ? endVal = DateTime(2101) : endVal = selectedEndDate; // Value can't be larger than selectedEndDate
+    }
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: startVal,
-        firstDate: startVal ,
-        lastDate: endVal,
+      context: context,
+      initialDate: startVal,
+      firstDate: startVal ,
+      lastDate: endVal,
     );
     if (picked != null && picked != selectedDate)
       setState(() {
@@ -295,6 +305,77 @@ class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
 //        selectedDate = picked;
       });
   }
+
+//  Future<Null>_datePicker(BuildContext context, bool start, DateTime itemInitialDate) async{
+//
+//    // This does the job of validation for startDate < endDate
+//    if (start == false){
+////      if (selectedStartDate == null){
+////        if (itemInitialDate == null){
+//////          print("!!!!!!!!!!");
+////          startDateRange = DateTime.now() ;
+////        }else {
+//////          print("!!!!!!!!!!");
+////          startDateRange = itemInitialDate;
+//////          print(startDateRange);
+////        }
+////      }else{
+////
+////        startDateRange = selectedStartDate;
+////
+////      }
+//
+//       selectedStartDate == null ? startDateRange = DateTime.now() : startDateRange = selectedStartDate; // Value can't be smaller than selectedStartDate
+//    }else{
+////        selectedEndDate == null ? startVal = DateTime.now() : startVal = selectedEndDate;
+////      if (selectedEndDate == null){
+////        if (itemInitialDate == null){
+////
+////          endDateRange = DateTime(2101);
+////        }else{
+////          print("!!!!!!!!!!");
+////          endDateRange = itemInitialDate ;
+////          print(endDateRange);
+////        }
+////      }else{
+////        print("in here!!!!!!");
+////        endDateRange = selectedEndDate;
+////      }
+//
+//        selectedEndDate == null ? endDateRange = DateTime(2101) : endDateRange = selectedEndDate; // Value can't be larger than selectedEndDate
+//      }
+//    final DateTime picked = await showDatePicker(
+//        context: context,
+//        initialDate: startDateRange,
+//        firstDate: startDateRange,
+//        lastDate: endDateRange,
+//    );
+//    if (picked != null)// && picked != selectedDate)
+//      setState(() {
+//        (start == true) ? selectedStartDate = picked : selectedEndDate = picked;
+////        if (start){
+////          selectedStartDate = picked;
+////          _startDateText = Text("${selectedStartDate.toString().split(' ')[0]}", style: textFont,);
+//////          _startDateText("${selectedStartDate.toString().split(' ')[0]}");
+//////          startDateText = "${selectedStartDate.toString().split(' ')[0]}";
+////        }else{
+////          selectedEndDate = picked;
+////          _endDateText = Text("${selectedEndDate.toString().split(' ')[0]}", style: textFont,);
+//////          endDateText = "${selectedEndDate.toString().split(' ')[0]}";
+////        }
+//
+//
+////        selectedDate = picked;
+//      });
+//  }
+
+//  Widget _startDateText(String text){
+//    return Text(text, style: textFont,);
+//  }
+//
+//  Widget _endDateText(String text){
+//    return Text(text, style: textFont,);
+//  }
 
 
   onPressedBtn1() async {
