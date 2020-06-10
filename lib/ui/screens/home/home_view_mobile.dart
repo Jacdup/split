@@ -27,10 +27,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   ScrollController _scrollController;
   TextEditingController  _searchController;
   ValueNotifier<bool> showSearchBar;
+  FocusNode _searchNode = FocusNode();
 
   String filter;
 //  Widget _titleBar;
 //  RefreshController  _refreshController;
+
+
 
   int _currentIndex = 0;
   @override
@@ -48,13 +51,17 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
     showSearchBar = ValueNotifier(false);
 //    showSearchBar.addListener(() {
-//    _handleTabIndex();
-//      _scrollController.offset;
-////      if (_scrollController.offset > 50){
-////        showSearchBar.value = true;
-////    }
-////      print(_scrollController.offset);
+//      setState(() {
+//        _searchNode;
+//      });
+//
+////    _handleTabIndex();
 ////      _scrollController.offset;
+//////      if (_scrollController.offset > 50){
+//////        showSearchBar.value = true;
+//////    }
+//////      print(_scrollController.offset);
+//////      _scrollController.offset;
 //    });
 
     _tabController = new TabController(length: 2, vsync: this);
@@ -65,6 +72,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   @override
   void dispose() {
+    _searchNode.dispose();
+    _searchController.dispose();
     _tabController.removeListener(_handleTabIndex);
     _tabController.dispose();
     _scrollController.dispose();
@@ -81,6 +90,27 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   @override
   Widget build(BuildContext context) {
+
+//    void _listener(){ // This listener ensures the Column is not bunched up when keyboard opens, by decreasing the bottom edgeInset
+//      if(_searchNode.hasFocus){
+//        setState((){
+//          showSearchBar.value = true;
+//        });
+//        // keyboard appeared
+//      }
+////    else{
+////      setState((){
+////        bottomInset = 150.0;
+////      });
+////       keyboard dismissed
+////    }
+//    }
+//
+//    _searchNode.addListener(() {_listener();});
+
+
+
+
 //    if (_scrollController.offset > 50){
 //      showSearchBar.value = true;
 //    }
@@ -101,7 +131,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //            final items = Filter().filterRequestedByCategory(items1, userData.categories);
 //            final itemsAvailable = Filter().filterAvailableByCategory(itemsAvailable1, userData.categories);
 
-            return new Scaffold(
+            return Scaffold(
               drawer: SizedBox(
               width: MediaQuery.of(context).size.width * 0.6, //20.0,
                 child: MenuDrawer(userData: userData,),
@@ -112,7 +142,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   controller: _scrollController,
                   headerSliverBuilder:
                       (BuildContext context, bool innerBoxIsScrolled) {
-                        showSearchBar.value = innerBoxIsScrolled;
+                        _searchNode.hasFocus ? showSearchBar.value = true : showSearchBar.value = innerBoxIsScrolled;
                     return <Widget>[
                       _createHeader(userData.name, innerBoxIsScrolled),
                     ];
@@ -161,9 +191,17 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       forceElevated: innerBoxIsScrolled,
 //      leading: Icon(Icons.menu),
       title: ValueListenableBuilder( // Builds search bar in title when search clicked, or when innerBoxIsScrolled
-          builder: (context, value, child) => value == false ? _titleBar : TextField(decoration: InputDecoration(
+          builder: (context, value, child) => value == false ? _titleBar :
+          TextField(decoration: InputDecoration(
+//              fillColor: Colors.white,
               labelText: "Search"
           ),
+            focusNode: _searchNode,
+            onEditingComplete: (){
+              FocusScope.of(context).unfocus();
+              _searchController.clear();
+            },
+//            onEditingComplete: FocusScope.of(context).unfocus(),
             controller: _searchController,
           ),
           valueListenable: showSearchBar,
