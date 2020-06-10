@@ -81,6 +81,7 @@ class _AvailableListState extends State<AvailableList> {
       numItems = widget.allItems.length;
     }
 
+
     for (var i = 0; i <= numItems; i++){
       _infoShow.add(false) ;
     }

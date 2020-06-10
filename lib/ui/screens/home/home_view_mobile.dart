@@ -197,7 +197,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //        print(_currentIndex);
 //        print(_scrollController.offset);
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid, false]);
+            arguments: [uid, 0, null]);
       },
       label: Text('Add item'),
       icon:  Icon(Icons.add),
@@ -208,7 +208,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //        print(_scrollController.offset);
 
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid,true]);
+            arguments: [uid,1, null]);
       },
       label: Text('Request item'),
       icon: Icon(Icons.add),

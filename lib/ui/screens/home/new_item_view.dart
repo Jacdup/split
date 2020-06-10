@@ -11,7 +11,10 @@ class NewItem extends StatefulWidget {
 
 //  final String uid;
 //  final bool isTab1;
-  final List<Object> uidTab;
+  final List<Object> uidTab; //uidTab[1] is either 0,1,2
+  // 0 -> Post available item
+  // 1 -> Post requested item
+  // 2 -> Update item
 
   NewItem({this.uidTab});
 
@@ -19,10 +22,12 @@ class NewItem extends StatefulWidget {
   _NewItemState createState() => _NewItemState();
 }
 
-class _NewItemState extends State<NewItem> {
+class _NewItemState extends State<NewItem> with SingleTickerProviderStateMixin{
 
   final _formKey1 = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
+
+//  TabController _tabController;
 
   bool loading = false;
 
@@ -38,13 +43,22 @@ class _NewItemState extends State<NewItem> {
   final category = TextEditingController();
   String error = '';
   bool _doesntMatter;
+  List<Widget> tabs;
+  List<Widget> tabViews ;
+
 //  bool _isButtonDisabled;
 //  String text = "Availability";
 
   @override
   void initState() {
     super.initState();
+     tabs = (widget.uidTab[1] == 2) ? List(1) : List(2) ;
+     tabViews = (widget.uidTab[1] == 2) ? List(1) : List(2) ;
+//     print("!!!!!!!!");
+//     print(tabs.length);
     _doesntMatter = false;
+//    _tabController = new TabController(vsync: this, length:  2, initialIndex: (widget.uidTab[1] == 1) ? 1 : 0);
+//    _tabController = new TabController(vsync: this, length:  tabs.length, initialIndex: (widget.uidTab[1] == 1) ? 1 : 0);
 //    _isButtonDisabled = false;
   }
 
@@ -62,13 +76,30 @@ class _NewItemState extends State<NewItem> {
   Widget build(BuildContext context) {
 
 //    (widget. == _formKey1) ? text = "Availability" : text = "When do you need it?";
+  if (widget.uidTab[2] != null){
+      tabs[0] = (new Tab(text: "Update item"));
+      tabViews[0] = (_createFields('Dates', _formKey1, widget.uidTab[2]));
+  }else{
+//    tabs[0] = ();
+//    tabs[1] = ();
+    tabs = [new Tab(text: "Post an item"), new Tab(text: "Request an item")];
+    print("in here!!!!");
+    print(tabs[0]);
+    print(tabs[1]);
+    print(tabs.length);
+    tabViews[0] = (_createFields('Dates available', _formKey2, widget.uidTab[2]));
+    tabViews[1] = (_createFields('Requested usage date', _formKey1, widget.uidTab[2]));
+  }
 
 
     return loading
         ? Loading()
         : DefaultTabController(
-            length: 2,
-            initialIndex: widget.uidTab[1] ? 1 : 0,
+//        : TabBarView(
+//      controller: _tabController,
+//            length: (widget.uidTab[1] == 2) ? 1 : 2,
+            length: tabs.length,
+            initialIndex: (widget.uidTab[1] == 1) ? 1 : 0,
             child: Scaffold(
                 backgroundColor: customBlue5,
                 appBar: PreferredSize(
@@ -93,28 +124,36 @@ class _NewItemState extends State<NewItem> {
                       ),
                     ),
                     bottom: TabBar(
+//                      controller: _tabController,
                       indicatorColor: customYellow2,
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorWeight: 4.0,
                       labelColor: Colors.black87,
                       unselectedLabelColor: Colors.black38,
-                      tabs: [
-                        new Tab(text: "Post an item"),
-                        new Tab(text: "Request an item"),
-                      ],
+                      tabs: tabs,
+//                       [
+//                        new Tab(child: Text( "Post an item")),
+//                        new Tab(child:  Text( "Request an item")),
+//                      ],
                     ),
                   ),
                 ),
                 body: new TabBarView(
-                  children: <Widget>[
-                    _createFields('Dates available', _formKey2),
-                    _createFields('Requested usage date', _formKey1),
-                  ],
+//                  controller: _tabController,
+                  children: tabViews,
+//                  <Widget>[
+////                    if (widget.uidTab[2] == null){
+//                      _createFields('Dates available', _formKey2, null),
+//                      _createFields('Requested usage date', _formKey1, widget.uidTab[2]),
+////                    }.toList();
+////
+//                  ],
                 )),
+//    ],
           );
   }
 
-  Widget _createFields(String dateDescription, GlobalKey type) {
+  Widget _createFields(String dateDescription, GlobalKey type, dynamic item) {
     return Form(
       key: type, // Keep track of form
       child: SingleChildScrollView(

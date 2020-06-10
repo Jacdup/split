@@ -64,7 +64,7 @@ class CustomDialog extends StatelessWidget {
   final String title, description, buttonText1, buttonText2;
   final dynamic item;
   final bool type;
-//  final onPressedBtn1, onPressedBtn2;
+//  final  onPressedBtn2;
 
   CustomDialog({
     @required this.title,
@@ -135,7 +135,10 @@ class CustomDialog extends StatelessWidget {
               ButtonBar(
                 children: <Widget>[
                   FlatButton(
-                    onPressed: ()async {
+                    onPressed:
+//                    onPressedBtn2,
+                        ()async {
+
                       dynamic result = ButtonPresses().onMarkAsUnavailable(item.docRef, type); //TODO: this is called immediately
 //                      dynamic result = await onPressedBtn1;
                       if (result == null){

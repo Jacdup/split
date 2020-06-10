@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/services/button_presses.dart';
+import 'package:twofortwo/utils/routing_constants.dart';
 
 class UserList extends StatefulWidget {
 
@@ -40,6 +41,11 @@ class _UserListState extends State<UserList> {
       _notAvailableVal[num] = !_notAvailableVal[num];
     });
   }
+
+  bool _availableSelection = false;
+  bool _deleteSelect = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +171,14 @@ class _UserListState extends State<UserList> {
                   visible: _infoShow[num] ,
                   child: Column(
                     children: <Widget>[
-                      CheckboxListTile(value: _notAvailableVal[num], title: Text("Item is currently not available"),
-                        onChanged:(newValue){_toggleAvailable(num);
-                        if (_notAvailableVal[num]){
+
+                      Row(
+                        children: <Widget>[
+                          FlatButton(
+                            onPressed: (){
+                              _toggleAvailable(num);
+
+                            if (!_notAvailableVal[num]){
                           showDialog(context: context,child:
                              CustomDialog(
                           title: "Confirmation",
@@ -177,29 +188,51 @@ class _UserListState extends State<UserList> {
                                 type: type,
                                 item: item,
 //                               onPressedBtn1:
-//                               onPressedBtn2: _popDialog(context, num),
+//                               onPressedBtn2: popDialog(context, num),
                              ));
-                        };
+                        }
 
-                        }, ),
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: const Text('Edit item details'),
-                            onPressed: () {/* send ping to item user, with thisUser info */
-//                          _confirmHelp(context);
-                              },
+                          },
+                            child: Text("Available", style: itemHeaderFont,),
+                            color: _notAvailableVal[num] ? Colors.green : Colors.red,
+                            shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                           ),
-                          FlatButton(
-                            child: const Text('Delete item'),
-                            onPressed: () {
-//                          print("row$num");
-                              _confirmDelete(context, itemRef, type);
-//                          Navigator.pushNamed(context, getItemInfoRoute, arguments: [num, 2],);
-                              },
-                          ),
+                          Spacer(),
+                          IconButton(onPressed: (){
+                            print(item);
+                            Navigator.pushNamed(context, NewItemRoute, arguments: [widget.uid, 2, item]);
+                          },
+                            icon: Icon(Icons.edit,),
+                            color: Colors.blueGrey,
+                            iconSize: 30.0,),
+                          Spacer(),
+                          IconButton(onPressed: (){
+                            _confirmDelete(context, itemRef, type);
+                          },
+                          icon: Icon(Icons.delete,),
+                          color: Colors.red,
+                          iconSize: 30.0,),
                         ],
                       ),
+
+
+//                      CheckboxListTile(value: _notAvailableVal[num], title: Text("Item is currently not available"),
+//                        onChanged:(newValue){_toggleAvailable(num);
+//                        if (_notAvailableVal[num]){
+//                          showDialog(context: context,child:
+//                             CustomDialog(
+//                          title: "Confirmation",
+//                          description: "This will hide this item from other users until you mark this item as available again. Proceed?",
+//                               buttonText1: "Okay",
+//                               buttonText2: "Cancel",
+//                                type: type,
+//                                item: item,
+////                               onPressedBtn1:
+////                               onPressedBtn2: popDialog(context, num),
+//                             ));
+//                        };
+//
+//                        }, ),
                     ],
                   ),
                 )
@@ -259,11 +292,12 @@ class _UserListState extends State<UserList> {
     //return true;
   }
 
-  _popDialog(BuildContext context, int num){
+  popDialog(BuildContext context, int num){
 //TODO: why is this called forever
-    setState(() {
-      _notAvailableVal[num] = false;
-    });
+  print("in here!!!!!!");
+//    setState(() {
+//      _notAvailableVal[num] = false;
+//    });
 
   }
 }
