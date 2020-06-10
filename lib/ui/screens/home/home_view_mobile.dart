@@ -25,13 +25,38 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   TabController _tabController;
   ScrollController _scrollController;
-//  RefreshController _refreshController;
+  TextEditingController  _searchController;
+  ValueNotifier<bool> showSearchBar;
+
+  String filter;
+//  Widget _titleBar;
+//  RefreshController  _refreshController;
 
   int _currentIndex = 0;
   @override
   void initState() {
     super.initState();
+    _searchController = new TextEditingController();
+    _searchController.addListener(() {
+      setState(() {
+        filter = _searchController.text;
+      });
+    });
+
+//    showSearchBar.value(false);
     _scrollController = new ScrollController();
+
+    showSearchBar = ValueNotifier(false);
+//    showSearchBar.addListener(() {
+//    _handleTabIndex();
+//      _scrollController.offset;
+////      if (_scrollController.offset > 50){
+////        showSearchBar.value = true;
+////    }
+////      print(_scrollController.offset);
+////      _scrollController.offset;
+//    });
+
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabIndex);
     _tabController.animation.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
@@ -56,14 +81,19 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   @override
   Widget build(BuildContext context) {
-    final itemsTemp = Provider.of<List<Item>>(context) ?? [];
-    final itemsAvailableTemp = Provider.of<List<ItemAvailable>>(context) ?? [];
+//    if (_scrollController.offset > 50){
+//      showSearchBar.value = true;
+//    }
+
+
+    final itemsRequestedFromFirestore = Provider.of<List<Item>>(context) ?? [];
+    final itemsAvailableFromFirestore = Provider.of<List<ItemAvailable>>(context) ?? [];
     final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
         ? Provider.of<User>(context)
         : null;
 
-    List<Item> items1 = Filter().sortRequestedByDate(itemsTemp);
-    List<ItemAvailable> itemsAvailable1 = Filter().sortAvailableByDate(itemsAvailableTemp);
+    List<Item> itemsRequested = Filter().sortRequestedByDate(itemsRequestedFromFirestore);
+    List<ItemAvailable> itemsAvailable = Filter().sortAvailableByDate(itemsAvailableFromFirestore);
 
           if (userData != null) {
 //            print(userData.categories);
@@ -82,6 +112,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   controller: _scrollController,
                   headerSliverBuilder:
                       (BuildContext context, bool innerBoxIsScrolled) {
+                        showSearchBar.value = innerBoxIsScrolled;
                     return <Widget>[
                       _createHeader(userData.name, innerBoxIsScrolled),
                     ];
@@ -92,11 +123,11 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //                        AvailableList(allItems: itemsAvailableTemp, uid: userData.uid, name: 'tab2',),
 //                        RequestList(allItems: itemsTemp, uid: userData.uid, name: 'tab1',),
                          AvailableList(
-                            allItems: Filter().filterAvailableByCategory(itemsAvailable1, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
+                            allItems: Filter().filterAvailableByCategory(itemsAvailable, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
                              uid: userData.uid,
                             name: 'tab2'),
                          RequestList(
-                            allItems: Filter().filterRequestedByCategory(items1, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories) ,uid: userData.uid,
+                            allItems: Filter().filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories) ,uid: userData.uid,
                             name: 'tab1'),
                       ],
                       controller: _tabController,
@@ -112,6 +143,15 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
 
+//    if (innerBoxIsScrolled){
+
+//    }
+
+    Widget _titleBar = Text(
+      'Welcome $userName!',
+      style: TextStyle(color: Colors.white, fontSize: 20.0),
+    );
+
     return SliverAppBar(
 //      snap: true,
 //    leading: IconButton(icon: Icon(Icons.menu),onPressed:(){ _buildDrawer(context);},),
@@ -120,11 +160,16 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       elevation: 8.0,
       forceElevated: innerBoxIsScrolled,
 //      leading: Icon(Icons.menu),
-      title: //_getTitle(userName, scrollController),
-         Text(
-        'Welcome $userName!',
-        style: TextStyle(color: Colors.white, fontSize: 20.0),
+      title: ValueListenableBuilder( // Builds search bar in title when search clicked, or when innerBoxIsScrolled
+          builder: (context, value, child) => value == false ? _titleBar : TextField(decoration: InputDecoration(
+              labelText: "Search"
           ),
+            controller: _searchController,
+          ),
+          valueListenable: showSearchBar,
+//          child: _titleBar
+      ),//_getTitle(userName, scrollController),
+
 
 //        IconButton(icon: Icon(Icons.menu), color: Colors.white,),
        // TODO: this become Search bar as user scrolls up
@@ -136,6 +181,18 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
         IconButton(
           icon: Icon(Icons.search),
           onPressed: (){
+            print(_scrollController.offset);
+            showSearchBar.value = true;
+//            showSearchBar.notifyListeners();
+
+//            setState(() {
+//              _titleBar = TextField(decoration: InputDecoration(
+//                  labelText: "Search"
+//              ),
+//                controller: _searchController,
+//              );
+//            });
+
 //            showSearch(context: context, delegate: ),
           },
         )
@@ -215,6 +272,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       backgroundColor: customYellow1,
     );
   }
+
+
 
 //  _getTitle(String userName, ScrollController scrollController){
 //    print(scrollController);

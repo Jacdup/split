@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/category_service.dart';
+import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/ui/screens/user/user_item_list.dart';
@@ -56,6 +57,8 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
     });
 
 
+    thisUserItemsRequested= Filter().sortRequestedByDate(thisUserItemsRequested);
+    thisUserItemsAvailable = Filter().sortAvailableByDate(thisUserItemsAvailable);
 
             return Scaffold(
               appBar: _profileAppBar(userData, userData.uid),

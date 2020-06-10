@@ -199,7 +199,7 @@ class _UserListState extends State<UserList> {
                           ),
                           Spacer(),
                           IconButton(onPressed: (){
-                            print(item);
+//                            print(item);
                             Navigator.pushNamed(context, NewItemRoute, arguments: [widget.uid, 2, item]);
                           },
                             icon: Icon(Icons.edit,),
