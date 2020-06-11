@@ -62,15 +62,19 @@ class _UserMessagesState extends State<UserMessages> {
     return StreamProvider<List<Message>>.value(
       value: DatabaseService(uid: userData.uid).messages,
       child: Scaffold(
-        appBar: _profileAppBar(userData, tag),
+//        appBar: _profileAppBar(userData, tag),
         body: Container(
           child: Column(
+
+
             children: <Widget>[
-              Center(child: Text("Messages", style: headerFont)),
+
+              _profileAppBar(userData, tag),
+//              Center(child: _buildTitle()), //Text("Messages", style: headerFont)),
               Consumer<List<Message>>(
                 builder: (context, value, child) {
 
-                  if (value != null) {
+                  if (value != null && value.isNotEmpty) {
                     for (var i = 0; i <= value.length; i++){
                       _infoShow.add(false) ;
                     }
@@ -84,7 +88,7 @@ class _UserMessagesState extends State<UserMessages> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(onPressed: (){print('profilePic$tag');},),
+//        floatingActionButton: FloatingActionButton(onPressed: (){print('profilePic$tag');},),
       ),
     );
 //        }
@@ -116,6 +120,7 @@ class _UserMessagesState extends State<UserMessages> {
           String surnameFrom = thisMessage[index].surnameFrom;
           String phoneFrom = thisMessage[index].phoneFrom;
           DateTime dateSent = thisMessage[index].dateSent;
+//          print(thisMessage[index].nameFrom);
 //        String from = thisMessage[index].uidFrom;
           String forItem = thisMessage[index].forItem;
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
@@ -131,23 +136,29 @@ class _UserMessagesState extends State<UserMessages> {
                     radius: 40.0,
                     backgroundColor: Colors.deepOrangeAccent,
 //              child: Image.asset('split_new_blue1.png'),
-                    child: Text(
+                    child: nameFrom == null ? SizedBox.shrink():Text(
                       nameFrom.substring(0, 1) +
                           surnameFrom.substring(0, 1),
                       style: TextStyle(fontSize: 25.0, color: Colors.white),
                     ),
                   ),
                   contentPadding: EdgeInsets.all(12.0),
-                  title: Text(
-                    nameFrom,
-                    style: itemHeaderFont,
+                  title:  RichText(
+                    text: TextSpan(text: "Re: ",
+                        style: GoogleFonts.muli(fontSize: 16.0,
+                            color: Colors.black87, fontWeight: FontWeight.bold),
+                        children: <TextSpan>[
+                          TextSpan(text: forItem == null ? " " : forItem,
+                            style: itemHeaderFont, ),
+                        ]),
                   ),
-                  subtitle: Text(
-                    message,
-                    style: itemBodyFont,
+                  subtitle: nameFrom == null ? SizedBox.shrink(): Text(
+                    nameFrom,
+//                    message,
+                    style: messageFromFont,
                   ),
                   trailing: _buildTrailing(forItem, dateSent),
-                  onTap: () { // TODO: open message
+                  onTap: () {
                     _toggleDropdown(index);
                   },
                 ),
@@ -158,19 +169,21 @@ class _UserMessagesState extends State<UserMessages> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        RichText(
-                          text: TextSpan(text: "Re: ",
-                              style: GoogleFonts.muli(fontSize: 13.0,
-                                  color: Colors.black87, fontWeight: FontWeight.bold),
-                              children: <TextSpan>[
-                                TextSpan(text: forItem == null ? " " : forItem,
-                                  style: itemDate, ),
-                              ]),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: message == null ? SizedBox.shrink():Text(message, style:itemBodyFont),
+                          ),
+                            borderOnForeground: true,
+                          ),
                         ),
+                        SizedBox(height: 20.0,),
+                        Text("Contact $nameFrom:", style: itemDateTitle,),
                         Row(
                           children: <Widget>[
-                            Text("$nameFrom's number: "),
-                            Expanded(child: Text(phoneFrom, style: itemHeaderFont)),
+//                            Text("$nameFrom's number: "),
+                            Expanded(child: phoneFrom == null ? SizedBox.shrink():Text(phoneFrom, style: itemDateTitle)),
                             IconButton(onPressed: (){
                               LaunchWhatsapp(phoneNumber: phoneFrom, message: message).launchWhatsApp();
                               print("in here!");
@@ -216,74 +229,108 @@ class _UserMessagesState extends State<UserMessages> {
   }
 
   _profileAppBar(User userData, String tag){
-    return PreferredSize(
-      preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 5)),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(0,30,0,0),
-        color: customBlue5,
+    return Stack(
+      children: <Widget>[
+
+        Container(
+          height: screenHeight(context, dividedBy: 3.6),
+          padding: EdgeInsets.fromLTRB(0,30,0,0),
+          color: Colors.transparent,
+        ),
+
+
+        Container(
+          height: screenHeight(context, dividedBy: 4.5),
+          padding: EdgeInsets.fromLTRB(0,30,0,0),
+          color: customBlue5,
 
 //        automaticallyImplyLeading: false,
 //        centerTitle: true,
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                BackButton(onPressed: (){Navigator.pop(context);}),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 48.0),//TODO, responsive. Well, an IconButton has a min size of 48 pixels.
-                    child: Hero(
-                      tag: 'profilePic$tag',
-                      child: CircleAvatar(
-                        radius: 40.0,
-                        backgroundColor: Colors.deepOrangeAccent,
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  BackButton(onPressed: (){Navigator.pop(context);}),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 48.0),//TODO, responsive. Well, an IconButton has a min size of 48 pixels.
+                      child: Hero(
+                        tag: 'profilePic$tag',
+                        child: CircleAvatar(
+                          radius: 40.0,
+                          backgroundColor: Colors.deepOrangeAccent,
 //              child: Image.asset('split_new_blue1.png'),
-                        child: Text(
-                          userData.name.substring(0, 1) +
-                              userData.surname.substring(0, 1),
-                          style: TextStyle(fontSize: 25.0, color: Colors.white),
+                          child: Text(
+                            userData.name.substring(0, 1) +
+                                userData.surname.substring(0, 1),
+                            style: TextStyle(fontSize: 25.0, color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Text(userData.email),
-            Text(userData.phone)
-          ],
-
+                ],
+              ),
+              Text(userData.email),
+              Text(userData.phone),
+//                _buildTitle(),
+            ],
+          ),
         ),
 
-//        title: Center(
-//          child: Column(
-//            mainAxisAlignment: MainAxisAlignment.center,
-//            children: <Widget>[
-//              Text(
-//                'Add item',
-//                style: titleFont,
-//              ),
-//            ],
+
+
+        Positioned(
+          left: dialogPadding*2,
+          right: dialogPadding*2,
+          top: dialogPadding*6,
+          child: Container(
+              height: dialogPadding*2,
+              decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
+              child: Center(child: Text("Messages", style: tabFont,))),
+//          CircleAvatar(
+//            backgroundColor: Colors.blueAccent, //TODO: logo or something
+//            radius: AvatarPadding,
 //          ),
-//        ),
+        ),
 
 
-//      titleSpacing: 100.0,
-//      title: PreferredSize(
-//        preferredSize: Size.square(200.0),
-//        child: CircleAvatar(
-//          radius: 40.0,
-//          backgroundColor: Colors.deepOrangeAccent,
-//          child: Text(
-//          userData.name.substring(0, 1) +
-//              userData.surname.substring(0, 1),
-//          style: TextStyle(fontSize: 25.0, color: Colors.white),
-//        ),),
-//      ),
 
 
+      ],
+    );
+  }
+
+  Widget _buildTitle(){
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        border: Border.all(color: Colors.amber),
+        borderRadius: BorderRadius.circular(32.0),
+      ),
+      child: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Messages", style: headerFont),
+          ),
+          Positioned(
+            left: dialogPadding,
+            right: dialogPadding,
+            child: Container(
+                height: AvatarPadding + dialogPadding,
+                decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
+                child: Center(child: Text("Messages", style: tabFont,))),
+//          CircleAvatar(
+//            backgroundColor: Colors.blueAccent, //TODO: logo or something
+//            radius: AvatarPadding,
+//          ),
+          ),
+        ],
       ),
     );
+
   }
 
 
