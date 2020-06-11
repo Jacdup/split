@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/category_service.dart';
+import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/widgets.dart';
 import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';
@@ -50,33 +52,38 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       valueListenable: loading,
       builder: (context, value, child){
       return value ? Loading() :  Scaffold(
-              appBar: AppBar(
-//              automaticallyImplyLeading: false,
-                // Here we take the value from the MyHomePage object that was created by
-                // the App.build method, and use it to set our appbar title.
-                //title: Text(widget.title),
-                title: Text('Choose Categories'), centerTitle: true,
-              ),
+//              appBar: AppBar(
+////              automaticallyImplyLeading: false,
+//                // Here we take the value from the MyHomePage object that was created by
+//                // the App.build method, and use it to set our appbar title.
+//                //title: Text(widget.title),
+//                title: Text('Choose Categories'), centerTitle: true,
+//              ),
 
-              body: Column(
-                children: <Widget>[
-                  new Expanded(
-                    child: GridView.count(
-                      childAspectRatio: 1.1,
+              body: Container(
+                child: Column(
+                  children: <Widget>[
+//                  new ProfileAppBar(title: "Messages", userData: userData,tag: tag,),
+
+                    _buildAppBar(),
+
+                    new Expanded(
+                      child: GridView.count(
+                        childAspectRatio: 1.1,
 //                  primary: false,
-                      padding: const EdgeInsets.all(10),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 0,
-                      children: List.generate(CategoryService().categories.length, (index) {
+                        padding: const EdgeInsets.all(10),
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 0,
+                        children: List.generate(CategoryService().categories.length, (index) {
 //                      alreadySaved = _selectedCategories.contains(categories[index]);
-                        return Center(
-                          child: _buildCard(CategoryService().categories[index], cardHeight),
-                        );
+                          return Center(
+                            child: _buildCard(CategoryService().categories[index], cardHeight),
+                          );
 //                      );
-                      }),
+                        }),
+                      ),
                     ),
-                  ),
 //                    SizedBox(height: screenHeight(context, dividedBy: 40)),
 //                Container(
 //                  width: screenWidth(context),
@@ -103,7 +110,8 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 //                    ),
 //                  ),
 //                ),
-                ],
+                  ],
+                ),
               ),
           floatingActionButton: FloatingActionButton.extended(
             elevation: 8.0,
@@ -111,16 +119,16 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 //              print('!!!!!!!!!!');
 //              print(widget.itemDetails);
 //              print(widget.itemDetails.itemName);
-              if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
-                ButtonPresses().onUpdateCategories(context, user.uid, _selectedCategories);
-              }else{
-                if (widget.itemDetails.docRef == '1'){ // Requested item
-                  ButtonPresses().onSelectRequestedItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
-                }else{ // Available item
-                  ButtonPresses().onSelectAvailableItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
+                if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
+                  ButtonPresses().onUpdateCategories(context, user.uid, _selectedCategories);
+                }else{
+                  if (widget.itemDetails.docRef == '1'){ // Requested item
+                    ButtonPresses().onSelectRequestedItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
+                  }else{ // Available item
+                    ButtonPresses().onSelectAvailableItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
+                  }
                 }
-              }
-              Navigator.pop(context);
+                Navigator.pop(context);
 //              _onButtonPress(user.uid);
             },
             icon: Icon(Icons.done),
@@ -128,6 +136,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
             backgroundColor: customYellow1,
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+//                ),
               );
   }
     );
@@ -183,6 +192,44 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       ),
     );
   } // _buildCard
+
+Widget _buildAppBar(){
+    return Stack(
+        children: <Widget>[
+
+          Container(
+            height: screenHeight(context, dividedBy: 8),
+            padding: EdgeInsets.fromLTRB(0,30,0,0),
+            color: Colors.transparent,
+          ),
+
+          Container(
+            height: screenHeight(context, dividedBy: 10),
+            padding: EdgeInsets.fromLTRB(0,30,0,0),
+            color: customBlue5,
+            child: Row(
+            children: <Widget>[
+               BackButton(onPressed: (){Navigator.pop(context);}),
+              ])
+          ),
+
+          Positioned(
+            left: dialogPadding*2,
+            right: dialogPadding*2,
+            top: screenHeight(context, dividedBy: 18),
+            child: Container(
+                height: dialogPadding*2,
+                decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
+                child: Center(child: Text("Choose Categories", style: tabFont,))),
+//          CircleAvatar(
+//            backgroundColor: Colors.blueAccent, //TODO: logo or something
+//            radius: AvatarPadding,
+//          ),
+          ),
+
+
+        ]);
+}
 
 //  _onButtonPress(String uid) async {
 //    setState(() {
