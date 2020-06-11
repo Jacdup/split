@@ -286,7 +286,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   Widget _searchBar() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 4.0),
+      padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
       child: TextField(decoration: InputDecoration(
         isDense: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
@@ -312,9 +312,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
             }
             },),
       ),
-
-//        style: TextStyle(fontSize: 14.0, height: 0),
-
+        style: TextStyle(fontSize: 14.0, height: 1),
         focusNode: _searchNode,
         onEditingComplete: () {
           if (filter == null || filter == "") {
