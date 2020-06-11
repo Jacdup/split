@@ -4,6 +4,8 @@ import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
+import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/ui/screens/user/user_item_list.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
@@ -62,19 +64,21 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 
             return Scaffold(
               appBar: _profileAppBar(userData, userData.uid),
-              body: new TabBarView(
-                children: <Widget>[
+              body: Container(
+                child: new TabBarView(
+                  children: <Widget>[
 
-                  new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
-                  new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
+                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
+                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
 //                  new AvailableList(chosenCategories: _categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
 //                  new RequestList(chosenCategories: _categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
 //              new RequestList(allItems: items, name: 'tab1', uid: uid,),
 //              new AvailableList(allItems: itemsAvailable, name: 'tab2', uid: uid),
-                ],
-                controller: _tabController,
+                  ],
+                  controller: _tabController,
+                ),
               ),
-              floatingActionButton: FloatingActionButton(onPressed: (){},),
+//              floatingActionButton: FloatingActionButton(onPressed: (){},),
             );
 
 //      );
@@ -85,7 +89,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 
   _profileAppBar(User userData, String tag){
     return PreferredSize(
-      preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 4 )), // TODO
+      preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 4.4 )), // TODO
       child: Container(
         padding: EdgeInsets.fromLTRB(0,30,0,0),
         color: customBlue5,
@@ -123,10 +127,10 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
             ),
             Text(userData.email),
             Text(userData.phone),
-            SizedBox(height: 20,),
+//            SizedBox(height: 20,),
             Expanded(
               child: Container(
-                color: customBlue2,
+                color: customBlue5,
                 child: TabBar(
                     indicatorColor: customYellow2,
                     indicatorSize: TabBarIndicatorSize.tab,
@@ -134,8 +138,8 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
                     labelColor: Colors.black87,
                     unselectedLabelColor: Colors.black38,
                     tabs: [
-                      new Tab(text: "Available"),
-                      new Tab(text: "Requested"),
+                      new Tab(child: Text("Available", style: tabFont,)),
+                      new Tab(child: Text("Requested", style: tabFont,)),
                     ],
                     controller: _tabController,
                 ),
