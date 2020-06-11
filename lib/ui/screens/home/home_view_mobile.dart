@@ -286,7 +286,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   Widget _searchBar() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+      padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
       child: TextField(decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
           fillColor: Colors.white,
@@ -297,7 +297,19 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
               borderRadius: const BorderRadius.all(const Radius.circular(16.0)),),
 //            borderSide: BorderSide(color: Colors.white,)),
           filled: true,
-          hintText: "Search"
+          hintText: "Search",
+          suffixIcon: IconButton(icon: Icon(Icons.clear), onPressed: (){
+
+            if (filter == null || filter == ""){
+              FocusScope.of(context).unfocus();
+              _searchController.clear();
+              setState(() {
+                _showSearchBar = false;
+              });
+            }else{
+              _searchController.clear();
+            }
+            },),
       ),
 
         focusNode: _searchNode,
