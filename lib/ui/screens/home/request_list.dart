@@ -19,8 +19,9 @@ class RequestList extends StatefulWidget {
   final List<Item> allItems;
   final String name;
   final String uid;
+  final String searchTerm;
 
-  RequestList({this. allItems, this.name, this.uid});
+  RequestList({this. allItems, this.name, this.uid, this.searchTerm});
 
   @override
   _RequestListState createState() => _RequestListState();
@@ -106,7 +107,9 @@ class _RequestListState extends State<RequestList> {
         }
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
 //          i = i + 1;
-          return _buildRow(allItems[index], index, _buildBox);
+        return  widget.searchTerm == null || widget.searchTerm == "" ? _buildRow(allItems[index], index, _buildBox)
+            : allItems[index].itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
+//          return _buildRow(allItems[index], index, _buildBox);
 //        }else{
           if (index == allItems.length -1){
             _buildBox = 80;

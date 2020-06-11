@@ -20,8 +20,9 @@ class AvailableList extends StatefulWidget {
   final List<ItemAvailable> allItems;
   final String name;
   final String uid;
+  final String searchTerm;
 
-  AvailableList({this. allItems, this.name, this.uid});
+  AvailableList({this. allItems, this.name, this.uid, this.searchTerm});
 
   @override
   _AvailableListState createState() => _AvailableListState();
@@ -120,21 +121,26 @@ class _AvailableListState extends State<AvailableList> {
         }
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
 //          i = i + 1;
-          return _buildRow(allItems[index], index, _buildBox);
-//        }else{
-          if (index == allItems.length -1){
-            _buildBox = 80;
-            if (i == 0) {
-              return Center(child: Text("No items in chosen categories"));
-            }
-          }
-//          if (i == 0){
-//            i = i + 1;
+        // Non - case sensitive search
+          return  widget.searchTerm == null || widget.searchTerm == "" ? _buildRow(allItems[index], index, _buildBox)
+          : allItems[index].itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
 
-//          }else {
-            return Center();
+
+          ;
+//        }else{
+//          if (index == allItems.length -1){
+//            _buildBox = 80;
+//            if (i == 0) {
+//              return Center(child: Text("No items in chosen categories"));
+//            }
 //          }
-//        }
+////          if (i == 0){
+////            i = i + 1;
+//
+////          }else {
+//            return Center();
+////          }
+////        }
 
       },
 //      separatorBuilder: (BuildContext context, int index) => const Divider(),

@@ -21,12 +21,13 @@ class BorrowListPortrait extends StatefulWidget {
 }
 
 class _BorrowListPortraitState extends State<BorrowListPortrait>
-    with SingleTickerProviderStateMixin{
+    with TickerProviderStateMixin{
 
+//  AnimationController _animationController;
   TabController _tabController;
   ScrollController _scrollController;
   TextEditingController  _searchController;
-  ValueNotifier<bool> showSearchBar;
+  bool _showSearchBar = false;
   FocusNode _searchNode = FocusNode();
 
   String filter;
@@ -47,9 +48,18 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     });
 
 //    showSearchBar.value(false);
+//    _searchNode.addListener(() {
+//      _showSearchBar = false;
+//    });
     _scrollController = new ScrollController();
+//    _animationController = new AnimationController(vsync: this, duration: const Duration(seconds: 2))..forward();
 
-    showSearchBar = ValueNotifier(false);
+//    showSearchBar.addListener(() {
+//      _title = _titleBar('userName');
+//    });
+//    _animationController.addListener(() {
+//      showSearchBar.value;
+//    });
 //    showSearchBar.addListener(() {
 //      setState(() {
 //        _searchNode;
@@ -142,7 +152,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                   controller: _scrollController,
                   headerSliverBuilder:
                       (BuildContext context, bool innerBoxIsScrolled) {
-                        _searchNode.hasFocus ? showSearchBar.value = true : showSearchBar.value = innerBoxIsScrolled;
+//                        _searchNode.hasFocus ? showSearchBar.value = true : showSearchBar.value = innerBoxIsScrolled;
                     return <Widget>[
                       _createHeader(userData.name, innerBoxIsScrolled),
                     ];
@@ -155,10 +165,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                          AvailableList(
                             allItems: Filter().filterAvailableByCategory(itemsAvailable, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
                              uid: userData.uid,
-                            name: 'tab2'),
+                            name: 'tab2',
+                             searchTerm: filter,),
                          RequestList(
-                            allItems: Filter().filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories) ,uid: userData.uid,
-                            name: 'tab1'),
+                            allItems: Filter().filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
+                             uid: userData.uid,
+                            name: 'tab1',
+                             searchTerm: filter,),
                       ],
                       controller: _tabController,
                     ),
@@ -172,15 +185,25 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   }
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
-
+//    AnimatedSwitcher(
+//        duration: const Duration(seconds: 1),
+//        transitionBuilder: (Widget child, Animation<double> animation)=>
+//            SlideTransition(child: child, position: Tween<Offset>(begin: Offset(-5.0, 0.0), end: Offset.zero,).animate(animation)),
+//        child: _titleBar)
 //    if (innerBoxIsScrolled){
 
 //    }
+//  Widget _titleBar;
+//    final animation = Tween(begin: 0, end: 2).animate(_animationController);
+//    final _animation = Tween<Offset>(
+//      begin: const Offset(-0.5, 0.0),
+//      end: const Offset(0.5, 0.0),
+//    ).animate(CurvedAnimation(
+//      parent: _animationController,
+//      curve: Curves.easeInCubic,
+//    ));
 
-    Widget _titleBar = Text(
-      'Welcome $userName!',
-      style: TextStyle(color: Colors.white, fontSize: 20.0),
-    );
+
 
     return SliverAppBar(
 //      snap: true,
@@ -190,54 +213,22 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       elevation: 8.0,
       forceElevated: innerBoxIsScrolled,
 //      leading: Icon(Icons.menu),
-      title: ValueListenableBuilder( // Builds search bar in title when search clicked, or when innerBoxIsScrolled
-          builder: (context, value, child) => value == false ? _titleBar :
-          TextField(decoration: InputDecoration(
-//              fillColor: Colors.white,
-              labelText: "Search"
-          ),
-            focusNode: _searchNode,
-            onEditingComplete: (){
-              FocusScope.of(context).unfocus();
-              _searchController.clear();
-            },
-//            onEditingComplete: FocusScope.of(context).unfocus(),
-            controller: _searchController,
-          ),
-          valueListenable: showSearchBar,
-//          child: _titleBar
-      ),//_getTitle(userName, scrollController),
-
-
-//        IconButton(icon: Icon(Icons.menu), color: Colors.white,),
-       // TODO: this become Search bar as user scrolls up
-
+      title: innerBoxIsScrolled || _showSearchBar || _searchNode.hasFocus  ? _searchBar() : SizedBox.shrink(), // Builds search bar in title when search clicked, or when innerBoxIsScrolled
       centerTitle: true,
       expandedHeight: 200,
-
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
           onPressed: (){
-            print(_scrollController.offset);
-            showSearchBar.value = true;
-//            showSearchBar.notifyListeners();
-
-//            setState(() {
-//              _titleBar = TextField(decoration: InputDecoration(
-//                  labelText: "Search"
-//              ),
-//                controller: _searchController,
-//              );
-//            });
-
-//            showSearch(context: context, delegate: ),
+            setState(() {
+              _showSearchBar = true;
+            });
           },
         )
       ],
 
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.all(10.0),
+        titlePadding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 20.0),
         centerTitle: true,
         title: Center(
           child: Column(
@@ -246,11 +237,14 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  //TODO
-//                    Text(
-////                      'Welcome $userName!',
-////                      style: TextStyle(color: Colors.white, fontSize: 20.0),
-//                    ),
+                  //TODO //_titleBar(userName)
+                    Visibility(
+                      visible: !innerBoxIsScrolled && !_showSearchBar && !_searchNode.hasFocus,
+                      child: Text(
+                        'Welcome $userName!',
+                        style: TextStyle(color: Colors.white, fontSize: 18.0),
+                      ),
+                    ),
                 ],
               ),
             ],
@@ -282,6 +276,49 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
     // );
   }
+
+  Widget _titleBar(String userName){
+    return Text(
+      'Welcome $userName!',
+      style: TextStyle(color: Colors.white, fontSize: 20.0),
+    );
+  }
+
+  Widget _searchBar() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+      child: TextField(decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
+          fillColor: Colors.white,
+          enabledBorder:  OutlineInputBorder(
+              borderRadius: const BorderRadius.all(const Radius.circular(16.0)),
+              borderSide: BorderSide(color: Colors.white,)),
+          border: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(const Radius.circular(16.0)),),
+//            borderSide: BorderSide(color: Colors.white,)),
+          filled: true,
+          hintText: "Search"
+      ),
+
+        focusNode: _searchNode,
+        onEditingComplete: () {
+          if (filter == null || filter == "") {
+            FocusScope.of(context).unfocus();
+            _searchController.clear();
+            setState(() {
+              _showSearchBar = false;
+            });
+
+          } else {
+//              showSearchBar.value = true;
+          }
+        },
+        controller: _searchController,
+      ),
+    );
+  }
+
+
 
   Widget _actionButtons(String uid){
 
