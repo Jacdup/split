@@ -194,10 +194,11 @@ class _AvailableListState extends State<AvailableList> {
                   visible: _infoShow[num] ,
                   child: Row(
                     children: <Widget>[
-                      FlatButton(
-                        child: Text('spam', style: spamFont,textAlign: TextAlign.left,),
-                        onPressed: () => AlertDialog(),
-                      ),
+                      //TODO: add this when spam does something
+//                      FlatButton(
+//                        child: Text('spam', style: spamFont,textAlign: TextAlign.left,),
+//                        onPressed: () => AlertDialog(),
+//                      ),
                       Spacer(),
                       ButtonBar(
                         children: <Widget>[

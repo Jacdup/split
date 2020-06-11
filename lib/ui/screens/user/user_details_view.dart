@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -41,10 +42,17 @@ class _UserDetailsState extends State<UserDetails> {
 //        builder: (context, snapshot) {
 //        if (snapshot.hasData){
           return Scaffold(
-            appBar: _profileAppBar(userData, tag),
+//            appBar: _profileAppBar(userData, tag),
             body: Container(
 
-              child: Text("My profile"),
+              child: Column(
+                children: <Widget>[
+
+                  new ProfileAppBar(title: "Profile", userData: userData,tag: tag,),
+
+                  Text("My profile"),
+                ],
+              ),
 
 
             ),
@@ -62,69 +70,5 @@ class _UserDetailsState extends State<UserDetails> {
 //      );
 
 }
-
-
-
-  _profileAppBar(User userData, String tag){
-    return PreferredSize(
-      preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 5)),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(0,30,0,0),
-        color: customBlue5,
-
-//        automaticallyImplyLeading: false,
-//        centerTitle: true,
-      child: Column(
-        children: <Widget>[
-          Hero(
-            tag: 'profilePic$tag',
-            child: CircleAvatar(
-              radius: 40.0,
-              backgroundColor: Colors.deepOrangeAccent,
-//              child: Image.asset('split_new_blue1.png'),
-              child: Text(
-              userData.name.substring(0, 1) +
-                  userData.surname.substring(0, 1),
-              style: TextStyle(fontSize: 25.0, color: Colors.white),
-            ),
-            ),
-          ),
-          Text(userData.email),
-          Text(userData.phone)
-        ],
-
-      ),
-
-//        title: Center(
-//          child: Column(
-//            mainAxisAlignment: MainAxisAlignment.center,
-//            children: <Widget>[
-//              Text(
-//                'Add item',
-//                style: titleFont,
-//              ),
-//            ],
-//          ),
-//        ),
-
-
-//      titleSpacing: 100.0,
-//      title: PreferredSize(
-//        preferredSize: Size.square(200.0),
-//        child: CircleAvatar(
-//          radius: 40.0,
-//          backgroundColor: Colors.deepOrangeAccent,
-//          child: Text(
-//          userData.name.substring(0, 1) +
-//              userData.surname.substring(0, 1),
-//          style: TextStyle(fontSize: 25.0, color: Colors.white),
-//        ),),
-//      ),
-
-
-      ),
-    );
-  }
-
 
 }

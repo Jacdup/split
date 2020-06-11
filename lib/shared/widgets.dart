@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/button_presses.dart';
+import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
+import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 
 ValueNotifier<Widget> showContact = ValueNotifier(SizedBox.shrink());
@@ -181,3 +183,90 @@ class CustomDialog extends StatelessWidget {
     );
   }
 }
+
+
+class ProfileAppBar extends StatelessWidget {
+
+  final User userData;
+  final String tag;
+  final String title;
+
+  ProfileAppBar({this.userData, this.tag, this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+
+        Container(
+          height: screenHeight(context, dividedBy: 3.6),
+          padding: EdgeInsets.fromLTRB(0,30,0,0),
+          color: Colors.transparent,
+        ),
+
+
+        Container(
+          height: screenHeight(context, dividedBy: 4.4),
+          padding: EdgeInsets.fromLTRB(0,30,0,0),
+          color: customBlue5,
+
+//        automaticallyImplyLeading: false,
+//        centerTitle: true,
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  BackButton(onPressed: (){Navigator.pop(context);}),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 48.0),//TODO, responsive. Well, an IconButton has a min size of 48 pixels.
+                      child: Hero(
+                        tag: 'profilePic$tag',
+                        child: CircleAvatar(
+                          radius: 40.0,
+                          backgroundColor: Colors.deepOrangeAccent,
+//              child: Image.asset('split_new_blue1.png'),
+                          child: Text(
+                            userData.name.substring(0, 1) +
+                                userData.surname.substring(0, 1),
+                            style: TextStyle(fontSize: 25.0, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Text(userData.email),
+              Text(userData.phone),
+//                _buildTitle(),
+            ],
+          ),
+        ),
+
+
+
+        Positioned(
+          left: dialogPadding*2,
+          right: dialogPadding*2,
+          top: screenHeight(context, dividedBy: 5.2),
+          child: Container(
+              height: dialogPadding*2,
+              decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
+              child: Center(child: Text(title, style: tabFont,))),
+//          CircleAvatar(
+//            backgroundColor: Colors.blueAccent, //TODO: logo or something
+//            radius: AvatarPadding,
+//          ),
+        ),
+
+
+
+
+      ],
+    );
+
+
+  }
+}
+

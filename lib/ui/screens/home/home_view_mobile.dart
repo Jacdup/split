@@ -258,7 +258,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: Size.square(30.0),
+        preferredSize: Size.square(38.0),
         child: TabBar(
           indicatorColor: customYellow2,
           indicatorSize: TabBarIndicatorSize.tab,
@@ -286,8 +286,9 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   Widget _searchBar() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 8.0),
+      padding: const EdgeInsets.fromLTRB(4.0, 8.0, 4.0, 4.0),
       child: TextField(decoration: InputDecoration(
+        isDense: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10.0),
           fillColor: Colors.white,
           enabledBorder:  OutlineInputBorder(
@@ -311,6 +312,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
             }
             },),
       ),
+
+//        style: TextStyle(fontSize: 14.0, height: 0),
 
         focusNode: _searchNode,
         onEditingComplete: () {
