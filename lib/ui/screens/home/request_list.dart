@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
+import 'package:twofortwo/services/button_presses.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -175,7 +176,7 @@ class _RequestListState extends State<RequestList> {
                   FlatButton(
                     child: const Text('Willing to help'),
                     onPressed: () {/* send ping to item user, with thisUser info */
-                      _confirmHelp(context);},
+                      _confirmHelp(context, item);},
                   ),
                   FlatButton(
                     child: const Text('Contact'),
@@ -233,7 +234,7 @@ class _RequestListState extends State<RequestList> {
       ],);
   }
 
-  _confirmHelp(context) {
+  _confirmHelp(context, Item item) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -246,7 +247,10 @@ class _RequestListState extends State<RequestList> {
             new FlatButton(
               child: new Text("Yes"),
               onPressed: () async {
-                //TODO
+                ButtonPresses().onSendMessage(widget.uid, item.docRef,
+                    "I would like to lend you this item (${item.itemName}) you requested. Please contact me.", "",
+                    false);
+                Navigator.of(context).pop(false);
               },
             ),
             new FlatButton(

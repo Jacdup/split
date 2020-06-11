@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:twofortwo/main.dart';
+import 'package:twofortwo/services/button_presses.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -206,7 +207,9 @@ class _AvailableListState extends State<AvailableList> {
                           FlatButton(
                             child: const Text('Request to borrow'),
                             onPressed: () {/* send ping to item user, with thisUser info */
-                              _confirmHelp(context);},
+                              _confirmHelp(context, item);
+
+                              },
                           ),
                           FlatButton(
                             child: const Text('Contact'),
@@ -264,7 +267,7 @@ class _AvailableListState extends State<AvailableList> {
     ],);
   }
 
-  _confirmHelp(context) {
+  _confirmHelp(context, ItemAvailable item) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -277,7 +280,10 @@ class _AvailableListState extends State<AvailableList> {
             new FlatButton(
               child: new Text("Yes"),
               onPressed: () async {
-                //TODO
+                ButtonPresses().onSendMessage(widget.uid, item.docRef,
+                    "I would like to borrow this item (${item.itemName}) you listed. Please contact me.", "",
+                    true);
+                Navigator.of(context).pop(false);
               },
             ),
             new FlatButton(

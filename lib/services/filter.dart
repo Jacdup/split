@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:twofortwo/services/item_service.dart';
+import 'package:twofortwo/services/message_service.dart';
 
 class Filter {
 
@@ -8,6 +9,13 @@ class Filter {
   final List<ItemAvailable> itemsAvailable;
 
   Filter({this.itemsAvailable, this.itemsRequested});
+
+List<Message> sortMessagesByDate(List<Message> messages){
+  messages.sort((a,b) =>
+  b.dateSent.compareTo(a.dateSent)
+  );
+  return messages;
+}
 
 
   // Sort from newest -> oldest

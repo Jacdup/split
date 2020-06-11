@@ -52,21 +52,10 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       valueListenable: loading,
       builder: (context, value, child){
       return value ? Loading() :  Scaffold(
-//              appBar: AppBar(
-////              automaticallyImplyLeading: false,
-//                // Here we take the value from the MyHomePage object that was created by
-//                // the App.build method, and use it to set our appbar title.
-//                //title: Text(widget.title),
-//                title: Text('Choose Categories'), centerTitle: true,
-//              ),
-
               body: Container(
                 child: Column(
                   children: <Widget>[
-//                  new ProfileAppBar(title: "Messages", userData: userData,tag: tag,),
-
                     _buildAppBar(),
-
                     new Expanded(
                       child: GridView.count(
                         childAspectRatio: 1.1,
@@ -85,31 +74,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
                       ),
                     ),
 //                    SizedBox(height: screenHeight(context, dividedBy: 40)),
-//                Container(
-//                  width: screenWidth(context),
-//                  decoration: BoxDecoration(
-//                    color: Colors.white,
-//                    boxShadow: [
-//                      BoxShadow(
-//                        color: Colors.grey.withOpacity(0.8),
-//                        spreadRadius: 5,
-//                        blurRadius: 10,
-//                        offset: Offset(0, 3), // changes position of shadow]
-//                      ),
-//                    ],
-//                  ),
-//                  child: Container(
-//                    margin: EdgeInsets.fromLTRB(
-//                        screenWidth(context, dividedBy: 4), 0,
-//                        screenWidth(context, dividedBy: 4),0),
-//                    child: ButtonWidget(
-//                      icon: Icons.arrow_forward,
-//                      onPressed: () async {
-//                        _onButtonPress(user.uid);
-//                      },
-//                    ),
-//                  ),
-//                ),
+
                   ],
                 ),
               ),
@@ -144,22 +109,11 @@ class _ChooseCategoryState extends State<ChooseCategory> {
   }
 
   Widget _buildCard(String category, double cardHeight) {
-    // bool alreadySaved = false;
-    //if (_selectedCategories.categories != null){
+
     final bool alreadySaved = _selectedCategories.contains(category);
-    // }//else{
-    // final bool
-    //  }
 
     return Container(
-      //padding: EdgeInsets.only(top:40),
-      //color: Colors.cyan,
-      //padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
       width: screenWidth(context, dividedBy: 2, reducedBy: 0),
-//      height: cardHeight,
-//      height: screenHeightExcludingToolbar(context, dividedBy: 6), //TODO: this causes pixel overflowing error
-      // color: Colors.cyan,
-
       child: Card(
         color: customBlue5,
         elevation: 4.0,

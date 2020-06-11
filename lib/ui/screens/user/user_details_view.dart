@@ -50,7 +50,7 @@ class _UserDetailsState extends State<UserDetails> {
 
                   new ProfileAppBar(title: "Profile", userData: userData,tag: tag,),
 
-                  Text("My profile"),
+                  Text("Coming soon"),
                 ],
               ),
 

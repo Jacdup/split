@@ -217,7 +217,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                                   children: <Widget>[
                                     SizedBox(height: 20),
                                     Loading(backgroundColor: Colors.white,),
-                                    SizedBox(height: 20),
+                                    SizedBox(height: 30),
                                   ],
                                 );
                               }

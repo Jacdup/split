@@ -111,7 +111,7 @@ class ButtonPresses{
 
   onSendMessage(String messageUid, String documentRef, String messagePayload,
       String datePayload, bool type) async {
-    dynamic result = await DatabaseService(uid: messageUid).contactItemOwner(
+    dynamic result = await DatabaseService(uid: messageUid).contactItemOwner( //messageUid is 'fromUid' (person who sent the message)
         documentRef, messagePayload, datePayload, type);
     if (result == null) {
       loading.value = false;

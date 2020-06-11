@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/database.dart';
+import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/message_service.dart';
 import 'package:twofortwo/services/url_launching.dart';
 import 'package:twofortwo/shared/constants.dart';
@@ -80,7 +81,8 @@ class _UserMessagesState extends State<UserMessages> {
                     for (var i = 0; i <= value.length; i++){
                       _infoShow.add(false) ;
                     }
-                    return _messageBuilder(value);
+                    List<Message> sortedMessages = Filter().sortMessagesByDate(value);
+                    return _messageBuilder(sortedMessages);
                   } else {
                     return Center(child: Text("No Messages"),);
                   }
@@ -106,24 +108,24 @@ class _UserMessagesState extends State<UserMessages> {
 
   }
 
-  _messageBuilder(List<Message> thisMessage){
+  _messageBuilder(List<Message> userMessages){
 
     return Expanded(
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         padding: const EdgeInsets.all(10.0),
-        itemCount: thisMessage.length,
+        itemCount: userMessages.length,
         itemBuilder: (BuildContext context, int index) {
 
-          String message = thisMessage[index].message;
-          String nameFrom = thisMessage[index].nameFrom;
-          String surnameFrom = thisMessage[index].surnameFrom;
-          String phoneFrom = thisMessage[index].phoneFrom;
-          DateTime dateSent = thisMessage[index].dateSent;
+          String message = userMessages[index].message;
+          String nameFrom = userMessages[index].nameFrom;
+          String surnameFrom = userMessages[index].surnameFrom;
+          String phoneFrom = userMessages[index].phoneFrom;
+          DateTime dateSent = userMessages[index].dateSent;
 //          print(thisMessage[index].nameFrom);
 //        String from = thisMessage[index].uidFrom;
-          String forItem = thisMessage[index].forItem;
+          String forItem = userMessages[index].forItem;
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
 //          i = i + 1;
           return Card(
