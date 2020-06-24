@@ -29,7 +29,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 
   var storageService = locator<LocalStorageService>();
   final List<String> _selectedCategories = [];
-  final _biggerFont = const TextStyle(fontSize: 24.0);
+  final _biggerFont = const TextStyle(fontSize: 20.0);
 
   @override
   Widget build(BuildContext context) {
@@ -167,9 +167,9 @@ class _ChooseCategoryState extends State<ChooseCategory> {
             },
             child: Center(
               child: Container(
-                  margin: const EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(8.0),
 //                padding: EdgeInsets.all(15.0),
-                  child: Text(category, style: _biggerFont)),
+                  child: Text(category, style: _biggerFont,textAlign: TextAlign.center,)),
             ),
           ),
         ),

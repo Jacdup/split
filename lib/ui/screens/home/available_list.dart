@@ -167,11 +167,11 @@ class _AvailableListState extends State<AvailableList> {
             margin: EdgeInsets.fromLTRB(0, 10, 0, buildBox),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            elevation: 4.0,
+            elevation: 3.0,
             child: Column(
               children: <Widget>[
                 ListTile(
-                  contentPadding: EdgeInsets.all(12.0),
+                  contentPadding: EdgeInsets.fromLTRB(8.0,5.0,8.0,5.0),
                   title: Text(
                     itemName,
                     style: itemHeaderFont,
