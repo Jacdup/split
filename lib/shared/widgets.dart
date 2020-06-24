@@ -66,6 +66,7 @@ class CustomDialog extends StatelessWidget {
   final String title, description, buttonText1, buttonText2;
   final dynamic item;
   final bool type;
+  final bool availability;
 //  final  onPressedBtn2;
 
   CustomDialog({
@@ -75,6 +76,7 @@ class CustomDialog extends StatelessWidget {
     @required this.buttonText2,
     this.type,
     this.item,
+    this.availability,
 //    @required this.onPressedBtn1,
 //    @required this.onPressedBtn2,
   });
@@ -141,7 +143,7 @@ class CustomDialog extends StatelessWidget {
 //                    onPressedBtn2,
                         ()async {
 
-                      dynamic result = ButtonPresses().onMarkAsUnavailable(item.docRef, type); //TODO: this is called immediately
+                      dynamic result = ButtonPresses().onMarkAsUnavailable(item.docRef, type, availability); //TODO: this is called immediately
 //                      dynamic result = await onPressedBtn1;
                       if (result == null){
                         Navigator.of(context).pop();
@@ -199,14 +201,16 @@ class ProfileAppBar extends StatelessWidget {
       children: <Widget>[
 
         Container(
-          height: screenHeight(context, dividedBy: 3.6),
+//          height: screenHeight(context, dividedBy: 3.6),
+          height: 170,
           padding: EdgeInsets.fromLTRB(0,30,0,0),
           color: Colors.transparent,
         ),
 
 
         Container(
-          height: screenHeight(context, dividedBy: 4.4),
+//          height: screenHeightExcludingToolbar(context, dividedBy: 4.2),
+        height: 150,
           padding: EdgeInsets.fromLTRB(0,30,0,0),
           color: customBlue5,
 
@@ -223,7 +227,8 @@ class ProfileAppBar extends StatelessWidget {
                       child: Hero(
                         tag: 'profilePic$tag',
                         child: CircleAvatar(
-                          radius: 40.0,
+//                          radius: screenHeight(context, dividedBy: 18),
+                          radius: 40,
                           backgroundColor: Colors.deepOrangeAccent,
 //              child: Image.asset('split_new_blue1.png'),
                           child: Text(
@@ -237,8 +242,8 @@ class ProfileAppBar extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(userData.email),
-              Text(userData.phone),
+//              Text(userData.email),
+//              Text(userData.phone),
 //                _buildTitle(),
             ],
           ),
@@ -249,9 +254,10 @@ class ProfileAppBar extends StatelessWidget {
         Positioned(
           left: dialogPadding*2,
           right: dialogPadding*2,
-          top: screenHeight(context, dividedBy: 5.2),
+//          top: screenHeight(context, dividedBy: 5.4),
+        top: 130,
           child: Container(
-              height: dialogPadding*2,
+              height: dialogPadding*1.6,
               decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
               child: Center(child: Text(title, style: tabFont,))),
 //          CircleAvatar(

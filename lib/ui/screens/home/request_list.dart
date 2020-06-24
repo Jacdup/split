@@ -104,7 +104,7 @@ class _RequestListState extends State<RequestList> {
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
         if (index == allItems.length -1) {
-          _buildBox = 80;
+          _buildBox = 0; // TODO
         }
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
 //          i = i + 1;
@@ -139,11 +139,7 @@ class _RequestListState extends State<RequestList> {
   }
 
   Widget _buildRow(Item item, int num, double buildBox) {
-//    List<String> category = item.categories;
-    String itemName = item.itemName;
-    String description = item.description;
-    String startDate = item.startDate;
-    String endDate = item.endDate;
+
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
       tag: "row$num 1",
@@ -156,14 +152,14 @@ class _RequestListState extends State<RequestList> {
             ListTile(
               contentPadding: EdgeInsets.all(12.0),
               title: Text(
-                itemName,
+                item.itemName,
                 style: itemHeaderFont,
               ),
               subtitle: Text(
-                description,
+                item.description,
                 style: itemBodyFont,
               ),
-              trailing: startDate == null ? Text('') : _buildDatesTrailing(startDate, endDate),
+              trailing: item.startDate == null ? Text('') : _buildDatesTrailing(item.startDate, item.endDate),
               onTap: () {
                 _toggleDropdown(num);
               },
@@ -215,8 +211,7 @@ class _RequestListState extends State<RequestList> {
         Text("Requested dates", style: itemDateTitle,),
         RichText(
           text: TextSpan(text: "From: ",
-              style: GoogleFonts.muli(fontSize: 13.0,
-                  color: Colors.black87, fontWeight: FontWeight.bold),
+              style: itemDateFromTo,
               children: <TextSpan>[
                 TextSpan(text: startDate == null ? " " : startDate,
                   style: itemDate, ),
@@ -224,8 +219,7 @@ class _RequestListState extends State<RequestList> {
         ),
         RichText(
           text: TextSpan(text: "To: ",
-              style: GoogleFonts.muli(fontSize: 13.0,
-                  color: Colors.black87, fontWeight: FontWeight.bold),
+              style: itemDateFromTo,
               children: <TextSpan>[
                 TextSpan(text: endDate == null ? " " : endDate,
                   style: itemDate,),

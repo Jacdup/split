@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/user_service.dart';
+import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
@@ -117,7 +118,7 @@ class MenuDrawer extends StatelessWidget {
             child: Center(
                 child: Column(
                   children: <Widget>[
-                    Text('Menu'),
+                    Text('Menu', style: tabFont,),
                     SizedBox(
                       height: 20.0,
                     ),

@@ -8,13 +8,14 @@ const dialogPadding = 25.0;
 const AvatarPadding = 40.0;
 
 const textColor = Colors.black54;
-final tabFont = GoogleFonts.muli(fontSize: 20.0, fontWeight: FontWeight.w600);
-final titleDescriptionFont = GoogleFonts.muli(fontSize: 22.0, fontWeight: FontWeight.bold);
+final tabFont = GoogleFonts.muli(fontSize: 19.0, fontWeight: FontWeight.w600);
+final titleDescriptionFont = GoogleFonts.muli(fontSize: 20.0, fontWeight: FontWeight.bold);
 //const tabFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
-final itemHeaderFont = GoogleFonts.muli(fontSize:16.0, fontWeight: FontWeight.w600,);
-final itemBodyFont = GoogleFonts.muli(fontSize: 12.0, color: Colors.black87);
-final itemDate     = GoogleFonts.muli(fontSize: 12.0, fontWeight: FontWeight.w500);
-final itemDateTitle = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: textColor);
+final itemHeaderFont = GoogleFonts.muli(fontSize:15.0, fontWeight: FontWeight.w600,);
+final itemBodyFont = GoogleFonts.muli(fontSize: 11.0, color: Colors.black87);
+final itemDate     = GoogleFonts.muli(fontSize: 10.0, fontWeight: FontWeight.w500);
+final itemDateFromTo     = GoogleFonts.muli(fontSize: 11.0, color: Colors.black87,fontWeight: FontWeight.bold);
+final itemDateTitle = const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: textColor);
 final spamFont = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold,color: Colors.red);
 final messageFromFont = GoogleFonts.muli(fontSize: 15.0,color: Colors.blue, fontWeight: FontWeight.w600);
 

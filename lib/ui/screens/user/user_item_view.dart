@@ -32,8 +32,6 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
     _tabController = new TabController(length: 2, vsync: this);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final User userData = widget.userData;
@@ -58,7 +56,6 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
       }
     });
 
-
     thisUserItemsRequested= Filter().sortRequestedByDate(thisUserItemsRequested);
     thisUserItemsAvailable = Filter().sortAvailableByDate(thisUserItemsAvailable);
 
@@ -67,23 +64,15 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
               body: Container(
                 child: new TabBarView(
                   children: <Widget>[
-
-                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: true,),
-                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, name: 'Tab 1',uid: userData.uid, isTab1: false,),
-//                  new AvailableList(chosenCategories: _categories,allItems: thisUserItemsAvailable, name: 'Tab 1',uid: userData.uid,),
-//                  new RequestList(chosenCategories: _categories, allItems: thisUserItemsRequested, name:  'Tab 2', uid: userData.uid,),
-//              new RequestList(allItems: items, name: 'tab1', uid: uid,),
-//              new AvailableList(allItems: itemsAvailable, name: 'tab2', uid: uid),
+                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 1',uid: userData.uid, isTab1: true,),
+                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 2',uid: userData.uid, isTab1: false,),
                   ],
                   controller: _tabController,
                 ),
               ),
-//              floatingActionButton: FloatingActionButton(onPressed: (){},),
             );
 
 //      );
-
-
 
   }
 
@@ -93,7 +82,6 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
       child: Container(
         padding: EdgeInsets.fromLTRB(0,30,0,0),
         color: customBlue5,
-
 
 //        automaticallyImplyLeading: false,
 //        centerTitle: true,
@@ -111,7 +99,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
                     child: Hero(
                       tag: 'profilePic$tag',
                       child: CircleAvatar(
-                        radius: 40.0,
+                        radius: screenHeight(context, dividedBy: 18),
                         backgroundColor: Colors.deepOrangeAccent,
 //              child: Image.asset('split_new_blue1.png'),
                         child: Text(
@@ -125,8 +113,8 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
                 ),
               ],
             ),
-            Text(userData.email),
-            Text(userData.phone),
+//            Text(userData.email),
+//            Text(userData.phone),
 //            SizedBox(height: 20,),
             Expanded(
               child: Container(
@@ -153,9 +141,5 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
       ),
     );
   }
-
-
-
-
 
 }

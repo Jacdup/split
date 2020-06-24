@@ -14,11 +14,11 @@ class UserList extends StatefulWidget {
   final List<String> chosenCategories;
   final List<ItemAvailable> allAvailableItems;
   final List<Item> allRequestedItems;
-  final String name;
+  final String pageStorageKey;
   final String uid;
   final bool isTab1;
 
-  UserList({this.chosenCategories, this.allAvailableItems, this. allRequestedItems, this.name, this.uid, this.isTab1});
+  UserList({this.chosenCategories, this.allAvailableItems, this. allRequestedItems, this.pageStorageKey, this.uid, this.isTab1});
 
   @override
   _UserListState createState() => _UserListState();
@@ -36,9 +36,9 @@ class _UserListState extends State<UserList> {
     });
   }
 
-  void _toggleAvailable(int num) {
+  void _toggleAvailable() {
     setState((){
-      _notAvailableVal[num] = !_notAvailableVal[num];
+//      _notAvailableVal[num] = !_notAvailableVal[num];
     });
   }
 
@@ -58,12 +58,12 @@ class _UserListState extends State<UserList> {
      }
      for (var i = 0; i <= numItems; i++){
        _infoShow.add(false);
-       _notAvailableVal.add(false);
+//       _notAvailableVal.add(false);
      }
      if (widget.allAvailableItems == null){
        return Center(child: Text("No items"),);
      }else{
-       return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allAvailableItems, widget.name, widget.isTab1);
+       return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allAvailableItems, widget.pageStorageKey, widget.isTab1);
      }
    }
    // Go to requested list
@@ -75,27 +75,22 @@ class _UserListState extends State<UserList> {
 
      for (var i = 0; i <= numItems; i++){
        _infoShow.add(false) ;
-       _notAvailableVal.add(false);
+//       _notAvailableVal.add(false);
      }
      if (widget.allRequestedItems == null){
        return Center(child: Text("No items"),);
      }else{
-       return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allRequestedItems, widget.name,widget.isTab1);
+       return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allRequestedItems, widget.pageStorageKey,widget.isTab1);
      }
    }
-
-
-
-
-
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, List<dynamic> allItems, String name, bool type) {
+  Widget _buildBorrowList(List<String> chosenCategories, List<dynamic> allItems, String pageStorageKey, bool type) {
 
     double _buildBox = 0;
 
     return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.builder(
-      key: PageStorageKey<String>(name), // Keeps track of scroll position
+      key: PageStorageKey<String>(pageStorageKey), // Keeps track of scroll position
       padding: const EdgeInsets.all(10.0),
       itemCount: allItems.length,
       itemBuilder: (BuildContext context, int index) {
@@ -133,6 +128,14 @@ class _UserListState extends State<UserList> {
     String description = item.description;
     String date = item.startDate;
     String itemRef = item.docRef;
+    bool availability = true;
+    if (type){
+      availability = item.available;
+      availability == null ? availability = true: availability = item.available; // This is just for those items created before availability became a thing
+    }else{
+      availability = item.currentlyNeeded;
+      availability == null ? availability = true: availability = item.available;
+    }
 //    int typeInt;
 //    type==true ? typeInt = 2 : typeInt = 1;
     // final bool alreadySaved = _saved.contains(pair);
@@ -168,7 +171,7 @@ class _UserListState extends State<UserList> {
                 ),
 
                 Visibility(
-                  visible: _infoShow[num] ,
+                  visible: true, //_infoShow[num] ,
                   child: Column(
                     children: <Widget>[
 
@@ -176,9 +179,17 @@ class _UserListState extends State<UserList> {
                         children: <Widget>[
                           FlatButton(
                             onPressed: (){
-                              _toggleAvailable(num);
 
-                            if (!_notAvailableVal[num]){
+
+                              dynamic result = ButtonPresses().onMarkAsUnavailable(item.docRef, type, !availability);
+
+                              if (result == null){
+                                _toggleAvailable();
+//                                availability = item.ava
+                              }
+
+//                            if (!_notAvailableVal[num]){
+                              if (!availability){ //TODO: customDialog button press confirmation with above statement
                           showDialog(context: context,child:
                              CustomDialog(
                           title: "Confirmation",
@@ -194,7 +205,8 @@ class _UserListState extends State<UserList> {
 
                           },
                             child: Text("Available", style: itemHeaderFont,),
-                            color: _notAvailableVal[num] ? Colors.green : Colors.red,
+                            color: availability || availability == null ? Colors.green : Colors.red,
+//                            color: _notAvailableVal[num] ? Colors.green : Colors.red,
                             shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                           ),
                           Spacer(),
@@ -244,7 +256,7 @@ class _UserListState extends State<UserList> {
     );
   }
 
-  _confirmDelete(context, String documentRef, bool type) {
+  _confirmDelete(context, String documentRef, bool type) { //TODO: this in BLoC. Use BLoCConsumer to build new list, and listener to show toast/snackbar with undo
     showDialog(
       context: context,
       builder: (BuildContext context) {

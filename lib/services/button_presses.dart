@@ -134,8 +134,8 @@ class ButtonPresses{
   }
 
 
-  Future onMarkAsUnavailable(String itemID, bool type) async {
-    dynamic result = await DatabaseService().updateItemAvailability(itemID, type);
+  Future onMarkAsUnavailable(String itemID, bool type, bool availability) async {
+    dynamic result = await DatabaseService().updateItemAvailability(itemID, type, availability);
     if (result == null) {
       loading.value = false;
 //    setState(() {

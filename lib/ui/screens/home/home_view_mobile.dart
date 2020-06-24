@@ -222,6 +222,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
           onPressed: (){
             setState(() {
               _showSearchBar = true;
+              _searchNode.requestFocus();
             });
           },
         )
@@ -312,6 +313,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
             }
             },),
       ),
+//        autofocus: true, // Always has focus when _showSearchBar is true
         style: TextStyle(fontSize: 14.0, height: 1),
         focusNode: _searchNode,
         onEditingComplete: () {

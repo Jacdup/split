@@ -91,7 +91,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
         Positioned.fill(child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(color: Colors.transparent,),)),
         Container(
-          padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
           margin: EdgeInsets.fromLTRB(50.0, 120.0, 50.0, bottomInset),
           decoration: BoxDecoration(
               color: Colors.white,

@@ -12,7 +12,7 @@ class BorrowList {
   const BorrowList(this.category, this.itemName, this.date, this.description, this.uid);
 }
 
-class Item {
+class Item { // Requested item
 
 //  final String date;
   final String description;
@@ -23,8 +23,9 @@ class Item {
   final DateTime createdAt;
   final String startDate;
   final String endDate;
+  final bool currentlyNeeded;
 
-  const Item(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt);
+  const Item(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt, this.currentlyNeeded);
 
   Item.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
@@ -35,7 +36,8 @@ class Item {
         categories = json['categories'],
         uid = json['uid'],
         docRef = json['docRef'],
-        createdAt = json['createdAt'];
+        createdAt = json['createdAt'],
+        currentlyNeeded = json['currentlyNeeded'];
 
   // age = json['age'];
 
@@ -49,6 +51,7 @@ class Item {
     data['categories'] = this.categories;
     data['uid'] = this.uid;
     data['docRef'] = this.docRef;
+    data['currentlyNeeded'] = this.currentlyNeeded;
     //data['age'] = this.age;
     return data;
   }
@@ -67,8 +70,9 @@ class ItemAvailable {
   final DateTime createdAt;
   final String startDate;
   final String endDate;
+  final bool available;
 
-  const ItemAvailable(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt);
+  const ItemAvailable(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt, this.available);
 
   ItemAvailable.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
@@ -78,7 +82,8 @@ class ItemAvailable {
         categories = json['categories'],
         uid = json['uid'],
         docRef = json['docRef'],
-        createdAt = json['createdAt'];
+        createdAt = json['createdAt'],
+        available = json['available'];
   // age = json['age'];
 
   Map<String, dynamic> toJson() {
@@ -90,6 +95,7 @@ class ItemAvailable {
     data['categories'] = this.categories;
     data['uid'] = this.uid;
     data['docRef'] = this.docRef;
+    data['available'] = this.available;
     //data['age'] = this.age;
     return data;
   }

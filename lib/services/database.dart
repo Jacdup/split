@@ -168,6 +168,7 @@ class DatabaseService{
       'uid' : uid,
       'docRef' : thisDocRef,
       'createdAt' : createdAt,
+      'currentlyNeeded' : true,
     });
   }
 
@@ -185,6 +186,7 @@ class DatabaseService{
       'uid' : uid,
       'docRef' : thisDocRef,
       'createdAt' : createdAt,
+      'available' : true,
     });
   }
 
@@ -207,12 +209,12 @@ class DatabaseService{
 //    return await itemAvailableCollection.document(documentRef).delete(); // Easier, but not best practice.
   }
 
-  Future updateItemAvailability(String documentRef, bool type) async {
+  Future updateItemAvailability(String documentRef, bool type, bool availability) async {
 
   dynamic response;
     if (type) {
-      response = itemAvailableCollection.document(documentRef).updateData({ // Hopefully If 'available' does not exist, create it.
-        'available': false});
+      response = itemAvailableCollection.document(documentRef).updateData({ // If 'available' does not exist, create it.
+        'available': availability});
 //      if (response != null) {
 //        response = itemAvailableCollection.document(documentRef).setData({
 //          'available': false
@@ -220,7 +222,7 @@ class DatabaseService{
 //      }
     }else{
       response = itemRequestCollection.document(documentRef).updateData({
-        'available': false});
+        'available': availability});
 //      if (response != null) {
 //        response = itemRequestCollection.document(documentRef).setData({
 //          'available': false
@@ -264,6 +266,7 @@ class DatabaseService{
         doc.data['uid'],
         doc.data['docRef'],
         doc.data['createdAt'].toDate(),
+        doc.data['currentlyNeeded'],
       );
     }).toList();
   }
@@ -281,6 +284,7 @@ class DatabaseService{
         doc.data['uid'],
         doc.data['docRef'],
         doc.data['createdAt'].toDate(),
+        doc.data['available'],
       );
     }).toList();
   }

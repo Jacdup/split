@@ -17,13 +17,12 @@ import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 
 class AvailableList extends StatefulWidget {
-
   final List<ItemAvailable> allItems;
   final String name;
   final String uid;
   final String searchTerm;
 
-  AvailableList({this. allItems, this.name, this.uid, this.searchTerm});
+  AvailableList({this.allItems, this.name, this.uid, this.searchTerm});
 
   @override
   _AvailableListState createState() => _AvailableListState();
@@ -31,10 +30,11 @@ class AvailableList extends StatefulWidget {
 
 class _AvailableListState extends State<AvailableList> {
   List<bool> _infoShow = [];
-  RefreshController _refreshController =  RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   List<ItemAvailable> items;
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     // monitor network fetch
     //TODO
 //    items = Provider.of<List<ItemAvailable>>(context, listen: false) ?? []; // This is stupid. It just gets the same list.
@@ -44,7 +44,7 @@ class _AvailableListState extends State<AvailableList> {
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
     //TODO
 //    items = Provider.of<List<ItemAvailable>>(context, listen: false) ?? [];
@@ -56,17 +56,15 @@ class _AvailableListState extends State<AvailableList> {
     await Future.delayed(Duration(milliseconds: 500));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
 //    items.add((items.length+1).toString());
-    if(mounted)
-      setState(() {
-      });
+    if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
+
   @override
   void dispose() {
     _refreshController.dispose();
     super.dispose();
   }
-
 
   void _toggleDropdown(int num) {
     setState(() {
@@ -76,30 +74,29 @@ class _AvailableListState extends State<AvailableList> {
 
   @override
   Widget build(BuildContext context) {
-
 //    items = widget.allItems;
     var numItems = 0;
-    if (widget.allItems != null){
+    if (widget.allItems != null) {
       numItems = widget.allItems.length;
     }
 
-
-    for (var i = 0; i <= numItems; i++){
-      _infoShow.add(false) ;
+    for (var i = 0; i <= numItems; i++) {
+      _infoShow.add(false);
     }
-    if (widget.allItems == null){
-      return Center(child: Text("No items"),);
-    }else{
+    if (widget.allItems == null) {
+      return Center(
+        child: Text("No items"),
+      );
+    } else {
 //    return Stack(
 //      children: <Widget>[
-        return SmartRefresher(
+      return SmartRefresher(
           enablePullDown: true,
-            onRefresh: _onRefresh,
-            onLoading: _onLoading,
-            controller: _refreshController,
-            header: WaterDropMaterialHeader(),
-            child: _buildBorrowList(widget.allItems, widget.name)
-        );
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          controller: _refreshController,
+          header: WaterDropMaterialHeader(),
+          child: _buildBorrowList(widget.allItems, widget.name));
 //        _contactShow ?  _layer(): SizedBox.shrink() ,
 //      ],
 //    );
@@ -107,27 +104,35 @@ class _AvailableListState extends State<AvailableList> {
   }
 
   Widget _buildBorrowList(List<ItemAvailable> allItems, String name) {
-
     double _buildBox = 0;
     int i = 0;
 //    print(allItems[0].itemName);
 
-    return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.builder(
-      key: PageStorageKey<String>(name), // Keeps track of scroll position
-      padding: const EdgeInsets.all(10.0),
-      itemCount: allItems.length,
-      itemBuilder: (BuildContext context, int index) {
-        if (index == allItems.length -1) {
-          _buildBox = 80;
-        }
+    return allItems.isEmpty
+        ? Center(
+            child: Text("No items"),
+          )
+        : ListView.builder(
+            key: PageStorageKey<String>(name), // Keeps track of scroll position
+            padding: const EdgeInsets.all(10.0),
+            itemCount: allItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == allItems.length - 1) {
+                _buildBox = 0;
+              }
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
 //          i = i + 1;
-        // Non - case sensitive search
-          return  widget.searchTerm == null || widget.searchTerm == "" ? _buildRow(allItems[index], index, _buildBox)
-          : allItems[index].itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
+              // Non - case sensitive search
+              return widget.searchTerm == null || widget.searchTerm == ""
+                  ? _buildRow(allItems[index], index, _buildBox)
+                  : allItems[index]
+                          .itemName
+                          .toLowerCase()
+                          .contains(widget.searchTerm.toLowerCase())
+                      ? _buildRow(allItems[index], index, _buildBox)
+                      : new Container();
 
-
-          ;
+              ;
 //        }else{
 //          if (index == allItems.length -1){
 //            _buildBox = 80;
@@ -142,11 +147,9 @@ class _AvailableListState extends State<AvailableList> {
 //            return Center();
 ////          }
 ////        }
-
-      },
+            },
 //      separatorBuilder: (BuildContext context, int index) => const Divider(),
-    );
-
+          );
   }
 
   Widget _buildRow(ItemAvailable item, int num, double buildBox) {
@@ -162,7 +165,8 @@ class _AvailableListState extends State<AvailableList> {
         children: <Widget>[
           Card(
             margin: EdgeInsets.fromLTRB(0, 10, 0, buildBox),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
             elevation: 4.0,
             child: Column(
               children: <Widget>[
@@ -176,8 +180,9 @@ class _AvailableListState extends State<AvailableList> {
                     description,
                     style: itemBodyFont,
                   ),
-                  trailing:
-                  startDate == null ? Text('') : _buildDatesTrailing(startDate, endDate),
+                  trailing: startDate == null
+                      ? Text('')
+                      : _buildDatesTrailing(startDate, endDate),
 //                        Text(
 //                          startDate == null ? " " : startDate,
 //                          style: itemDate,
@@ -190,9 +195,8 @@ class _AvailableListState extends State<AvailableList> {
                     _toggleDropdown(num);
                   },
                 ),
-
                 Visibility(
-                  visible: _infoShow[num] ,
+                  visible: _infoShow[num],
                   child: Row(
                     children: <Widget>[
                       //TODO: add this when spam does something
@@ -203,21 +207,26 @@ class _AvailableListState extends State<AvailableList> {
                       Spacer(),
                       ButtonBar(
                         children: <Widget>[
-
                           FlatButton(
                             child: const Text('Request to borrow'),
-                            onPressed: () {/* send ping to item user, with thisUser info */
+                            onPressed: () {
+                              /* send ping to item user, with thisUser info */
                               _confirmHelp(context, item);
-
-                              },
+                            },
                           ),
                           FlatButton(
                             child: const Text('Contact'),
                             onPressed: () {
                               // There are multiple ways of overlaying a widget unto blurry screen.
                               // This seems to be easiest, and fastest
-                              Object arg = {"uid": widget.uid, "docRef" : item.docRef, "type" : true};
-                              Navigator.of(context).pushNamed(contactItemOwnerRoute,arguments: arg );
+                              Object arg = {
+                                "uid": widget.uid,
+                                "docRef": item.docRef,
+                                "type": true
+                              };
+                              Navigator.of(context).pushNamed(
+                                  contactItemOwnerRoute,
+                                  arguments: arg);
 
 //    showDialog(
 //    context: context,
@@ -226,8 +235,6 @@ class _AvailableListState extends State<AvailableList> {
 //                              showContact.value = ItemInfo(userUid: widget.uid,itemID: item.docRef,type: true,);
                             },
                           ),
-
-
                         ],
                       ),
                     ],
@@ -241,30 +248,38 @@ class _AvailableListState extends State<AvailableList> {
     );
   }
 
-  Widget _buildDatesTrailing(String startDate, String endDate){
+  Widget _buildDatesTrailing(String startDate, String endDate) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-    Text("Availability", style: itemDateTitle,),
-    RichText(
-    text: TextSpan(text: "From: ",
-    style: GoogleFonts.muli(fontSize: 13.0,
-    color: Colors.black87, fontWeight: FontWeight.bold),
-    children: <TextSpan>[
-    TextSpan(text: startDate == null ? " " : startDate,
-    style: itemDate, ),
-    ]),
-    ),
-    RichText(
-    text: TextSpan(text: "To: ",
-    style: GoogleFonts.muli(fontSize: 13.0,
-    color: Colors.black87, fontWeight: FontWeight.bold),
-    children: <TextSpan>[
-    TextSpan(text: endDate == null ? " " : endDate,
-    style: itemDate,),
-    ]),
-    ),
-    ],);
+      children: <Widget>[
+        Text(
+          "Availability",
+          style: itemDateTitle,
+        ),
+        RichText(
+          text: TextSpan(
+              text: "From: ",
+              style: itemDateFromTo,
+              children: <TextSpan>[
+                TextSpan(
+                  text: startDate == null ? " " : startDate,
+                  style: itemDate,
+                ),
+              ]),
+        ),
+        RichText(
+          text: TextSpan(
+              text: "To: ",
+              style: itemDateFromTo,
+              children: <TextSpan>[
+                TextSpan(
+                  text: endDate == null ? " " : endDate,
+                  style: itemDate,
+                ),
+              ]),
+        ),
+      ],
+    );
   }
 
   _confirmHelp(context, ItemAvailable item) {
@@ -274,14 +289,18 @@ class _AvailableListState extends State<AvailableList> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Confirmation"),
-          content: new Text("This will send your contact details to the user that listed this item. Proceed?"),
+          content: new Text(
+              "This will send your contact details to the user that listed this item. Proceed?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Yes"),
               onPressed: () async {
-                ButtonPresses().onSendMessage(widget.uid, item.docRef,
-                    "I would like to borrow this item (${item.itemName}) you listed. Please contact me.", "",
+                ButtonPresses().onSendMessage(
+                    widget.uid,
+                    item.docRef,
+                    "I would like to borrow this item (${item.itemName}) you listed. Please contact me.",
+                    "",
                     true);
                 Navigator.of(context).pop(false);
               },

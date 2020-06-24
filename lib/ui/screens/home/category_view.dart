@@ -53,37 +53,68 @@ class _ChooseCategoryState extends State<ChooseCategory> {
       builder: (context, value, child){
       return value ? Loading() :  Scaffold(
               body: Container(
-                child: Column(
+                child: Stack(
                   children: <Widget>[
-                    _buildAppBar(),
-                    new Expanded(
-                      child: GridView.count(
-                        childAspectRatio: 1.1,
-//                  primary: false,
-                        padding: const EdgeInsets.all(10),
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 0,
-                        children: List.generate(CategoryService().categories.length, (index) {
-//                      alreadySaved = _selectedCategories.contains(categories[index]);
-                          return Center(
-                            child: _buildCard(CategoryService().categories[index], cardHeight),
-                          );
-//                      );
-                        }),
-                      ),
+                    Container(
+//            height: screenHeight(context, dividedBy: 7),
+                      height: 85,
+                      padding: EdgeInsets.fromLTRB(0,30,0,0),
+                      color: Colors.transparent,
                     ),
-//                    SizedBox(height: screenHeight(context, dividedBy: 40)),
+                    Column(
+                      children: <Widget>[
+                        SizedBox(height: 75,),
+                        Expanded(
+                          child: GridView.count(
 
+                            childAspectRatio: 1.1,
+//                  primary: false,
+                            padding: const EdgeInsets.all(10),
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
+                            children: List.generate(CategoryService().categories.length, (index) {
+//                      alreadySaved = _selectedCategories.contains(categories[index]);
+                              return Center(
+                                child: _buildCard(CategoryService().categories[index], cardHeight),
+                              );
+//                      );
+                            }),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+//            height: screenHeight(context, dividedBy: 10),
+                        height:70,
+                        padding: EdgeInsets.fromLTRB(0,30,0,0),
+                        color: customBlue5,
+                        child: Row(
+                            children: <Widget>[
+                              BackButton(onPressed: (){Navigator.pop(context);}),
+                            ])
+                    ),
+                    Positioned(
+                      left: dialogPadding*2,
+                      right: dialogPadding*2,
+//            top: screenHeight(context, dividedBy: 18),
+                      top: 45,
+                      child: Container(
+                          height: dialogPadding*1.6,
+                          decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
+                          child: Center(child: Text("Choose Categories", style: tabFont,))),
+//          CircleAvatar(
+//            backgroundColor: Colors.blueAccent, //TODO: logo or something
+//            radius: AvatarPadding,
+//          ),
+                    ),
+//                        _buildAppBar(),
                   ],
                 ),
               ),
           floatingActionButton: FloatingActionButton.extended(
             elevation: 8.0,
             onPressed: () {
-//              print('!!!!!!!!!!');
-//              print(widget.itemDetails);
-//              print(widget.itemDetails.itemName);
                 if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
                   ButtonPresses().onUpdateCategories(context, user.uid, _selectedCategories);
                 }else{
@@ -105,7 +136,6 @@ class _ChooseCategoryState extends State<ChooseCategory> {
               );
   }
     );
-
   }
 
   Widget _buildCard(String category, double cardHeight) {
@@ -152,13 +182,15 @@ Widget _buildAppBar(){
         children: <Widget>[
 
           Container(
-            height: screenHeight(context, dividedBy: 8),
+//            height: screenHeight(context, dividedBy: 7),
+            height: 85,
             padding: EdgeInsets.fromLTRB(0,30,0,0),
             color: Colors.transparent,
           ),
 
           Container(
-            height: screenHeight(context, dividedBy: 10),
+//            height: screenHeight(context, dividedBy: 10),
+          height:70,
             padding: EdgeInsets.fromLTRB(0,30,0,0),
             color: customBlue5,
             child: Row(
@@ -170,9 +202,10 @@ Widget _buildAppBar(){
           Positioned(
             left: dialogPadding*2,
             right: dialogPadding*2,
-            top: screenHeight(context, dividedBy: 18),
+//            top: screenHeight(context, dividedBy: 18),
+          top: 45,
             child: Container(
-                height: dialogPadding*2,
+                height: dialogPadding*1.6,
                 decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
                 child: Center(child: Text("Choose Categories", style: tabFont,))),
 //          CircleAvatar(
