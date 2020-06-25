@@ -158,6 +158,8 @@ class _AvailableListState extends State<AvailableList> {
     String description = item.description;
     String startDate = item.startDate;
     String endDate = item.endDate;
+//    print(itemName);
+//    print(startDate);
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
       tag: "row$num 2",
@@ -171,7 +173,7 @@ class _AvailableListState extends State<AvailableList> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  contentPadding: EdgeInsets.fromLTRB(8.0,5.0,8.0,5.0),
+                  contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
                   title: Text(
                     itemName,
                     style: itemHeaderFont,
@@ -180,7 +182,7 @@ class _AvailableListState extends State<AvailableList> {
                     description,
                     style: itemBodyFont,
                   ),
-                  trailing: startDate == null
+                  trailing: (item.startDate == null) || (item.startDate == "null")
                       ? Text('')
                       : _buildDatesTrailing(startDate, endDate),
 //                        Text(
@@ -249,6 +251,7 @@ class _AvailableListState extends State<AvailableList> {
   }
 
   Widget _buildDatesTrailing(String startDate, String endDate) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[

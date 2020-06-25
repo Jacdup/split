@@ -150,7 +150,7 @@ class _RequestListState extends State<RequestList> {
         child: Column(
           children: <Widget>[
             ListTile(
-              contentPadding: EdgeInsets.all(12.0),
+              contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
               title: Text(
                 item.itemName,
                 style: itemHeaderFont,
@@ -159,7 +159,7 @@ class _RequestListState extends State<RequestList> {
                 item.description,
                 style: itemBodyFont,
               ),
-              trailing: item.startDate == null ? Text('') : _buildDatesTrailing(item.startDate, item.endDate),
+              trailing: (item.startDate == null) || (item.startDate == "null") ? Text('') : _buildDatesTrailing(item.startDate, item.endDate),
               onTap: () {
                 _toggleDropdown(num);
               },

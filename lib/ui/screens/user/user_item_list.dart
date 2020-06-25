@@ -160,10 +160,7 @@ class _UserListState extends State<UserList> {
                     description,
                     style: itemBodyFont,
                   ),
-                  trailing: Text(
-                    date == null ? " " : date,
-                    style: itemDate,
-                  ),
+                  trailing: (date == null ) || (date == "null") ? Text(" ") : _buildDatesTrailing(item.startDate, item.endDate),
                   onTap: () {
 //                    print("row$num $typeInt");
                     _toggleDropdown(num);
@@ -253,6 +250,41 @@ class _UserListState extends State<UserList> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDatesTrailing(String startDate, String endDate) {
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Text(
+          "Availability",
+          style: itemDateTitle,
+        ),
+        RichText(
+          text: TextSpan(
+              text: "From: ",
+              style: itemDateFromTo,
+              children: <TextSpan>[
+                TextSpan(
+                  text: startDate == null ? " " : startDate,
+                  style: itemDate,
+                ),
+              ]),
+        ),
+        RichText(
+          text: TextSpan(
+              text: "To: ",
+              style: itemDateFromTo,
+              children: <TextSpan>[
+                TextSpan(
+                  text: endDate == null ? " " : endDate,
+                  style: itemDate,
+                ),
+              ]),
+        ),
+      ],
     );
   }
 
