@@ -207,6 +207,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
 
     return SliverAppBar(
+     // backgroundColor: Colors.blueGrey,
 //      snap: true,
 //    leading: IconButton(icon: Icon(Icons.menu),onPressed:(){ _buildDrawer(context);},),
       floating: false,
@@ -229,43 +230,56 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
         )
       ],
 
-      flexibleSpace: FlexibleSpaceBar(
-        titlePadding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 20.0),
-        centerTitle: true,
-        title: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  //TODO //_titleBar(userName)
-                    Visibility(
-                      visible: !innerBoxIsScrolled && !_showSearchBar && !_searchNode.hasFocus,
-                      child: Text(
-                        'Welcome $userName!',
-                        style: TextStyle(color: Colors.white, fontSize: 18.0),
+      flexibleSpace: Container(
+        decoration: BoxDecoration(gradient: LinearGradient(
+//          center: Alignment.center,
+//            radius: 10.0,
+//            focal: Alignment.center,
+//            focalRadius: 10.0,
+
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          stops: [0.1, 0.8],
+          colors: [customBlue2, customBlue5]
+        )),
+        child: FlexibleSpaceBar(
+          titlePadding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 20.0),
+          centerTitle: true,
+          title: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    //TODO //_titleBar(userName)
+                      Visibility(
+                        visible: !innerBoxIsScrolled && !_showSearchBar && !_searchNode.hasFocus,
+                        child: Text(
+                          'Welcome $userName!',
+                          style: TextStyle(color: Colors.white, fontSize: 18.0),
+                        ),
                       ),
-                    ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-        background: Row(
-          children: <Widget>[
-            Spacer(),
-            Image.asset(
+          background: Row(
+            children: <Widget>[
+              Spacer(),
+              Image.asset(
 //          'split_new_blue1.png',
-              'logo_only.png',
+                'logo_only.png',
 //fit: BoxFit.fitHeight,
 //          alignment: Alignment.bottomCenter,
 //          fit: BoxFit.fitHeight,
-              width: 150.0,
-              height: 150.0,
-            ),
-            Spacer(),
-          ],
+                width: 150.0,
+                height: 150.0,
+              ),
+              Spacer(),
+            ],
+          ),
         ),
       ),
       bottom: PreferredSize(
