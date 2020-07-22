@@ -111,8 +111,8 @@ class MenuDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     String tag = userData.uid;
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
+       // padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             child: Center(
@@ -143,6 +143,7 @@ class MenuDrawer extends StatelessWidget {
               color: customBlue5,
             ),
           ),
+
           ListTile(
               leading: Icon(Icons.category),
               title: Text('Edit my categories', style: textFont,),
@@ -150,46 +151,48 @@ class MenuDrawer extends StatelessWidget {
                 Navigator.pop(context); // This one for the drawer
                 Navigator.pushNamed(context, CategoryRoute);
               }),
-          ListTile(
-              leading: Icon(Icons.edit),
-//              leading: Icon(Icons.edit_attributes),
-              title: Text('My items', style: textFont),
-              onTap: () {
-                Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(context, UpdateItemRoute, arguments: userData);
-              }),
-          ListTile(
-              leading: Icon(Icons.message),
-//              leading: Icon(Icons.edit_attributes),
-              title: Text('Messages', style: textFont),
-              onTap: () {
-                Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(context, MessagesRoute , arguments: userData);
-              }),
-          ListTile(
 
-              leading: Icon(Icons.person),
-              title: Text('Profile', style: textFont),
-              onTap: () {
-                print('profilePic$tag');
-                Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(
-                    context, ProfileRoute, arguments: userData);
-              }),
           ListTile(
-              leading: Icon(Icons.call_end),
-              title: Text('Logout', style: textFont),
-              onTap: () async {
-                Navigator.pop(context); // This one for the drawer
+          leading: Icon(Icons.edit),
+//              leading: Icon(Icons.edit_attributes),
+          title: Text('My items', style: textFont),
+          onTap: () {
+            Navigator.pop(context); // This one for the drawer
+            Navigator.pushNamed(context, UpdateItemRoute, arguments: userData);
+          }),
+          ListTile(
+          leading: Icon(Icons.message),
+//              leading: Icon(Icons.edit_attributes),
+          title: Text('Messages', style: textFont),
+          onTap: () {
+            Navigator.pop(context); // This one for the drawer
+            Navigator.pushNamed(context, MessagesRoute , arguments: userData);
+          }),
+         /* ListTile(
+
+          leading: Icon(Icons.person),
+          title: Text('Profile', style: textFont),
+          onTap: () {
+            print('profilePic$tag');
+            Navigator.pop(context); // This one for the drawer
+            Navigator.pushNamed(
+                context, ProfileRoute, arguments: userData);
+          }),*/
+         Spacer(),
+          ListTile(
+          leading: Icon(Icons.call_end),
+          title: Text('Logout', style: textFont),
+          onTap: () async {
+            Navigator.pop(context); // This one for the drawer
 //                Navigator.pushReplacementNamed(context, LoginRoute); // Shouldn't have to call this, the wrapper listens for changes
 //                setState(() {
-                localStorageService.clear(); //  Remove all saved values
+            localStorageService.clear(); //  Remove all saved values
 //                });
 
 //                print(localStorageService.stayLoggedIn);
-                await _auth.logOut();
+            await _auth.logOut();
 //                Navigator.pushReplacementNamed(context, CategoryRoute);
-              })
+          }),
         ],
       ),
     );

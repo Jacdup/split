@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
@@ -251,11 +252,20 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
             ],
           ),
         ),
-        background: Image.asset(
-          'split_new_blue1.png',
-          alignment: Alignment.bottomCenter,
-          width: 50.0,
-          height: 50.0,
+        background: Row(
+          children: <Widget>[
+            Spacer(),
+            Image.asset(
+//          'split_new_blue1.png',
+              'logo_only.png',
+//fit: BoxFit.fitHeight,
+//          alignment: Alignment.bottomCenter,
+//          fit: BoxFit.fitHeight,
+              width: 150.0,
+              height: 150.0,
+            ),
+            Spacer(),
+          ],
         ),
       ),
       bottom: PreferredSize(

@@ -70,10 +70,11 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - split1.png
-    - split.png
-    - logo.png
+    #- split1.png
+    #- split.png
+    #- logo.png
     - split_new_blue1.png
+    - logo_only.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
