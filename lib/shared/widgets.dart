@@ -188,6 +188,9 @@ class CustomDialog extends StatelessWidget {
 
 
 class ProfileAppBar extends StatelessWidget {
+  // This builds a custom appbar for a standard 'split' look on some pages.
+  // It is basically just a stack that puts a floating yellow title banner over
+  // the appbar.
 
   final User userData;
   final String tag;

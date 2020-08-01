@@ -91,7 +91,8 @@ class _NewItemState extends State<NewItem> {
           preferredSize:
           Size.fromHeight(screenHeight(context, dividedBy: 5)),
           child: AppBar(
-            automaticallyImplyLeading: false,
+            //leading:  BackButton(onPressed: (){Navigator.pop(context);}),
+            //automaticallyImplyLeading: true,
             elevation: 0.0,
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.all(8.0),
@@ -110,6 +111,7 @@ class _NewItemState extends State<NewItem> {
             ),
           ),
         ),
+
       body: _createFields("Dates", _formKey1, widget.uidTab[2], 1),
        );
   }
@@ -124,7 +126,7 @@ class _NewItemState extends State<NewItem> {
             preferredSize:
             Size.fromHeight(screenHeight(context, dividedBy: 5)),
             child: AppBar(
-              automaticallyImplyLeading: false,
+              //automaticallyImplyLeading: false,
               elevation: 0.0,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding: const EdgeInsets.all(8.0),
@@ -255,11 +257,13 @@ class _NewItemState extends State<NewItem> {
                               child: Text(selectedStartDate == null ? "Start Date" : "${selectedStartDate.toString().split(' ')[0]}",style: textFont,),
                             ),
                             Spacer(),
+                            //SizedBox(width: 8.0,),
                             Text("to", style: textFont,),
                             Spacer(),
+                           // SizedBox(width: 8.0,),
                             RaisedButton(
                               elevation: 4.0,
-                              padding: selectedStartDate == null ? EdgeInsets.fromLTRB(16.0,8,16.0,8.0) : EdgeInsets.fromLTRB(4.0,8,4.0,8.0)  ,
+                              padding: selectedEndDate == null ? EdgeInsets.fromLTRB(16.0,8,16.0,8.0) : EdgeInsets.fromLTRB(4.0,8,4.0,8.0)  ,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                               color: _doesntMatter == true ? Colors.grey : Colors.white70,
                               onPressed: () => _doesntMatter == true ? null : _datePicker(context, false),

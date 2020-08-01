@@ -11,6 +11,7 @@ import 'package:twofortwo/services/item_service.dart';
 This is to keep the 'business' logic separate from the widget construction.
 * Here I do all the calls to the database service, and update ValueNotifier
 * 'loading' to change the state
+* TODO: Move all of this inside BLoC for each specific view/component
 */
 class ButtonPresses{
 
