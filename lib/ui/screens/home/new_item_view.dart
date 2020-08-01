@@ -6,6 +6,7 @@ import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
+/* This file serves as the code for adding new items as well as updating the items*/
 
 class NewItem extends StatefulWidget {
 
@@ -173,7 +174,7 @@ class _NewItemState extends State<NewItem> {
     DateTime itemEndDate;
 
     if (item != null){
-      if (item.startDate != null) {
+      if ((item.startDate != null) && (item.startDate != "null") ){ // TODO: check where this null value becomes a string
 //      print(item.startDate);
         itemStartDate = DateTime.parse(item.startDate);
         itemEndDate = DateTime.parse(item.endDate);
