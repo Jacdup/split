@@ -174,10 +174,15 @@ class _NewItemState extends State<NewItem> {
     DateTime itemEndDate;
 
     if (item != null){
+
+      itemName = item.itemName;
+      description = item.itemName;
+
       if ((item.startDate != null) && (item.startDate != "null") ){ // TODO: check where this null value becomes a string
 //      print(item.startDate);
         itemStartDate = DateTime.parse(item.startDate);
         itemEndDate = DateTime.parse(item.endDate);
+
 //        startDateText = "${itemStartDate.toString().split(' ')[0]}";
 //        endDateText = "${itemEndDate.toString().split(' ')[0]}";
       }

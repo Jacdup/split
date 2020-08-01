@@ -152,7 +152,7 @@ class _RequestListState extends State<RequestList> {
             ListTile(
               contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
               title: Text(
-                item.itemName,
+                item.itemName == null ? "" : item.itemName,
                 style: itemHeaderFont,
               ),
               subtitle: Text(

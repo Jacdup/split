@@ -129,12 +129,12 @@ class _UserListState extends State<UserList> {
     String date = item.startDate;
     String itemRef = item.docRef;
     bool availability = true;
-    if (type){
+    if (type){ // Then it's tab 1 (Available items)
       availability = item.available;
       availability == null ? availability = true: availability = item.available; // This is just for those items created before availability became a thing
     }else{
       availability = item.currentlyNeeded;
-      availability == null ? availability = true: availability = item.available;
+      availability == null ? availability = true : availability = item.currentlyNeeded;
     }
 //    int typeInt;
 //    type==true ? typeInt = 2 : typeInt = 1;
@@ -153,7 +153,7 @@ class _UserListState extends State<UserList> {
                 ListTile(
                   contentPadding: EdgeInsets.all(12.0),
                   title: Text(
-                    itemName,
+                    itemName == null ? "" : itemName, //Failsafe (for testing)
                     style: itemHeaderFont,
                   ),
                   subtitle: Text(
