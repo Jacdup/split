@@ -240,7 +240,7 @@ class _NewItemState extends State<NewItem> {
                   SizedBox(height: 8.0,),
                   Container(
                     decoration: BoxDecoration(color: Colors.white,border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(16.0)),
-                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    padding: const EdgeInsets.only(left: 4.0, right: 4.0),
 
                     child: Column(
                       children: <Widget>[
@@ -248,16 +248,18 @@ class _NewItemState extends State<NewItem> {
                           children: <Widget>[
                             RaisedButton(
                               elevation: 4.0,
+                              padding: selectedStartDate == null ? EdgeInsets.fromLTRB(16.0,8,16.0,8.0) : EdgeInsets.fromLTRB(4.0,8,4.0,8.0) ,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                               color: _doesntMatter == true ? Colors.grey : Colors.white70,
                               onPressed: () => _doesntMatter == true ? null : _datePicker(context, true),
                               child: Text(selectedStartDate == null ? "Start Date" : "${selectedStartDate.toString().split(' ')[0]}",style: textFont,),
                             ),
-                            SizedBox(width: 8.0,),
+                            Spacer(),
                             Text("to", style: textFont,),
-                            SizedBox(width: 8.0,),
+                            Spacer(),
                             RaisedButton(
                               elevation: 4.0,
+                              padding: selectedStartDate == null ? EdgeInsets.fromLTRB(16.0,8,16.0,8.0) : EdgeInsets.fromLTRB(4.0,8,4.0,8.0)  ,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                               color: _doesntMatter == true ? Colors.grey : Colors.white70,
                               onPressed: () => _doesntMatter == true ? null : _datePicker(context, false),

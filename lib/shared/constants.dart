@@ -8,7 +8,7 @@ const dialogPadding = 25.0;
 const AvatarPadding = 40.0;
 
 const textColor = Colors.black54;
-final tabFont = GoogleFonts.muli(fontSize: 19.0, fontWeight: FontWeight.w700);
+final tabFont = GoogleFonts.muli(fontSize: 20.0, fontWeight: FontWeight.w600);
 final titleDescriptionFont = GoogleFonts.muli(fontSize: 20.0, fontWeight: FontWeight.bold);
 //const tabFont = const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold);
 final itemHeaderFont = GoogleFonts.muli(fontSize:15.0, fontWeight: FontWeight.w600,);

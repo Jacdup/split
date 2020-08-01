@@ -237,8 +237,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //            focal: Alignment.center,
 //            focalRadius: 10.0,
 
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           stops: [0.1, 0.8],
           colors: [customBlue2, customBlue5]
         )),
