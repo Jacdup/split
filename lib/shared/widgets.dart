@@ -6,6 +6,7 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
+import 'dart:math';
 
 ValueNotifier<Widget> showContact = ValueNotifier(SizedBox.shrink());
 
@@ -198,6 +199,9 @@ class ProfileAppBar extends StatelessWidget {
 
   ProfileAppBar({this.userData, this.tag, this.title});
 
+  Color colorCode = Colors.lightBlue;
+
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -232,7 +236,7 @@ class ProfileAppBar extends StatelessWidget {
                         child: CircleAvatar(
 //                          radius: screenHeight(context, dividedBy: 18),
                           radius: 40,
-                          backgroundColor: Colors.deepOrangeAccent,
+                          backgroundColor: generateRandomColor(),
 //              child: Image.asset('split_new_blue1.png'),
                           child: Text(
                             userData.name.substring(0, 1) +
@@ -277,5 +281,24 @@ class ProfileAppBar extends StatelessWidget {
 
 
   }
+
+
+
+}
+
+Color generateRandomColor(){
+  final Random random = Random();
+
+  Color tmpColor = Color.fromARGB(
+    random.nextInt(256),
+    random.nextInt(256),
+    random.nextInt(256),
+    random.nextInt(256),
+  ) ;
+  return tmpColor;
+//    setState(() {
+//      colorCode = tmpColor ;
+//    });
+
 }
 

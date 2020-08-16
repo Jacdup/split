@@ -137,7 +137,7 @@ class _UserMessagesState extends State<UserMessages> {
                 ListTile(
                   leading: CircleAvatar(
                     radius: 40.0,
-                    backgroundColor: Colors.deepOrangeAccent,
+                    backgroundColor: generateRandomColor(),
 //              child: Image.asset('split_new_blue1.png'),
                     child: nameFrom == null ? SizedBox.shrink():Text(
                       nameFrom.substring(0, 1) +
