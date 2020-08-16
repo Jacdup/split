@@ -382,7 +382,7 @@ class _NewItemState extends State<NewItem> {
   onPressedBtnRequested() async {
     if (_formKey1.currentState.validate()) {
       Item newItem = new Item(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , description, widget.uidTabItem[0], '1', DateTime.now(),true);
-      Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
+      Navigator.pushReplacementNamed(context,CategoryRoute, arguments: [newItem]);
     }
   }
 
@@ -390,7 +390,7 @@ class _NewItemState extends State<NewItem> {
   onPressedBtnAvailable() async {
     if (_formKey2.currentState.validate()) {
       ItemAvailable newItem = new ItemAvailable(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,description, widget.uidTabItem[0], '2',DateTime.now(),true);
-      Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
+      Navigator.pushReplacementNamed(context,CategoryRoute, arguments: [newItem]);
     }
 
   }

@@ -115,6 +115,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
           floatingActionButton: FloatingActionButton.extended(
             elevation: 8.0,
             onPressed: () {
+//              print(widget.itemDetails.docRef);
                 if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
                   ButtonPresses().onUpdateUserCategories(context, user.uid, _selectedCategories);
                 }else{
