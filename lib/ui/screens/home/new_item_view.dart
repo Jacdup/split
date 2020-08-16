@@ -115,7 +115,7 @@ class _NewItemState extends State<NewItem> {
           ),
         ),
 
-      body: _createFields("Dates", _formKey1, widget.uidTabItem[1], widget.uidTabItem[2], 1),
+      body: _createFields("Dates", _formKey1, widget.uidTabItem[2], 1),
        );
   }
 
@@ -164,14 +164,14 @@ class _NewItemState extends State<NewItem> {
           body: new TabBarView(
             children: //tabViews,
             <Widget>[
-              _createFields('Dates available', _formKey2,widget.uidTabItem[1],null, 4),
-              _createFields('Requested usage date', _formKey1,widget.uidTabItem[1],null, 4),
+              _createFields('Dates available', _formKey2,null, 4),
+              _createFields('Requested usage date', _formKey1,null, 4),
             ],
           )),
     );
   }
 
-  Widget _createFields(String dateDescription, GlobalKey type,bool itemType, dynamic item, double width) {
+  Widget _createFields(String dateDescription, GlobalKey type, dynamic item, double width) {
     DateTime itemStartDate;
     DateTime itemEndDate;
 
