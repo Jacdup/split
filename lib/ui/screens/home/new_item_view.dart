@@ -34,6 +34,8 @@ class _NewItemState extends State<NewItem> {
   DateTime selectedStartDate;
   DateTime selectedEndDate;
 
+  String updatedItemName;
+  String updatedDescription;
   String itemName;
   String description;
   String date;
@@ -176,7 +178,7 @@ class _NewItemState extends State<NewItem> {
     if (item != null){
 
       itemName = item.itemName;
-      description = item.itemName;
+      description = item.description;
 
       if ((item.startDate != null) && (item.startDate != "null") ){ // TODO: check where this null value becomes a string
 //      print(item.startDate);
@@ -209,6 +211,7 @@ class _NewItemState extends State<NewItem> {
                     onChanged: (val) {
                       setState(() {
                         itemName = val;
+                        updatedItemName = val;
                       });
                     },
                     decoration: textInputDecoration.copyWith(hintText: 'e.g. "Mountain bike"', hintStyle: itemBodyFont),
@@ -229,6 +232,7 @@ class _NewItemState extends State<NewItem> {
                       onChanged: (val) {
                         setState(() {
                           description = val;
+                          updatedDescription = val;
                         });
                       },
                       textAlignVertical: TextAlignVertical.top,
@@ -345,9 +349,9 @@ class _NewItemState extends State<NewItem> {
     return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtnUpdate);
     }else{
       if (type == _formKey1)
-      return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1);
+      return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtnRequested);
       else{
-       return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2);
+       return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtnAvailable);
       }
     }
 
@@ -355,21 +359,27 @@ class _NewItemState extends State<NewItem> {
 
 //  onPressedBtnUpdate(dynamic item, bool itemType) async {
     onPressedBtnUpdate() async {
+    String newDescription;
+    String newItemName;
+
     if (_formKey1.currentState.validate()) {
+      updatedDescription == null ? newDescription = description : newDescription = updatedDescription;
+      updatedItemName == null ? newItemName = itemName : newItemName = updatedItemName;
+      
       if (widget.uidTabItem[1] == true){
         ItemAvailable oldItem = widget.uidTabItem[2];
-        ItemAvailable newItem = new ItemAvailable(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,description, widget.uidTabItem[0], oldItem.docRef,DateTime.now(),true);
+        ItemAvailable newItem = new ItemAvailable(null, newItemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,newDescription, widget.uidTabItem[0], oldItem.docRef,DateTime.now(),true);
         Navigator.pushReplacementNamed(context, CategoryRoute, arguments: [newItem, widget.uidTabItem[1]]);
       }else{
         Item oldItem = widget.uidTabItem[2];
-        Item newItem = new Item(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , description, widget.uidTabItem[0], oldItem.docRef, DateTime.now(),true);
+        Item newItem = new Item(null, newItemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , newDescription, widget.uidTabItem[0], oldItem.docRef, DateTime.now(),true);
         Navigator.pushReplacementNamed(context, CategoryRoute, arguments: [newItem, widget.uidTabItem[1]]);
       }
 
     }
   }
 
-  onPressedBtn1() async {
+  onPressedBtnRequested() async {
     if (_formKey1.currentState.validate()) {
       Item newItem = new Item(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , description, widget.uidTabItem[0], '1', DateTime.now(),true);
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
@@ -377,7 +387,7 @@ class _NewItemState extends State<NewItem> {
   }
 
 
-  onPressedBtn2() async {
+  onPressedBtnAvailable() async {
     if (_formKey2.currentState.validate()) {
       ItemAvailable newItem = new ItemAvailable(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,description, widget.uidTabItem[0], '2',DateTime.now(),true);
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);

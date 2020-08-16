@@ -158,7 +158,7 @@ class _UserListState extends State<UserList> {
                     style: itemHeaderFont,
                   ),
                   subtitle: Text(
-                    description,
+                    description == null ? "" : description,
                     style: itemBodyFont,
                   ),
                   trailing: (date == null ) || (date == "null") ? Text(" ") : _buildDatesTrailing(item.startDate, item.endDate),
