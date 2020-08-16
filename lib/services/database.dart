@@ -223,13 +223,12 @@ class DatabaseService{
         });
       }else{
         response = itemRequestCollection.document(newItem.docRef).updateData({
-          'itemName' : newItemAvailable.itemName,
-          'description': newItemAvailable.description,
-          'startDate' : newItemAvailable.startDate,
-          'endDate'   : newItemAvailable.endDate,
+          'itemName' : newItem.itemName,
+          'description': newItem.description,
+          'startDate' : newItem.startDate,
+          'endDate'   : newItem.endDate,
           'categories' : categories,
-          'createdAt' : newItemAvailable.createdAt,
-          'available' : newItemAvailable.available,
+          'createdAt' : newItem.createdAt,
         });
       }
       return response;

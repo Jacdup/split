@@ -365,7 +365,7 @@ class _NewItemState extends State<NewItem> {
     if (_formKey1.currentState.validate()) {
       updatedDescription == null ? newDescription = description : newDescription = updatedDescription;
       updatedItemName == null ? newItemName = itemName : newItemName = updatedItemName;
-      
+
       if (widget.uidTabItem[1] == true){
         ItemAvailable oldItem = widget.uidTabItem[2];
         ItemAvailable newItem = new ItemAvailable(null, newItemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,newDescription, widget.uidTabItem[0], oldItem.docRef,DateTime.now(),true);

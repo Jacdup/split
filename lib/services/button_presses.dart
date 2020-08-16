@@ -78,6 +78,7 @@ class ButtonPresses{
 //
 ////      newItem = new Item(_selectedCategory, itemName, date, description);
   if (itemType == true) { // Available item
+
     result = await DatabaseService(uid: uid).updateItem(
         item,null, itemType, selectedCategories);
   }else{
