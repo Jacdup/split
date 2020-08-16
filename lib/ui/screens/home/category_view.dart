@@ -116,16 +116,17 @@ class _ChooseCategoryState extends State<ChooseCategory> {
             elevation: 8.0,
             onPressed: () {
                 if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
-                  ButtonPresses().onUpdateCategories(context, user.uid, _selectedCategories);
+                  ButtonPresses().onUpdateUserCategories(context, user.uid, _selectedCategories);
                 }else{
-                  if (widget.itemDetails.docRef == '1'){ // Requested item
-                    ButtonPresses().onSelectRequestedItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
-                  }else{ // Available item
-                    ButtonPresses().onSelectAvailableItemCategories(widget.itemDetails.uid, widget.itemDetails, _selectedCategories);
+                  if (widget.itemDetails[0].docRef == '1'){ // Requested item
+                    ButtonPresses().onSelectRequestedItemCategories(widget.itemDetails[0].uid, widget.itemDetails[0], _selectedCategories);
+                  }else if (widget.itemDetails[0].docRef == '2'){ // Available item
+                    ButtonPresses().onSelectAvailableItemCategories(widget.itemDetails[0].uid, widget.itemDetails[0], _selectedCategories);
+                  }else { // Updating an item's categories
+                    ButtonPresses().onUpdateItemCategories(widget.itemDetails[0].uid, widget.itemDetails[0],widget.itemDetails[1], _selectedCategories);
                   }
                 }
                 Navigator.pop(context);
-//              _onButtonPress(user.uid);
             },
             icon: Icon(Icons.done),
             label: Text('Select', style: _biggerFont,),

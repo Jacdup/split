@@ -38,7 +38,7 @@ switch(settings.name){
     return MaterialPageRoute(builder: (context) => SignupView());
   case NewItemRoute:
     var argument = settings.arguments;
-    return MaterialPageRoute(builder: (context) => NewItem(uidTab: argument,));
+    return MaterialPageRoute(builder: (context) => NewItem(uidTabItem: argument,));
     case contactItemOwnerRoute:
       var argument = settings.arguments;
       return PageRouteBuilder(

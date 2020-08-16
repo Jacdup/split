@@ -149,7 +149,7 @@ class MenuDrawer extends StatelessWidget {
               title: Text('Edit my categories', style: textFont,),
               onTap: () {
                 Navigator.pop(context); // This one for the drawer
-                Navigator.pushNamed(context, CategoryRoute);
+                Navigator.pushNamed(context, CategoryRoute,);
               }),
 
           ListTile(

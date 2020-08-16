@@ -67,12 +67,45 @@ class ButtonPresses{
           gravity: ToastGravity.CENTER,
           fontSize: 20.0);
     }
-//
-
   }
 
 
-  onUpdateCategories(BuildContext context, String uid, List<String> selectedCategories) async {
+  onUpdateItemCategories(String uid, dynamic item, bool itemType,
+      List<String> selectedCategories) async {
+
+    dynamic result;
+//      loading.value = true;
+//
+////      newItem = new Item(_selectedCategory, itemName, date, description);
+  if (itemType == true) { // Available item
+    result = await DatabaseService(uid: uid).updateItem(
+        item,null, itemType, selectedCategories);
+  }else{
+    result = await DatabaseService(uid: uid).updateItem(
+        null,item, itemType, selectedCategories);
+  }
+//    dynamic result = await DatabaseService(uid: uid).addItemAvailableData(
+//        item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
+//        item.createdAt);
+//  }
+
+
+    if (result == null) {
+      Fluttertoast.showToast(msg: 'Success! Item updated.',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          fontSize: 20.0);
+      loading.value = false;
+    } else {
+      Fluttertoast.showToast(msg: 'Hmm. Something went wrong.',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          fontSize: 20.0);
+    }
+  }
+
+
+  onUpdateUserCategories(BuildContext context, String uid, List<String> selectedCategories) async {
     loading.value = true; // Should do the job of setState
     var categories = Provider.of<CategoryService>(context, listen: false);
     categories.updateWith(selectedCategories);

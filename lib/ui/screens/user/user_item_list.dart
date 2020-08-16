@@ -86,7 +86,8 @@ class _UserListState extends State<UserList> {
   }
 
   Widget _buildBorrowList(List<String> chosenCategories, List<dynamic> allItems, String pageStorageKey, bool type) {
-
+  // Type = true if available item
+  // Type = false if requested item
     double _buildBox = 0;
 
     return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.builder(
@@ -186,7 +187,7 @@ class _UserListState extends State<UserList> {
                               }
 
 //                            if (!_notAvailableVal[num]){
-                              if (!availability){ //TODO: customDialog button press confirmation with above statement
+                              if (availability){ //TODO: customDialog button press confirmation with above statement
                           showDialog(context: context,child:
                              CustomDialog(
                           title: "Confirmation",
@@ -209,7 +210,7 @@ class _UserListState extends State<UserList> {
                           Spacer(),
                           IconButton(onPressed: (){
 //                            print(item);
-                            Navigator.pushNamed(context, NewItemRoute, arguments: [widget.uid, 2, item]);
+                            Navigator.pushNamed(context, NewItemRoute, arguments: [widget.uid, type, item]);
                           },
                             icon: Icon(Icons.edit,),
                             color: Colors.blueGrey,

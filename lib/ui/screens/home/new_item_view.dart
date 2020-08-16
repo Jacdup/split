@@ -12,9 +12,9 @@ class NewItem extends StatefulWidget {
 
 //  final String uid;
 //  final bool isTab1;
-  final List<Object> uidTab;
+  final List<Object> uidTabItem;
 
-  NewItem({this.uidTab});
+  NewItem({this.uidTabItem});
 
   @override
   _NewItemState createState() => _NewItemState();
@@ -74,7 +74,7 @@ class _NewItemState extends State<NewItem> {
     if (loading){
       return Loading();
     }else{
-      if (widget.uidTab[2] == null){
+      if (widget.uidTabItem[2] == null){
         title = "Add item";
         return _tabView();
       }else{
@@ -113,14 +113,14 @@ class _NewItemState extends State<NewItem> {
           ),
         ),
 
-      body: _createFields("Dates", _formKey1, widget.uidTab[2], 1),
+      body: _createFields("Dates", _formKey1, widget.uidTabItem[1], widget.uidTabItem[2], 1),
        );
   }
 
   Widget _tabView(){
     return DefaultTabController(
       length: 2,
-      initialIndex: widget.uidTab[1] == 1 ? 1 : 0,
+      initialIndex: widget.uidTabItem[1] == 1 ? 1 : 0,
       child: Scaffold(
           backgroundColor: customBlue5,
           appBar: PreferredSize(
@@ -162,14 +162,14 @@ class _NewItemState extends State<NewItem> {
           body: new TabBarView(
             children: //tabViews,
             <Widget>[
-              _createFields('Dates available', _formKey2,null, 4),
-              _createFields('Requested usage date', _formKey1,null, 4),
+              _createFields('Dates available', _formKey2,widget.uidTabItem[1],null, 4),
+              _createFields('Requested usage date', _formKey1,widget.uidTabItem[1],null, 4),
             ],
           )),
     );
   }
 
-  Widget _createFields(String dateDescription, GlobalKey type, dynamic item, double width) {
+  Widget _createFields(String dateDescription, GlobalKey type,bool itemType, dynamic item, double width) {
     DateTime itemStartDate;
     DateTime itemEndDate;
 
@@ -302,8 +302,8 @@ class _NewItemState extends State<NewItem> {
 //                child: IconButton(onPressed: (){print(widget.uidTab[1]);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
 //              ),
 
-              (type == _formKey1) ? ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1)
-                  : ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2),
+                _buildButton(item, type),
+
 
             ], // Children
           ),
@@ -337,19 +337,49 @@ class _NewItemState extends State<NewItem> {
       });
   }
 
+  _buildButton(dynamic item, GlobalKey type){
+//    (type == _formKey1) ? ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1)
+//        : ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2),
+
+    if (item != null){
+    return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtnUpdate);
+    }else{
+      if (type == _formKey1)
+      return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1);
+      else{
+       return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2);
+      }
+    }
+
+  }
+
+//  onPressedBtnUpdate(dynamic item, bool itemType) async {
+    onPressedBtnUpdate() async {
+    if (_formKey1.currentState.validate()) {
+      if (widget.uidTabItem[1] == true){
+        ItemAvailable oldItem = widget.uidTabItem[2];
+        ItemAvailable newItem = new ItemAvailable(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,description, widget.uidTabItem[0], oldItem.docRef,DateTime.now(),true);
+        Navigator.pushReplacementNamed(context, CategoryRoute, arguments: [newItem, widget.uidTabItem[1]]);
+      }else{
+        Item oldItem = widget.uidTabItem[2];
+        Item newItem = new Item(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , description, widget.uidTabItem[0], oldItem.docRef, DateTime.now(),true);
+        Navigator.pushReplacementNamed(context, CategoryRoute, arguments: [newItem, widget.uidTabItem[1]]);
+      }
+
+    }
+  }
 
   onPressedBtn1() async {
     if (_formKey1.currentState.validate()) {
-      Item newItem = new Item(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , description, widget.uidTab[0], '1', DateTime.now(),true);
+      Item newItem = new Item(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] , description, widget.uidTabItem[0], '1', DateTime.now(),true);
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
     }
-
   }
 
 
   onPressedBtn2() async {
     if (_formKey2.currentState.validate()) {
-      ItemAvailable newItem = new ItemAvailable(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,description, widget.uidTab[0], '2',DateTime.now(),true);
+      ItemAvailable newItem = new ItemAvailable(null, itemName, selectedStartDate.toString().split(' ')[0], selectedEndDate.toString().split(' ')[0] ,description, widget.uidTabItem[0], '2',DateTime.now(),true);
       Navigator.pushReplacementNamed(context,CategoryRoute, arguments: newItem);
     }
 

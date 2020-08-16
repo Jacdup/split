@@ -209,6 +209,32 @@ class DatabaseService{
 //    return await itemAvailableCollection.document(documentRef).delete(); // Easier, but not best practice.
   }
 
+  Future updateItem(ItemAvailable newItemAvailable,Item newItem, bool itemType,  List<String> categories) async {
+      dynamic response;
+      if (itemType) {
+        response = itemAvailableCollection.document(newItemAvailable.docRef).updateData({
+          'itemName' : newItemAvailable.itemName,
+          'description': newItemAvailable.description,
+          'startDate' : newItemAvailable.startDate,
+          'endDate'   : newItemAvailable.endDate,
+          'categories' : categories,
+          'createdAt' : newItemAvailable.createdAt,
+          'available' : newItemAvailable.available,
+        });
+      }else{
+        response = itemRequestCollection.document(newItem.docRef).updateData({
+          'itemName' : newItemAvailable.itemName,
+          'description': newItemAvailable.description,
+          'startDate' : newItemAvailable.startDate,
+          'endDate'   : newItemAvailable.endDate,
+          'categories' : categories,
+          'createdAt' : newItemAvailable.createdAt,
+          'available' : newItemAvailable.available,
+        });
+      }
+      return response;
+  }
+
   Future updateItemAvailability(String documentRef, bool type, bool availability) async {
 
   dynamic response;
