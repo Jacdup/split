@@ -236,7 +236,7 @@ class ProfileAppBar extends StatelessWidget {
                         child: CircleAvatar(
 //                          radius: screenHeight(context, dividedBy: 18),
                           radius: 40,
-                          backgroundColor: generateRandomColor(),
+                          backgroundColor: generateRandomColor(0),
 //              child: Image.asset('split_new_blue1.png'),
                           child: Text(
                             userData.name.substring(0, 1) +
@@ -286,8 +286,8 @@ class ProfileAppBar extends StatelessWidget {
 
 }
 
-Color generateRandomColor(){
-  final Random random = Random();
+Color generateRandomColor(index){
+  final Random random = Random(index);
 
   Color tmpColor = Color.fromARGB(
     random.nextInt(256),
