@@ -175,7 +175,7 @@ class _UserListState extends State<UserList> {
 
                       Row(
                         children: <Widget>[
-                          FlatButton(
+                          /*FlatButton(
                             onPressed: (){
 
 
@@ -206,8 +206,8 @@ class _UserListState extends State<UserList> {
                             color: availability || availability == null ? Colors.green : Colors.red,
 //                            color: _notAvailableVal[num] ? Colors.green : Colors.red,
                             shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-                          ),
-                          Spacer(),
+                          ),*/
+                          Spacer(flex:3),
                           IconButton(onPressed: (){
 //                            print(item);
                             Navigator.pushNamed(context, NewItemRoute, arguments: [widget.uid, type, item]);
@@ -215,7 +215,7 @@ class _UserListState extends State<UserList> {
                             icon: Icon(Icons.edit,),
                             color: Colors.blueGrey,
                             iconSize: 30.0,),
-                          Spacer(),
+                          Spacer(flex:2),
                           IconButton(onPressed: (){
                             _confirmDelete(context, itemRef, type);
                           },
