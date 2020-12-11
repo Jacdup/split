@@ -25,7 +25,7 @@ class ButtonPresses{
 //    // TODO, this in category view
     dynamic result = await DatabaseService(uid: uid).addItemRequestedData(
         item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
-        item.createdAt);
+        item.createdAt,item.price, item.pricePeriod);
 //
     if (result == null) {
       Fluttertoast.showToast(msg: 'Success! Item added.',
@@ -53,7 +53,7 @@ class ButtonPresses{
 ////      newItem = new Item(_selectedCategory, itemName, date, description);
     dynamic result = await DatabaseService(uid: uid).addItemAvailableData(
         item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
-        item.createdAt);
+        item.createdAt, item.price, item.pricePeriod);
 
     if (result == null) {
       Fluttertoast.showToast(msg: 'Success! Item added.',

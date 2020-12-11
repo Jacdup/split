@@ -7,6 +7,7 @@ import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/message_service.dart';
 import 'package:twofortwo/services/user_service.dart';
+import 'package:twofortwo/shared/constants.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -156,7 +157,7 @@ class DatabaseService{
   /* --------------------------------------------------------------------------
   Items
  * ---------------------------------------------------------------------------*/
-  Future addItemRequestedData(String itemName, String description,String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt) async {
+  Future addItemRequestedData(String itemName, String description,String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt,double price, int pricePeriod) async {
     String thisDocRef = uuid.v4().toString();
 
     return await itemRequestCollection.document(thisDocRef).setData({
@@ -169,11 +170,15 @@ class DatabaseService{
       'docRef' : thisDocRef,
       'createdAt' : createdAt,
       'currentlyNeeded' : true,
+      'price' : price,
+      'pricePeriod' : pricePeriod,
     });
   }
 
-  Future addItemAvailableData(String itemName, String description, String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt) async {
-//    itemCount = itemCount + 1; // Using sequential indexing atm
+  Future addItemAvailableData(String itemName, String description, String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt, double price, int pricePeriod) async {
+// TODO. Check why i'm not just sending 'item' class to this function
+
+    //    itemCount = itemCount + 1; // Using sequential indexing atm
 //    var rng = new Random();
   String thisDocRef = uuid.v4().toString();
 
@@ -187,6 +192,8 @@ class DatabaseService{
       'docRef' : thisDocRef,
       'createdAt' : createdAt,
       'available' : true,
+      'price' : price,
+      'pricePeriod' : pricePeriod,
     });
   }
 
@@ -220,6 +227,8 @@ class DatabaseService{
           'categories' : categories,
           'createdAt' : newItemAvailable.createdAt,
           'available' : newItemAvailable.available,
+          'price' : newItemAvailable.price,
+          'pricePeriod' : newItemAvailable.pricePeriod,
         });
       }else{
         response = itemRequestCollection.document(newItem.docRef).updateData({
@@ -229,6 +238,8 @@ class DatabaseService{
           'endDate'   : newItem.endDate,
           'categories' : categories,
           'createdAt' : newItem.createdAt,
+          'price' : newItem.price,
+          'pricePeriod' : newItem.pricePeriod,
         });
       }
       return response;
@@ -292,6 +303,9 @@ class DatabaseService{
         doc.data['docRef'],
         doc.data['createdAt'].toDate(),
         doc.data['currentlyNeeded'],
+        doc.data['price'],
+        doc.data['pricePeriod'],
+
       );
     }).toList();
   }
@@ -310,6 +324,8 @@ class DatabaseService{
         doc.data['docRef'],
         doc.data['createdAt'].toDate(),
         doc.data['available'],
+        doc.data['price'],
+        doc.data['pricePeriod'],
       );
     }).toList();
   }

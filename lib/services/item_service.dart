@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:twofortwo/shared/constants.dart';
 
 class BorrowList {
   final String date;
@@ -11,6 +12,7 @@ class BorrowList {
 
   const BorrowList(this.category, this.itemName, this.date, this.description, this.uid);
 }
+
 
 class Item { // Requested item
 
@@ -24,8 +26,10 @@ class Item { // Requested item
   final String startDate;
   final String endDate;
   final bool currentlyNeeded;
+  final double price;
+  final int pricePeriod;
 
-  const Item(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt, this.currentlyNeeded);
+  const Item(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt, this.currentlyNeeded, this.price, this.pricePeriod);
 
   Item.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
@@ -37,6 +41,8 @@ class Item { // Requested item
         uid = json['uid'],
         docRef = json['docRef'],
         createdAt = json['createdAt'],
+        price = json['price'],
+        pricePeriod = json['pricePeriod'],
         currentlyNeeded = json['currentlyNeeded'];
 
   // age = json['age'];
@@ -51,6 +57,8 @@ class Item { // Requested item
     data['categories'] = this.categories;
     data['uid'] = this.uid;
     data['docRef'] = this.docRef;
+    data['price'] = this.price;
+    data['pricePeriod'] = this.pricePeriod;
     data['currentlyNeeded'] = this.currentlyNeeded;
     //data['age'] = this.age;
     return data;
@@ -71,8 +79,10 @@ class ItemAvailable {
   final String startDate;
   final String endDate;
   final bool available;
+  final double price;
+  final int pricePeriod;
 
-  const ItemAvailable(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt, this.available);
+  const ItemAvailable(this.categories, this.itemName, this.startDate, this.endDate, this.description, this.uid, this.docRef, this.createdAt, this.available, this.price, this.pricePeriod);
 
   ItemAvailable.fromJson(Map<String, dynamic> json)
       : itemName = json['itemName'],
@@ -83,6 +93,8 @@ class ItemAvailable {
         uid = json['uid'],
         docRef = json['docRef'],
         createdAt = json['createdAt'],
+        price = json['price'],
+        pricePeriod = json['pricePeriod'],
         available = json['available'];
   // age = json['age'];
 
@@ -96,6 +108,8 @@ class ItemAvailable {
     data['uid'] = this.uid;
     data['docRef'] = this.docRef;
     data['available'] = this.available;
+    data['price'] = this.price;
+    data['pricePeriod'] = this.pricePeriod;
     //data['age'] = this.age;
     return data;
   }

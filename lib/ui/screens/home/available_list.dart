@@ -172,31 +172,8 @@ class _AvailableListState extends State<AvailableList> {
             elevation: 3.0,
             child: Column(
               children: <Widget>[
-                ListTile(
-                  contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
-                  title: Text(
-                    itemName,
-                    style: itemHeaderFont,
-                  ),
-                  subtitle: Text(
-                    description,
-                    style: itemBodyFont,
-                  ),
-                  trailing: (item.startDate == null) || (item.startDate == "null")
-                      ? Text('')
-                      : _buildDatesTrailing(startDate, endDate),
-//                        Text(
-//                          startDate == null ? " " : startDate,
-//                          style: itemDate,
-//                        ),
-//                        Text(endDate == null ? " " : endDate,
-//                          style: itemDate,),
-//                    ],
-//                  ),
-                  onTap: () {
-                    _toggleDropdown(num);
-                  },
-                ),
+                (item.price == null && item.pricePeriod == null) ? _buildNonLeadingListTile(item, itemName, description, startDate, endDate,num):
+                _buildLeadingListTile(item, itemName, description, startDate, endDate,num),
                 Visibility(
                   visible: _infoShow[num],
                   child: Row(
@@ -247,6 +224,53 @@ class _AvailableListState extends State<AvailableList> {
           ),
         ],
       ),
+    );
+  }
+  Widget _buildLeadingListTile(item, itemName, description, startDate, endDate,num){
+    return ListTile(
+      contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child:  Column(
+          children: <Widget>[
+            item.price == null ? SizedBox.shrink() : Text('R' + item.price.toString(), style: priceFont),
+            Text(pricePeriod[item.pricePeriod], style: item.pricePeriod == 0 ? priceFreeFont: itemDateFromTo)
+          ],
+        ),
+      ),
+      title: Text(
+        itemName,
+        style: itemHeaderFont,
+      ),
+      subtitle: Text(
+        description,
+        style: itemBodyFont,
+      ),
+      trailing: (item.startDate == null) || (item.startDate == "null")
+          ? Text('')
+          : _buildDatesTrailing(startDate, endDate),
+      onTap: () {
+        _toggleDropdown(num);
+      },
+    );
+  }
+  Widget _buildNonLeadingListTile(item, itemName, description, startDate, endDate,num){
+    return ListTile(
+      contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
+      title: Text(
+        itemName,
+        style: itemHeaderFont,
+      ),
+      subtitle: Text(
+        description,
+        style: itemBodyFont,
+      ),
+      trailing: (item.startDate == null) || (item.startDate == "null")
+          ? Text('')
+          : _buildDatesTrailing(startDate, endDate),
+      onTap: () {
+        _toggleDropdown(num);
+      },
     );
   }
 

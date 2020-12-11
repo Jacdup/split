@@ -4,6 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
+var pricePeriod = <String>[
+  'Free',
+  'Per Day',
+  'Per Month',
+  'Once Off',
+];
+
+
 const dialogPadding = 25.0;
 const AvatarPadding = 40.0;
 
@@ -19,6 +27,8 @@ final itemDateTitle = const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bol
 final spamFont = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold,color: Colors.red);
 final messageFromFont = GoogleFonts.muli(fontSize: 15.0,color: Colors.blue, fontWeight: FontWeight.w600);
 
+final priceFont =const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.blueAccent);
+final priceFreeFont     = GoogleFonts.muli(fontSize: 11.0, color: Colors.green,fontWeight: FontWeight.bold);
 
 final headerFont =const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const textFont = const TextStyle(
@@ -57,6 +67,10 @@ const textInputDecoration = InputDecoration(
   enabledBorder: OutlineInputBorder(
       borderRadius: borderRadius,
       borderSide: BorderSide(color: borderColour, width: borderWidth)),
+disabledBorder: OutlineInputBorder(
+    borderRadius: borderRadius,
+    borderSide: BorderSide(color: Colors.black38, width: 30)),
+
 
 //  contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
 //  labelText: 'email',
