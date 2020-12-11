@@ -149,21 +149,8 @@ class _RequestListState extends State<RequestList> {
         elevation: 4.0,
         child: Column(
           children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
-              title: Text(
-                item.itemName == null ? "" : item.itemName,
-                style: itemHeaderFont,
-              ),
-              subtitle: Text(
-                item.description,
-                style: itemBodyFont,
-              ),
-              trailing: (item.startDate == null) || (item.startDate == "null") ? Text('') : _buildDatesTrailing(item.startDate, item.endDate),
-              onTap: () {
-                _toggleDropdown(num);
-              },
-            ),
+            (item.price == null && item.pricePeriod == null) ? _buildNonLeadingListTile(item, num):
+            _buildLeadingListTile(item,num),
 
             Visibility(
               visible: _infoShow[num] ,
@@ -201,6 +188,57 @@ class _RequestListState extends State<RequestList> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildLeadingListTile(item, num){
+    return ListTile(
+      contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
+      leading: Container(
+        width: 60.0,
+        //padding: const EdgeInsets.all(8.0),
+        child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            item.price == null ? SizedBox.shrink() : Text('R' + item.price.toString(), style: priceFont),
+            Text(pricePeriod[item.pricePeriod], style: item.pricePeriod == 0 ? priceFreeFont: itemDateFromTo)
+          ],
+        ),
+      ),
+      title: Text(
+        item.itemName,
+        style: itemHeaderFont,
+      ),
+      subtitle: Text(
+        item.description,
+        style: itemBodyFont,
+      ),
+      trailing: (item.startDate == null) || (item.startDate == "null")
+          ? Text('')
+          : _buildDatesTrailing(item.startDate, item.endDate),
+      onTap: () {
+        _toggleDropdown(num);
+      },
+    );
+  }
+  Widget _buildNonLeadingListTile(item,num){
+    return ListTile(
+      contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
+      title: Text(
+        item.itemName,
+        style: itemHeaderFont,
+      ),
+      subtitle: Text(
+        item.description,
+        style: itemBodyFont,
+      ),
+      trailing: (item.startDate == null) || (item.startDate == "null")
+          ? Text('')
+          : _buildDatesTrailing(item.startDate, item.endDate),
+      onTap: () {
+        _toggleDropdown(num);
+      },
     );
   }
 

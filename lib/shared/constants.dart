@@ -28,7 +28,7 @@ final spamFont = const TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold,col
 final messageFromFont = GoogleFonts.muli(fontSize: 15.0,color: Colors.blue, fontWeight: FontWeight.w600);
 
 final priceFont =const TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.blueAccent);
-final priceFreeFont     = GoogleFonts.muli(fontSize: 11.0, color: Colors.green,fontWeight: FontWeight.bold);
+final priceFreeFont     = GoogleFonts.muli(fontSize: 14.0, color: Colors.green,fontWeight: FontWeight.bold);
 
 final headerFont =const TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold);
 const textFont = const TextStyle(

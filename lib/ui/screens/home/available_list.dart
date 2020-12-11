@@ -229,9 +229,12 @@ class _AvailableListState extends State<AvailableList> {
   Widget _buildLeadingListTile(item, itemName, description, startDate, endDate,num){
     return ListTile(
       contentPadding: EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
-      leading: Padding(
-        padding: const EdgeInsets.all(8.0),
+      leading: Container(
+        width: 60.0,
+        //padding: const EdgeInsets.all(8.0),
         child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             item.price == null ? SizedBox.shrink() : Text('R' + item.price.toString(), style: priceFont),
             Text(pricePeriod[item.pricePeriod], style: item.pricePeriod == 0 ? priceFreeFont: itemDateFromTo)
