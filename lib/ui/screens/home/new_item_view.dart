@@ -34,9 +34,9 @@ class _NewItemState extends State<NewItem> {
   String updatedItemName;
   String updatedDescription;
   String itemName;
-  String description;
-  double price;
-  int pricePeriodIndex = 0;
+  String itemDescription;
+  String itemPrice;
+  int itemPricePeriod = 0;
   String date;
   String title;
   String tab1Text;
@@ -64,7 +64,7 @@ class _NewItemState extends State<NewItem> {
   void dispose() {
     // Clean up the controller when the widget is disposed.
 //    itemName.dispose();
-//    description.dispose();
+//    itemDescription.dispose();
 //    date.dispose();
     category.dispose();
     super.dispose();
@@ -172,7 +172,11 @@ class _NewItemState extends State<NewItem> {
 
     if (item != null) {
       itemName = item.itemName;
-      description = item.description;
+      itemDescription = item.description;
+      if (item.price != null){
+        itemPrice = item.price.toString();
+        itemPricePeriod = item.pricePeriod;
+      }
 
       if ((item.startDate != null) && (item.startDate != "null")) {
         // TODO: check where this null value becomes a string
@@ -205,7 +209,7 @@ class _NewItemState extends State<NewItem> {
                     height: 8.0,
                   ),
                   TextFormField(
-                    initialValue: item == null ? '' : item.itemName,
+                    initialValue: itemName ?? "",
                     validator: (val) =>
                         val.isEmpty ? 'Please enter a name' : null,
                     onChanged: (val) {
@@ -236,13 +240,13 @@ class _NewItemState extends State<NewItem> {
                       height: 8.0,
                     ),
                     TextFormField(
-                      initialValue: item == null ? '' : item.description,
+                      initialValue: itemDescription ?? "",
                       validator: (val) =>
                           val.isEmpty ? 'Please provide a description' : null,
                       keyboardType: TextInputType.multiline,
                       onChanged: (val) {
                         setState(() {
-                          description = val;
+                          itemDescription = val;
                           updatedDescription = val;
                         });
                       },
@@ -378,12 +382,12 @@ class _NewItemState extends State<NewItem> {
                           width: screenWidth(context)/2,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            enabled: pricePeriodIndex != 0,
-                            initialValue: item == null ? '' : item.price.toString(),
-                            validator: (val) => (val.isEmpty && pricePeriodIndex != 0) ? 'Please set an asking price.' : null,
+                            enabled: itemPricePeriod != 0,
+                            initialValue: itemPrice ?? "",
+                            validator: (val) => (val.isEmpty && itemPricePeriod != 0) ? 'Please set an asking price.' : null,
                             onChanged: (val) {
                               setState(() {
-                                price = double.parse(val);
+                                itemPrice = val;
                               });
                             },
                             decoration: textInputDecoration.copyWith(
@@ -443,7 +447,7 @@ class _NewItemState extends State<NewItem> {
 
   _buildDropDown() {
     return DropdownButton<String>(
-      value: pricePeriod[pricePeriodIndex],
+      value: pricePeriod[itemPricePeriod],
       icon: Icon(Icons.keyboard_arrow_down),
       iconSize: 24,
       elevation: 16,
@@ -455,7 +459,7 @@ class _NewItemState extends State<NewItem> {
       onChanged: (String newValue) {
         setState(() {
           //dropdownValue = newValue;
-          pricePeriodIndex = pricePeriod.indexOf(newValue);
+          itemPricePeriod = pricePeriod.indexOf(newValue);
         });
       },
       items: pricePeriod.map((String value) {
@@ -489,11 +493,11 @@ class _NewItemState extends State<NewItem> {
   onPressedBtnUpdate() async {
     String newDescription;
     String newItemName;
-    //int price = 0;
+    //int itemPrice = 0;
 
     if (_formKey1.currentState.validate()) {
       updatedDescription == null
-          ? newDescription = description
+          ? newDescription = itemDescription
           : newDescription = updatedDescription;
       updatedItemName == null
           ? newItemName = itemName
@@ -511,8 +515,8 @@ class _NewItemState extends State<NewItem> {
             oldItem.docRef,
             DateTime.now(),
             true,
-             price,
-        pricePeriodIndex);
+             double.parse(itemPrice),
+        itemPricePeriod);
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
       } else {
@@ -527,8 +531,8 @@ class _NewItemState extends State<NewItem> {
             oldItem.docRef,
             DateTime.now(),
             true,
-            price,
-            pricePeriodIndex);
+            double.parse(itemPrice),
+            itemPricePeriod);
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
       }
@@ -542,13 +546,13 @@ class _NewItemState extends State<NewItem> {
           itemName,
           selectedStartDate.toString().split(' ')[0],
           selectedEndDate.toString().split(' ')[0],
-          description,
+          itemDescription,
           widget.uidTabItem[0],
           '1',
           DateTime.now(),
           true,
-          price,
-          pricePeriodIndex);
+          double.parse(itemPrice),
+          itemPricePeriod);
       Navigator.pushReplacementNamed(context, CategoryRoute,
           arguments: [newItem]);
     }
@@ -561,13 +565,13 @@ class _NewItemState extends State<NewItem> {
           itemName,
           selectedStartDate.toString().split(' ')[0],
           selectedEndDate.toString().split(' ')[0],
-          description,
+          itemDescription,
           widget.uidTabItem[0],
           '2',
           DateTime.now(),
           true,
-          price,
-          pricePeriodIndex);
+          double.parse(itemPrice),
+          itemPricePeriod);
       Navigator.pushReplacementNamed(context, CategoryRoute,
           arguments: [newItem]);
     }

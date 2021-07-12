@@ -1,5 +1,3 @@
-
-
 // At the beginning, the user details should be obtained with the storage service
 // After that, the user should be accessed by this method
 // This method should store a copy of the user details, without continually fetching from the storage service
@@ -8,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class User {
-
   final String uid;
   final String name;
   final String surname;
@@ -16,8 +13,14 @@ class User {
   final String email;
   final List<dynamic> categories;
 
-  User({this.uid, this.name, this.surname, this.email, this.phone, this.categories}) : super();
-
+  User(
+      {this.uid,
+      this.name,
+      this.surname,
+      this.email,
+      this.phone,
+      this.categories})
+      : super();
 
 //  User.fromJson(Map<String, dynamic> json)
 //      : uid = json['uid'],
@@ -41,7 +44,7 @@ class User {
 //  }
 }
 
-class UserContact{
+class UserContact {
   final String name;
   final String surname;
   final String email;
@@ -49,25 +52,24 @@ class UserContact{
 
   UserContact({this.name, this.phone, this.email, this.surname});
 
-
-  factory UserContact.fromDoc(DocumentSnapshot snapshot){
+  factory UserContact.fromDoc(DocumentSnapshot snapshot) {
     return UserContact(
-      name: snapshot.data['name'],
-      surname: snapshot.data['surname'],
-      email: snapshot.data['email'],
-      phone: snapshot.data['phoneNumber'],
+      name: snapshot.get('name'),
+      surname: snapshot.get('surname'),
+      email: snapshot.get('email'),
+      phone: snapshot.get('phoneNumber'),
     );
   }
-
-
 }
 
 class FUser {
-
   final String uid;
   final String email;
 
-  FUser({this.uid, this.email,});
+  FUser({
+    this.uid,
+    this.email,
+  });
 
   FUser.fromJson(Map<String, dynamic> json)
       : uid = json['uid'],
@@ -82,6 +84,3 @@ class FUser {
     return data;
   }
 }
-
-
-

@@ -9,18 +9,18 @@ import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/services/database.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
-ValueNotifier<bool> loading = ValueNotifier(false); // Global variable, to whole application
-
+ValueNotifier<bool> loading =
+    ValueNotifier(false); // Global variable, to whole application
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await setupLocator();
-
+    await Firebase.initializeApp();
     runApp(MyApp()
 //      DevicePreview( // This is for testing UI
 //        builder: (context) => MyApp(),
@@ -34,16 +34,20 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
 //    var localStorageService = locator<LocalStorageService>();
 //    var userCategories = localStorageService.category;
 
     return MultiProvider(
       providers: [
-        StreamProvider<FUser>.value(value: AuthService().user,), // Firebase user
-        StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested),
-        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable),
-        ChangeNotifierProvider<CategoryService>(create:(context) =>  CategoryService()),
+        StreamProvider<FUser>.value(
+          value: AuthService().user,
+        ), // Firebase user
+        StreamProvider<List<Item>>.value(
+            value: DatabaseService().itemsRequested),
+        StreamProvider<List<ItemAvailable>>.value(
+            value: DatabaseService().itemsAvailable),
+        ChangeNotifierProvider<CategoryService>(
+            create: (context) => CategoryService()),
       ],
       child: MaterialApp(
         onGenerateRoute: (settings) {
@@ -66,16 +70,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
-
-
-
-
-
 
 //  String _getStartupScreen(context) {
 //    // TODO: this is for handling cases where user selected to stay logged in
@@ -124,4 +118,3 @@ class MyApp extends StatelessWidget {
 //    return HomeViewRoute;
 //  }
 }
-
