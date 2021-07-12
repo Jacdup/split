@@ -28,8 +28,8 @@ class _NewItemState extends State<NewItem> {
 //  static String uid = widget.uidTab[0];
 
   DateTime selectedDate = DateTime.now();
-  DateTime selectedStartDate;
-  DateTime selectedEndDate;
+  DateTime itemStartDate;
+  DateTime itemEndDate;
 
   String updatedItemName;
   String updatedDescription;
@@ -167,8 +167,7 @@ class _NewItemState extends State<NewItem> {
 
   Widget _createFields(
       String dateDescription, GlobalKey type, dynamic item, double width) {
-    DateTime itemStartDate;
-    DateTime itemEndDate;
+
 
     if (item != null) {
       itemName = item.itemName;
@@ -177,17 +176,21 @@ class _NewItemState extends State<NewItem> {
         itemPrice = item.price.toString();
         itemPricePeriod = item.pricePeriod;
       }
-
-      if ((item.startDate != null) && (item.startDate != "null")) {
+      if ((itemStartDate == null) && (itemEndDate == null) && (item.startDate != null) && (item.startDate != "null")) {
         // TODO: check where this null value becomes a string
-//      print(item.startDate);
         itemStartDate = DateTime.parse(item.startDate);
         itemEndDate = DateTime.parse(item.endDate);
-
-//        startDateText = "${itemStartDate.toString().split(' ')[0]}";
-//        endDateText = "${itemEndDate.toString().split(' ')[0]}";
       }
     }
+    final ButtonStyle dateButtonStyle = ElevatedButton.styleFrom(elevation: 4.0,
+                              padding: itemStartDate == null
+                                  ? EdgeInsets.fromLTRB(16.0, 8, 16.0, 8.0)
+                                  : EdgeInsets.fromLTRB(4.0, 8, 4.0, 8.0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0)),
+                              primary: _doesntMatter == true
+                                  ? Colors.grey
+                                  : Colors.white70,);
 
     return Form(
       key: type, // Keep track of form
@@ -286,23 +289,14 @@ class _NewItemState extends State<NewItem> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            RaisedButton(
-                              elevation: 4.0,
-                              padding: selectedStartDate == null
-                                  ? EdgeInsets.fromLTRB(16.0, 8, 16.0, 8.0)
-                                  : EdgeInsets.fromLTRB(4.0, 8, 4.0, 8.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0)),
-                              color: _doesntMatter == true
-                                  ? Colors.grey
-                                  : Colors.white70,
+                            ElevatedButton(style: dateButtonStyle,
                               onPressed: () => _doesntMatter == true
                                   ? null
                                   : _datePicker(context, true),
                               child: Text(
-                                selectedStartDate == null
+                                itemStartDate == null
                                     ? "Start Date"
-                                    : "${selectedStartDate.toString().split(' ')[0]}",
+                                    : "${itemStartDate.toString().split(' ')[0]}",
                                 style: textFont,
                               ),
                             ),
@@ -314,23 +308,14 @@ class _NewItemState extends State<NewItem> {
                             ),
                             Spacer(),
                             // SizedBox(width: 8.0,),
-                            RaisedButton(
-                              elevation: 4.0,
-                              padding: selectedEndDate == null
-                                  ? EdgeInsets.fromLTRB(16.0, 8, 16.0, 8.0)
-                                  : EdgeInsets.fromLTRB(4.0, 8, 4.0, 8.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0)),
-                              color: _doesntMatter == true
-                                  ? Colors.grey
-                                  : Colors.white70,
+                           ElevatedButton(style: dateButtonStyle,
                               onPressed: () => _doesntMatter == true
                                   ? null
                                   : _datePicker(context, false),
                               child: Text(
-                                selectedEndDate == null
+                                itemEndDate == null
                                     ? "End Date"
-                                    : "${selectedEndDate.toString().split(' ')[0]}",
+                                    : "${itemEndDate.toString().split(' ')[0]}",
                                 style: textFont,
                               ),
                             ),
@@ -420,17 +405,17 @@ class _NewItemState extends State<NewItem> {
     // This does the job of validation for startDate < endDate
     if (start == false) {
       endVal = DateTime(2101);
-      selectedStartDate == null
+      itemStartDate == null
           ? startVal = DateTime.now()
           : startVal =
-              selectedStartDate; // Value can't be smaller than selectedStartDate
+              itemStartDate; // Value can't be smaller than itemStartDate
     } else {
       startVal = DateTime.now();
-//        selectedEndDate == null ? startVal = DateTime.now() : startVal = selectedEndDate;
-      selectedEndDate == null
+//        itemEndDate == null ? startVal = DateTime.now() : startVal = itemEndDate;
+      itemEndDate == null
           ? endVal = DateTime(2101)
           : endVal =
-              selectedEndDate; // Value can't be larger than selectedEndDate
+              itemEndDate; // Value can't be larger than itemEndDate
     }
     final DateTime picked = await showDatePicker(
       context: context,
@@ -438,11 +423,12 @@ class _NewItemState extends State<NewItem> {
       firstDate: startVal,
       lastDate: endVal,
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate){
       setState(() {
-        (start == true) ? selectedStartDate = picked : selectedEndDate = picked;
+        (start == true) ? itemStartDate = picked : itemEndDate = picked;
 //        selectedDate = picked;
       });
+     }
   }
 
   _buildDropDown() {
@@ -508,8 +494,8 @@ class _NewItemState extends State<NewItem> {
         ItemAvailable newItem = new ItemAvailable(
             null,
             newItemName,
-            selectedStartDate.toString().split(' ')[0],
-            selectedEndDate.toString().split(' ')[0],
+            itemStartDate.toString().split(' ')[0],
+            itemEndDate.toString().split(' ')[0],
             newDescription,
             widget.uidTabItem[0],
             oldItem.docRef,
@@ -524,8 +510,8 @@ class _NewItemState extends State<NewItem> {
         Item newItem = new Item(
             null,
             newItemName,
-            selectedStartDate.toString().split(' ')[0],
-            selectedEndDate.toString().split(' ')[0],
+            itemStartDate.toString().split(' ')[0],
+            itemEndDate.toString().split(' ')[0],
             newDescription,
             widget.uidTabItem[0],
             oldItem.docRef,
@@ -544,8 +530,8 @@ class _NewItemState extends State<NewItem> {
       Item newItem = new Item(
           null,
           itemName,
-          selectedStartDate.toString().split(' ')[0],
-          selectedEndDate.toString().split(' ')[0],
+          itemStartDate.toString().split(' ')[0],
+          itemEndDate.toString().split(' ')[0],
           itemDescription,
           widget.uidTabItem[0],
           '1',
@@ -563,8 +549,8 @@ class _NewItemState extends State<NewItem> {
       ItemAvailable newItem = new ItemAvailable(
           null,
           itemName,
-          selectedStartDate.toString().split(' ')[0],
-          selectedEndDate.toString().split(' ')[0],
+          itemStartDate.toString().split(' ')[0],
+          itemEndDate.toString().split(' ')[0],
           itemDescription,
           widget.uidTabItem[0],
           '2',
