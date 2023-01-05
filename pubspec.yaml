@@ -36,7 +36,7 @@ dependencies:
 
   # UI
   flutter_spinkit: ^4.1.2
-  pull_to_refresh: ^1.5.8
+  pull_to_refresh: ^2.0.0
   fluttertoast: ^4.0.1
   google_fonts: ^1.1.0
   font_awesome_flutter: ^8.8.1 # This is just for the Whatsapp icon. TODO.

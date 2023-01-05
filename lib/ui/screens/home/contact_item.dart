@@ -11,7 +11,7 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
+import 'package:twofortwo/services/button_presses.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ContactItemOwner extends StatefulWidget {
