@@ -5,8 +5,6 @@ import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/shared/constants.dart';
-import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/services/button_presses.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 
 class UserList extends StatefulWidget {

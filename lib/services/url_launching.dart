@@ -14,8 +14,8 @@ class LaunchWhatsapp {
     if (await canLaunch(whatsappUrl)) {
       await launch(whatsappUrl);
     } else {
+      print("alertdialog");
       AlertDialog(title: Text('Error'), content: Text("Trouble getting to Whatsapp. Please make sure you have it installed."),);
-      throw 'Could not launch $whatsappUrl';
     }
   }
 }

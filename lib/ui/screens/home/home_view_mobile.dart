@@ -13,7 +13,6 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/ui/screens/home/available_list.dart';
 import 'package:twofortwo/ui/screens/home/drawer.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BorrowListPortrait extends StatefulWidget {
 

@@ -1,13 +1,9 @@
 
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
-import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/message_service.dart';
 import 'package:twofortwo/services/user_service.dart';
-import 'package:twofortwo/shared/constants.dart';
 
 import 'package:uuid/uuid.dart';
 

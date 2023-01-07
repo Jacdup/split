@@ -2,19 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/button_presses.dart';
-import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
-import 'package:twofortwo/services/user_service.dart';
-import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/ui/screens/home/contact_item.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
-import 'package:twofortwo/utils/screen_size.dart';
 
 class AvailableList extends StatefulWidget {
   final List<ItemAvailable> allItems;

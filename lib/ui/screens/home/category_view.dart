@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/shared/constants.dart';
-import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/services/button_presses.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';

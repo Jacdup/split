@@ -5,7 +5,6 @@ import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
-import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/ui/screens/user/user_item_list.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';

@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:twofortwo/shared/constants.dart';
-
 class BorrowList {
   final String date;
   final String description;

@@ -89,16 +89,6 @@ User _getUserFromSnapshot(DocumentSnapshot snapshot){
     }).asStream();
   }
 
-Stream<User> get userData{
-  User newUser;
-  var result =
-       Firestore.instance.collection('users')
-      .document('8GX2aGVn0GTrwLMxSZgx6STdnnA3')
-      .snapshots();
-//  final List<dynamic> body = result.da
-
-//      .map(_getUserFromSnapshot);
-}
 
 
 class User {
