@@ -21,7 +21,7 @@ class AuthService {
   // sign in anon
   Future signInAnon() async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
+      UserCredential result = await _auth.signInAnonymously();
       User firebaseUser = result.user;
       return _userFromFirebaseUser(firebaseUser);
     } catch (e) {
@@ -42,7 +42,7 @@ class AuthService {
   // sign in with email & password
   Future signIn(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User firebaseUser = result.user;
 
 //      dynamic userAll = await DatabaseService(uid: user.uid).user;
@@ -64,7 +64,7 @@ class AuthService {
   Future registerWithEmailAndPassword(String name, String surname, String email, String phone,  String password) async {
     // TODO: name, phone, etc.
     try{
-        AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
        User firebaseUser = result.user;
 //       List<String> initialCategories = CategoryService().categories;
 //       List<String> temp = ['Sport'];
