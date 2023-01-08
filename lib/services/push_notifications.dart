@@ -12,7 +12,7 @@ class PushNotificationsManager {
 
   static final PushNotificationsManager _instance = PushNotificationsManager._();
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 //  final DatabaseService _db;
 //  final Firestore _db = Firestore.instance;
 
@@ -23,24 +23,36 @@ class PushNotificationsManager {
     if (!_initialized) {
 
       // Initialize callbacks:
-      _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          print("onMessage: $message");
-
-//          final snackbar = SnackBar(
-//            content: Text(message['notification']['title']),
-//            action: SnackBarAction(label: 'Go', onPressed: () => null,),// TODO: add action here, that user goes to specific screen
-//          );
-//          Scaffold.of(context).showSnackBar(snackbar);
-        },
-        onResume: (Map<String, dynamic> message) async {
-          print("onResume: $message");
-        },
-        onLaunch: (Map<String, dynamic> message) async {
+      // TODO: I copied this code from https://stackoverflow.com/questions/65056272/how-to-configure-firebase-messaging-with-latest-version-in-flutter
+      // It should still be customised to split usecase
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        RemoteNotification notification = message.notification;
+        AndroidNotification android = message.notification?.android;
+      });
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        print('A new onMessageOpenedApp event was published!');
         print("onResume: $message");
-      },
-
-      );
+        // Navigator.pushNamed(context, '/message',
+        //     arguments: MessageArguments(message, true));
+      });
+//       _firebaseMessaging.configure(
+//         onMessage: (Map<String, dynamic> message) async {
+//           print("onMessage: $message");
+//
+// //          final snackbar = SnackBar(
+// //            content: Text(message['notification']['title']),
+// //            action: SnackBarAction(label: 'Go', onPressed: () => null,),// TODO: add action here, that user goes to specific screen
+// //          );
+// //          Scaffold.of(context).showSnackBar(snackbar);
+//         },
+//         onResume: (Map<String, dynamic> message) async {
+//           print("onResume: $message");
+//         },
+//         onLaunch: (Map<String, dynamic> message) async {
+//         print("onResume: $message");
+//       },
+//
+//       );
 
 
       // For testing purposes print the Firebase Messaging token
@@ -54,7 +66,7 @@ class PushNotificationsManager {
 //          var fcmToken = _getDeviceToken();
 //          dynamic result = await DatabaseService(uid: uid).saveDeviceToken(fcmToken);
 //        });
-        _firebaseMessaging.requestNotificationPermissions();
+        _firebaseMessaging.requestPermission();
       }else{
 //        var fcmToken = _getDeviceToken();
 //      print("!!!!!!!!!!!!");
