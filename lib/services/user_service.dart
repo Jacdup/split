@@ -51,10 +51,10 @@ class UserContact{
 
   factory UserContact.fromDoc(DocumentSnapshot snapshot){
     return UserContact(
-      name: snapshot.data['name'],
-      surname: snapshot.data['surname'],
-      email: snapshot.data['email'],
-      phone: snapshot.data['phoneNumber'],
+      name: snapshot.get('name'),
+      surname: snapshot.get('surname'),
+      email: snapshot.get('email'),
+      phone: snapshot.get('phoneNumber'),
     );
   }
 
