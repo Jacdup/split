@@ -15,20 +15,20 @@ class Wrapper extends StatelessWidget{
     final FUser user = Provider.of<FUser>(context); // Firestore user (contains uid, email)
     bool _initialized = false;
 //    print(user.uid);
-//    Future<User> userAll = getUser(user.uid);
+//    Future<SplitUser> userAll = getUser(user.uid);
 //    userAll.then((User result){
-//      User userAll = result;
+//      SplitUser userAll = result;
 //      print(userAll);
 //    });
 
-//    Future<User> userAll  = getUser(user.uid); // Database user with the rest of the info
+//    Future<SplitUser> userAll  = getUser(user.uid); // Database user with the rest of the info
 //    var alreadyLoggedIn = localStorageService.stayLoggedIn;
 
     // First check whether there exists a local copy of user, if not go to firebase
     // Dont have to
 //    if (alreadyLoggedIn){
 //      print("Stay logged in true");
-//      User user = localStorageService.user;
+//      SplitUser user = localStorageService.user;
 //      if (user == null) {
 //        print("Could not retrieve user from localstorage");
 //      }else{

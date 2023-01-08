@@ -46,7 +46,7 @@ class AuthService {
       FirebaseUser user = result.user;
 
 //      dynamic userAll = await DatabaseService(uid: user.uid).user;
-//      userAll.then((User result){
+//      userAll.then((SplitUser result){
 //        userAll = result;
 //
 //        print(userAll.name);

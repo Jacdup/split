@@ -5,7 +5,7 @@ import 'package:twofortwo/services/user_service.dart';
 
 class UserDetails extends StatefulWidget {
 
-  final User userData;
+  final SplitUser userData;
 
   UserDetails({this.userData});
 
@@ -28,14 +28,14 @@ class _UserDetailsState extends State<UserDetails> {
 //    final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
 //    final FUser fUser = Provider.of<FUser>(context) ?? [];
 
-    final User userData = widget.userData;
+    final SplitUser userData = widget.userData;
 
-//    User userData = widget.user;
+//    SplitUser userData = widget.user;
     String tag = userData.uid;
 //    if (userData != null) {
 //      print(userData.email);
 
-//      return StreamBuilder<User>(
+//      return StreamBuilder<SplitUser>(
 //        stream: DatabaseService(uid: fUser.uid).userData,
 //        builder: (context, snapshot) {
 //        if (snapshot.hasData){

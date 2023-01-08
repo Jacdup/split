@@ -23,7 +23,7 @@ class _SignupViewState extends State<SignupView> {
 //    'buenos aires'
 //  ]; // Option 2
 //  String _selectedLocation = "Stellenbosch"; // Option 2
-  User userDetails;
+  SplitUser userDetails;
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;

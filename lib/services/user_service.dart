@@ -6,7 +6,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class SplitUser {
 
   final String uid;
   final String name;
@@ -15,7 +15,7 @@ class User {
   final String email;
   final List<dynamic> categories;
 
-  User({this.uid, this.name, this.surname, this.email, this.phone, this.categories}) : super();
+  SplitUser({this.uid, this.name, this.surname, this.email, this.phone, this.categories}) : super();
 
 
 //  User.fromJson(Map<String, dynamic> json)

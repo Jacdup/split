@@ -11,7 +11,7 @@ import 'package:twofortwo/utils/screen_size.dart';
 
 class UserItemDetails extends StatefulWidget {
 
-  final User userData;
+  final SplitUser userData;
 
   UserItemDetails({this.userData});
 
@@ -33,7 +33,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    final User userData = widget.userData;
+    final SplitUser userData = widget.userData;
 //    print(userData);
 
     final items = Provider.of<List<Item>>(context) ?? [];
@@ -75,7 +75,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 
   }
 
-  _profileAppBar(User userData, String tag){
+  _profileAppBar(SplitUser userData, String tag){
     return PreferredSize(
       preferredSize:  Size.fromHeight(screenHeight(context, dividedBy: 4.4 )), // TODO
       child: Container(

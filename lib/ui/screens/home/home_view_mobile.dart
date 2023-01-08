@@ -128,8 +128,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
     final itemsRequestedFromFirestore = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailableFromFirestore = Provider.of<List<ItemAvailable>>(context) ?? [];
-    final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
-        ? Provider.of<User>(context)
+    final SplitUser userData = Provider.of<SplitUser>(context).runtimeType == SplitUser //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
+        ? Provider.of<SplitUser>(context)
         : null;
 
     List<Item> itemsRequested = Filter().sortRequestedByDate(itemsRequestedFromFirestore);

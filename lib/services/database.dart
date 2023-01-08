@@ -41,11 +41,11 @@ class DatabaseService{
   }
 
 
-  User _getUserFromSnapshot(DocumentSnapshot snapshot){
+  SplitUser _getUserFromSnapshot(DocumentSnapshot snapshot){
 
   List<String> categoriesFromDb = (snapshot.data['categories']).cast<String>();
 
-      return User(uid: uid,
+      return SplitUser(uid: uid,
           name: snapshot.data['name'],
           email: snapshot.data['email'],
           phone: snapshot.data['phoneNumber'],
@@ -54,11 +54,11 @@ class DatabaseService{
       );
   }
 //
-//  Stream<User> get userData{
-//    return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
+//  Stream<SplitUser> get userData{
+//    return userCollection.document(uid).snapshots().map<SplitUser>(_getUserFromSnapshot);
 //  }
 
-  Stream<User> get userData{
+  Stream<SplitUser> get userData{
     return userCollection.document(uid).get().then((snapshot){
       try{
         return _getUserFromSnapshot(snapshot);
@@ -70,7 +70,7 @@ class DatabaseService{
   }
 
   // The same as above but as a Future
-  Future<User> userMessageData(String uid){
+  Future<SplitUser> userMessageData(String uid){
     return userCollection.document(uid).get().then((snapshot){
       try{
         return _getUserFromSnapshot(snapshot);
@@ -109,7 +109,7 @@ class DatabaseService{
   Future saveMessageToUserProfile(String messagePayload, String datePayload, String ownerUid, String itemName, String fromUid) async {
     String messageDocRef = uuid.v4().toString();
 
-    final User fromUser = await userMessageData(fromUid);
+    final SplitUser fromUser = await userMessageData(fromUid);
     final String nameFrom = fromUser.name;
     final String surnameFrom = fromUser.surname;
     final String phoneFrom = fromUser.phone;

@@ -14,7 +14,7 @@ typedef onReadCallback = void Function();
 
 class UserMessages extends StatefulWidget {
 
-  final User userData;
+  final SplitUser userData;
   final onReadCallback unreadMessage;
 
   UserMessages({this.userData, this.unreadMessage});
@@ -50,14 +50,14 @@ class _UserMessagesState extends State<UserMessages> {
 //    final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
 //    final FUser fUser = Provider.of<FUser>(context) ?? [];
 
-    final User userData = widget.userData;
+    final SplitUser userData = widget.userData;
 
-//    User userData = widget.user;
+//    SplitUser userData = widget.user;
     String tag = userData.uid;
 //    if (userData != null) {
 //      print(userData.email);
 
-//      return StreamBuilder<User>(
+//      return StreamBuilder<SplitUser>(
 //        stream: DatabaseService(uid: fUser.uid).userData,
 //        builder: (context, snapshot) {
 //        if (snapshot.hasData){

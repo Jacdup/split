@@ -96,7 +96,7 @@ import 'package:twofortwo/services/auth.dart';
 //}
 class MenuDrawer extends StatelessWidget {
 
-  final User userData;
+  final SplitUser userData;
 
 
   MenuDrawer({this.userData});

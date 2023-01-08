@@ -193,7 +193,7 @@ class ProfileAppBar extends StatelessWidget {
   // It is basically just a stack that puts a floating yellow title banner over
   // the appbar.
 
-  final User userData;
+  final SplitUser userData;
   final String tag;
   final String title;
 

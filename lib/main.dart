@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
 //  String _getStartupScreen(context) {
 //    // TODO: this is for handling cases where user selected to stay logged in
 //    var localStorageService = locator<LocalStorageService>();
-//    var thisUser = Provider.of<User>(
+//    var thisUser = Provider.of<SplitUser>(
 //        context); // Provide does not work without build method
 //
 ////    print(localStorageService.hasSignedUp);
@@ -89,10 +89,10 @@ class MyApp extends StatelessWidget {
 ////    locator<LocalStorageService>().hasSignedUp = false;
 //    var alreadyLoggedIn = localStorageService.stayLoggedIn;
 //    if (alreadyLoggedIn) {
-//      User thisUser =
+//      SplitUser thisUser =
 //          localStorageService.user; // Get user from storage, not firestore
 //    } else {
-//      final thisUser = Provider.of<User>(context);
+//      final thisUser = Provider.of<SplitUser>(context);
 //    }
 //    if (thisUser == null) {
 //      return AuthRoute;

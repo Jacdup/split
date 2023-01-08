@@ -63,7 +63,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
 
 
-    return StreamProvider<User>.value(
+    return StreamProvider<SplitUser>.value(
       value: DatabaseService(uid: thisUser.uid).userData, //TODO: really don't need this as a stream. Only need it once for the userData.
 
       child: WillPopScope(

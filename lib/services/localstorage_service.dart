@@ -73,17 +73,17 @@ class LocalStorageService {
   }
 
   /* Getter */
-  User get user {
+  SplitUser get user {
     var userJson = _getFromDisk(UserKey);
     if (userJson == null) {
       return null;
     }
     return null;
-//    return User.fromJson(json.decode(userJson));
+//    return SplitUser.fromJson(json.decode(userJson));
   }
 
 /* Setter */
-  set user(User userToSave) {
+  set user(SplitUser userToSave) {
 //    saveStringToDisk(UserKey, json.encode(userToSave.toJson()));
   }
 
