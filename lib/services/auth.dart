@@ -9,12 +9,12 @@ class AuthService {
 
 
   // create user obj based on FirebaseUser
-  FUser _userFromFirebaseUser(FirebaseUser user, ) {
+  FUser _userFromFirebaseUser(User firebaseUser, ) {
 //    return await DatabaseService(uid: user.uid).user;
-    return user != null
+    return firebaseUser != null
         ? FUser(
-            uid: user.uid,
-            email: user.email)
+            uid: firebaseUser.uid,
+            email: firebaseUser.email)
         : null;
   }
 
@@ -22,8 +22,8 @@ class AuthService {
   Future signInAnon() async {
     try {
       AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+      User firebaseUser = result.user;
+      return _userFromFirebaseUser(firebaseUser);
     } catch (e) {
       print(e.toString());
       return null;
@@ -34,7 +34,7 @@ class AuthService {
   Stream<FUser> get user {
 //    dynamic userAll = DatabaseService(uid: user.).user;
     return _auth.onAuthStateChanged
-        .map((FirebaseUser user) => _userFromFirebaseUser(user));
+        .map((User firebaseUser) => _userFromFirebaseUser(firebaseUser));
 //        .map(_userFromFirebaseUser()); // This does the same as above
 //        .map(FirebaseUser);
   }
@@ -43,7 +43,7 @@ class AuthService {
   Future signIn(String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
+      User firebaseUser = result.user;
 
 //      dynamic userAll = await DatabaseService(uid: user.uid).user;
 //      userAll.then((SplitUser result){
@@ -53,7 +53,7 @@ class AuthService {
 //      });
 //      return userAll;
 
-      return _userFromFirebaseUser(user);
+      return _userFromFirebaseUser(firebaseUser);
     } catch (e) {
       print(e.toString());
       return null;
@@ -65,15 +65,15 @@ class AuthService {
     // TODO: name, phone, etc.
     try{
         AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-       FirebaseUser user = result.user;
+       User firebaseUser = result.user;
 //       List<String> initialCategories = CategoryService().categories;
 //       List<String> temp = ['Sport'];
        // create a new document for the user with the uid
-        await DatabaseService(uid: user.uid).updateUserData(name, surname, phone, email, CategoryService().categories); //setter TODO: update userdetails categories
+        await DatabaseService(uid: firebaseUser.uid).updateUserData(name, surname, phone, email, CategoryService().categories); //setter TODO: update userdetails categories
 //        dynamic userAll = await DatabaseService(uid: user.uid).user; //getter
 
 //        return userAll;
-       return _userFromFirebaseUser(user);
+       return _userFromFirebaseUser(firebaseUser);
     }catch(e){
       print(e.toString());
       return null;
