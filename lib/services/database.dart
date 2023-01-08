@@ -16,9 +16,9 @@ class DatabaseService{
   var uuid = Uuid();
 
   // collection reference
-  final CollectionReference itemRequestCollection = Firestore.instance.collection('itemsRequested'); // Creates a collection if there isn't one defined
-  final CollectionReference itemAvailableCollection = Firestore.instance.collection('itemsAvailable');
-  final CollectionReference userCollection = Firestore.instance.collection('users');
+  final CollectionReference itemRequestCollection = FirebaseFirestore.instance.collection('itemsRequested'); // Creates a collection if there isn't one defined
+  final CollectionReference itemAvailableCollection = FirebaseFirestore.instance.collection('itemsAvailable');
+  final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
 
  /* --------------------------------------------------------------------------
@@ -134,7 +134,7 @@ class DatabaseService{
   }
 
   List<Message> _messagesFromSnapshot(QuerySnapshot snapshot){
-    // Converts the Firestore snapshot into a list of messages
+    // Converts the FirebaseFirestore snapshot into a list of messages
     return snapshot.documents.map((doc){
       return Message(
       message: doc.data['message'],
@@ -150,7 +150,7 @@ class DatabaseService{
     }).toList();
   }
   Future setMessageReadStatus(String docRef) async {
-    final CollectionReference messageCollection = Firestore.instance.collection('users').document(uid).collection('messages');
+    final CollectionReference messageCollection = FirebaseFirestore.instance.collection('users').document(uid).collection('messages');
     return await messageCollection.document(docRef).updateData({
       'hasRead' : false,
     });
@@ -164,7 +164,7 @@ class DatabaseService{
 
 
   Stream<List<Message>> get messages{
-    return Firestore.instance.collection('users').document(uid).collection('messages').snapshots().map(_messagesFromSnapshot);
+    return FirebaseFirestore.instance.collection('users').document(uid).collection('messages').snapshots().map(_messagesFromSnapshot);
   }
 
   /* --------------------------------------------------------------------------
@@ -213,7 +213,7 @@ class DatabaseService{
 
   Future deleteItem(String documentRef, bool type) async {
 
-    await Firestore.instance.runTransaction((Transaction myTransaction) async {
+    await FirebaseFirestore.instance.runTransaction((Transaction myTransaction) async {
       if (type){
         return await myTransaction.delete(itemAvailableCollection.document(documentRef));
       }else{
@@ -222,7 +222,7 @@ class DatabaseService{
     });
 
 //    if (result == null){
-//      await Firestore.instance.runTransaction((Transaction myTransaction) async {
+//      await FirebaseFirestore.instance.runTransaction((Transaction myTransaction) async {
 //
 //      });
 //    }

@@ -33,7 +33,7 @@ class AuthService {
   // auth change user stream
   Stream<FUser> get user {
 //    dynamic userAll = DatabaseService(uid: user.).user;
-    return _auth.onAuthStateChanged
+    return _auth.authStateChanges()
         .map((User firebaseUser) => _userFromFirebaseUser(firebaseUser));
 //        .map(_userFromFirebaseUser()); // This does the same as above
 //        .map(FirebaseUser);
