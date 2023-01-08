@@ -24,7 +24,7 @@ class ButtonWidget extends StatelessWidget {
       width: screenWidth(context, dividedBy: 3),
 //            decoration: InputDecoration(borderRadius: BorderRadius.circular(32.0)),
 
-      child: RaisedButton(
+      child: ElevatedButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
           color: Colors.amberAccent,
