@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 //import '../services/login_service.dart';
 import '../services/localstorage_service.dart';
 
-GetIt locator = GetIt();
+GetIt locator = GetIt.instance;
 //GetIt getIt = GetIt.instance;
 
 Future setupLocator() async {
