@@ -24,6 +24,7 @@ class DatabaseService{
   final CollectionReference itemAvailableCollection = Firestore.instance.collection('itemsAvailable');
   final CollectionReference userCollection = Firestore.instance.collection('users');
 
+
  /* --------------------------------------------------------------------------
   User stuff
  * ---------------------------------------------------------------------------*/
@@ -130,12 +131,14 @@ class DatabaseService{
         'message' : messagePayload,
         'dateRequested' : datePayload,
         'timeStamp' : FieldValue.serverTimestamp(),
+        'hasRead' : false,
       });
     }
 
   }
 
   List<Message> _messagesFromSnapshot(QuerySnapshot snapshot){
+    // Converts the Firestore snapshot into a list of messages
     return snapshot.documents.map((doc){
       return Message(
       message: doc.data['message'],
@@ -146,9 +149,23 @@ class DatabaseService{
       dateSent : doc.data['timeStamp'].toDate(),
       dateRequested: doc.data['dateRequested'],
       forItem : doc.data['forItem'],
+      hasRead: doc.data['hasRead'],
       );
     }).toList();
   }
+  Future setMessageReadStatus(String docRef) async {
+    final CollectionReference messageCollection = Firestore.instance.collection('users').document(uid).collection('messages');
+    return await messageCollection.document(docRef).updateData({
+      'hasRead' : false,
+    });
+  }
+
+  Future<String> getMessageDocRef(DocumentReference docRef) async{
+      DocumentSnapshot docSnap = await docRef.get();
+      var docID = docSnap.reference.documentID;
+      return docID;
+  }
+
 
   Stream<List<Message>> get messages{
     return Firestore.instance.collection('users').document(uid).collection('messages').snapshots().map(_messagesFromSnapshot);

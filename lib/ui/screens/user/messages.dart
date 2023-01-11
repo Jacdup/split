@@ -13,12 +13,14 @@ import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/user_service.dart';
 
+typedef onReadCallback = void Function();
 
 class UserMessages extends StatefulWidget {
 
   final User userData;
+  final onReadCallback unreadMessage;
 
-  UserMessages({this.userData});
+  UserMessages({this.userData, this.unreadMessage});
 
   @override
   _UserMessagesState createState() => _UserMessagesState();
@@ -34,6 +36,7 @@ class _UserMessagesState extends State<UserMessages> {
       _infoShow[num] = !_infoShow[num];
     });
   }
+
 
 
   Widget build(BuildContext context) {
@@ -117,12 +120,14 @@ class _UserMessagesState extends State<UserMessages> {
         padding: const EdgeInsets.all(10.0),
         itemCount: userMessages.length,
         itemBuilder: (BuildContext context, int index) {
-
+          //userMessages[index].hasRead == false ? unreadMessage() : unreadMessage();
+          //String messageRef = getMessageRef(userData);
           String message = userMessages[index].message;
           String nameFrom = userMessages[index].nameFrom;
           String surnameFrom = userMessages[index].surnameFrom;
           String phoneFrom = userMessages[index].phoneFrom;
           DateTime dateSent = userMessages[index].dateSent;
+
 //          print(thisMessage[index].nameFrom);
 //        String from = thisMessage[index].uidFrom;
           String forItem = userMessages[index].forItem;
@@ -131,7 +136,8 @@ class _UserMessagesState extends State<UserMessages> {
           return Card(
             margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            elevation: 4.0,
+            elevation: userMessages[index].hasRead == false ? 4.0 : 8.0,
+
             child: Column(
               children: <Widget>[
                 ListTile(
@@ -163,6 +169,7 @@ class _UserMessagesState extends State<UserMessages> {
                   trailing: _buildTrailing(forItem, dateSent),
                   onTap: () {
                     _toggleDropdown(index);
+                    //DatabaseService.setMessageReadStatus(userMessages[index].)
                   },
                 ),
                 Visibility(
@@ -212,6 +219,9 @@ class _UserMessagesState extends State<UserMessages> {
     );
   }
 
+  Future<String> getMessageRef(userData, message) async {
+    return await DatabaseService(uid: userData.uid).getMessageDocRef(message);
+  }
   Widget _buildTrailing(String forItem, DateTime date){
 
     String yymmdd = date.year.toString() + '/' + date.month.toString() + '/' + date.day.toString();

@@ -10,8 +10,9 @@ class Message{
   final DateTime dateSent;
   final String dateRequested;
   final String forItem;
+  final bool hasRead;
 
-  Message({this.message, this.uidFrom, this.nameFrom, this.surnameFrom, this.phoneFrom, this.dateSent, this.forItem, this.dateRequested});
+  Message({this.message, this.uidFrom, this.nameFrom, this.surnameFrom, this.phoneFrom, this.dateSent, this.forItem, this.dateRequested, this.hasRead});
 
 
 
