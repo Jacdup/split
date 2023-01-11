@@ -1,6 +1,4 @@
-
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:twofortwo/services/category_service.dart';
@@ -11,62 +9,65 @@ import 'package:twofortwo/shared/constants.dart';
 
 import 'package:uuid/uuid.dart';
 
-class DatabaseService{
-
+class DatabaseService {
   final String uid;
   final String itemID;
-  DatabaseService({this. uid, this.itemID});
+  DatabaseService({this.uid, this.itemID});
 
   var uuid = Uuid();
 
   // collection reference
-  final CollectionReference itemRequestCollection = Firestore.instance.collection('itemsRequested'); // Creates a collection if there isn't one defined
-  final CollectionReference itemAvailableCollection = Firestore.instance.collection('itemsAvailable');
-  final CollectionReference userCollection = Firestore.instance.collection('users');
+  final CollectionReference itemRequestCollection = FirebaseFirestore.instance
+      .collection(
+          'itemsRequested'); // Creates a collection if there isn't one defined
+  final CollectionReference itemAvailableCollection =
+      FirebaseFirestore.instance.collection('itemsAvailable');
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
 
-
- /* --------------------------------------------------------------------------
+  /* --------------------------------------------------------------------------
   User stuff
  * ---------------------------------------------------------------------------*/
-  Future updateUserData(String name, String surname, String phone, String email, List<String> categories) async {
-    return await userCollection.document(uid).setData({
-      'name':name,
-      'phoneNumber':phone,
-      'surname' : surname,
-      'email' : email,
-      'categories' : (categories).cast<String>(), // Really.
+  Future updateUserData(String name, String surname, String phone, String email,
+      List<String> categories) async {
+    return await userCollection.doc(uid).set({
+      'name': name,
+      'phoneNumber': phone,
+      'surname': surname,
+      'email': email,
+      'categories': (categories).cast<String>(), // Really.
     });
   }
 
-  Future updateCategory(List<String> categories) async{
-    return await userCollection.document(uid).updateData({
+  Future updateCategory(List<String> categories) async {
+    return await userCollection.doc(uid).update({
       'categories': (categories).cast<String>(),
     });
   }
 
+  User _getUserFromSnapshot(DocumentSnapshot snapshot) {
+    List<String> categoriesFromDb = (snapshot.get('categories')).cast<String>();
 
-  User _getUserFromSnapshot(DocumentSnapshot snapshot){
-
-  List<String> categoriesFromDb = (snapshot.data['categories']).cast<String>();
-
-      return User(uid: uid,
-          name: snapshot.data['name'],
-          email: snapshot.data['email'],
-          phone: snapshot.data['phoneNumber'],
-          categories: categoriesFromDb, //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
-          surname: snapshot.data['surname'],
-      );
+    return User(
+      uid: uid,
+      name: snapshot.get('name'),
+      email: snapshot.get('email'),
+      phone: snapshot.get('phoneNumber'),
+      categories:
+          categoriesFromDb, //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
+      surname: snapshot.get('surname'),
+    );
   }
 //
 //  Stream<User> get userData{
 //    return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
 //  }
 
-  Stream<User> get userData{
-    return userCollection.document(uid).get().then((snapshot){
-      try{
+  Stream<User> get userData {
+    return userCollection.doc(uid).get().then((snapshot) {
+      try {
         return _getUserFromSnapshot(snapshot);
-      }catch(e){
+      } catch (e) {
         print(e);
         return null;
       }
@@ -74,11 +75,11 @@ class DatabaseService{
   }
 
   // The same as above but as a Future
-  Future<User> userMessageData(String uid){
-    return userCollection.document(uid).get().then((snapshot){
-      try{
+  Future<User> userMessageData(String uid) {
+    return userCollection.doc(uid).get().then((snapshot) {
+      try {
         return _getUserFromSnapshot(snapshot);
-      }catch(e){
+      } catch (e) {
         print(e);
         return null;
       }
@@ -89,28 +90,27 @@ class DatabaseService{
 //    userCollection.document(uid).collection('messages').document()
 //  }
 
-
   /* --------------------------------------------------------------------------
   Notifications
  * ---------------------------------------------------------------------------*/
 
   // Push notifications
   Future saveDeviceToken(String fcmToken) async {
-
-    if (fcmToken != null){
+    if (fcmToken != null) {
       //TODO: get user uid here
-      var tokenRef = userCollection.document(uid).collection('tokens').document(fcmToken);
+      var tokenRef = userCollection.doc(uid).collection('tokens').doc(fcmToken);
 
-     return await tokenRef.setData({
+      return await tokenRef.set({
         'token': fcmToken,
-        'createdAt' : FieldValue.serverTimestamp(),
-        'platform' : Platform.operatingSystem,
+        'createdAt': FieldValue.serverTimestamp(),
+        'platform': Platform.operatingSystem,
       });
     }
   }
 
   // Message notifications
-  Future saveMessageToUserProfile(String messagePayload, String datePayload, String ownerUid, String itemName, String fromUid) async {
+  Future saveMessageToUserProfile(String messagePayload, String datePayload,
+      String ownerUid, String itemName, String fromUid) async {
     String messageDocRef = uuid.v4().toString();
 
     final User fromUser = await userMessageData(fromUid);
@@ -118,164 +118,194 @@ class DatabaseService{
     final String surnameFrom = fromUser.surname;
     final String phoneFrom = fromUser.phone;
 
-    if (uid != null){
+    if (uid != null) {
+      var messageRef = userCollection
+          .doc(ownerUid)
+          .collection('messages')
+          .doc(messageDocRef);
 
-      var messageRef = userCollection.document(ownerUid).collection('messages').document(messageDocRef);
-
-      return await messageRef.setData({
-        'forItem' : itemName,
-        'from' : fromUser.uid,
-        'nameFrom' : nameFrom,
-        'surnameFrom' : surnameFrom,
-        'phoneFrom' : phoneFrom,
-        'message' : messagePayload,
-        'dateRequested' : datePayload,
-        'timeStamp' : FieldValue.serverTimestamp(),
-        'hasRead' : false,
+      return await messageRef.set({
+        'forItem': itemName,
+        'from': fromUser.uid,
+        'nameFrom': nameFrom,
+        'surnameFrom': surnameFrom,
+        'phoneFrom': phoneFrom,
+        'message': messagePayload,
+        'dateRequested': datePayload,
+        'timeStamp': FieldValue.serverTimestamp(),
+        'hasRead': false,
       });
     }
-
   }
 
-  List<Message> _messagesFromSnapshot(QuerySnapshot snapshot){
-    // Converts the Firestore snapshot into a list of messages
-    return snapshot.documents.map((doc){
+  List<Message> _messagesFromSnapshot(QuerySnapshot snapshot) {
+    // Converts the FirebaseFirestore snapshot into a list of messages
+    return snapshot.docs.map((doc) {
       return Message(
-      message: doc.data['message'],
-      uidFrom : doc.data['from'],
-      nameFrom: doc.data['nameFrom'],
-      surnameFrom : doc.data['surnameFrom'],
-      phoneFrom: doc.data['phoneFrom'],
-      dateSent : doc.data['timeStamp'].toDate(),
-      dateRequested: doc.data['dateRequested'],
-      forItem : doc.data['forItem'],
-      hasRead: doc.data['hasRead'],
+        message: doc.get('message'),
+        uidFrom: doc.get('from'),
+        nameFrom: doc.get('nameFrom'),
+        surnameFrom: doc.get('surnameFrom'),
+        phoneFrom: doc.get('phoneFrom'),
+        dateSent: doc.get('timeStamp').toDate(),
+        dateRequested: doc.get('dateRequested'),
+        forItem: doc.get('forItem'),
+        hasRead: doc.get('hasRead'),
       );
     }).toList();
   }
+
   Future setMessageReadStatus(String docRef) async {
-    final CollectionReference messageCollection = Firestore.instance.collection('users').document(uid).collection('messages');
-    return await messageCollection.document(docRef).updateData({
-      'hasRead' : false,
+    final CollectionReference messageCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('messages');
+    return await messageCollection.doc(docRef).update({
+      'hasRead': false,
     });
   }
 
-  Future<String> getMessageDocRef(DocumentReference docRef) async{
-      DocumentSnapshot docSnap = await docRef.get();
-      var docID = docSnap.reference.documentID;
-      return docID;
+  Future<String> getMessageDocRef(DocumentReference docRef) async {
+    DocumentSnapshot docSnap = await docRef.get();
+    var docID = docSnap.reference.id;
+    return docID;
   }
 
-
-  Stream<List<Message>> get messages{
-    return Firestore.instance.collection('users').document(uid).collection('messages').snapshots().map(_messagesFromSnapshot);
+  Stream<List<Message>> get messages {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('messages')
+        .snapshots()
+        .map(_messagesFromSnapshot);
   }
 
   /* --------------------------------------------------------------------------
   Items
  * ---------------------------------------------------------------------------*/
-  Future addItemRequestedData(String itemName, String description,String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt,double price, int pricePeriod) async {
+  Future addItemRequestedData(
+      String itemName,
+      String description,
+      String usageDateStart,
+      String usageDateEnd,
+      List<String> categories,
+      DateTime createdAt,
+      double price,
+      int pricePeriod) async {
     String thisDocRef = uuid.v4().toString();
 
-    return await itemRequestCollection.document(thisDocRef).setData({
-      'itemName' : itemName,
+    return await itemRequestCollection.doc(thisDocRef).set({
+      'itemName': itemName,
       'description': description,
-      'startDate' : usageDateStart,
-      'endDate'   : usageDateEnd,
-      'categories' : categories,
-      'uid' : uid,
-      'docRef' : thisDocRef,
-      'createdAt' : createdAt,
-      'currentlyNeeded' : true,
-      'price' : price,
-      'pricePeriod' : pricePeriod,
+      'startDate': usageDateStart,
+      'endDate': usageDateEnd,
+      'categories': categories,
+      'uid': uid,
+      'docRef': thisDocRef,
+      'createdAt': createdAt,
+      'currentlyNeeded': true,
+      'price': price,
+      'pricePeriod': pricePeriod,
     });
   }
 
-  Future addItemAvailableData(String itemName, String description, String usageDateStart, String usageDateEnd, List<String> categories, DateTime createdAt, double price, int pricePeriod) async {
+  Future addItemAvailableData(
+      String itemName,
+      String description,
+      String usageDateStart,
+      String usageDateEnd,
+      List<String> categories,
+      DateTime createdAt,
+      double price,
+      int pricePeriod) async {
 // TODO. Check why i'm not just sending 'item' class to this function
 
     //    itemCount = itemCount + 1; // Using sequential indexing atm
 //    var rng = new Random();
-  String thisDocRef = uuid.v4().toString();
+    String thisDocRef = uuid.v4().toString();
 
-    return await itemAvailableCollection.document(thisDocRef).setData({
-      'itemName' : itemName,
+    return await itemAvailableCollection.doc(thisDocRef).set({
+      'itemName': itemName,
       'description': description,
-      'startDate' : usageDateStart,
-      'endDate'   : usageDateEnd,
-      'categories' : categories,
-      'uid' : uid,
-      'docRef' : thisDocRef,
-      'createdAt' : createdAt,
-      'available' : true,
-      'price' : price,
-      'pricePeriod' : pricePeriod,
+      'startDate': usageDateStart,
+      'endDate': usageDateEnd,
+      'categories': categories,
+      'uid': uid,
+      'docRef': thisDocRef,
+      'createdAt': createdAt,
+      'available': true,
+      'price': price,
+      'pricePeriod': pricePeriod,
     });
   }
 
-
   Future deleteItem(String documentRef, bool type) async {
-
-    await Firestore.instance.runTransaction((Transaction myTransaction) async {
-      if (type){
-        return await myTransaction.delete(itemAvailableCollection.document(documentRef));
-      }else{
-        return await myTransaction.delete(itemRequestCollection.document(documentRef));
+    await FirebaseFirestore.instance
+        .runTransaction((Transaction myTransaction) async {
+      if (type) {
+        return await myTransaction
+            .delete(itemAvailableCollection.doc(documentRef));
+      } else {
+        return await myTransaction
+            .delete(itemRequestCollection.doc(documentRef));
       }
     });
 
 //    if (result == null){
-//      await Firestore.instance.runTransaction((Transaction myTransaction) async {
+//      await FirebaseFirestore.instance.runTransaction((Transaction myTransaction) async {
 //
 //      });
 //    }
 //    return await itemAvailableCollection.document(documentRef).delete(); // Easier, but not best practice.
   }
 
-  Future updateItem(ItemAvailable newItemAvailable,Item newItem, bool itemType,  List<String> categories) async {
-      dynamic response;
-      if (itemType) {
-        response = itemAvailableCollection.document(newItemAvailable.docRef).updateData({
-          'itemName' : newItemAvailable.itemName,
-          'description': newItemAvailable.description,
-          'startDate' : newItemAvailable.startDate,
-          'endDate'   : newItemAvailable.endDate,
-          'categories' : categories,
-          'createdAt' : newItemAvailable.createdAt,
-          'available' : newItemAvailable.available,
-          'price' : newItemAvailable.price,
-          'pricePeriod' : newItemAvailable.pricePeriod,
-        });
-      }else{
-        response = itemRequestCollection.document(newItem.docRef).updateData({
-          'itemName' : newItem.itemName,
-          'description': newItem.description,
-          'startDate' : newItem.startDate,
-          'endDate'   : newItem.endDate,
-          'categories' : categories,
-          'createdAt' : newItem.createdAt,
-          'price' : newItem.price,
-          'pricePeriod' : newItem.pricePeriod,
-        });
-      }
-      return response;
+  Future updateItem(ItemAvailable newItemAvailable, Item newItem, bool itemType,
+      List<String> categories) async {
+    dynamic response;
+    if (itemType) {
+      response = itemAvailableCollection.doc(newItemAvailable.docRef).update({
+        'itemName': newItemAvailable.itemName,
+        'description': newItemAvailable.description,
+        'startDate': newItemAvailable.startDate,
+        'endDate': newItemAvailable.endDate,
+        'categories': categories,
+        'createdAt': newItemAvailable.createdAt,
+        'available': newItemAvailable.available,
+        'price': newItemAvailable.price,
+        'pricePeriod': newItemAvailable.pricePeriod,
+      });
+    } else {
+      response = itemRequestCollection.doc(newItem.docRef).update({
+        'itemName': newItem.itemName,
+        'description': newItem.description,
+        'startDate': newItem.startDate,
+        'endDate': newItem.endDate,
+        'categories': categories,
+        'createdAt': newItem.createdAt,
+        'price': newItem.price,
+        'pricePeriod': newItem.pricePeriod,
+      });
+    }
+    return response;
   }
 
-  Future updateItemAvailability(String documentRef, bool type, bool availability) async {
-
-  dynamic response;
+  Future updateItemAvailability(
+      String documentRef, bool type, bool availability) async {
+    dynamic response;
     if (type) {
-      response = itemAvailableCollection.document(documentRef).updateData({ // If 'available' does not exist, create it.
-        'available': availability});
+      response = itemAvailableCollection.doc(documentRef).update({
+        // If 'available' does not exist, create it.
+        'available': availability
+      });
 //      if (response != null) {
 //        response = itemAvailableCollection.document(documentRef).setData({
 //          'available': false
 //        });
 //      }
-    }else{
-      response = itemRequestCollection.document(documentRef).updateData({
-        'available': availability});
+    } else {
+      response = itemRequestCollection
+          .doc(documentRef)
+          .update({'available': availability});
 //      if (response != null) {
 //        response = itemRequestCollection.document(documentRef).setData({
 //          'available': false
@@ -284,137 +314,115 @@ class DatabaseService{
     }
   }
 
-
-  Future contactItemOwner(String documentRef, String messagePayload, String datePayload, bool type) async {
+  Future contactItemOwner(String documentRef, String messagePayload,
+      String datePayload, bool type) async {
     dynamic result;
 
-    if (type){
-      await itemAvailableCollection.document(documentRef).get().then((value) {
+    if (type) {
+      await itemAvailableCollection.doc(documentRef).get().then((value) {
         result = value.data;
 //        print(result['uid']);
       });
-    }else{
-      await itemRequestCollection.document(documentRef).get().then((value) {
+    } else {
+      await itemRequestCollection.doc(documentRef).get().then((value) {
         result = value.data;
       });
     }
     String ownerUid = result["uid"]; // Uid of item owner
     String itemName = result["itemName"];
 
-    await saveMessageToUserProfile(messagePayload, datePayload, ownerUid, itemName, uid); // Save message to user profile in database
-
+    await saveMessageToUserProfile(messagePayload, datePayload, ownerUid,
+        itemName, uid); // Save message to user profile in database
   }
-
 
   // requested item list from snapshot
-  List<Item> _itemListFromSnapshot(QuerySnapshot snapshot){
-    return snapshot.documents.map((doc){
-
-      return Item( // Expects only positional arguments
-        List<String>.from(doc.data['categories']), //.cast<String>()
-        doc.data['itemName'] ,
-        doc.data['startDate'],
-        doc.data['endDate'],
-        doc.data['description'],
-        doc.data['uid'],
-        doc.data['docRef'],
-        doc.data['createdAt'].toDate(),
-        doc.data['currentlyNeeded'],
-        doc.data['price'],
-        doc.data['pricePeriod'],
-
-      );
+  List<Item> _itemListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      try {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return Item(
+          // Expects only positional arguments
+          List<String>.from(data['categories']), //.cast<String>()
+          data['itemName'] ?? '',
+          data['startDate'] ?? '',
+          data['endDate'] ?? '',
+          data['description'] ?? '',
+          data['uid'] ?? '',
+          data['docRef'] ?? '',
+          data['createdAt'].toDate() ?? '',
+          data['currentlyNeeded'] ?? true,
+          data['price'] ?? null,
+          data['pricePeriod'] ?? null,
+        );
+      } catch (e) {
+        print("Firestore error in getting the requested list:");
+        print(e);
+      }
     }).toList();
   }
 
-  List<ItemAvailable> _itemAvailableListFromSnapshot(QuerySnapshot snapshot){
-    return snapshot.documents.map((doc){
-//      print('!!!!!!!!');
-//      print(doc.data['category'].runtimeType);
-      return ItemAvailable( // Expects only positional arguments
-        List<String>.from(doc.data['categories']), //.cast<String>(),
-        doc.data['itemName'] ,
-        doc.data['startDate'],
-        doc.data['endDate'],
-        doc.data['description'],
-        doc.data['uid'],
-        doc.data['docRef'],
-        doc.data['createdAt'].toDate(),
-        doc.data['available'],
-        doc.data['price'],
-        doc.data['pricePeriod'],
-      );
+  List<ItemAvailable> _itemAvailableListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      try {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+        return ItemAvailable(
+          // Expects only positional arguments
+          List<String>.from(data['categories']), //.cast<String>(),
+          data['itemName'] ?? '',
+          data['startDate'] ?? '',
+          data['endDate'] ?? '',
+          data['description'] ?? '',
+          data['uid'] ?? '',
+          data['docRef'] ?? '',
+          data['createdAt'].toDate() ?? '',
+          data['available'] ?? true,
+          data['price'] ?? null,
+          data['pricePeriod'] ?? null,
+        );
+      } catch (e) {
+        print("Firestore error in getting the available list:");
+        print(e);
+      }
     }).toList();
   }
 
-  List<String> _userDetailsFromData(DocumentSnapshot snapshot){
-
-    return List<String>(
-      snapshot.data['name']
-
-    ).toList();
-
-  }
-
-
+  // List<String> _userDetailsFromData(DocumentSnapshot snapshot) {
+  //   return List<String>(snapshot.get('name')).toList();
+  // }
 
   // get requested item stream
-  Stream<List<Item>> get itemsRequested{
+  Stream<List<Item>> get itemsRequested {
     return itemRequestCollection.snapshots().map(_itemListFromSnapshot);
   }
 
   // get available item stream
-  Stream<List<ItemAvailable>> get itemsAvailable{
-    return itemAvailableCollection.snapshots().map(_itemAvailableListFromSnapshot);
+  Stream<List<ItemAvailable>> get itemsAvailable {
+    return itemAvailableCollection
+        .snapshots()
+        .map(_itemAvailableListFromSnapshot);
   }
 
-
-
   /* Get contact details of user owning item*/
-  Future<UserContact> get itemOwnerDetailsAvail async{
+  Future<UserContact> get itemOwnerDetailsAvail async {
     UserContact response;
     String thisItemUid;
 
     // Fetch the uid of item
-      thisItemUid = await itemAvailableCollection.document(itemID).get().then((value) {
-        try{
-          return value.data['uid'];
-        }catch(e){
-          print(e);
-          return null;
-        }
-      });
-
-    // Fetch the user details of item owner
-    response = await userCollection.document(thisItemUid).get().then((value){
-      try{
-        return UserContact.fromDoc(value);
-      }catch(e){
-        return null;
-      }
-    });
-
-    return response;
-  }
-  Future<UserContact> get itemOwnerDetailsReq async {
-    UserContact response;
-    String thisItemUid;
-
-
-    thisItemUid = await itemRequestCollection.document(itemID).get().then((value) {
-      try{
-        return value.data['uid'];
-      }catch(e){
+    thisItemUid = await itemAvailableCollection.doc(itemID).get().then((value) {
+      try {
+        return value.get('uid');
+      } catch (e) {
         print(e);
         return null;
       }
     });
 
     // Fetch the user details of item owner
-    response = await userCollection.document(thisItemUid).get().then((value){
-      try{
+    response = await userCollection.doc(thisItemUid).get().then((value) {
+      try {
         return UserContact.fromDoc(value);
-      }catch(e){
+      } catch (e) {
         return null;
       }
     });
@@ -422,7 +430,30 @@ class DatabaseService{
     return response;
   }
 
+  Future<UserContact> get itemOwnerDetailsReq async {
+    UserContact response;
+    String thisItemUid;
 
+    thisItemUid = await itemRequestCollection.doc(itemID).get().then((value) {
+      try {
+        return value.get('uid');
+      } catch (e) {
+        print(e);
+        return null;
+      }
+    });
+
+    // Fetch the user details of item owner
+    response = await userCollection.doc(thisItemUid).get().then((value) {
+      try {
+        return UserContact.fromDoc(value);
+      } catch (e) {
+        return null;
+      }
+    });
+
+    return response;
+  }
 
 //  Future<List<ItemAvailable>> get itemsAvailable async{
 //    final response = await itemAvailableCollection.getDocuments();

@@ -28,15 +28,15 @@ class _NewItemState extends State<NewItem> {
 //  static String uid = widget.uidTab[0];
 
   DateTime selectedDate = DateTime.now();
-  DateTime selectedStartDate;
-  DateTime selectedEndDate;
+  DateTime itemStartDate;
+  DateTime itemEndDate;
 
   String updatedItemName;
   String updatedDescription;
   String itemName;
-  String description;
-  double price;
-  int pricePeriodIndex = 0;
+  String itemDescription;
+  String itemPrice;
+  int itemPricePeriod = 0;
   String date;
   String title;
   String tab1Text;
@@ -64,7 +64,7 @@ class _NewItemState extends State<NewItem> {
   void dispose() {
     // Clean up the controller when the widget is disposed.
 //    itemName.dispose();
-//    description.dispose();
+//    itemDescription.dispose();
 //    date.dispose();
     category.dispose();
     super.dispose();
@@ -167,23 +167,30 @@ class _NewItemState extends State<NewItem> {
 
   Widget _createFields(
       String dateDescription, GlobalKey type, dynamic item, double width) {
-    DateTime itemStartDate;
-    DateTime itemEndDate;
+
 
     if (item != null) {
       itemName = item.itemName;
-      description = item.description;
-
-      if ((item.startDate != null) && (item.startDate != "null")) {
+      itemDescription = item.description;
+      if (item.price != null){
+        itemPrice = item.price.toString();
+        itemPricePeriod = item.pricePeriod;
+      }
+      if ((itemStartDate == null) && (itemEndDate == null) && (item.startDate != null) && (item.startDate != "null")) {
         // TODO: check where this null value becomes a string
-//      print(item.startDate);
         itemStartDate = DateTime.parse(item.startDate);
         itemEndDate = DateTime.parse(item.endDate);
-
-//        startDateText = "${itemStartDate.toString().split(' ')[0]}";
-//        endDateText = "${itemEndDate.toString().split(' ')[0]}";
       }
     }
+    final ButtonStyle dateButtonStyle = ElevatedButton.styleFrom(elevation: 4.0,
+                              padding: itemStartDate == null
+                                  ? EdgeInsets.fromLTRB(16.0, 8, 16.0, 8.0)
+                                  : EdgeInsets.fromLTRB(4.0, 8, 4.0, 8.0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0)),
+                              primary: _doesntMatter == true
+                                  ? Colors.grey
+                                  : Colors.white70,);
 
     return Form(
       key: type, // Keep track of form
@@ -205,7 +212,7 @@ class _NewItemState extends State<NewItem> {
                     height: 8.0,
                   ),
                   TextFormField(
-                    initialValue: item == null ? '' : item.itemName,
+                    initialValue: itemName ?? "",
                     validator: (val) =>
                         val.isEmpty ? 'Please enter a name' : null,
                     onChanged: (val) {
@@ -236,13 +243,13 @@ class _NewItemState extends State<NewItem> {
                       height: 8.0,
                     ),
                     TextFormField(
-                      initialValue: item == null ? '' : item.description,
+                      initialValue: itemDescription ?? "",
                       validator: (val) =>
                           val.isEmpty ? 'Please provide a description' : null,
                       keyboardType: TextInputType.multiline,
                       onChanged: (val) {
                         setState(() {
-                          description = val;
+                          itemDescription = val;
                           updatedDescription = val;
                         });
                       },
@@ -282,23 +289,14 @@ class _NewItemState extends State<NewItem> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            RaisedButton(
-                              elevation: 4.0,
-                              padding: selectedStartDate == null
-                                  ? EdgeInsets.fromLTRB(16.0, 8, 16.0, 8.0)
-                                  : EdgeInsets.fromLTRB(4.0, 8, 4.0, 8.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0)),
-                              color: _doesntMatter == true
-                                  ? Colors.grey
-                                  : Colors.white70,
+                            ElevatedButton(style: dateButtonStyle,
                               onPressed: () => _doesntMatter == true
                                   ? null
                                   : _datePicker(context, true),
                               child: Text(
-                                selectedStartDate == null
+                                itemStartDate == null
                                     ? "Start Date"
-                                    : "${selectedStartDate.toString().split(' ')[0]}",
+                                    : "${itemStartDate.toString().split(' ')[0]}",
                                 style: textFont,
                               ),
                             ),
@@ -310,23 +308,14 @@ class _NewItemState extends State<NewItem> {
                             ),
                             Spacer(),
                             // SizedBox(width: 8.0,),
-                            RaisedButton(
-                              elevation: 4.0,
-                              padding: selectedEndDate == null
-                                  ? EdgeInsets.fromLTRB(16.0, 8, 16.0, 8.0)
-                                  : EdgeInsets.fromLTRB(4.0, 8, 4.0, 8.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0)),
-                              color: _doesntMatter == true
-                                  ? Colors.grey
-                                  : Colors.white70,
+                           ElevatedButton(style: dateButtonStyle,
                               onPressed: () => _doesntMatter == true
                                   ? null
                                   : _datePicker(context, false),
                               child: Text(
-                                selectedEndDate == null
+                                itemEndDate == null
                                     ? "End Date"
-                                    : "${selectedEndDate.toString().split(' ')[0]}",
+                                    : "${itemEndDate.toString().split(' ')[0]}",
                                 style: textFont,
                               ),
                             ),
@@ -378,12 +367,12 @@ class _NewItemState extends State<NewItem> {
                           width: screenWidth(context)/2,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            enabled: pricePeriodIndex != 0,
-                            initialValue: item == null ? '' : item.price.toString(),
-                            validator: (val) => (val.isEmpty && pricePeriodIndex != 0) ? 'Please set an asking price.' : null,
+                            enabled: itemPricePeriod != 0,
+                            initialValue: itemPrice ?? "",
+                            validator: (val) => (val.isEmpty && itemPricePeriod != 0) ? 'Please set an asking price.' : null,
                             onChanged: (val) {
                               setState(() {
-                                price = double.parse(val);
+                                itemPrice = val;
                               });
                             },
                             decoration: textInputDecoration.copyWith(
@@ -416,17 +405,17 @@ class _NewItemState extends State<NewItem> {
     // This does the job of validation for startDate < endDate
     if (start == false) {
       endVal = DateTime(2101);
-      selectedStartDate == null
+      itemStartDate == null
           ? startVal = DateTime.now()
           : startVal =
-              selectedStartDate; // Value can't be smaller than selectedStartDate
+              itemStartDate; // Value can't be smaller than itemStartDate
     } else {
       startVal = DateTime.now();
-//        selectedEndDate == null ? startVal = DateTime.now() : startVal = selectedEndDate;
-      selectedEndDate == null
+//        itemEndDate == null ? startVal = DateTime.now() : startVal = itemEndDate;
+      itemEndDate == null
           ? endVal = DateTime(2101)
           : endVal =
-              selectedEndDate; // Value can't be larger than selectedEndDate
+              itemEndDate; // Value can't be larger than itemEndDate
     }
     final DateTime picked = await showDatePicker(
       context: context,
@@ -434,16 +423,17 @@ class _NewItemState extends State<NewItem> {
       firstDate: startVal,
       lastDate: endVal,
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDate){
       setState(() {
-        (start == true) ? selectedStartDate = picked : selectedEndDate = picked;
+        (start == true) ? itemStartDate = picked : itemEndDate = picked;
 //        selectedDate = picked;
       });
+     }
   }
 
   _buildDropDown() {
     return DropdownButton<String>(
-      value: pricePeriod[pricePeriodIndex],
+      value: pricePeriod[itemPricePeriod],
       icon: Icon(Icons.keyboard_arrow_down),
       iconSize: 24,
       elevation: 16,
@@ -455,7 +445,7 @@ class _NewItemState extends State<NewItem> {
       onChanged: (String newValue) {
         setState(() {
           //dropdownValue = newValue;
-          pricePeriodIndex = pricePeriod.indexOf(newValue);
+          itemPricePeriod = pricePeriod.indexOf(newValue);
         });
       },
       items: pricePeriod.map((String value) {
@@ -489,11 +479,11 @@ class _NewItemState extends State<NewItem> {
   onPressedBtnUpdate() async {
     String newDescription;
     String newItemName;
-    //int price = 0;
+    //int itemPrice = 0;
 
     if (_formKey1.currentState.validate()) {
       updatedDescription == null
-          ? newDescription = description
+          ? newDescription = itemDescription
           : newDescription = updatedDescription;
       updatedItemName == null
           ? newItemName = itemName
@@ -504,15 +494,15 @@ class _NewItemState extends State<NewItem> {
         ItemAvailable newItem = new ItemAvailable(
             null,
             newItemName,
-            selectedStartDate.toString().split(' ')[0],
-            selectedEndDate.toString().split(' ')[0],
+            itemStartDate.toString().split(' ')[0],
+            itemEndDate.toString().split(' ')[0],
             newDescription,
             widget.uidTabItem[0],
             oldItem.docRef,
             DateTime.now(),
             true,
-             price,
-        pricePeriodIndex);
+             double.parse(itemPrice),
+        itemPricePeriod);
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
       } else {
@@ -520,15 +510,15 @@ class _NewItemState extends State<NewItem> {
         Item newItem = new Item(
             null,
             newItemName,
-            selectedStartDate.toString().split(' ')[0],
-            selectedEndDate.toString().split(' ')[0],
+            itemStartDate.toString().split(' ')[0],
+            itemEndDate.toString().split(' ')[0],
             newDescription,
             widget.uidTabItem[0],
             oldItem.docRef,
             DateTime.now(),
             true,
-            price,
-            pricePeriodIndex);
+            double.parse(itemPrice),
+            itemPricePeriod);
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
       }
@@ -540,15 +530,15 @@ class _NewItemState extends State<NewItem> {
       Item newItem = new Item(
           null,
           itemName,
-          selectedStartDate.toString().split(' ')[0],
-          selectedEndDate.toString().split(' ')[0],
-          description,
+          itemStartDate.toString().split(' ')[0],
+          itemEndDate.toString().split(' ')[0],
+          itemDescription,
           widget.uidTabItem[0],
           '1',
           DateTime.now(),
           true,
-          price,
-          pricePeriodIndex);
+          double.parse(itemPrice),
+          itemPricePeriod);
       Navigator.pushReplacementNamed(context, CategoryRoute,
           arguments: [newItem]);
     }
@@ -559,15 +549,15 @@ class _NewItemState extends State<NewItem> {
       ItemAvailable newItem = new ItemAvailable(
           null,
           itemName,
-          selectedStartDate.toString().split(' ')[0],
-          selectedEndDate.toString().split(' ')[0],
-          description,
+          itemStartDate.toString().split(' ')[0],
+          itemEndDate.toString().split(' ')[0],
+          itemDescription,
           widget.uidTabItem[0],
           '2',
           DateTime.now(),
           true,
-          price,
-          pricePeriodIndex);
+          double.parse(itemPrice),
+          itemPricePeriod);
       Navigator.pushReplacementNamed(context, CategoryRoute,
           arguments: [newItem]);
     }

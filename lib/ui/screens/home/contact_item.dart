@@ -11,12 +11,12 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
+import '/services/button_presses.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ContactItemOwner extends StatefulWidget {
 //  ItemInfo({this.itemID, this.userUid, this.type});
-ContactItemOwner({this.userItemDetails});
+  ContactItemOwner({this.userItemDetails});
 
   final dynamic userItemDetails;
 
@@ -29,11 +29,9 @@ ContactItemOwner({this.userItemDetails});
 }
 
 class _ContactItemOwnerState extends State<ContactItemOwner> {
-
   double bottomInset = 150.0;
 
-
-  String itemID ;
+  String itemID;
   bool type;
   String userUid;
 
@@ -51,7 +49,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
     _messageNode = FocusNode();
     _dateNode = FocusNode();
     itemID = widget.userItemDetails["docRef"];
-    type= widget.userItemDetails["type"];
+    type = widget.userItemDetails["type"];
     userUid = widget.userItemDetails["uid"];
     itemOwnerDetails = _fetchUserInfo(itemID, type);
   }
@@ -66,51 +64,57 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
 
   @override
   Widget build(BuildContext context) {
-
-    void _listener(){ // This listener ensures the Column is not bunched up when keyboard opens, by decreasing the bottom edgeInset
-      if(_messageNode.hasFocus || _dateNode.hasFocus){
-        setState((){
+    void _listener() {
+      // This listener ensures the Column is not bunched up when keyboard opens, by decreasing the bottom edgeInset
+      if (_messageNode.hasFocus || _dateNode.hasFocus) {
+        setState(() {
           bottomInset = 0.0;
         });
         // keyboard appeared
-      }
-      else{
-        setState((){
+      } else {
+        setState(() {
           bottomInset = 150.0;
         });
         // keyboard dismissed
       }
     }
 
-    _messageNode.addListener(() {_listener();});
-    _dateNode.addListener(() {_listener();});
+    _messageNode.addListener(() {
+      _listener();
+    });
+    _dateNode.addListener(() {
+      _listener();
+    });
 
     return Stack(
-
       children: <Widget>[
-        Positioned.fill(child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Container(color: Colors.transparent,),)),
+        Positioned.fill(
+            child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            color: Colors.transparent,
+          ),
+        )),
         Container(
           padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
           margin: EdgeInsets.fromLTRB(50.0, 120.0, 50.0, bottomInset),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(const Radius.circular(20.0)),
-              border: Border.all(color: Colors.grey,width: 3.0)
-          ),
+              border: Border.all(color: Colors.grey, width: 3.0)),
           child: Scaffold(
             floatingActionButton: ButtonWidget(
               icon: Icons.navigate_next,
-              onPressed: (){
+              onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  ButtonPresses().onSendMessage(
-                      userUid, itemID, message, date,
-                      type);
+                  ButtonPresses()
+                      .onSendMessage(userUid, itemID, message, date, type);
 //                  showContact.value = SizedBox.shrink();
                 }
-                }, //"true" is available items
+              }, //"true" is available items
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
 //          resizeToAvoidBottomPadding: true,
 ////resizeToAvoidBottomInset: true,
 ////        appBar: PreferredSize(
@@ -128,18 +132,26 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      IconButton(icon: Icon(Icons.close), onPressed: (){
+                      IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
 //                        showContact.value = SizedBox.shrink();
-                        Navigator.pop(context);
-                        },),
+                          Navigator.pop(context);
+                        },
+                      ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(25.0, 0, 0,0),
-                        child: Text("Send a message", style: itemHeaderFont,),
+                        padding: const EdgeInsets.fromLTRB(25.0, 0, 0, 0),
+                        child: Text(
+                          "Send a message",
+                          style: itemHeaderFont,
+                        ),
                       ),
 //                IconButton(icon: Icon(Icons.arrow_back), iconSize: 32.0,onPressed: (){showContact.value = false;},),
                     ],
                   ),
-                  Divider(thickness: 2.0,),
+                  Divider(
+                    thickness: 2.0,
+                  ),
                   Form(
                     key: _formKey,
                     child: Center(
@@ -149,80 +161,111 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                           TextFormField(
                             focusNode: _messageNode,
                             maxLines: null,
-                            validator: (val) => val.isEmpty ? 'Message to item owner' : null,
+                            validator: (val) =>
+                                val.isEmpty ? 'Message to item owner' : null,
                             onChanged: (val) {
 //                            setState(() {
                               message = val;
 //                            });
                             },
-                            decoration: textInputDecoration.copyWith(hintText: 'Message'),
+                            decoration: textInputDecoration.copyWith(
+                                hintText: 'Message'),
                           ),
                           Divider(),
                           TextFormField(
                             focusNode: _dateNode,
-                            validator: (val) => val.isEmpty ? 'Enter the dates requested' : null,
+                            validator: (val) => val.isEmpty
+                                ? 'Enter the dates requested'
+                                : null,
                             onChanged: (val) {
 //                            setState(() {
                               date = val;
 //                            });
                             },
-                            decoration: textInputDecoration.copyWith(hintText: 'Requested dates'),
+                            decoration: textInputDecoration.copyWith(
+                                hintText: 'Requested dates'),
                           ),
                           SizedBox(height: 20),
-                          Text("OR", style: itemHeaderFont,),
-                          FutureBuilder<UserContact>(
-                            future: itemOwnerDetails,
-//                            initialData: Loading(),
-                            builder: (BuildContext context, AsyncSnapshot<UserContact> snapshot) {
-                              if (snapshot.hasData) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-
-                                    SizedBox(height: 20),
-                                    RichText(
-                                      text: TextSpan(text: "Email address: ",
-                                          style: GoogleFonts.muli(fontSize: 13.0,
-                                              color: Colors.black87),
-                                      children: <TextSpan>[
-                                          TextSpan(text: '${snapshot.data.email}', style: itemHeaderFont ),
-                                          ]),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Row(
-                                      children: <Widget>[
-                                        RichText(
-                                          text: TextSpan(text: "Phone number: ",
-                                              style: GoogleFonts.muli(fontSize: 13.0,
-                                                  color: Colors.black87),
-                                              children: <TextSpan>[
-                                                TextSpan(text: '${snapshot.data.phone}', style: itemHeaderFont ),
-                                              ]),
-                                        ),
-                                        IconButton(onPressed: (){
-                                          LaunchWhatsapp(phoneNumber: snapshot.data.phone, message: message).launchWhatsApp();
-                                          print("in here!");
-                                        },
-                                          icon: FaIcon(FontAwesomeIcons.whatsapp),
-                                        color: Colors.green,
-                                        visualDensity: VisualDensity.compact,),
-                                        FaIcon(FontAwesomeIcons.externalLinkAlt, size: 12.0,),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                  ],
-                                );
-                              }else{
-                                return Column(
-                                  children: <Widget>[
-                                    SizedBox(height: 20),
-                                    Loading(backgroundColor: Colors.white,),
-                                    SizedBox(height: 30),
-                                  ],
-                                );
-                              }
-                            }
+                          Text(
+                            "OR",
+                            style: itemHeaderFont,
                           ),
+                          FutureBuilder<UserContact>(
+                              future: itemOwnerDetails,
+//                            initialData: Loading(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<UserContact> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(height: 20),
+                                      RichText(
+                                        text: TextSpan(
+                                            text: "Email address: ",
+                                            style: GoogleFonts.mulish(
+                                                fontSize: 13.0,
+                                                color: Colors.black87),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                  text:
+                                                      '${snapshot.data.email}',
+                                                  style: itemHeaderFont),
+                                            ]),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: <Widget>[
+                                          RichText(
+                                            text: TextSpan(
+                                                text: "Phone number: ",
+                                                style: GoogleFonts.mulish(
+                                                    fontSize: 13.0,
+                                                    color: Colors.black87),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text:
+                                                          '${snapshot.data.phone}',
+                                                      style: itemHeaderFont),
+                                                ]),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              LaunchWhatsapp(
+                                                      phoneNumber:
+                                                          snapshot.data.phone,
+                                                      message: message)
+                                                  .launchWhatsApp();
+                                              print("in here!");
+                                            },
+                                            icon: FaIcon(
+                                                FontAwesomeIcons.whatsapp),
+                                            color: Colors.green,
+                                            visualDensity:
+                                                VisualDensity.compact,
+                                          ),
+                                          FaIcon(
+                                            FontAwesomeIcons.externalLinkAlt,
+                                            size: 12.0,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 20),
+                                    ],
+                                  );
+                                } else {
+                                  return Column(
+                                    children: <Widget>[
+                                      SizedBox(height: 20),
+                                      Loading(
+                                        backgroundColor: Colors.white,
+                                      ),
+                                      SizedBox(height: 30),
+                                    ],
+                                  );
+                                }
+                              }),
 //                        contactItemOwner(String messageUid, String documentRef, String messagePayload, String datePayload, bool type)
                         ],
                       ),
@@ -235,24 +278,20 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
         ),
       ],
     );
-
   }
 }
 
 Future<UserContact> _fetchUserInfo(String itemID, bool type) async {
   UserContact itemUser;
 
-  if (type){
+  if (type) {
     itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsAvail;
-  }else{
+  } else {
     itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsReq;
   }
 
   return itemUser;
 }
-
-
-
 
 //class ItemInfo extends StatefulWidget {
 ////  final int num;

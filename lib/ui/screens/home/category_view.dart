@@ -3,7 +3,7 @@ import 'package:twofortwo/main.dart';
 import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'file:///C:/Users/19083688/Desktop/Apps/twofortwo/lib/services/button_presses.dart';
+import '/services/button_presses.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/service_locator.dart';
 import 'package:twofortwo/services/localstorage_service.dart';
@@ -33,11 +33,11 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final FUser user =
-        Provider.of<FUser>(context, listen: false); // Firestore user (contains uid, email)
+    final FUser user = Provider.of<FUser>(context,
+        listen: false); // Firestore user (contains uid, email)
 
-    double cardHeight =
-        screenHeight(context, dividedBy: (CategoryService().categories.length / 2));
+    double cardHeight = screenHeight(context,
+        dividedBy: (CategoryService().categories.length / 2));
 
     //    bool alreadySaved = false;
     // This method is rerun every time setState is called, for instance as done
@@ -48,100 +48,134 @@ class _ChooseCategoryState extends State<ChooseCategory> {
     // than having to individually change instances of widgets.
 //    return loading ? Loading() :
 
-    return ValueListenableBuilder( // listens to value of loading
-      valueListenable: loading,
-      builder: (context, value, child){
-      return value ? Loading() :  Scaffold(
-              body: Container(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-//            height: screenHeight(context, dividedBy: 7),
-                      height: 85,
-                      padding: EdgeInsets.fromLTRB(0,30,0,0),
-                      color: Colors.transparent,
-                    ),
-                    Column(
+    return ValueListenableBuilder(
+        // listens to value of loading
+        valueListenable: loading,
+        builder: (context, value, child) {
+          return value
+              ? Loading()
+              : Scaffold(
+                  body: Container(
+                    child: Stack(
                       children: <Widget>[
-                        SizedBox(height: 75,),
-                        Expanded(
-                          child: GridView.count(
-
-                            childAspectRatio: 1.1,
-//                  primary: false,
-                            padding: const EdgeInsets.all(10),
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 0,
-                            children: List.generate(CategoryService().categories.length, (index) {
-//                      alreadySaved = _selectedCategories.contains(categories[index]);
-                              return Center(
-                                child: _buildCard(CategoryService().categories[index], cardHeight),
-                              );
-//                      );
-                            }),
-                          ),
+                        Container(
+//            height: screenHeight(context, dividedBy: 7),
+                          height: 85,
+                          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                          color: Colors.transparent,
                         ),
-                      ],
-                    ),
-                    Container(
+                        Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 75,
+                            ),
+                            Expanded(
+                              child: GridView.count(
+                                childAspectRatio: 1.1,
+//                  primary: false,
+                                padding: const EdgeInsets.all(10),
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 0,
+                                mainAxisSpacing: 0,
+                                children: List.generate(
+                                    CategoryService().categories.length,
+                                    (index) {
+//                      alreadySaved = _selectedCategories.contains(categories[index]);
+                                  return Center(
+                                    child: _buildCard(
+                                        CategoryService().categories[index],
+                                        cardHeight),
+                                  );
+//                      );
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
 //            height: screenHeight(context, dividedBy: 10),
-                        height:70,
-                        padding: EdgeInsets.fromLTRB(0,30,0,0),
-                        color: customBlue5,
-                        child: Row(
-                            children: <Widget>[
-                              BackButton(onPressed: (){Navigator.pop(context);}),
-                            ])
-                    ),
-                    Positioned(
-                      left: dialogPadding*2,
-                      right: dialogPadding*2,
+                            height: 70,
+                            padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                            color: customBlue5,
+                            child: Row(children: <Widget>[
+                              BackButton(onPressed: () {
+                                Navigator.pop(context);
+                              }),
+                            ])),
+                        Positioned(
+                          left: dialogPadding * 2,
+                          right: dialogPadding * 2,
 //            top: screenHeight(context, dividedBy: 18),
-                      top: 45,
-                      child: Container(
-                          height: dialogPadding*1.6,
-                          decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
-                          child: Center(child: Text("Choose Categories", style: tabFont,))),
+                          top: 45,
+                          child: Container(
+                              height: dialogPadding * 1.6,
+                              decoration: BoxDecoration(
+                                  color: Colors.amber,
+                                  border: Border.all(color: Colors.amber),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(bRad * 4),
+                                  )),
+                              child: Center(
+                                  child: Text(
+                                "Choose Categories",
+                                style: tabFont,
+                              ))),
 //          CircleAvatar(
 //            backgroundColor: Colors.blueAccent, //TODO: logo or something
 //            radius: AvatarPadding,
 //          ),
-                    ),
+                        ),
 //                        _buildAppBar(),
-                  ],
-                ),
-              ),
-          floatingActionButton: FloatingActionButton.extended(
-            elevation: 8.0,
-            onPressed: () {
+                      ],
+                    ),
+                  ),
+                  floatingActionButton: FloatingActionButton.extended(
+                    elevation: 8.0,
+                    onPressed: () {
 //              print(widget.itemDetails.docRef);
-                if (widget.itemDetails == null){ // Came from signup or drawer menu (or error in addItem validator)
-                  ButtonPresses().onUpdateUserCategories(context, user.uid, _selectedCategories);
-                }else{
-                  if (widget.itemDetails[0].docRef == '1'){ // Requested item
-                    ButtonPresses().onSelectRequestedItemCategories(widget.itemDetails[0].uid, widget.itemDetails[0], _selectedCategories);
-                  }else if (widget.itemDetails[0].docRef == '2'){ // Available item
-                    ButtonPresses().onSelectAvailableItemCategories(widget.itemDetails[0].uid, widget.itemDetails[0], _selectedCategories);
-                  }else { // Updating an item's categories
-                    ButtonPresses().onUpdateItemCategories(widget.itemDetails[0].uid, widget.itemDetails[0],widget.itemDetails[1], _selectedCategories);
-                  }
-                }
-                Navigator.pop(context);
-            },
-            icon: Icon(Icons.done),
-            label: Text('Select', style: _biggerFont,),
-            backgroundColor: customYellow1,
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                      if (widget.itemDetails == null) {
+                        // Came from signup or drawer menu (or error in addItem validator)
+                        ButtonPresses().onUpdateUserCategories(
+                            context, user.uid, _selectedCategories);
+                      } else {
+                        if (widget.itemDetails[0].docRef == '1') {
+                          // Requested item
+                          ButtonPresses().onSelectRequestedItemCategories(
+                              widget.itemDetails[0].uid,
+                              widget.itemDetails[0],
+                              _selectedCategories);
+                        } else if (widget.itemDetails[0].docRef == '2') {
+                          // Available item
+                          ButtonPresses().onSelectAvailableItemCategories(
+                              widget.itemDetails[0].uid,
+                              widget.itemDetails[0],
+                              _selectedCategories);
+                        } else {
+                          // Updating an item's categories
+                          ButtonPresses().onUpdateItemCategories(
+                              widget.itemDetails[0].uid,
+                              widget.itemDetails[0],
+                              widget.itemDetails[1],
+                              _selectedCategories);
+                        }
+                      }
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.done),
+                    label: Text(
+                      'Select',
+                      style: _biggerFont,
+                    ),
+                    backgroundColor: customYellow1,
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerFloat,
 //                ),
-              );
-  }
-    );
+                );
+        });
   }
 
   Widget _buildCard(String category, double cardHeight) {
-
     final bool alreadySaved = _selectedCategories.contains(category);
 
     return Container(
@@ -171,7 +205,11 @@ class _ChooseCategoryState extends State<ChooseCategory> {
               child: Container(
                   margin: const EdgeInsets.all(8.0),
 //                padding: EdgeInsets.all(15.0),
-                  child: Text(category, style: _biggerFont,textAlign: TextAlign.center,)),
+                  child: Text(
+                    category,
+                    style: _biggerFont,
+                    textAlign: TextAlign.center,
+                  )),
             ),
           ),
         ),
@@ -179,46 +217,49 @@ class _ChooseCategoryState extends State<ChooseCategory> {
     );
   } // _buildCard
 
-Widget _buildAppBar(){
-    return Stack(
-        children: <Widget>[
-
-          Container(
+  Widget _buildAppBar() {
+    return Stack(children: <Widget>[
+      Container(
 //            height: screenHeight(context, dividedBy: 7),
-            height: 85,
-            padding: EdgeInsets.fromLTRB(0,30,0,0),
-            color: Colors.transparent,
-          ),
-
-          Container(
+        height: 85,
+        padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+        color: Colors.transparent,
+      ),
+      Container(
 //            height: screenHeight(context, dividedBy: 10),
-          height:70,
-            padding: EdgeInsets.fromLTRB(0,30,0,0),
-            color: customBlue5,
-            child: Row(
-            children: <Widget>[
-               BackButton(onPressed: (){Navigator.pop(context);}),
-              ])
-          ),
-
-          Positioned(
-            left: dialogPadding*2,
-            right: dialogPadding*2,
+          height: 70,
+          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+          color: customBlue5,
+          child: Row(children: <Widget>[
+            BackButton(onPressed: () {
+              Navigator.pop(context);
+            }),
+          ])),
+      Positioned(
+        left: dialogPadding * 2,
+        right: dialogPadding * 2,
 //            top: screenHeight(context, dividedBy: 18),
-          top: 45,
-            child: Container(
-                height: dialogPadding*1.6,
-                decoration: BoxDecoration(color: Colors.amber,border: Border.all(color: Colors.amber), borderRadius: BorderRadius.all(Radius.circular(bRad*4),)) ,
-                child: Center(child: Text("Choose Categories", style: tabFont,))),
+        top: 45,
+        child: Container(
+            height: dialogPadding * 1.6,
+            decoration: BoxDecoration(
+                color: Colors.amber,
+                border: Border.all(color: Colors.amber),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(bRad * 4),
+                )),
+            child: Center(
+                child: Text(
+              "Choose Categories",
+              style: tabFont,
+            ))),
 //          CircleAvatar(
 //            backgroundColor: Colors.blueAccent, //TODO: logo or something
 //            radius: AvatarPadding,
 //          ),
-          ),
-
-
-        ]);
-}
+      ),
+    ]);
+  }
 
 //  _onButtonPress(String uid) async {
 //    setState(() {

@@ -154,7 +154,7 @@ class _UserMessagesState extends State<UserMessages> {
                   contentPadding: EdgeInsets.all(12.0),
                   title:  RichText(
                     text: TextSpan(text: "Re: ",
-                        style: GoogleFonts.muli(fontSize: 16.0,
+                        style: GoogleFonts.mulish(fontSize: 16.0,
                             color: Colors.black87, fontWeight: FontWeight.bold),
                         children: <TextSpan>[
                           TextSpan(text: forItem == null ? " " : forItem,
