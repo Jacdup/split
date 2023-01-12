@@ -66,6 +66,7 @@ class _UserMessagesState extends State<UserMessages> {
 //        if (snapshot.hasData){
     return StreamProvider<List<Message>>.value(
       value: DatabaseService(uid: userData.uid).messages,
+      initialData: [],
       child: Scaffold(
 //        appBar: _profileAppBar(userData, tag),
         body: Container(

@@ -243,10 +243,10 @@ class DatabaseService {
     await FirebaseFirestore.instance
         .runTransaction((Transaction myTransaction) async {
       if (type) {
-        return await myTransaction
+        return myTransaction
             .delete(itemAvailableCollection.doc(documentRef));
       } else {
-        return await myTransaction
+        return myTransaction
             .delete(itemRequestCollection.doc(documentRef));
       }
     });
@@ -328,6 +328,7 @@ class DatabaseService {
         result = value.data;
       });
     }
+    print(result);
     String ownerUid = result["uid"]; // Uid of item owner
     String itemName = result["itemName"];
 
