@@ -141,16 +141,17 @@ class DatabaseService {
   List<Message> _messagesFromSnapshot(QuerySnapshot snapshot) {
     // Converts the FirebaseFirestore snapshot into a list of messages
     return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
       return Message(
-        message: doc.get('message'),
-        uidFrom: doc.get('from'),
-        nameFrom: doc.get('nameFrom'),
-        surnameFrom: doc.get('surnameFrom'),
-        phoneFrom: doc.get('phoneFrom'),
-        dateSent: doc.get('timeStamp').toDate(),
-        dateRequested: doc.get('dateRequested'),
-        forItem: doc.get('forItem'),
-        hasRead: doc.get('hasRead'),
+        message: data['message'],
+        uidFrom: data['from'],
+        nameFrom: data['nameFrom'],
+        surnameFrom: data['surnameFrom'],
+        phoneFrom: data['phoneFrom'],
+        dateSent: data['timeStamp'].toDate(),
+        dateRequested: data['dateRequested'],
+        forItem: data['forItem'],
+        hasRead: data.containsKey('hasRead') ? data['hasRead'] : false ,
       );
     }).toList();
   }
@@ -172,12 +173,13 @@ class DatabaseService {
   }
 
   Stream<List<Message>> get messages {
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('messages')
-        .snapshots()
-        .map(_messagesFromSnapshot);
+    // var user = FirebaseFirestore.instance.collection('users').doc(uid).get();
+     return FirebaseFirestore.instance
+         .collection('users')
+         .doc(uid)
+         .collection('messages')
+         .snapshots()
+         .map(_messagesFromSnapshot);
   }
 
   /* --------------------------------------------------------------------------

@@ -80,7 +80,6 @@ class _UserMessagesState extends State<UserMessages> {
 //              Center(child: _buildTitle()), //Text("Messages", style: headerFont)),
               Consumer<List<Message>>(
                 builder: (context, value, child) {
-
                   if (value != null && value.isNotEmpty) {
                     for (var i = 0; i <= value.length; i++){
                       _infoShow.add(false) ;

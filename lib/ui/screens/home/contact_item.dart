@@ -106,9 +106,10 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
             floatingActionButton: ButtonWidget(
               icon: Icons.navigate_next,
               onPressed: () {
+                print("test");
                 if (_formKey.currentState.validate()) {
-                  ButtonPresses()
-                      .onSendMessage(userUid, itemID, message, date, type);
+                  print("!!!!!");
+                  ButtonPresses().onSendMessage(userUid, itemID, message, date, type);
 //                  showContact.value = SizedBox.shrink();
                 }
               }, //"true" is available items
@@ -246,7 +247,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                                                 VisualDensity.compact,
                                           ),
                                           FaIcon(
-                                            FontAwesomeIcons.externalLinkAlt,
+                                            FontAwesomeIcons.upRightFromSquare,
                                             size: 12.0,
                                           ),
                                         ],

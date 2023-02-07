@@ -445,6 +445,8 @@ class _NewItemState extends State<NewItem> {
       onChanged: (String newValue) {
         setState(() {
           //dropdownValue = newValue;
+          print("!!!!!");
+          print(newValue);
           itemPricePeriod = pricePeriod.indexOf(newValue);
         });
       },
