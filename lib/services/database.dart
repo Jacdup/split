@@ -112,11 +112,13 @@ class DatabaseService {
   Future saveMessageToUserProfile(String messagePayload, String datePayload,
       String ownerUid, String itemName, String fromUid) async {
     String messageDocRef = uuid.v4().toString();
-
+    print("Saving message...");
     final User fromUser = await userMessageData(fromUid);
     final String nameFrom = fromUser.name;
     final String surnameFrom = fromUser.surname;
     final String phoneFrom = fromUser.phone;
+    print(fromUser);
+    print(nameFrom);
 
     if (uid != null) {
       var messageRef = userCollection
@@ -322,15 +324,13 @@ class DatabaseService {
 
     if (type) {
       await itemAvailableCollection.doc(documentRef).get().then((value) {
-        result = value.data;
-//        print(result['uid']);
+        result = value.data();
       });
     } else {
       await itemRequestCollection.doc(documentRef).get().then((value) {
-        result = value.data;
+        result = value.data();
       });
     }
-    print(result);
     String ownerUid = result["uid"]; // Uid of item owner
     String itemName = result["itemName"];
 
