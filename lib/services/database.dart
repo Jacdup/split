@@ -112,11 +112,13 @@ class DatabaseService {
   Future saveMessageToUserProfile(String messagePayload, String datePayload,
       String ownerUid, String itemName, String fromUid) async {
     String messageDocRef = uuid.v4().toString();
-
+    print("Saving message...");
     final User fromUser = await userMessageData(fromUid);
     final String nameFrom = fromUser.name;
     final String surnameFrom = fromUser.surname;
     final String phoneFrom = fromUser.phone;
+    print(fromUser);
+    print(nameFrom);
 
     if (uid != null) {
       var messageRef = userCollection
@@ -141,16 +143,17 @@ class DatabaseService {
   List<Message> _messagesFromSnapshot(QuerySnapshot snapshot) {
     // Converts the FirebaseFirestore snapshot into a list of messages
     return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
       return Message(
-        message: doc.get('message'),
-        uidFrom: doc.get('from'),
-        nameFrom: doc.get('nameFrom'),
-        surnameFrom: doc.get('surnameFrom'),
-        phoneFrom: doc.get('phoneFrom'),
-        dateSent: doc.get('timeStamp').toDate(),
-        dateRequested: doc.get('dateRequested'),
-        forItem: doc.get('forItem'),
-        hasRead: doc.get('hasRead'),
+        message: data['message'],
+        uidFrom: data['from'],
+        nameFrom: data['nameFrom'],
+        surnameFrom: data['surnameFrom'],
+        phoneFrom: data['phoneFrom'],
+        dateSent: data['timeStamp'].toDate(),
+        dateRequested: data['dateRequested'],
+        forItem: data['forItem'],
+        hasRead: data.containsKey('hasRead') ? data['hasRead'] : false ,
       );
     }).toList();
   }
@@ -172,12 +175,13 @@ class DatabaseService {
   }
 
   Stream<List<Message>> get messages {
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('messages')
-        .snapshots()
-        .map(_messagesFromSnapshot);
+    // var user = FirebaseFirestore.instance.collection('users').doc(uid).get();
+     return FirebaseFirestore.instance
+         .collection('users')
+         .doc(uid)
+         .collection('messages')
+         .snapshots()
+         .map(_messagesFromSnapshot);
   }
 
   /* --------------------------------------------------------------------------
@@ -243,10 +247,10 @@ class DatabaseService {
     await FirebaseFirestore.instance
         .runTransaction((Transaction myTransaction) async {
       if (type) {
-        return await myTransaction
+        return myTransaction
             .delete(itemAvailableCollection.doc(documentRef));
       } else {
-        return await myTransaction
+        return myTransaction
             .delete(itemRequestCollection.doc(documentRef));
       }
     });
@@ -320,12 +324,11 @@ class DatabaseService {
 
     if (type) {
       await itemAvailableCollection.doc(documentRef).get().then((value) {
-        result = value.data;
-//        print(result['uid']);
+        result = value.data();
       });
     } else {
       await itemRequestCollection.doc(documentRef).get().then((value) {
-        result = value.data;
+        result = value.data();
       });
     }
     String ownerUid = result["uid"]; // Uid of item owner

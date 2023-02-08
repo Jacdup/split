@@ -35,7 +35,7 @@ class _NewItemState extends State<NewItem> {
   String updatedDescription;
   String itemName;
   String itemDescription;
-  String itemPrice;
+  double itemPrice = 0;
   int itemPricePeriod = 0;
   String date;
   String title;
@@ -173,7 +173,7 @@ class _NewItemState extends State<NewItem> {
       itemName = item.itemName;
       itemDescription = item.description;
       if (item.price != null){
-        itemPrice = item.price.toString();
+        itemPrice = item.price;
         itemPricePeriod = item.pricePeriod;
       }
       if ((itemStartDate == null) && (itemEndDate == null) && (item.startDate != null) && (item.startDate != "null")) {
@@ -368,11 +368,11 @@ class _NewItemState extends State<NewItem> {
                           child: TextFormField(
                             keyboardType: TextInputType.number,
                             enabled: itemPricePeriod != 0,
-                            initialValue: itemPrice ?? "",
+                            initialValue: itemPrice.round().toString(),
                             validator: (val) => (val.isEmpty && itemPricePeriod != 0) ? 'Please set an asking price.' : null,
                             onChanged: (val) {
                               setState(() {
-                                itemPrice = val;
+                                itemPrice = double.parse(val);
                               });
                             },
                             decoration: textInputDecoration.copyWith(
@@ -445,6 +445,8 @@ class _NewItemState extends State<NewItem> {
       onChanged: (String newValue) {
         setState(() {
           //dropdownValue = newValue;
+          print("!!!!!");
+          print(newValue);
           itemPricePeriod = pricePeriod.indexOf(newValue);
         });
       },
@@ -501,7 +503,7 @@ class _NewItemState extends State<NewItem> {
             oldItem.docRef,
             DateTime.now(),
             true,
-             double.parse(itemPrice),
+            itemPrice,
         itemPricePeriod);
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
@@ -517,7 +519,7 @@ class _NewItemState extends State<NewItem> {
             oldItem.docRef,
             DateTime.now(),
             true,
-            double.parse(itemPrice),
+            itemPrice,
             itemPricePeriod);
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
@@ -537,7 +539,7 @@ class _NewItemState extends State<NewItem> {
           '1',
           DateTime.now(),
           true,
-          double.parse(itemPrice),
+          itemPrice,
           itemPricePeriod);
       Navigator.pushReplacementNamed(context, CategoryRoute,
           arguments: [newItem]);
@@ -546,6 +548,7 @@ class _NewItemState extends State<NewItem> {
 
   onPressedBtnAvailable() async {
     if (_formKey2.currentState.validate()) {
+      print(itemPrice);
       ItemAvailable newItem = new ItemAvailable(
           null,
           itemName,
@@ -556,8 +559,9 @@ class _NewItemState extends State<NewItem> {
           '2',
           DateTime.now(),
           true,
-          double.parse(itemPrice),
+          itemPrice,
           itemPricePeriod);
+      print(newItem);
       Navigator.pushReplacementNamed(context, CategoryRoute,
           arguments: [newItem]);
     }

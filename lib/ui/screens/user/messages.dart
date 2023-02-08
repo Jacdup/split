@@ -66,6 +66,7 @@ class _UserMessagesState extends State<UserMessages> {
 //        if (snapshot.hasData){
     return StreamProvider<List<Message>>.value(
       value: DatabaseService(uid: userData.uid).messages,
+      initialData: [],
       child: Scaffold(
 //        appBar: _profileAppBar(userData, tag),
         body: Container(
@@ -79,7 +80,6 @@ class _UserMessagesState extends State<UserMessages> {
 //              Center(child: _buildTitle()), //Text("Messages", style: headerFont)),
               Consumer<List<Message>>(
                 builder: (context, value, child) {
-
                   if (value != null && value.isNotEmpty) {
                     for (var i = 0; i <= value.length; i++){
                       _infoShow.add(false) ;
