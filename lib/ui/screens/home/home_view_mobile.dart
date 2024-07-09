@@ -186,26 +186,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   }
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
-//    AnimatedSwitcher(
-//        duration: const Duration(seconds: 1),
-//        transitionBuilder: (Widget child, Animation<double> animation)=>
-//            SlideTransition(child: child, position: Tween<Offset>(begin: Offset(-5.0, 0.0), end: Offset.zero,).animate(animation)),
-//        child: _titleBar)
-//    if (innerBoxIsScrolled){
-
-//    }
-//  Widget _titleBar;
-//    final animation = Tween(begin: 0, end: 2).animate(_animationController);
-//    final _animation = Tween<Offset>(
-//      begin: const Offset(-0.5, 0.0),
-//      end: const Offset(0.5, 0.0),
-//    ).animate(CurvedAnimation(
-//      parent: _animationController,
-//      curve: Curves.easeInCubic,
-//    ));
-
-
-
     return SliverAppBar(
      // backgroundColor: Colors.blueGrey,
 //      snap: true,
@@ -232,10 +212,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
       flexibleSpace: Container(
         decoration: BoxDecoration(gradient: LinearGradient(
-//          center: Alignment.center,
-//            radius: 10.0,
-//            focal: Alignment.center,
-//            focalRadius: 10.0,
 
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -256,7 +232,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                       Visibility(
                         visible: !innerBoxIsScrolled && !_showSearchBar && !_searchNode.hasFocus,
                         child: Text(
-                          'Welcome $userName!',
+                          userName != null ? 'Welcome $userName!' : 'Welcome !',
                           style: TextStyle(color: Colors.white, fontSize: 18.0),
                         ),
                       ),
@@ -269,11 +245,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
             children: <Widget>[
               Spacer(),
               Image.asset(
-//          'split_new_blue1.png',
                 'logo_only.png',
-//fit: BoxFit.fitHeight,
-//          alignment: Alignment.bottomCenter,
-//          fit: BoxFit.fitHeight,
                 width: 150.0,
                 height: 150.0,
               ),
@@ -291,8 +263,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
           labelColor: Colors.black87,
           unselectedLabelColor: Colors.black38,
           tabs: [
-            new Tab(child: Text("Available", style: tabFont,), ),
-            new Tab(child: Text("Requested",style: tabFont,)),
+            new Tab(child: Text("Up for Grabs", style: tabFont,), ),
+            new Tab(child: Text("In Need Of",style: tabFont,)),
           ],
           controller: _tabController,
         ),
