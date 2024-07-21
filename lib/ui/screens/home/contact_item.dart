@@ -11,6 +11,7 @@ import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/shared/widgets.dart';
+import 'package:twofortwo/utils/screen_size.dart';
 import '/services/button_presses.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -38,7 +39,6 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
   final _formKey = GlobalKey<FormState>();
   FocusNode _messageNode;
   FocusNode _dateNode;
-
   String message;
   String date;
   Future<UserContact> itemOwnerDetails;
@@ -96,8 +96,8 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
           ),
         )),
         Container(
-          padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
-          margin: EdgeInsets.fromLTRB(50.0, 120.0, 50.0, bottomInset),
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+          margin: EdgeInsets.fromLTRB(screenHeight(context, dividedBy: 16), screenHeight(context, dividedBy: 8), screenHeight(context, dividedBy: 16), bottomInset),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: const BorderRadius.all(const Radius.circular(20.0)),
@@ -106,16 +106,13 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
             floatingActionButton: ButtonWidget(
               icon: Icons.navigate_next,
               onPressed: () {
-                print("test");
                 if (_formKey.currentState.validate()) {
-                  print("!!!!!");
                   ButtonPresses().onSendMessage(userUid, itemID, message, date, type);
 //                  showContact.value = SizedBox.shrink();
                 }
               }, //"true" is available items
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 //          resizeToAvoidBottomPadding: true,
 ////resizeToAvoidBottomInset: true,
 ////        appBar: PreferredSize(
@@ -210,8 +207,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                                                 color: Colors.black87),
                                             children: <TextSpan>[
                                               TextSpan(
-                                                  text:
-                                                      '${snapshot.data.email}',
+                                                  text: '${snapshot.data.email}',
                                                   style: itemHeaderFont),
                                             ]),
                                       ),
@@ -238,7 +234,6 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                                                           snapshot.data.phone,
                                                       message: message)
                                                   .launchWhatsApp();
-                                              print("in here!");
                                             },
                                             icon: FaIcon(
                                                 FontAwesomeIcons.whatsapp),

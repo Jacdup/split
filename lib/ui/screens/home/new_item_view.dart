@@ -284,7 +284,7 @@ class _NewItemState extends State<NewItem> {
                         color: Colors.white,
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(16.0)),
-                    padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: Column(
                       children: <Widget>[
                         Row(
