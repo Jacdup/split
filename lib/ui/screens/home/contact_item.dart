@@ -32,16 +32,16 @@ class ContactItemOwner extends StatefulWidget {
 class _ContactItemOwnerState extends State<ContactItemOwner> {
   double bottomInset = 150.0;
 
-  String itemID;
-  bool type;
-  String userUid;
+  late String itemID;
+  late bool type;
+  late String userUid;
 
   final _formKey = GlobalKey<FormState>();
-  FocusNode _messageNode;
-  FocusNode _dateNode;
-  String message;
-  String date;
-  Future<UserContact> itemOwnerDetails;
+  late FocusNode _messageNode;
+  late FocusNode _dateNode;
+  late String message;
+  late String date;
+  late Future<UserContact> itemOwnerDetails;
 
   @override
   void initState() {
@@ -106,7 +106,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
             floatingActionButton: ButtonWidget(
               icon: Icons.navigate_next,
               onPressed: () {
-                if (_formKey.currentState.validate()) {
+                if (_formKey.currentState!.validate()) {
                   ButtonPresses().onSendMessage(userUid, itemID, message, date, type);
 //                  showContact.value = SizedBox.shrink();
                 }
@@ -160,7 +160,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                             focusNode: _messageNode,
                             maxLines: null,
                             validator: (val) =>
-                                val.isEmpty ? 'Message to item owner' : null,
+                                val!.isEmpty ? 'Message to item owner' : null,
                             onChanged: (val) {
 //                            setState(() {
                               message = val;
@@ -172,7 +172,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                           Divider(),
                           TextFormField(
                             focusNode: _dateNode,
-                            validator: (val) => val.isEmpty
+                            validator: (val) => val!.isEmpty
                                 ? 'Enter the dates requested'
                                 : null,
                             onChanged: (val) {
@@ -207,7 +207,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                                                 color: Colors.black87),
                                             children: <TextSpan>[
                                               TextSpan(
-                                                  text: '${snapshot.data.email}',
+                                                  text: '${snapshot.data!.email}',
                                                   style: itemHeaderFont),
                                             ]),
                                       ),
@@ -223,7 +223,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                                                 children: <TextSpan>[
                                                   TextSpan(
                                                       text:
-                                                          '${snapshot.data.phone}',
+                                                          '${snapshot.data!.phone}',
                                                       style: itemHeaderFont),
                                                 ]),
                                           ),
@@ -231,7 +231,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
                                             onPressed: () {
                                               LaunchWhatsapp(
                                                       phoneNumber:
-                                                          snapshot.data.phone,
+                                                          snapshot.data!.phone,
                                                       message: message)
                                                   .launchWhatsApp();
                                             },
@@ -281,9 +281,9 @@ Future<UserContact> _fetchUserInfo(String itemID, bool type) async {
   UserContact itemUser;
 
   if (type) {
-    itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsAvail;
+    itemUser = (await DatabaseService(uid: "1",itemID: itemID).itemOwnerDetailsAvail)!;
   } else {
-    itemUser = await DatabaseService(itemID: itemID).itemOwnerDetailsReq;
+    itemUser = (await DatabaseService(uid: "1", itemID: itemID).itemOwnerDetailsReq)!;
   }
 
   return itemUser;

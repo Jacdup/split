@@ -20,9 +20,9 @@ class AvailableList extends StatefulWidget {
   final List<ItemAvailable> allItems;
   final String name;
   final String uid;
-  final String searchTerm;
+  final String? searchTerm;
 
-  AvailableList({this.allItems, this.name, this.uid, this.searchTerm});
+  AvailableList({required this.allItems, required this.name, required this.uid, this.searchTerm});
 
   @override
   _AvailableListState createState() => _AvailableListState();
@@ -32,7 +32,7 @@ class _AvailableListState extends State<AvailableList> {
   List<bool> _infoShow = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  List<ItemAvailable> items;
+  late List<ItemAvailable> items;
 
   void _onRefresh() async {
     // monitor network fetch
@@ -128,7 +128,7 @@ class _AvailableListState extends State<AvailableList> {
                   : allItems[index]
                           .itemName
                           .toLowerCase()
-                          .contains(widget.searchTerm.toLowerCase())
+                          .contains(widget.searchTerm!.toLowerCase())
                       ? _buildRow(allItems[index], index, _buildBox)
                       : new Container();
 
@@ -186,14 +186,14 @@ class _AvailableListState extends State<AvailableList> {
                       Spacer(),
                       ButtonBar(
                         children: <Widget>[
-                          FlatButton(
+                          TextButton(
                             child: const Text('Request to borrow'),
                             onPressed: () {
                               /* send ping to item user, with thisUser info */
                               _confirmHelp(context, item);
                             },
                           ),
-                          FlatButton(
+                          TextButton(
                             child: const Text('Contact'),
                             onPressed: () {
                               // There are multiple ways of overlaying a widget unto blurry screen.
@@ -323,7 +323,7 @@ class _AvailableListState extends State<AvailableList> {
               "This will send your contact details to the user that listed this item. Proceed?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new FlatButton(
+            new TextButton(
               child: new Text("Yes"),
               onPressed: () async {
                 ButtonPresses().onSendMessage(
@@ -335,7 +335,7 @@ class _AvailableListState extends State<AvailableList> {
                 Navigator.of(context).pop(false);
               },
             ),
-            new FlatButton(
+            new TextButton(
               child: new Text("No"),
               onPressed: () {
                 Navigator.of(context).pop(false);

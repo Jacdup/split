@@ -18,7 +18,7 @@ class ChooseCategory extends StatefulWidget {
   // final String title;
   final dynamic itemDetails;
 
-  ChooseCategory({this.itemDetails, Key key}) : super(key: key);
+  ChooseCategory({this.itemDetails, required Key key}) : super(key: key);
 
   @override
   _ChooseCategoryState createState() => _ChooseCategoryState();
@@ -52,7 +52,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
         // listens to value of loading
         valueListenable: loading,
         builder: (context, value, child) {
-          return value
+          return value != null
               ? Loading()
               : Scaffold(
                   body: Container(

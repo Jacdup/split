@@ -99,7 +99,7 @@ class MenuDrawer extends StatelessWidget {
   final User userData;
 
 
-  MenuDrawer({this.userData});
+  MenuDrawer({required this.userData});
 
   final localStorageService = locator<LocalStorageService>();
   final AuthService _auth = AuthService();
@@ -109,7 +109,7 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String tag = userData.uid;
+    String? tag = userData.uid;
     return Drawer(
       child: Column(
        // padding: EdgeInsets.zero,
@@ -129,8 +129,8 @@ class MenuDrawer extends StatelessWidget {
                         backgroundColor: Colors.deepOrangeAccent,
 //                        child: Image.asset('split_new_blue1.png'),
                         child: Text(
-                          userData.name.substring(0, 1) +
-                              userData.surname.substring(0, 1),
+                          userData.name!.substring(0, 1) +
+                              userData.surname!.substring(0, 1),
                           style: TextStyle(fontSize: 25.0, color: Colors.white),
                         ),
                       ),

@@ -11,8 +11,8 @@ import 'package:uuid/uuid.dart';
 
 class DatabaseService {
   final String uid;
-  final String itemID;
-  DatabaseService({this.uid, this.itemID});
+  final String? itemID;
+  DatabaseService({required this.uid, this.itemID});
 
   var uuid = Uuid();
 
@@ -63,7 +63,7 @@ class DatabaseService {
 //    return userCollection.document(uid).snapshots().map<User>(_getUserFromSnapshot);
 //  }
 
-  Stream<User> get userData {
+  Stream<User?> get userData {
     return userCollection.doc(uid).get().then((snapshot) {
       try {
         return _getUserFromSnapshot(snapshot);
@@ -75,7 +75,7 @@ class DatabaseService {
   }
 
   // The same as above but as a Future
-  Future<User> userMessageData(String uid) {
+  Future<User?> userMessageData(String? uid) {
     return userCollection.doc(uid).get().then((snapshot) {
       try {
         return _getUserFromSnapshot(snapshot);
@@ -95,7 +95,7 @@ class DatabaseService {
  * ---------------------------------------------------------------------------*/
 
   // Push notifications
-  Future saveDeviceToken(String fcmToken) async {
+  Future saveDeviceToken(String? fcmToken) async {
     if (fcmToken != null) {
       //TODO: get user uid here
       var tokenRef = userCollection.doc(uid).collection('tokens').doc(fcmToken);
@@ -110,13 +110,13 @@ class DatabaseService {
 
   // Message notifications
   Future saveMessageToUserProfile(String messagePayload, String datePayload,
-      String ownerUid, String itemName, String fromUid) async {
+      String ownerUid, String itemName, String? fromUid) async {
     String messageDocRef = uuid.v4().toString();
     print("Saving message...");
-    final User fromUser = await userMessageData(fromUid);
-    final String nameFrom = fromUser.name;
-    final String surnameFrom = fromUser.surname;
-    final String phoneFrom = fromUser.phone;
+    final User? fromUser = await userMessageData(fromUid);
+    final String? nameFrom = fromUser?.name;
+    final String? surnameFrom = fromUser?.surname;
+    final String? phoneFrom = fromUser?.phone;
     print(fromUser);
     print(nameFrom);
 
@@ -128,7 +128,7 @@ class DatabaseService {
 
       return await messageRef.set({
         'forItem': itemName,
-        'from': fromUser.uid,
+        'from': fromUser?.uid,
         'nameFrom': nameFrom,
         'surnameFrom': surnameFrom,
         'phoneFrom': phoneFrom,
@@ -263,31 +263,31 @@ class DatabaseService {
 //    return await itemAvailableCollection.document(documentRef).delete(); // Easier, but not best practice.
   }
 
-  Future updateItem(ItemAvailable newItemAvailable, Item newItem, bool itemType,
+  Future updateItem(ItemAvailable? newItemAvailable, Item? newItem, bool itemType,
       List<String> categories) async {
     dynamic response;
     if (itemType) {
-      response = itemAvailableCollection.doc(newItemAvailable.docRef).update({
-        'itemName': newItemAvailable.itemName,
-        'description': newItemAvailable.description,
-        'startDate': newItemAvailable.startDate,
-        'endDate': newItemAvailable.endDate,
+      response = itemAvailableCollection.doc(newItemAvailable?.docRef).update({
+        'itemName': newItemAvailable?.itemName,
+        'description': newItemAvailable?.description,
+        'startDate': newItemAvailable?.startDate,
+        'endDate': newItemAvailable?.endDate,
         'categories': categories,
-        'createdAt': newItemAvailable.createdAt,
-        'available': newItemAvailable.available,
-        'price': newItemAvailable.price,
-        'pricePeriod': newItemAvailable.pricePeriod,
+        'createdAt': newItemAvailable?.createdAt,
+        'available': newItemAvailable?.available,
+        'price': newItemAvailable?.price,
+        'pricePeriod': newItemAvailable?.pricePeriod,
       });
     } else {
-      response = itemRequestCollection.doc(newItem.docRef).update({
-        'itemName': newItem.itemName,
-        'description': newItem.description,
-        'startDate': newItem.startDate,
-        'endDate': newItem.endDate,
+      response = itemRequestCollection.doc(newItem?.docRef).update({
+        'itemName': newItem?.itemName,
+        'description': newItem?.description,
+        'startDate': newItem?.startDate,
+        'endDate': newItem?.endDate,
         'categories': categories,
-        'createdAt': newItem.createdAt,
-        'price': newItem.price,
-        'pricePeriod': newItem.pricePeriod,
+        'createdAt': newItem?.createdAt,
+        'price': newItem?.price,
+        'pricePeriod': newItem?.pricePeriod,
       });
     }
     return response;
@@ -339,7 +339,7 @@ class DatabaseService {
   }
 
   // requested item list from snapshot
-  List<Item> _itemListFromSnapshot(QuerySnapshot snapshot) {
+  List<Item?> _itemListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       try {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -364,7 +364,7 @@ class DatabaseService {
     }).toList();
   }
 
-  List<ItemAvailable> _itemAvailableListFromSnapshot(QuerySnapshot snapshot) {
+  List<ItemAvailable?> _itemAvailableListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       try {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -395,21 +395,21 @@ class DatabaseService {
   // }
 
   // get requested item stream
-  Stream<List<Item>> get itemsRequested {
+  Stream<List<Item?>> get itemsRequested {
     return itemRequestCollection.snapshots().map(_itemListFromSnapshot);
   }
 
   // get available item stream
-  Stream<List<ItemAvailable>> get itemsAvailable {
+  Stream<List<ItemAvailable?>> get itemsAvailable {
     return itemAvailableCollection
         .snapshots()
         .map(_itemAvailableListFromSnapshot);
   }
 
   /* Get contact details of user owning item*/
-  Future<UserContact> get itemOwnerDetailsAvail async {
-    UserContact response;
-    String thisItemUid;
+  Future<UserContact?> get itemOwnerDetailsAvail async {
+    UserContact? response;
+    String? thisItemUid;
 
     // Fetch the uid of item
     thisItemUid = await itemAvailableCollection.doc(itemID).get().then((value) {
@@ -433,9 +433,9 @@ class DatabaseService {
     return response;
   }
 
-  Future<UserContact> get itemOwnerDetailsReq async {
-    UserContact response;
-    String thisItemUid;
+  Future<UserContact?> get itemOwnerDetailsReq async {
+    UserContact? response;
+    String? thisItemUid;
 
     thisItemUid = await itemRequestCollection.doc(itemID).get().then((value) {
       try {

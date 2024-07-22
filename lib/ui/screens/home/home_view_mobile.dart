@@ -25,13 +25,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     with TickerProviderStateMixin{
 
 //  AnimationController _animationController;
-  TabController _tabController;
-  ScrollController _scrollController;
-  TextEditingController  _searchController;
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  late TextEditingController  _searchController;
   bool _showSearchBar = false;
   FocusNode _searchNode = FocusNode();
 
-  String filter;
+  late String filter;
 //  Widget _titleBar;
 //  RefreshController  _refreshController;
 
@@ -77,7 +77,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabIndex);
-    _tabController.animation.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
+    _tabController.animation!.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
 //    _refreshController = RefreshController(initialRefresh: false);
   }
 
@@ -129,7 +129,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
     final itemsRequestedFromFirestore = Provider.of<List<Item>>(context) ?? [];
     final itemsAvailableFromFirestore = Provider.of<List<ItemAvailable>>(context) ?? [];
-    final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
+    final User? userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
         ? Provider.of<User>(context)
         : null;
 
@@ -334,7 +334,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   Widget _actionButtons(String uid){
 
 //  print(tabPosition);
-    return _tabController.animation.value < 0.5 ?
+    return _tabController.animation!.value < 0.5 ?
     FloatingActionButton.extended(
       onPressed: () {
 //        print(_currentIndex);

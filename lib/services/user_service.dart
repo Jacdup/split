@@ -8,14 +8,14 @@ import 'package:flutter/foundation.dart';
 class User {
   final String uid;
   final String name;
-  final String surname;
-  final String phone;
-  final String email;
-  final List<dynamic> categories;
+  final String? surname;
+  final String? phone;
+  final String? email;
+  final List<dynamic>? categories;
 
   User(
-      {this.uid,
-      this.name,
+      {required this.uid,
+      required this.name,
       this.surname,
       this.email,
       this.phone,
@@ -50,7 +50,7 @@ class UserContact {
   final String email;
   final String phone;
 
-  UserContact({this.name, this.phone, this.email, this.surname});
+  UserContact({required this.name, required this.phone, required this.email, required this.surname});
 
   factory UserContact.fromDoc(DocumentSnapshot snapshot) {
     return UserContact(
@@ -64,10 +64,10 @@ class UserContact {
 
 class FUser {
   final String uid;
-  final String email;
+  final String? email;
 
   FUser({
-    this.uid,
+    required this.uid,
     this.email,
   });
 
