@@ -9,7 +9,7 @@ class UserDetails extends StatefulWidget {
 
   final User userData;
 
-  UserDetails({this.userData});
+  UserDetails({required this.userData});
 
   @override
   _UserDetailsState createState() => _UserDetailsState();

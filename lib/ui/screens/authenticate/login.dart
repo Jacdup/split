@@ -10,9 +10,9 @@ import '../../../services/localstorage_service.dart';
 
 
 class Login extends StatefulWidget {
-  final Function toggleView;
+  final Function? toggleView;
 
-  Login({required this.toggleView});
+  Login({this.toggleView});
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -61,7 +61,7 @@ class _LoginViewState extends State<Login> {
             actions: <Widget>[
               TextButton.icon(
                   onPressed: () {
-                    widget.toggleView();
+                    widget.toggleView!();
                   },
                   icon: Icon(Icons.person, size: 35),
                   label: Text(

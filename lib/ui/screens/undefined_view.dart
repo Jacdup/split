@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class UndefinedView extends StatelessWidget {
   final String name;
-  const UndefinedView({Key key, this.name}) : super(key: key);
+  const UndefinedView({required Key key, required this.name}) : super(key: key);
   //final String title;
 
 

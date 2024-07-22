@@ -8,9 +8,9 @@ import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/shared/loading.dart';
 
 class SignupView extends StatefulWidget {
-  final Function toggleView;
+  final Function? toggleView;
 
-  SignupView({required this.toggleView});
+  SignupView({this.toggleView});
 
   @override
   _SignupViewState createState() => _SignupViewState();
@@ -53,7 +53,7 @@ class _SignupViewState extends State<SignupView> {
             actions: <Widget>[
               TextButton.icon(
                   onPressed: () {
-                    widget.toggleView();
+                    widget.toggleView!();
                   },
                   icon: Icon(Icons.person, size: 35),
                   label: Text(

@@ -44,7 +44,7 @@ class Wrapper extends StatelessWidget{
               user.uid); //TODO: is this the right place to do this?
           _initialized = true;
         }
-      return HomeView(user: user,);
+      return HomeView(user: user, key: new Key("homeView"),);
     }
 
 

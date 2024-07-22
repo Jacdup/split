@@ -13,7 +13,7 @@ class NewItem extends StatefulWidget {
 //  final bool isTab1;
   final List<Object> uidTabItem;
 
-  NewItem({this.uidTabItem});
+  NewItem({required this.uidTabItem});
 
   @override
   _NewItemState createState() => _NewItemState();
@@ -28,22 +28,22 @@ class _NewItemState extends State<NewItem> {
 //  static String uid = widget.uidTab[0];
 
   DateTime selectedDate = DateTime.now();
-  DateTime itemStartDate;
-  DateTime itemEndDate;
+  late DateTime itemStartDate;
+  late DateTime itemEndDate;
 
-  String updatedItemName;
-  String updatedDescription;
-  String itemName;
-  String itemDescription;
+  late String updatedItemName;
+  late String updatedDescription;
+  late String itemName;
+  late String itemDescription;
   double itemPrice = 0;
   int itemPricePeriod = 0;
-  String date;
-  String title;
-  String tab1Text;
-  String tab2Text;
+  late String date;
+  late String title;
+  late String tab1Text;
+  late String tab2Text;
   final category = TextEditingController();
   String error = '';
-  bool _doesntMatter;
+  late bool _doesntMatter;
   String dropdownValue = 'Per day';
 
 //  List<Widget> tabs;
@@ -214,7 +214,7 @@ class _NewItemState extends State<NewItem> {
                   TextFormField(
                     initialValue: itemName ?? "",
                     validator: (val) =>
-                        val.isEmpty ? 'Please enter a name' : null,
+                        val!.isEmpty ? 'Please enter a name' : null,
                     onChanged: (val) {
                       setState(() {
                         itemName = val;
@@ -245,7 +245,7 @@ class _NewItemState extends State<NewItem> {
                     TextFormField(
                       initialValue: itemDescription ?? "",
                       validator: (val) =>
-                          val.isEmpty ? 'Please provide a description' : null,
+                          val!.isEmpty ? 'Please provide a description' : null,
                       keyboardType: TextInputType.multiline,
                       onChanged: (val) {
                         setState(() {
@@ -330,11 +330,9 @@ class _NewItemState extends State<NewItem> {
                             Checkbox(
                               value: _doesntMatter,
                               tristate: false,
-                              onChanged: (bool newValue) {
+                              onChanged: (bool? newValue) {
                                 setState(() {
-                                  _doesntMatter = newValue;
-//                                _isButtonDisabled = !_isButtonDisabled;
-//                                print(_isButtonDisabled);
+                                  _doesntMatter = newValue!;
                                 });
                               },
                             ),
@@ -369,7 +367,7 @@ class _NewItemState extends State<NewItem> {
                             keyboardType: TextInputType.number,
                             enabled: itemPricePeriod != 0,
                             initialValue: itemPrice.round().toString(),
-                            validator: (val) => (val.isEmpty && itemPricePeriod != 0) ? 'Please set an asking price.' : null,
+                            validator: (val) => (val!.isEmpty && itemPricePeriod != 0) ? 'Please set an asking price.' : null,
                             onChanged: (val) {
                               setState(() {
                                 itemPrice = double.parse(val);
@@ -417,7 +415,7 @@ class _NewItemState extends State<NewItem> {
           : endVal =
               itemEndDate; // Value can't be larger than itemEndDate
     }
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: startVal,
       firstDate: startVal,
@@ -442,12 +440,9 @@ class _NewItemState extends State<NewItem> {
         height: 2,
         color: textColor,
       ),
-      onChanged: (String newValue) {
+      onChanged: (String? newValue) {
         setState(() {
-          //dropdownValue = newValue;
-          print("!!!!!");
-          print(newValue);
-          itemPricePeriod = pricePeriod.indexOf(newValue);
+          itemPricePeriod = pricePeriod.indexOf(newValue!);
         });
       },
       items: pricePeriod.map((String value) {
@@ -483,7 +478,7 @@ class _NewItemState extends State<NewItem> {
     String newItemName;
     //int itemPrice = 0;
 
-    if (_formKey1.currentState.validate()) {
+    if (_formKey1.currentState!.validate()) {
       updatedDescription == null
           ? newDescription = itemDescription
           : newDescription = updatedDescription;
@@ -492,15 +487,16 @@ class _NewItemState extends State<NewItem> {
           : newItemName = updatedItemName;
 
       if (widget.uidTabItem[1] == true) {
-        ItemAvailable oldItem = widget.uidTabItem[2];
+        ItemAvailable? oldItem = widget.uidTabItem[2] as ItemAvailable?;
+        String uid = widget.uidTabItem[0] as String;
         ItemAvailable newItem = new ItemAvailable(
-            null,
+            [],
             newItemName,
             itemStartDate.toString().split(' ')[0],
             itemEndDate.toString().split(' ')[0],
             newDescription,
-            widget.uidTabItem[0],
-            oldItem.docRef,
+            uid,
+            oldItem!.docRef,
             DateTime.now(),
             true,
             itemPrice,
@@ -508,14 +504,15 @@ class _NewItemState extends State<NewItem> {
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
       } else {
-        Item oldItem = widget.uidTabItem[2];
+        Item oldItem = widget.uidTabItem[2] as Item;
+        String uid = widget.uidTabItem[0] as String;
         Item newItem = new Item(
-            null,
+            [],
             newItemName,
             itemStartDate.toString().split(' ')[0],
             itemEndDate.toString().split(' ')[0],
             newDescription,
-            widget.uidTabItem[0],
+            uid,
             oldItem.docRef,
             DateTime.now(),
             true,
@@ -528,14 +525,15 @@ class _NewItemState extends State<NewItem> {
   }
 
   onPressedBtnRequested() async {
-    if (_formKey1.currentState.validate()) {
+    if (_formKey1.currentState!.validate()) {
+      String uid = widget.uidTabItem[0] as String;
       Item newItem = new Item(
-          null,
+          [],
           itemName,
           itemStartDate.toString().split(' ')[0],
           itemEndDate.toString().split(' ')[0],
           itemDescription,
-          widget.uidTabItem[0],
+          uid,
           '1',
           DateTime.now(),
           true,
@@ -547,15 +545,15 @@ class _NewItemState extends State<NewItem> {
   }
 
   onPressedBtnAvailable() async {
-    if (_formKey2.currentState.validate()) {
-      print(itemPrice);
+    if (_formKey2.currentState!.validate()) {
+      String uid = widget.uidTabItem[0] as String;
       ItemAvailable newItem = new ItemAvailable(
-          null,
+          [],
           itemName,
           itemStartDate.toString().split(' ')[0],
           itemEndDate.toString().split(' ')[0],
           itemDescription,
-          widget.uidTabItem[0],
+          uid,
           '2',
           DateTime.now(),
           true,

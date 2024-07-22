@@ -1,6 +1,7 @@
 
 //import 'dart:js';
 import 'package:flutter/material.dart';
+import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/ui/screens/home/contact_item.dart';
 import 'package:twofortwo/ui/screens/home/splash_screen.dart';
 import 'package:twofortwo/ui/screens/authenticate/signup_view.dart';
@@ -18,26 +19,26 @@ import 'package:twofortwo/ui/screens/user/user_item_view.dart';
 Route<dynamic> generateRoute(RouteSettings settings){
 switch(settings.name){
   case AuthRoute:
-    return MaterialPageRoute(builder: (context) => Splash()); // TODO: change this to screen showing login or signup
+    return MaterialPageRoute(builder: (context) => Splash(key: new Key("AUTH"),)); // TODO: change this to screen showing login or signup
   case SplashRoute:
-    return MaterialPageRoute(builder: (context) => Splash());
+    return MaterialPageRoute(builder: (context) => Splash(key: new Key("Splash")));
   case HomeViewRoute:
     return MaterialPageRoute(builder: (context) => Wrapper());
 //    var chosenCategories = settings.arguments;
 //    return MaterialPageRoute(builder: (context) => HomeView(chosenCategories: chosenCategories));
   case CategoryRoute:
     var argument = settings.arguments;
-    return MaterialPageRoute(builder: (context) => ChooseCategory(itemDetails: argument,));
+    return MaterialPageRoute(builder: (context) => ChooseCategory(itemDetails: argument, key: new Key("Category"),));
   case BorrowListRoute:
 //    var chosenCategories = settings.arguments;
-    return MaterialPageRoute(builder: (context) { return HomeView(); });
+    return MaterialPageRoute(builder: (context) { return HomeView(key: new Key("HomeView"),user: FUser(uid: "1"),); });
   case LoginRoute:
 //    var argument = settings.arguments;
     return MaterialPageRoute(builder: (context) => Login());
   case SignupRoute:
     return MaterialPageRoute(builder: (context) => SignupView());
   case NewItemRoute:
-    var argument = settings.arguments;
+    List<Object> argument = settings.arguments as List<Object>;
     return MaterialPageRoute(builder: (context) => NewItem(uidTabItem: argument,));
     case contactItemOwnerRoute:
       var argument = settings.arguments;
@@ -59,7 +60,7 @@ switch(settings.name){
       }
       );//);
     case MessagesRoute:
-      var argument = settings.arguments;
+      User argument = settings.arguments as User;
       return PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __){
@@ -88,10 +89,10 @@ switch(settings.name){
       );//);
       return MaterialPageRoute(builder: (context) => UserMessages(userData: argument,));
     case ProfileRoute:
-      var argument = settings.arguments;
+      User argument = settings.arguments as User;
       return MaterialPageRoute(builder: (context) => UserDetails(userData: argument,));
     case UpdateItemRoute:
-      var argument = settings.arguments;
+      User argument = settings.arguments as User;
       return PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __){
@@ -110,6 +111,6 @@ switch(settings.name){
       );//);
 //      return MaterialPageRoute(builder: (context) => UserItemDetails(userData:  argument,));
   default:
-    return MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name));
+    return MaterialPageRoute(builder: (context) => UndefinedView(name: "", key: new Key("Undefined"),));
 }
 }

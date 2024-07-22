@@ -39,9 +39,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        StreamProvider<FUser>.value(value: AuthService().user, initialData: FUser()), // Firebase user
-        StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested, initialData: [],),
-        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable, initialData: [],),
+        StreamProvider<FUser>.value(value: AuthService().user, initialData: FUser(uid: '')), // Firebase user
+        StreamProvider<List<Item?>>.value(value: DatabaseService(uid: '').itemsRequested, initialData: [],),
+        StreamProvider<List<ItemAvailable?>>.value(value: DatabaseService(uid: '').itemsAvailable, initialData: [],),
         ChangeNotifierProvider<CategoryService>(create: (context) => CategoryService()),
       ],
       child: MaterialApp(

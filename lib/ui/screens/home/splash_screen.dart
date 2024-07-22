@@ -6,7 +6,7 @@ import 'package:twofortwo/utils/screen_size.dart';
 
 class Splash extends StatelessWidget {
  // final String argument;
-  const Splash({Key key}) : super(key: key);
+  const Splash({required Key key}) : super(key: key);
   //final String title;
 
 

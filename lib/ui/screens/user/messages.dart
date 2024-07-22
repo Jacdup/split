@@ -18,9 +18,9 @@ typedef onReadCallback = void Function();
 class UserMessages extends StatefulWidget {
 
   final User userData;
-  final onReadCallback unreadMessage;
+  final onReadCallback? unreadMessage;
 
-  UserMessages({this.userData, this.unreadMessage});
+  UserMessages({required this.userData, this.unreadMessage});
 
   @override
   _UserMessagesState createState() => _UserMessagesState();
@@ -122,15 +122,15 @@ class _UserMessagesState extends State<UserMessages> {
         itemBuilder: (BuildContext context, int index) {
           //userMessages[index].hasRead == false ? unreadMessage() : unreadMessage();
           //String messageRef = getMessageRef(userData);
-          String message = userMessages[index].message;
-          String nameFrom = userMessages[index].nameFrom;
-          String surnameFrom = userMessages[index].surnameFrom;
-          String phoneFrom = userMessages[index].phoneFrom;
+          String? message = userMessages[index].message;
+          String? nameFrom = userMessages[index].nameFrom;
+          String? surnameFrom = userMessages[index].surnameFrom;
+          String? phoneFrom = userMessages[index].phoneFrom;
           DateTime dateSent = userMessages[index].dateSent;
 
 //          print(thisMessage[index].nameFrom);
 //        String from = thisMessage[index].uidFrom;
-          String forItem = userMessages[index].forItem;
+          String? forItem = userMessages[index].forItem;
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {
 //          i = i + 1;
           return Card(
@@ -147,7 +147,7 @@ class _UserMessagesState extends State<UserMessages> {
 //              child: Image.asset('split_new_blue1.png'),
                     child: nameFrom == null ? SizedBox.shrink():Text(
                       nameFrom.substring(0, 1) +
-                          surnameFrom.substring(0, 1),
+                          surnameFrom!.substring(0, 1),
                       style: TextStyle(fontSize: 25.0, color: Colors.white),
                     ),
                   ),
@@ -166,7 +166,7 @@ class _UserMessagesState extends State<UserMessages> {
 //                    message,
                     style: messageFromFont,
                   ),
-                  trailing: _buildTrailing(forItem, dateSent),
+                  trailing: _buildTrailing(forItem!, dateSent),
                   onTap: () {
                     _toggleDropdown(index);
                     //DatabaseService.setMessageReadStatus(userMessages[index].)
@@ -195,8 +195,7 @@ class _UserMessagesState extends State<UserMessages> {
 //                            Text("$nameFrom's number: "),
                             Expanded(child: phoneFrom == null ? SizedBox.shrink():Text(phoneFrom, style: itemDateTitle)),
                             IconButton(onPressed: (){
-                              LaunchWhatsapp(phoneNumber: phoneFrom, message: message).launchWhatsApp();
-                              print("in here!");
+                              LaunchWhatsapp(phoneNumber: phoneFrom!, message: message!).launchWhatsApp();
                             },
                               icon: FaIcon(FontAwesomeIcons.whatsapp),
                               color: Colors.green,)

@@ -395,7 +395,7 @@ class DatabaseService {
   // }
 
   // get requested item stream
-  Stream<List<Item?>> get itemsRequested {
+  Stream<List<Item?>>? get itemsRequested {
     return itemRequestCollection.snapshots().map(_itemListFromSnapshot);
   }
 
