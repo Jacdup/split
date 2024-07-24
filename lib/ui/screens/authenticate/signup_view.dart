@@ -8,7 +8,7 @@ import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/shared/loading.dart';
 
 class SignupView extends StatefulWidget {
-  final Function toggleView;
+  final Function? toggleView;
 
   SignupView({this.toggleView});
 
@@ -23,7 +23,7 @@ class _SignupViewState extends State<SignupView> {
 //    'buenos aires'
 //  ]; // Option 2
 //  String _selectedLocation = "Stellenbosch"; // Option 2
-  User userDetails;
+  late User userDetails;
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -51,9 +51,9 @@ class _SignupViewState extends State<SignupView> {
             backgroundColor: customBlue5,
             elevation: 0.0,
             actions: <Widget>[
-              FlatButton.icon(
+              TextButton.icon(
                   onPressed: () {
-                    widget.toggleView();
+                    widget.toggleView!();
                   },
                   icon: Icon(Icons.person, size: 35),
                   label: Text(
@@ -77,7 +77,7 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space * 2),
                     TextFormField(
                       validator: (val) =>
-                      val.isEmpty ? 'Enter your first name' : null,
+                      val!.isEmpty ? 'Enter your first name' : null,
                       onChanged: (val) {
                         setState(() {
                           userName = val;
@@ -89,7 +89,7 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space),
                     TextFormField(
                       validator: (val) =>
-                      val.isEmpty ? 'Enter your surname' : null,
+                      val!.isEmpty ? 'Enter your surname' : null,
                       onChanged: (val) {
                         setState(() {
                           userLastName = val;
@@ -101,7 +101,7 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space),
                     TextFormField(
                       validator: (val) =>
-                      val.isEmpty ? 'Enter an email address' : null,
+                      val!.isEmpty ? 'Enter an email address' : null,
                       onChanged: (val) {
                         setState(() {
                           userEmail = val;
@@ -114,7 +114,7 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space),
                     TextFormField(
                       validator: (val) =>
-                      val.length != 10
+                      val!.length != 10
                           ? 'Enter a valid 10 digit phone number'
                           : null,
                       onChanged: (val) {
@@ -129,7 +129,7 @@ class _SignupViewState extends State<SignupView> {
                     SizedBox(height: _space),
                     TextFormField(
                       validator: (val) =>
-                      val.length < 6
+                      val!.length < 6
                           ? 'Password must be 6 or more characters'
                           : null,
                       onChanged: (val) {
@@ -160,7 +160,7 @@ class _SignupViewState extends State<SignupView> {
 
   onPressedBtn() async {
     // Validation
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       // Is correct
       setState(() {
         loading = true;

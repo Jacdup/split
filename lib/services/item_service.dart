@@ -135,15 +135,15 @@ class ItemAvailable {
 }
 
 class ItemsAvailableModel{
-  Stream<List<ItemAvailable>> stream;
-  bool hasMore;
+  Stream<List<ItemAvailable>>? stream = null;
+  bool hasMore = false;
 
-  bool _isLoading;
-  List<Map> _data;
-  StreamController<List<Map>> _controller;
+  bool _isLoading = false;
+  List<Map> _data = [];
+  StreamController<List<Map>> _controller = StreamController<List<Map>>.broadcast();
 
   ItemsAvailableModel(){
-    _data = List<Map>();
+    _data = [];
     _controller = StreamController<List<Map>>.broadcast();
     _isLoading = false;
 //    stream = _controller.stream.map((List<Map> itemsData){

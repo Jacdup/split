@@ -25,13 +25,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     with TickerProviderStateMixin{
 
 //  AnimationController _animationController;
-  TabController _tabController;
-  ScrollController _scrollController;
-  TextEditingController  _searchController;
+  late TabController _tabController;
+  late ScrollController _scrollController;
+  late TextEditingController  _searchController;
   bool _showSearchBar = false;
   FocusNode _searchNode = FocusNode();
 
-  String filter;
+  String filter = "";
 //  Widget _titleBar;
 //  RefreshController  _refreshController;
 
@@ -77,7 +77,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
     _tabController = new TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabIndex);
-    _tabController.animation.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
+    _tabController.animation!.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
 //    _refreshController = RefreshController(initialRefresh: false);
   }
 
@@ -101,40 +101,16 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   @override
   Widget build(BuildContext context) {
+    Filter thisFilter = new Filter();
+    final itemsRequestedFromFirestore = Provider.of<List<Item>>(context);
+    final itemsAvailableFromFirestore = Provider.of<List<ItemAvailable>>(context);
+    final User userData = Provider.of<User>(context);
+   // final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
+       // ? Provider.of<User>(context)
+        //: null;
 
-//    void _listener(){ // This listener ensures the Column is not bunched up when keyboard opens, by decreasing the bottom edgeInset
-//      if(_searchNode.hasFocus){
-//        setState((){
-//          showSearchBar.value = true;
-//        });
-//        // keyboard appeared
-//      }
-////    else{
-////      setState((){
-////        bottomInset = 150.0;
-////      });
-////       keyboard dismissed
-////    }
-//    }
-//
-//    _searchNode.addListener(() {_listener();});
-
-
-
-
-//    if (_scrollController.offset > 50){
-//      showSearchBar.value = true;
-//    }
-
-
-    final itemsRequestedFromFirestore = Provider.of<List<Item>>(context) ?? [];
-    final itemsAvailableFromFirestore = Provider.of<List<ItemAvailable>>(context) ?? [];
-    final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
-        ? Provider.of<User>(context)
-        : null;
-
-    List<Item> itemsRequested = Filter().sortRequestedByDate(itemsRequestedFromFirestore);
-    List<ItemAvailable> itemsAvailable = Filter().sortAvailableByDate(itemsAvailableFromFirestore);
+    List<Item> itemsRequested = thisFilter.sortRequestedByDate(itemsRequestedFromFirestore);
+    List<ItemAvailable> itemsAvailable = thisFilter.sortAvailableByDate(itemsAvailableFromFirestore);
 
           if (userData != null) {
 //            print(userData.categories);
@@ -164,12 +140,12 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //                        AvailableList(allItems: itemsAvailableTemp, uid: userData.uid, name: 'tab2',),
 //                        RequestList(allItems: itemsTemp, uid: userData.uid, name: 'tab1',),
                          AvailableList(
-                            allItems: Filter().filterAvailableByCategory(itemsAvailable, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
+                            allItems: thisFilter.filterAvailableByCategory(itemsAvailable, categoryModel.userCategories.isEmpty ? [] : categoryModel.userCategories),
                              uid: userData.uid,
                             name: 'tab2',
                              searchTerm: filter,),
                          RequestList(
-                            allItems: Filter().filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
+                            allItems: thisFilter.filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? []: categoryModel.userCategories),
                              uid: userData.uid,
                             name: 'tab1',
                              searchTerm: filter,),
@@ -334,13 +310,13 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   Widget _actionButtons(String uid){
 
 //  print(tabPosition);
-    return _tabController.animation.value < 0.5 ?
+    return _tabController.animation!.value < 0.5 ?
     FloatingActionButton.extended(
       onPressed: () {
 //        print(_currentIndex);
 //        print(_scrollController.offset);
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid, 0, null]);
+            arguments: [uid, 0]);
       },
       label: Text('Add item'),
       icon:  Icon(Icons.add),
@@ -351,7 +327,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //        print(_scrollController.offset);
 
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid,1, null]);
+            arguments: [uid,1]);
       },
       label: Text('Request item'),
       icon: Icon(Icons.add),

@@ -10,6 +10,6 @@ Future setupLocator() async {
 //  locator.registerFactory<LoginService>(() => LoginService());
 
   var instance = await LocalStorageService.getInstance();
-  locator.registerSingleton<LocalStorageService>(instance);
+  locator.registerSingleton<LocalStorageService>(instance!);
  // locator.registerSingleton(LocalStorageService());
 }

@@ -10,7 +10,7 @@ import '../../../services/localstorage_service.dart';
 
 
 class Login extends StatefulWidget {
-  final Function toggleView;
+  final Function? toggleView;
 
   Login({this.toggleView});
 
@@ -38,8 +38,8 @@ class _LoginViewState extends State<Login> {
   String error = '';
 
 
-  void _onRememberMeChanged(bool newValue) => setState(() {
-        rememberMe = newValue;
+  void _onRememberMeChanged(bool? newValue) => setState(() {
+        rememberMe = newValue!;
         if (rememberMe) {
           // Functionality that remembers the user.
           locator<LocalStorageService>().stayLoggedIn = true;
@@ -59,9 +59,9 @@ class _LoginViewState extends State<Login> {
             backgroundColor: customBlue5,
             elevation: 0.0,
             actions: <Widget>[
-              FlatButton.icon(
+              TextButton.icon(
                   onPressed: () {
-                    widget.toggleView();
+                    widget.toggleView!();
                   },
                   icon: Icon(Icons.person, size: 35),
                   label: Text(
@@ -85,7 +85,7 @@ class _LoginViewState extends State<Login> {
                     SizedBox(height: _space * 2),
                     TextFormField(
                       validator: (val) =>
-                          val.isEmpty ? 'Enter an email address' : null,
+                          val!.isEmpty ? 'Enter an email address' : null,
                       onChanged: (val) {
                         setState(() {
                           email = val;
@@ -97,7 +97,7 @@ class _LoginViewState extends State<Login> {
                     ),
                     SizedBox(height: _space),
                     TextFormField(
-                      validator: (val) => val.length < 6
+                      validator: (val) => val!.length < 6
                           ? 'Password must be 6 or more characters'
                           : null,
                       onChanged: (val) {
@@ -143,7 +143,7 @@ class _LoginViewState extends State<Login> {
 //              var savedCategories = storageService.category; // Getter
     //storageService.user = userName.text;
     // Validation
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       // Is correct
       setState(() {
         loading = true;

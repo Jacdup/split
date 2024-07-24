@@ -5,14 +5,14 @@ import 'package:twofortwo/services/message_service.dart';
 
 class Filter {
 
-  final List<Item> itemsRequested;
-  final List<ItemAvailable> itemsAvailable;
+  final List<Item>? itemsRequested;
+  final List<ItemAvailable>? itemsAvailable;
 
   Filter({this.itemsAvailable, this.itemsRequested});
 
 List<Message> sortMessagesByDate(List<Message> messages){
   messages.sort((a,b) =>
-  b.dateSent.compareTo(a.dateSent)
+  b.dateSent!.compareTo(a.dateSent)
   );
   return messages;
 }
@@ -33,14 +33,17 @@ List<Message> sortMessagesByDate(List<Message> messages){
     return itemsAvailable;
   }
 
-  List<Item> filterRequestedByCategory(List<Item> itemsRequested, List<String> chosenCategories){
+  List<Item?> filterRequestedByCategory(List<Item?> itemsRequested, List<dynamic>? chosenCategories){
     return itemsRequested.where((element) =>
-       (chosenCategories.any((item) => element.categories.contains(item)))
+       (chosenCategories!.any((item) => element!.categories.contains(item)))
     ).toList();
   }
 
-  List<ItemAvailable> filterAvailableByCategory(List<ItemAvailable> itemsAvailable, List<String> chosenCategories){
+  List<ItemAvailable> filterAvailableByCategory(List<ItemAvailable> itemsAvailable, List<dynamic> chosenCategories){
 //    print(chosenCategories);
+    // if (chosenCategories.length == 0) {
+    //   return [];
+    //  }
     return itemsAvailable.where((element) =>
     (chosenCategories.any((item) => element.categories.contains(item)))
     ).toList();

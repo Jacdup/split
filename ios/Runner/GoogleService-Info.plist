@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>989534986832-cbrte6g1j3qpedebgd7c82rgtvbv436l.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.989534986832-cbrte6g1j3qpedebgd7c82rgtvbv436l</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBfL3nphkX6YWyhDf1p_Ney3S26rnomsCI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>989534986832</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.2For2.split</string>
+	<key>PROJECT_ID</key>
+	<string>for2-9b41d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>for2-9b41d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:989534986832:ios:f7131f0471619f8a91a755</string>
+	<key>DATABASE_URL</key>
+	<string>https://for2-9b41d.firebaseio.com</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+</dict>
+</plist>

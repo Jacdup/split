@@ -17,12 +17,12 @@ import 'package:twofortwo/shared/constants.dart';
 
 class RequestList extends StatefulWidget {
 
-  final List<Item> allItems;
+  final List<Item?> allItems;
   final String name;
   final String uid;
   final String searchTerm;
 
-  RequestList({this. allItems, this.name, this.uid, this.searchTerm});
+  RequestList({required this.allItems, required this.name, required this.uid, required this.searchTerm});
 
   @override
   _RequestListState createState() => _RequestListState();
@@ -92,7 +92,7 @@ class _RequestListState extends State<RequestList> {
     }
   }
 
-  Widget _buildBorrowList(List<Item> allItems, String name) {
+  Widget _buildBorrowList(List<Item?> allItems, String name) {
 
     double _buildBox = 0;
     int i = 0;
@@ -109,7 +109,7 @@ class _RequestListState extends State<RequestList> {
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
 //          i = i + 1;
         return  widget.searchTerm == null || widget.searchTerm == "" ? _buildRow(allItems[index], index, _buildBox)
-            : allItems[index].itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
+            : allItems[index]!.itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
 //          return _buildRow(allItems[index], index, _buildBox);
 //        }else{
           if (index == allItems.length -1){
@@ -138,7 +138,7 @@ class _RequestListState extends State<RequestList> {
 
   }
 
-  Widget _buildRow(Item item, int num, double buildBox) {
+  Widget _buildRow(Item? item, int num, double buildBox) {
 
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
@@ -149,19 +149,19 @@ class _RequestListState extends State<RequestList> {
         elevation: 4.0,
         child: Column(
           children: <Widget>[
-            (item.price == null && item.pricePeriod == null) ? _buildNonLeadingListTile(item, num):
+            (item!.price == null && item.pricePeriod == null) ? _buildNonLeadingListTile(item, num):
             _buildLeadingListTile(item,num),
 
             Visibility(
               visible: _infoShow[num] ,
               child: ButtonBar(
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: const Text('Willing to help'),
                     onPressed: () {/* send ping to item user, with thisUser info */
                       _confirmHelp(context, item);},
                   ),
-                  FlatButton(
+                  TextButton(
                     child: const Text('Contact'),
                     onPressed: () async {
 
@@ -276,7 +276,7 @@ class _RequestListState extends State<RequestList> {
           content: new Text("This will send your contact details to the user that requested this item. Proceed?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new FlatButton(
+            new TextButton(
               child: new Text("Yes"),
               onPressed: () async {
                 ButtonPresses().onSendMessage(widget.uid, item.docRef,
@@ -285,7 +285,7 @@ class _RequestListState extends State<RequestList> {
                 Navigator.of(context).pop(false);
               },
             ),
-            new FlatButton(
+            new TextButton(
               child: new Text("No"),
               onPressed: () {
                 Navigator.of(context).pop(false);

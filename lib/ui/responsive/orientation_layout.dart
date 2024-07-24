@@ -5,16 +5,16 @@ class OrientationLayout extends StatelessWidget {
   final Widget landscape;
   final Widget portrait;
   OrientationLayout({
-    Key key,
-    this.landscape,
-    @required this.portrait,
+    Key? key,
+    required this.landscape,
+    required this.portrait,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var orientation = MediaQuery.of(context).orientation;
     if (orientation == Orientation.landscape) {
-      return landscape ?? portrait;
+      return landscape;
     }
 
     return portrait;

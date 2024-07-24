@@ -13,21 +13,17 @@ import 'package:firebase_core/firebase_core.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
-ValueNotifier<bool> loading =
-    ValueNotifier(false); // Global variable, to whole application
+ValueNotifier<bool> loading = ValueNotifier(false); // Global variable, to whole application
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await setupLocator();
     await Firebase.initializeApp();
-    runApp(MyApp()
-//      DevicePreview( // This is for testing UI
-//        builder: (context) => MyApp(),
-//      ),
-        );
+    runApp(MyApp());
   } catch (error) {
-    print('Locator setup has failed');
+    print('Locator setup has failed ');
+    print(error);
   }
 }
 
@@ -39,9 +35,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        StreamProvider<FUser>.value(value: AuthService().user, initialData: FUser()), // Firebase user
-        StreamProvider<List<Item>>.value(value: DatabaseService().itemsRequested, initialData: [],),
-        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService().itemsAvailable, initialData: [],),
+        StreamProvider<FUser>.value(value: AuthService().user, initialData: FUser(uid: "")), // Firebase user
+        StreamProvider<List<Item>>.value(value: DatabaseService(uid: '').itemsRequested, initialData: [],),
+        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService(uid: '').itemsAvailable, initialData: [],),
         ChangeNotifierProvider<CategoryService>(create: (context) => CategoryService()),
       ],
       child: MaterialApp(

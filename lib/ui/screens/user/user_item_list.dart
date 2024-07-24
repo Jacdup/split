@@ -12,13 +12,13 @@ import 'package:twofortwo/utils/routing_constants.dart';
 class UserList extends StatefulWidget {
 
   final List<String> chosenCategories;
-  final List<ItemAvailable> allAvailableItems;
-  final List<Item> allRequestedItems;
+  final List<ItemAvailable?> allAvailableItems;
+  final List<Item?> allRequestedItems;
   final String pageStorageKey;
   final String uid;
   final bool isTab1;
 
-  UserList({this.chosenCategories, this.allAvailableItems, this. allRequestedItems, this.pageStorageKey, this.uid, this.isTab1});
+  UserList({required this.chosenCategories, required this.allAvailableItems, required this.allRequestedItems,required this.pageStorageKey,required this.uid, required this.isTab1});
 
   @override
   _UserListState createState() => _UserListState();
@@ -299,7 +299,7 @@ class _UserListState extends State<UserList> {
           content: new Text("This will permanently delete this item. Proceed?"),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new FlatButton(
+            new TextButton(
               child: new Text("Yes"),
               onPressed: () async {
                 setState(() {
@@ -307,7 +307,7 @@ class _UserListState extends State<UserList> {
                   Navigator.pop(context);
                 });
 
-                dynamic result = await DatabaseService().deleteItem(documentRef, type);
+                dynamic result = await DatabaseService(uid:"1").deleteItem(documentRef, type);
 
                 if (result == null) {
                   setState(() {
@@ -321,7 +321,7 @@ class _UserListState extends State<UserList> {
                 //TODO
               },
             ),
-            new FlatButton(
+            new TextButton(
               child: new Text("No"),
               onPressed: () {
 //                Fluttertoast.showToast(msg: 'Success! Item deleted.', toastLength: Toast.LENGTH_LONG,gravity: ToastGravity.CENTER, backgroundColor: Colors.red, fontSize: 20.0);

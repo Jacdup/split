@@ -9,17 +9,19 @@ class AuthService {
 
   // create user obj based on User
   FUser _userFromUser(
-    fAuth.User user,
+    fAuth.User? user,
   ) {
-//    return await DatabaseService(uid: user.uid).user;
-    return user != null ? FUser(uid: user.uid, email: user.email) : null;
+    if (user == null) {
+      return FUser(uid: "");
+    }
+    return FUser(uid: user.uid, email: user.email);
   }
 
   // sign in anon
   Future signInAnon() async {
     try {
       fAuth.UserCredential result = await _auth.signInAnonymously();
-      fAuth.User user = result.user;
+      fAuth.User? user = result.user;
       return _userFromUser(user);
     } catch (e) {
       print(e.toString());
@@ -29,12 +31,9 @@ class AuthService {
 
   // auth change user stream
   Stream<FUser> get user {
-//    dynamic userAll = DatabaseService(uid: user.).user;
     return _auth
         .authStateChanges()
-        .map((fAuth.User user) => _userFromUser(user));
-//        .map(_userFromUser()); // This does the same as above
-//        .map(User);
+        .map((fAuth.User? user) => _userFromUser(user));
   }
 
   // sign in with email & password
@@ -42,15 +41,7 @@ class AuthService {
     try {
       fAuth.UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      fAuth.User user = result.user;
-
-//      dynamic userAll = await DatabaseService(uid: user.uid).user;
-//      userAll.then((fAuth.User result){
-//        userAll = result;
-//
-//        print(userAll.name);
-//      });
-//      return userAll;
+      fAuth.User? user = result.user;
 
       return _userFromUser(user);
     } catch (e) {
@@ -66,20 +57,15 @@ class AuthService {
     try {
       fAuth.UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      fAuth.User user = result.user;
-//       List<String> initialCategories = CategoryService().categories;
-//       List<String> temp = ['Sport'];
+      fAuth.User? user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData(
+      await DatabaseService(uid: user!.uid).updateUserData(
           name,
           surname,
           phone,
           email,
-          CategoryService()
-              .categories); //setter TODO: update userdetails categories
-//        dynamic userAll = await DatabaseService(uid: user.uid).user; //getter
+          CategoryService().allCategories); //setter TODO: update userdetails categories
 
-//        return userAll;
       return _userFromUser(user);
     } catch (e) {
       print(e.toString());

@@ -6,7 +6,7 @@ import 'package:twofortwo/utils/screen_size.dart';
 class Loading extends StatelessWidget{
 //  @override
 
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   Loading({this.backgroundColor});
 

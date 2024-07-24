@@ -24,7 +24,7 @@ class HomeView extends StatefulWidget {
 //  final List<dynamic> chosenCategories;
   final FUser user; // Firebase user
 
-  const HomeView({Key key, this.user}) : super(key: key);
+  const HomeView({required Key key, required this.user}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -69,20 +69,27 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     FUser thisUser = widget.user;
 
 
-
-    return StreamProvider<User>.value(
+    return StreamProvider<User?>.value(
       value: DatabaseService(uid: thisUser.uid).userData, //TODO: really don't need this as a stream. Only need it once for the userData.
-      initialData: User(),
+      initialData: User(uid: "1", name: ""),
       child: WillPopScope(
         /* This function ensures the user cannot route back to categories with the back button */
         onWillPop: () async {
             return _confirmLogout(context);
         }, // The page will not respond to back press
         child: ScreenTypeLayout(
+          desktop: OrientationLayout(
+                    portrait:
+                            BorrowListPortrait(),
+                    landscape: BorrowListPortrait() ,),
+          tablet: OrientationLayout(
+                    portrait:
+                            BorrowListPortrait(),
+                    landscape: BorrowListPortrait() ,),
           mobile: OrientationLayout(
                     portrait:
                             BorrowListPortrait(),
-                        ),
+                    landscape: BorrowListPortrait() ,)
             //landscape: //TODO,
           ),
         ),
@@ -144,7 +151,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
         content: new Text("Are you sure you want to exit?"),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
-          new FlatButton(
+          new TextButton(
             child: new Text("Yes"),
             onPressed: () async {
 
@@ -157,7 +164,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
              // exit(0);
             },
           ),
-          new FlatButton(
+          new TextButton(
             child: new Text("No"),
             onPressed: () {
               Navigator.of(context).pop(false);

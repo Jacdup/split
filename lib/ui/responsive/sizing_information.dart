@@ -8,10 +8,10 @@ class SizingInformation {
   final Size localWidgetSize;
 
   SizingInformation({
-    this.orientation,
-    this.deviceScreenType,
-    this.screenSize,
-    this.localWidgetSize,
+    required this.orientation,
+    required this.deviceScreenType,
+    required this.screenSize,
+    required this.localWidgetSize,
   });
 
   @override

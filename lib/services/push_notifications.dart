@@ -52,7 +52,7 @@ class PushNotificationsManager {
       } else {
 //        var fcmToken = _getDeviceToken();
 //      print("!!!!!!!!!!!!");
-        String fcmToken = await _firebaseMessaging
+        String? fcmToken = await _firebaseMessaging
             .getToken(); //TODO, abstract this to function
         _firebaseMessaging.subscribeToTopic(
             "itemsRequested"); // All users subscribed to this topic. TODO: option to unsubscribe in profile

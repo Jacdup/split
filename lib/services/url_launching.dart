@@ -6,7 +6,7 @@ class LaunchWhatsapp {
   final String phoneNumber;
   final String message;
 
-  LaunchWhatsapp({this.phoneNumber, this.message});
+  LaunchWhatsapp({required this.phoneNumber, required this.message});
 
   launchWhatsApp() async {
     String phoneNumberWithCountryCode = "+27" + phoneNumber;

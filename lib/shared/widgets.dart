@@ -11,7 +11,7 @@ ValueNotifier<Widget> showContact = ValueNotifier(SizedBox.shrink());
 class ButtonWidget extends StatelessWidget {
   ButtonWidget({this.icon, this.onPressed});
 
-  final IconData icon;
+  final IconData? icon;
   final onPressed;
 
   @override
@@ -22,10 +22,11 @@ class ButtonWidget extends StatelessWidget {
       width: screenWidth(context, dividedBy: 3),
 //            decoration: InputDecoration(borderRadius: BorderRadius.circular(32.0)),
 
-      child: RaisedButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-          color: Colors.amberAccent,
+      child: ElevatedButton(
+          // style: ButtonStyle(backgroundColor: MaterialStateColor(Colors.amberAccent) ),
+          // shape:
+          //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
+          // color: Colors.amberAccent,
           onPressed: onPressed,
 
           child: Row(
@@ -69,13 +70,13 @@ class CustomDialog extends StatelessWidget {
 //  final  onPressedBtn2;
 
   CustomDialog({
-    @required this.title,
-    @required this.description,
-    @required this.buttonText1,
-    @required this.buttonText2,
-    this.type,
+    required this.title,
+    required this.description,
+    required this.buttonText1,
+    required this.buttonText2,
+    required this.type,
     this.item,
-    this.availability,
+    required this.availability,
 //    @required this.onPressedBtn1,
 //    @required this.onPressedBtn2,
   });
@@ -137,7 +138,7 @@ class CustomDialog extends StatelessWidget {
               SizedBox(height: 24.0),
               ButtonBar(
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     onPressed:
 //                    onPressedBtn2,
                         ()async {
@@ -151,7 +152,7 @@ class CustomDialog extends StatelessWidget {
 
                     child: Text(buttonText1),
                   ),
-                  FlatButton(
+                  TextButton(
 //                    onPressed: onPressedBtn2,
                   onPressed: (){
                       Navigator.of(context).pop();
@@ -191,11 +192,11 @@ class ProfileAppBar extends StatelessWidget {
   // It is basically just a stack that puts a floating yellow title banner over
   // the appbar.
 
-  final User userData;
-  final String tag;
+  final User? userData;
+  final String? tag;
   final String title;
 
-  ProfileAppBar({this.userData, this.tag, this.title});
+  ProfileAppBar({this.userData, this.tag, required this.title});
 
   Color colorCode = Colors.lightBlue;
 
@@ -237,8 +238,8 @@ class ProfileAppBar extends StatelessWidget {
                           backgroundColor: generateRandomColor(0),
 //              child: Image.asset('split_new_blue1.png'),
                           child: Text(
-                            userData.name.substring(0, 1) +
-                                userData.surname.substring(0, 1),
+                            userData!.name!.substring(0, 1) +
+                                userData!.surname!.substring(0, 1),
                             style: TextStyle(fontSize: 25.0, color: Colors.white),
                           ),
                         ),

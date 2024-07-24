@@ -14,7 +14,7 @@ class UserItemDetails extends StatefulWidget {
 
   final User userData;
 
-  UserItemDetails({this.userData});
+  UserItemDetails({required this.userData});
 
   @override
   _UserItemDetailsState createState() => _UserItemDetailsState();
@@ -23,7 +23,7 @@ class UserItemDetails extends StatefulWidget {
 class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProviderStateMixin{
 
 
-  TabController _tabController;
+  late TabController _tabController;
 //  ScrollController _scrollController;
   @override
   void initState() {
@@ -64,8 +64,8 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
               body: Container(
                 child: new TabBarView(
                   children: <Widget>[
-                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 1',uid: userData.uid, isTab1: true,),
-                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 2',uid: userData.uid, isTab1: false,),
+                    new UserList(chosenCategories: CategoryService().allCategories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 1',uid: userData.uid, isTab1: true,),
+                    new UserList(chosenCategories: CategoryService().allCategories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 2',uid: userData.uid, isTab1: false,),
                   ],
                   controller: _tabController,
                 ),
@@ -104,7 +104,7 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 //              child: Image.asset('split_new_blue1.png'),
                         child: Text(
                           userData.name.substring(0, 1) +
-                              userData.surname.substring(0, 1),
+                              userData.surname!.substring(0, 1),
                           style: TextStyle(fontSize: 25.0, color: Colors.white),
                         ),
                       ),

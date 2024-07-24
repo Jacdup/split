@@ -8,14 +8,14 @@ class LocalStorageService {
   static const String UserKey = 'user';//TODO
   static const String itemKey = 'item';
   static const String CategoryKey = 'category';
-  static LocalStorageService _instance;
-  static SharedPreferences _preferences;
+  static LocalStorageService? _instance;
+  static SharedPreferences? _preferences;
   static const String SignedUpKey = 'signedUp';
   static const String LoggedInKey = 'loggedIn';
   static const String StayLoggedInKey = 'stayLoggedIn';
 
 
-  static Future<LocalStorageService> getInstance() async {
+  static Future<LocalStorageService?> getInstance() async {
     if (_instance == null) {
       _instance = LocalStorageService();
     }
@@ -30,25 +30,25 @@ class LocalStorageService {
   }
 
   clear(){
-    _preferences.clear();
+    _preferences?.clear();
   }
 
-  List<String> _getStringListFromDisk(String key){
+  List<String>? _getStringListFromDisk(String key){
     //var value  = _preferences.get(key);
-    List<String> value = _preferences.getStringList(key);
+    List<String>? value = _preferences?.getStringList(key);
    // print('(TRACE) LocalStorageService:_getStringListFromDisk. key: $key value: $value');
     return value;
   }
 
   dynamic _getFromDisk(String key) {
-    var value  = _preferences.get(key);
+    var value  = _preferences?.get(key);
     print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
     return value;
   }
 
   void saveStringToDisk(String key, String content){
     print('(TRACE) LocalStorageService:_saveStringToDisk. key: $key value: $content');
-    _preferences.setString(key, content);
+    _preferences?.setString(key, content);
   }
 
 // updated _saveToDisk function that handles all types
@@ -56,24 +56,24 @@ class LocalStorageService {
     //print('(TRACE) LocalStorageService:_saveToDisk. key: $key value: $content');
 
     if(content is String) {
-      _preferences.setString(key, content);
+      _preferences?.setString(key, content);
     }
     if(content is bool) {
-      _preferences.setBool(key, content);
+      _preferences?.setBool(key, content);
     }
     if(content is int) {
-      _preferences.setInt(key, content);
+      _preferences?.setInt(key, content);
     }
     if(content is double) {
-      _preferences.setDouble(key, content);
+      _preferences?.setDouble(key, content);
     }
     if(content is List<String>) {
-      _preferences.setStringList(key, content);
+      _preferences?.setStringList(key, content);
     }
   }
 
   /* Getter */
-  User get user {
+  User? get user {
     var userJson = _getFromDisk(UserKey);
     if (userJson == null) {
       return null;
@@ -83,12 +83,12 @@ class LocalStorageService {
   }
 
 /* Setter */
-  set user(User userToSave) {
+  set user(User? userToSave) {
 //    saveStringToDisk(UserKey, json.encode(userToSave.toJson()));
   }
 
   /* Getter */
-  Item get item {
+  Item? get item {
     var itemJson = _getFromDisk(itemKey);
     if (itemJson == null) {
       return null;
@@ -97,17 +97,17 @@ class LocalStorageService {
   }
 
 /* Setter */
-  set item(Item itemToSave) {
-    saveStringToDisk(itemKey, json.encode(itemToSave.toJson()));
+  set item(Item? itemToSave) {
+    saveStringToDisk(itemKey, json.encode(itemToSave?.toJson()));
 
   }
 
   /* Getter */
-  List<String> get category {
+  List<String>? get category {
     //var userJson = _getFromDisk(UserKey);
    // var cate1 = _getStringListFromDisk(CategoryKey) ?? List<String>();
 
-    final List<String> cate = _getStringListFromDisk(CategoryKey) ?? List<String>();
+    final List<String>? cate = _getStringListFromDisk(CategoryKey) ?? [];
     if (cate == null) {
       return null;
     }
@@ -116,7 +116,7 @@ class LocalStorageService {
 
   }
   /* Setter for category */
-   set category(List<String> categoriesToSave) {
+   set category(List<String>? categoriesToSave) {
     _saveToDisk(CategoryKey, (categoriesToSave)); // Not saving this in a Json at the moment
   }
 
