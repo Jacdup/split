@@ -33,26 +33,16 @@ class _ChooseCategoryState extends State<ChooseCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final FUser user = Provider.of<FUser>(context,
-        listen: false); // Firestore user (contains uid, email)
+    final FUser user = Provider.of<FUser>(context,listen: false); // Firestore user (contains uid, email)
 
-    double cardHeight = screenHeight(context,
-        dividedBy: (CategoryService().allCategories.length / 2));
-
-    //    bool alreadySaved = false;
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-//    return loading ? Loading() :
+    double cardHeight = screenHeight(context, dividedBy: (CategoryService().allCategories.length / 2));
 
     return ValueListenableBuilder(
         // listens to value of loading
         valueListenable: loading,
         builder: (context, value, child) {
-          return value != null
+          print(value);
+          return value != false
               ? Loading()
               : Scaffold(
                   body: Container(

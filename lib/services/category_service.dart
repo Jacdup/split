@@ -16,7 +16,7 @@ static const List<String> categories = [
   'Other',
 ];
 
-final List<String> _userCategories = categories ;
+final List<String> _userCategories = new List<String>.from(categories) ;
 //CategoryService({this.userCategories});
 
 

@@ -13,14 +13,12 @@ import 'package:firebase_core/firebase_core.dart';
 
 // To use service locator:
 //var userService = locator<LocalStorageService>();
-ValueNotifier<bool> loading =
-    ValueNotifier(false); // Global variable, to whole application
+ValueNotifier<bool> loading = ValueNotifier(false); // Global variable, to whole application
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await setupLocator();
-    FirebaseOptions fOpts = FirebaseOptions(apiKey: "AIzaSyB4XUqmAX8iW3WNiggQpmEB8D8AltuHO2s", appId: "1:989534986832:android:088db125b51917e591a755", messagingSenderId: '989534986832', projectId: 'for2-9b41d');
     await Firebase.initializeApp();
     runApp(MyApp());
   } catch (error) {

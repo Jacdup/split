@@ -108,7 +108,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   ButtonPresses().onSendMessage(userUid, itemID, message, date, type);
-//                  showContact.value = SizedBox.shrink();
+                  Navigator.pop(context);
                 }
               }, //"true" is available items
             ),
