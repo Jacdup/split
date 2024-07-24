@@ -25,16 +25,14 @@ class _NewItemState extends State<NewItem> {
 
   bool loading = false;
 
-//  static String uid = widget.uidTab[0];
-
   DateTime selectedDate = DateTime.now();
-  late DateTime itemStartDate;
-  late DateTime itemEndDate;
+  DateTime? itemStartDate;
+  DateTime? itemEndDate;
 
-  late String updatedItemName;
-  late String updatedDescription;
-  late String itemName;
-  late String itemDescription;
+  String updatedItemName = "";
+  String updatedDescription = "";
+  String itemName = "";
+  String itemDescription = "";
   double itemPrice = 0;
   int itemPricePeriod = 0;
   late String date;
@@ -46,26 +44,15 @@ class _NewItemState extends State<NewItem> {
   late bool _doesntMatter;
   String dropdownValue = 'Per day';
 
-//  List<Widget> tabs;
-//  List<Widget> tabViews ;
-//  bool _isButtonDisabled;
-//  String text = "Availability";
-
   @override
   void initState() {
     super.initState();
-//    tabs = (widget.uidTab[1] == 2) ? List(1) : List(2) ;
-//    tabViews = (widget.uidTab[1] == 2) ? List(1) : List(2) ;
     _doesntMatter = false;
-//    _isButtonDisabled = false;
   }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-//    itemName.dispose();
-//    itemDescription.dispose();
-//    date.dispose();
     category.dispose();
     super.dispose();
   }
@@ -75,7 +62,7 @@ class _NewItemState extends State<NewItem> {
     if (loading) {
       return Loading();
     } else {
-      if (widget.uidTabItem[2] == null) {
+      if (widget.uidTabItem.length == 2) {
         title = "Add item";
         return _tabView();
       } else {
@@ -165,9 +152,7 @@ class _NewItemState extends State<NewItem> {
     );
   }
 
-  Widget _createFields(
-      String dateDescription, GlobalKey type, dynamic item, double width) {
-
+  Widget _createFields(String dateDescription, GlobalKey type, dynamic item, double width) {
 
     if (item != null) {
       itemName = item.itemName;
@@ -403,17 +388,11 @@ class _NewItemState extends State<NewItem> {
     // This does the job of validation for startDate < endDate
     if (start == false) {
       endVal = DateTime(2101);
-      itemStartDate == null
-          ? startVal = DateTime.now()
-          : startVal =
-              itemStartDate; // Value can't be smaller than itemStartDate
+      itemStartDate == null ? startVal = DateTime.now() : startVal = itemStartDate!; // Value can't be smaller than itemStartDate
     } else {
       startVal = DateTime.now();
 //        itemEndDate == null ? startVal = DateTime.now() : startVal = itemEndDate;
-      itemEndDate == null
-          ? endVal = DateTime(2101)
-          : endVal =
-              itemEndDate; // Value can't be larger than itemEndDate
+      itemEndDate == null ? endVal = DateTime(2101) : endVal = itemEndDate!; // Value can't be larger than itemEndDate
     }
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -479,12 +458,8 @@ class _NewItemState extends State<NewItem> {
     //int itemPrice = 0;
 
     if (_formKey1.currentState!.validate()) {
-      updatedDescription == null
-          ? newDescription = itemDescription
-          : newDescription = updatedDescription;
-      updatedItemName == null
-          ? newItemName = itemName
-          : newItemName = updatedItemName;
+      updatedDescription == "" ? newDescription = itemDescription : newDescription = updatedDescription;
+      updatedItemName == "" ? newItemName = itemName : newItemName = updatedItemName;
 
       if (widget.uidTabItem[1] == true) {
         ItemAvailable? oldItem = widget.uidTabItem[2] as ItemAvailable?;

@@ -11,8 +11,10 @@ class AuthService {
   FUser _userFromUser(
     fAuth.User? user,
   ) {
-//    return await DatabaseService(uid: user.uid).user;
-    return FUser(uid: user!.uid, email: user.email);
+    if (user == null) {
+      return FUser(uid: "");
+    }
+    return FUser(uid: user.uid, email: user.email);
   }
 
   // sign in anon
@@ -29,12 +31,9 @@ class AuthService {
 
   // auth change user stream
   Stream<FUser> get user {
-//    dynamic userAll = DatabaseService(uid: user.).user;
     return _auth
         .authStateChanges()
         .map((fAuth.User? user) => _userFromUser(user));
-//        .map(_userFromUser()); // This does the same as above
-//        .map(User);
   }
 
   // sign in with email & password
@@ -43,14 +42,6 @@ class AuthService {
       fAuth.UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       fAuth.User? user = result.user;
-
-//      dynamic userAll = await DatabaseService(uid: user.uid).user;
-//      userAll.then((fAuth.User result){
-//        userAll = result;
-//
-//        print(userAll.name);
-//      });
-//      return userAll;
 
       return _userFromUser(user);
     } catch (e) {
@@ -67,19 +58,14 @@ class AuthService {
       fAuth.UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       fAuth.User? user = result.user;
-//       List<String> initialCategories = CategoryService().categories;
-//       List<String> temp = ['Sport'];
       // create a new document for the user with the uid
       await DatabaseService(uid: user!.uid).updateUserData(
           name,
           surname,
           phone,
           email,
-          CategoryService()
-              .categories); //setter TODO: update userdetails categories
-//        dynamic userAll = await DatabaseService(uid: user.uid).user; //getter
+          CategoryService().allCategories); //setter TODO: update userdetails categories
 
-//        return userAll;
       return _userFromUser(user);
     } catch (e) {
       print(e.toString());

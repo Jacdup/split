@@ -64,8 +64,8 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
               body: Container(
                 child: new TabBarView(
                   children: <Widget>[
-                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 1',uid: userData.uid, isTab1: true,),
-                    new UserList(chosenCategories: CategoryService().categories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 2',uid: userData.uid, isTab1: false,),
+                    new UserList(chosenCategories: CategoryService().allCategories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 1',uid: userData.uid, isTab1: true,),
+                    new UserList(chosenCategories: CategoryService().allCategories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 2',uid: userData.uid, isTab1: false,),
                   ],
                   controller: _tabController,
                 ),

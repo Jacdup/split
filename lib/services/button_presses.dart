@@ -110,20 +110,10 @@ class ButtonPresses{
     loading.value = true; // Should do the job of setState
     var categories = Provider.of<CategoryService>(context, listen: false);
     categories.updateWith(selectedCategories);
-//    CategoryService thisCat = CategoryService();
-//   CategoryService().updateWith(selectedCategories); // Notifies listeners
-//    thisCat.updateWith(selectedCategories);
-//    print(thisCat.userCategories);
 
-    dynamic result = await DatabaseService(uid: uid).updateCategory(
-        selectedCategories);
+    //dynamic result = await DatabaseService(uid: uid).updateCategory(selectedCategories);
 
-//                      storageService.hasSignedUp = true;
-//                      storageService.category = _selectedCategories;
-//                      print(_selectedCategories);
-//                      print(storageService.category);
-
-    if (result == null) {
+  //  if (result == null) {
       loading.value = false;
 //    setState(() {
       Fluttertoast.showToast(
@@ -134,13 +124,13 @@ class ButtonPresses{
 //                  error = 'Could not sign in, please check details';
 //      loading.value = false;
 //    });
-    } else {
-      Fluttertoast.showToast(
-          msg: 'Hmm. Something went wrong.',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          fontSize: 20.0);
-    }
+    // } else {
+    //   Fluttertoast.showToast(
+    //       msg: 'Hmm. Something went wrong.',
+    //       toastLength: Toast.LENGTH_LONG,
+    //       gravity: ToastGravity.CENTER,
+    //       fontSize: 20.0);
+    // }
 //  Navigator.pop(context);
   }
 

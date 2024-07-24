@@ -37,7 +37,7 @@ class _ChooseCategoryState extends State<ChooseCategory> {
         listen: false); // Firestore user (contains uid, email)
 
     double cardHeight = screenHeight(context,
-        dividedBy: (CategoryService().categories.length / 2));
+        dividedBy: (CategoryService().allCategories.length / 2));
 
     //    bool alreadySaved = false;
     // This method is rerun every time setState is called, for instance as done
@@ -78,12 +78,12 @@ class _ChooseCategoryState extends State<ChooseCategory> {
                                 crossAxisSpacing: 0,
                                 mainAxisSpacing: 0,
                                 children: List.generate(
-                                    CategoryService().categories.length,
+                                    CategoryService().allCategories.length,
                                     (index) {
 //                      alreadySaved = _selectedCategories.contains(categories[index]);
                                   return Center(
                                     child: _buildCard(
-                                        CategoryService().categories[index],
+                                        CategoryService().allCategories[index],
                                         cardHeight),
                                   );
 //                      );

@@ -34,26 +34,24 @@ class DatabaseService {
       'phoneNumber': phone,
       'surname': surname,
       'email': email,
-      'categories': (categories).cast<String>(), // Really.
+    //  'categories': (categories).cast<String>(), // Really.
     });
   }
 
-  Future updateCategory(List<String> categories) async {
-    return await userCollection.doc(uid).update({
-      'categories': (categories).cast<String>(),
-    });
-  }
+  // Future updateCategory(List<String> categories) async {
+  //   return await userCollection.doc(uid).update({
+  //     'categories': (categories).cast<String>(),
+  //   });
+  // }
 
   User _getUserFromSnapshot(DocumentSnapshot snapshot) {
-    List<String> categoriesFromDb = (snapshot.get('categories')).cast<String>();
-
+  //  List<String> categoriesFromDb = (snapshot.get('categories')).cast<String>();
     return User(
       uid: uid,
       name: snapshot.get('name'),
       email: snapshot.get('email'),
       phone: snapshot.get('phoneNumber'),
-      categories:
-          categoriesFromDb, //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
+      //categories: categoriesFromDb, //https://stackoverflow.com/questions/54851001/listdynamic-is-not-a-subtype-of-listoption
       surname: snapshot.get('surname'),
     );
   }

@@ -101,15 +101,16 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   @override
   Widget build(BuildContext context) {
-    Filter thisFiler = new Filter();
+    Filter thisFilter = new Filter();
     final itemsRequestedFromFirestore = Provider.of<List<Item>>(context);
     final itemsAvailableFromFirestore = Provider.of<List<ItemAvailable>>(context);
-    final User? userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
-        ? Provider.of<User>(context)
-        : null;
+    final User userData = Provider.of<User>(context);
+   // final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
+       // ? Provider.of<User>(context)
+        //: null;
 
-    List<Item?> itemsRequested = thisFiler.sortRequestedByDate(itemsRequestedFromFirestore);
-    List<ItemAvailable?> itemsAvailable = thisFiler.sortAvailableByDate(itemsAvailableFromFirestore);
+    List<Item> itemsRequested = thisFilter.sortRequestedByDate(itemsRequestedFromFirestore);
+    List<ItemAvailable> itemsAvailable = thisFilter.sortAvailableByDate(itemsAvailableFromFirestore);
 
           if (userData != null) {
 //            print(userData.categories);
@@ -139,12 +140,12 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //                        AvailableList(allItems: itemsAvailableTemp, uid: userData.uid, name: 'tab2',),
 //                        RequestList(allItems: itemsTemp, uid: userData.uid, name: 'tab1',),
                          AvailableList(
-                            allItems: thisFiler.filterAvailableByCategory(itemsAvailable, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
+                            allItems: thisFilter.filterAvailableByCategory(itemsAvailable, categoryModel.userCategories.isEmpty ? [] : categoryModel.userCategories),
                              uid: userData.uid,
                             name: 'tab2',
                              searchTerm: filter,),
                          RequestList(
-                            allItems: thisFiler.filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? userData.categories : categoryModel.userCategories),
+                            allItems: thisFilter.filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? []: categoryModel.userCategories),
                              uid: userData.uid,
                             name: 'tab1',
                              searchTerm: filter,),
@@ -315,7 +316,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //        print(_currentIndex);
 //        print(_scrollController.offset);
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid, 0, null]);
+            arguments: [uid, 0]);
       },
       label: Text('Add item'),
       icon:  Icon(Icons.add),
@@ -326,7 +327,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //        print(_scrollController.offset);
 
         Navigator.pushNamed(context, NewItemRoute,
-            arguments: [uid,1, null]);
+            arguments: [uid,1]);
       },
       label: Text('Request item'),
       icon: Icon(Icons.add),

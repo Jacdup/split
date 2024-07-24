@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 class CategoryService extends ChangeNotifier {
 
-final List<String> categories = [
+static const List<String> categories = [
   'Sport & Leisure',
   'Home & Garden',
   'Electronics',
@@ -16,11 +16,13 @@ final List<String> categories = [
   'Other',
 ];
 
-final List<String> _userCategories = [] ;
+final List<String> _userCategories = categories ;
 //CategoryService({this.userCategories});
 
 
 List<String> get userCategories => _userCategories;
+
+List<String> get allCategories => categories;
 
 
 

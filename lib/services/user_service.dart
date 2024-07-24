@@ -11,7 +11,7 @@ class User {
   final String? surname;
   final String? phone;
   final String? email;
-  final List<dynamic>? categories;
+  //final List<dynamic>? categories;
 
   User(
       {required this.uid,
@@ -19,7 +19,8 @@ class User {
       this.surname,
       this.email,
       this.phone,
-      this.categories})
+    //  this.categories
+    })
       : super();
 
 //  User.fromJson(Map<String, dynamic> json)

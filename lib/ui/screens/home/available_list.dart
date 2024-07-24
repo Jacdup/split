@@ -17,7 +17,7 @@ import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 
 class AvailableList extends StatefulWidget {
-  final List<ItemAvailable?> allItems;
+  final List<ItemAvailable> allItems;
   final String name;
   final String uid;
   final String? searchTerm;
