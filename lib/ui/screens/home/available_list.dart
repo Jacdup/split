@@ -17,7 +17,7 @@ import 'package:twofortwo/shared/constants.dart';
 import 'package:twofortwo/utils/screen_size.dart';
 
 class AvailableList extends StatefulWidget {
-  final List<ItemAvailable> allItems;
+  final List<ItemAvailable?> allItems;
   final String name;
   final String uid;
   final String? searchTerm;
@@ -103,7 +103,7 @@ class _AvailableListState extends State<AvailableList> {
     }
   }
 
-  Widget _buildBorrowList(List<ItemAvailable> allItems, String name) {
+  Widget _buildBorrowList(List<ItemAvailable?> allItems, String name) {
     double _buildBox = 0;
     int i = 0;
 //    print(allItems[0].itemName);
@@ -125,7 +125,7 @@ class _AvailableListState extends State<AvailableList> {
               // Non - case sensitive search
               return widget.searchTerm == null || widget.searchTerm == ""
                   ? _buildRow(allItems[index], index, _buildBox)
-                  : allItems[index]
+                  : allItems[index]!
                           .itemName
                           .toLowerCase()
                           .contains(widget.searchTerm!.toLowerCase())
@@ -152,9 +152,9 @@ class _AvailableListState extends State<AvailableList> {
           );
   }
 
-  Widget _buildRow(ItemAvailable item, int num, double buildBox) {
+  Widget _buildRow(ItemAvailable? item, int num, double buildBox) {
 //    List<String> category = item.categories;
-    String itemName = item.itemName;
+    String itemName = item!.itemName;
     String description = item.description;
     String startDate = item.startDate;
     String endDate = item.endDate;

@@ -17,9 +17,8 @@ class DatabaseService {
   var uuid = Uuid();
 
   // collection reference
-  final CollectionReference itemRequestCollection = FirebaseFirestore.instance
-      .collection(
-          'itemsRequested'); // Creates a collection if there isn't one defined
+  final CollectionReference itemRequestCollection = 
+      FirebaseFirestore.instance.collection('itemsRequested'); // Creates a collection if there isn't one defined
   final CollectionReference itemAvailableCollection =
       FirebaseFirestore.instance.collection('itemsAvailable');
   final CollectionReference userCollection =
@@ -339,12 +338,14 @@ class DatabaseService {
   }
 
   // requested item list from snapshot
-  List<Item?> _itemListFromSnapshot(QuerySnapshot snapshot) {
+  List<Item> _itemListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       try {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         return Item(
           // Expects only positional arguments
+                // Check if 'categories' field exists
+         // List<String> categories = data['categories'] != null ? List<String>.from(data['categories']) : []; // Provide a default value if 'categories' is missing
           List<String>.from(data['categories']), //.cast<String>()
           data['itemName'] ?? '',
           data['startDate'] ?? '',
@@ -352,19 +353,20 @@ class DatabaseService {
           data['description'] ?? '',
           data['uid'] ?? '',
           data['docRef'] ?? '',
-          data['createdAt'].toDate() ?? '',
+          data['createdAt'] != null ? data['createdAt'].toDate() : null,
           data['currentlyNeeded'] ?? true,
-          data['price'] ?? null,
-          data['pricePeriod'] ?? null,
+          data['price'] ?? 0,
+          data['pricePeriod'] ?? 0,
         );
       } catch (e) {
         print("Firestore error in getting the requested list:");
         print(e);
+        return Item([], '', '', '', '', '', '', '' as DateTime, true, 0, 0);
       }
     }).toList();
   }
 
-  List<ItemAvailable?> _itemAvailableListFromSnapshot(QuerySnapshot snapshot) {
+  List<ItemAvailable> _itemAvailableListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       try {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -378,14 +380,15 @@ class DatabaseService {
           data['description'] ?? '',
           data['uid'] ?? '',
           data['docRef'] ?? '',
-          data['createdAt'].toDate() ?? '',
+          data['createdAt'] != null ? data['createdAt'].toDate() : null,
           data['available'] ?? true,
-          data['price'] ?? null,
-          data['pricePeriod'] ?? null,
+          data['price'] ?? 0,
+          data['pricePeriod'] ?? 0,
         );
       } catch (e) {
         print("Firestore error in getting the available list:");
         print(e);
+        return ItemAvailable([], '', '', '', '', '', '', '' as DateTime, true, 0, 0);
       }
     }).toList();
   }
@@ -395,15 +398,13 @@ class DatabaseService {
   // }
 
   // get requested item stream
-  Stream<List<Item?>>? get itemsRequested {
-    return itemRequestCollection.snapshots().map(_itemListFromSnapshot);
+  Stream<List<Item>>? get itemsRequested {
+    return itemRequestCollection.snapshots().map(_itemListFromSnapshot); 
   }
 
   // get available item stream
-  Stream<List<ItemAvailable?>> get itemsAvailable {
-    return itemAvailableCollection
-        .snapshots()
-        .map(_itemAvailableListFromSnapshot);
+  Stream<List<ItemAvailable>> get itemsAvailable {
+    return itemAvailableCollection.snapshots().map(_itemAvailableListFromSnapshot);
   }
 
   /* Get contact details of user owning item*/

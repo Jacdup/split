@@ -69,7 +69,6 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     FUser thisUser = widget.user;
 
 
-
     return StreamProvider<User?>.value(
       value: DatabaseService(uid: thisUser.uid).userData, //TODO: really don't need this as a stream. Only need it once for the userData.
       initialData: User(uid: "1", name: ""),

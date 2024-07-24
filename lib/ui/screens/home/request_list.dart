@@ -17,7 +17,7 @@ import 'package:twofortwo/shared/constants.dart';
 
 class RequestList extends StatefulWidget {
 
-  final List<Item> allItems;
+  final List<Item?> allItems;
   final String name;
   final String uid;
   final String searchTerm;
@@ -92,7 +92,7 @@ class _RequestListState extends State<RequestList> {
     }
   }
 
-  Widget _buildBorrowList(List<Item> allItems, String name) {
+  Widget _buildBorrowList(List<Item?> allItems, String name) {
 
     double _buildBox = 0;
     int i = 0;
@@ -109,7 +109,7 @@ class _RequestListState extends State<RequestList> {
 //        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
 //          i = i + 1;
         return  widget.searchTerm == null || widget.searchTerm == "" ? _buildRow(allItems[index], index, _buildBox)
-            : allItems[index].itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
+            : allItems[index]!.itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
 //          return _buildRow(allItems[index], index, _buildBox);
 //        }else{
           if (index == allItems.length -1){
@@ -138,7 +138,7 @@ class _RequestListState extends State<RequestList> {
 
   }
 
-  Widget _buildRow(Item item, int num, double buildBox) {
+  Widget _buildRow(Item? item, int num, double buildBox) {
 
     // final bool alreadySaved = _saved.contains(pair);
     return Hero(
@@ -149,7 +149,7 @@ class _RequestListState extends State<RequestList> {
         elevation: 4.0,
         child: Column(
           children: <Widget>[
-            (item.price == null && item.pricePeriod == null) ? _buildNonLeadingListTile(item, num):
+            (item!.price == null && item.pricePeriod == null) ? _buildNonLeadingListTile(item, num):
             _buildLeadingListTile(item,num),
 
             Visibility(

@@ -188,7 +188,7 @@ class _NewItemState extends State<NewItem> {
                                   : EdgeInsets.fromLTRB(4.0, 8, 4.0, 8.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16.0)),
-                              primary: _doesntMatter == true
+                                  backgroundColor: _doesntMatter == true
                                   ? Colors.grey
                                   : Colors.white70,);
 

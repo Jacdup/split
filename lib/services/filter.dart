@@ -33,16 +33,16 @@ List<Message> sortMessagesByDate(List<Message> messages){
     return itemsAvailable;
   }
 
-  List<Item> filterRequestedByCategory(List<Item> itemsRequested, List<dynamic>? chosenCategories){
+  List<Item?> filterRequestedByCategory(List<Item?> itemsRequested, List<dynamic>? chosenCategories){
     return itemsRequested.where((element) =>
-       (chosenCategories!.any((item) => element.categories.contains(item)))
+       (chosenCategories!.any((item) => element!.categories.contains(item)))
     ).toList();
   }
 
-  List<ItemAvailable> filterAvailableByCategory(List<ItemAvailable> itemsAvailable, List<dynamic>? chosenCategories){
+  List<ItemAvailable?> filterAvailableByCategory(List<ItemAvailable?> itemsAvailable, List<dynamic>? chosenCategories){
 //    print(chosenCategories);
     return itemsAvailable.where((element) =>
-    (chosenCategories!.any((item) => element.categories.contains(item)))
+    (chosenCategories!.any((item) => element!.categories.contains(item)))
     ).toList();
   }
 

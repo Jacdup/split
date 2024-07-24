@@ -20,14 +20,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await setupLocator();
+    FirebaseOptions fOpts = FirebaseOptions(apiKey: "AIzaSyB4XUqmAX8iW3WNiggQpmEB8D8AltuHO2s", appId: "1:989534986832:android:088db125b51917e591a755", messagingSenderId: '989534986832', projectId: 'for2-9b41d');
     await Firebase.initializeApp();
-    runApp(MyApp()
-//      DevicePreview( // This is for testing UI
-//        builder: (context) => MyApp(),
-//      ),
-        );
+    runApp(MyApp());
   } catch (error) {
-    print('Locator setup has failed');
+    print('Locator setup has failed ');
+    print(error);
   }
 }
 
@@ -39,9 +37,9 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        StreamProvider<FUser>.value(value: AuthService().user, initialData: FUser(uid: '')), // Firebase user
-        StreamProvider<List<Item?>>.value(value: DatabaseService(uid: '').itemsRequested, initialData: [],),
-        StreamProvider<List<ItemAvailable?>>.value(value: DatabaseService(uid: '').itemsAvailable, initialData: [],),
+        StreamProvider<FUser>.value(value: AuthService().user, initialData: FUser(uid: '1')), // Firebase user
+        StreamProvider<List<Item>>.value(value: DatabaseService(uid: '').itemsRequested, initialData: [],),
+        StreamProvider<List<ItemAvailable>>.value(value: DatabaseService(uid: '').itemsAvailable, initialData: [],),
         ChangeNotifierProvider<CategoryService>(create: (context) => CategoryService()),
       ],
       child: MaterialApp(

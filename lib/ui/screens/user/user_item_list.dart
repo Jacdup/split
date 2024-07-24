@@ -12,8 +12,8 @@ import 'package:twofortwo/utils/routing_constants.dart';
 class UserList extends StatefulWidget {
 
   final List<String> chosenCategories;
-  final List<ItemAvailable> allAvailableItems;
-  final List<Item> allRequestedItems;
+  final List<ItemAvailable?> allAvailableItems;
+  final List<Item?> allRequestedItems;
   final String pageStorageKey;
   final String uid;
   final bool isTab1;

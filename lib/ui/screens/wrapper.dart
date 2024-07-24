@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twofortwo/services/push_notifications.dart';
+// import 'package:twofortwo/services/push_notifications.dart';
 import 'package:twofortwo/ui/screens/home/home_view.dart';
 import 'authenticate/authenticate.dart';
 import 'package:twofortwo/services/user_service.dart';
@@ -13,6 +13,7 @@ class Wrapper extends StatelessWidget{
 //    var localStorageService = locator<LocalStorageService>();
 
     final FUser user = Provider.of<FUser>(context); // Firestore user (contains uid, email)
+   // print(user.uid);
     bool _initialized = false;
 //    print(user.uid);
 //    Future<User> userAll = getUser(user.uid);
@@ -35,15 +36,15 @@ class Wrapper extends StatelessWidget{
 //        return HomeView(user: user,);
 //      }
 //    }else
-      if (user == null){
+      if (user.uid == ""){
       return Authenticate();
 //      return AuthRoute;
     }else{ // We have a user, so initialize tokens
-        if (!_initialized) {
-          PushNotificationsManager().init(
-              user.uid); //TODO: is this the right place to do this?
-          _initialized = true;
-        }
+        // if (!_initialized) {
+        //   PushNotificationsManager().init(
+        //       user.uid); //TODO: is this the right place to do this?
+        //   _initialized = true;
+        // }
       return HomeView(user: user, key: new Key("homeView"),);
     }
 
