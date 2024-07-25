@@ -197,9 +197,8 @@ class _NewItemState extends State<NewItem> {
                     height: 8.0,
                   ),
                   TextFormField(
-                    initialValue: itemName ?? "",
-                    validator: (val) =>
-                        val!.isEmpty ? 'Please enter a name' : null,
+                    initialValue: itemName,
+                    validator: (val) => val!.isEmpty ? 'Please enter a name' : null,
                     onChanged: (val) {
                       setState(() {
                         itemName = val;
@@ -228,9 +227,8 @@ class _NewItemState extends State<NewItem> {
                       height: 8.0,
                     ),
                     TextFormField(
-                      initialValue: itemDescription ?? "",
-                      validator: (val) =>
-                          val!.isEmpty ? 'Please provide a description' : null,
+                      initialValue: itemDescription,
+                      validator: (val) => val!.isEmpty ? 'Please provide a description' : null,
                       keyboardType: TextInputType.multiline,
                       onChanged: (val) {
                         setState(() {
@@ -434,20 +432,10 @@ class _NewItemState extends State<NewItem> {
   }
 
   _buildButton(dynamic item, GlobalKey type) {
-//    (type == _formKey1) ? ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn1)
-//        : ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn2),
-
     if (item != null) {
-      return ButtonWidget(
-          icon: Icons.navigate_next, onPressed: onPressedBtnUpdate);
+      return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtnUpdate);
     } else {
-      if (type == _formKey1)
-        return ButtonWidget(
-            icon: Icons.navigate_next, onPressed: onPressedBtnRequested);
-      else {
-        return ButtonWidget(
-            icon: Icons.navigate_next, onPressed: onPressedBtnAvailable);
-      }
+      return ButtonWidget(icon: Icons.navigate_next, onPressed: onPressedBtn);
     }
   }
 
@@ -461,24 +449,6 @@ class _NewItemState extends State<NewItem> {
       updatedDescription == "" ? newDescription = itemDescription : newDescription = updatedDescription;
       updatedItemName == "" ? newItemName = itemName : newItemName = updatedItemName;
 
-      if (widget.uidTabItem[1] == true) {
-        ItemAvailable? oldItem = widget.uidTabItem[2] as ItemAvailable?;
-        String uid = widget.uidTabItem[0] as String;
-        ItemAvailable newItem = new ItemAvailable(
-            [],
-            newItemName,
-            itemStartDate.toString().split(' ')[0],
-            itemEndDate.toString().split(' ')[0],
-            newDescription,
-            uid,
-            oldItem!.docRef,
-            DateTime.now(),
-            true,
-            itemPrice,
-        itemPricePeriod);
-        Navigator.pushReplacementNamed(context, CategoryRoute,
-            arguments: [newItem, widget.uidTabItem[1]]);
-      } else {
         Item oldItem = widget.uidTabItem[2] as Item;
         String uid = widget.uidTabItem[0] as String;
         Item newItem = new Item(
@@ -495,11 +465,10 @@ class _NewItemState extends State<NewItem> {
             itemPricePeriod);
         Navigator.pushReplacementNamed(context, CategoryRoute,
             arguments: [newItem, widget.uidTabItem[1]]);
-      }
     }
   }
 
-  onPressedBtnRequested() async {
+  onPressedBtn() async {
     if (_formKey1.currentState!.validate()) {
       String uid = widget.uidTabItem[0] as String;
       Item newItem = new Item(
@@ -514,27 +483,6 @@ class _NewItemState extends State<NewItem> {
           true,
           itemPrice,
           itemPricePeriod);
-      Navigator.pushReplacementNamed(context, CategoryRoute,
-          arguments: [newItem]);
-    }
-  }
-
-  onPressedBtnAvailable() async {
-    if (_formKey2.currentState!.validate()) {
-      String uid = widget.uidTabItem[0] as String;
-      ItemAvailable newItem = new ItemAvailable(
-          [],
-          itemName,
-          itemStartDate.toString().split(' ')[0],
-          itemEndDate.toString().split(' ')[0],
-          itemDescription,
-          uid,
-          '2',
-          DateTime.now(),
-          true,
-          itemPrice,
-          itemPricePeriod);
-      print(newItem);
       Navigator.pushReplacementNamed(context, CategoryRoute,
           arguments: [newItem]);
     }

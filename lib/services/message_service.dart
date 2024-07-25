@@ -1,4 +1,3 @@
-import 'package:twofortwo/services/user_service.dart';
 
 class Message{
 

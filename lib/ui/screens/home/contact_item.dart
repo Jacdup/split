@@ -51,7 +51,7 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
     itemID = widget.userItemDetails["docRef"];
     type = widget.userItemDetails["type"];
     userUid = widget.userItemDetails["uid"];
-    itemOwnerDetails = _fetchUserInfo(itemID, type);
+    itemOwnerDetails = _fetchUserInfo(itemID);
   }
 
   @override
@@ -277,14 +277,9 @@ class _ContactItemOwnerState extends State<ContactItemOwner> {
   }
 }
 
-Future<UserContact> _fetchUserInfo(String itemID, bool type) async {
-  UserContact itemUser;
-
-  if (type) {
-    itemUser = (await DatabaseService(uid: "1",itemID: itemID).itemOwnerDetailsAvail)!;
-  } else {
-    itemUser = (await DatabaseService(uid: "1", itemID: itemID).itemOwnerDetailsReq)!;
-  }
+Future<UserContact> _fetchUserInfo(String itemID) async {
+    UserContact itemUser;
+    itemUser = (await DatabaseService(uid: "1", itemID: itemID).itemOwnerDetails)!;
 
   return itemUser;
 }

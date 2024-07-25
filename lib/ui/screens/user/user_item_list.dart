@@ -1,24 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twofortwo/services/database.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/loading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twofortwo/shared/constants.dart';
-import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/services/button_presses.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 
 class UserList extends StatefulWidget {
 
   final List<String> chosenCategories;
-  final List<ItemAvailable?> allAvailableItems;
-  final List<Item?> allRequestedItems;
+  final List<Item?> allItems;
   final String pageStorageKey;
   final String uid;
   final bool isTab1;
 
-  UserList({required this.chosenCategories, required this.allAvailableItems, required this.allRequestedItems,required this.pageStorageKey,required this.uid, required this.isTab1});
+  UserList({required this.chosenCategories, required this.allItems,required this.pageStorageKey,required this.uid, required this.isTab1});
 
   @override
   _UserListState createState() => _UserListState();
@@ -52,42 +48,21 @@ class _UserListState extends State<UserList> {
 
     // Go to available list
    if (widget.isTab1){
-     var numItems = 0;
-     if (widget.allAvailableItems != null){
-       numItems = widget.allAvailableItems.length;
-     }
-     for (var i = 0; i <= numItems; i++){
-       _infoShow.add(false);
-//       _notAvailableVal.add(false);
-     }
-     if (widget.allAvailableItems == null){
-       return Center(child: Text("No items"),);
-     }else{
-       return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allAvailableItems, widget.pageStorageKey, widget.isTab1);
-     }
+      // Return the same in both cases for now
+      return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allItems, widget.pageStorageKey);
    }
-   // Go to requested list
    else{
      var numItems = 0;
-     if (widget.allRequestedItems != null){
-       numItems = widget.allRequestedItems.length;
-     }
-
+     numItems = widget.allItems.length;
+   
      for (var i = 0; i <= numItems; i++){
        _infoShow.add(false) ;
-//       _notAvailableVal.add(false);
      }
-     if (widget.allRequestedItems == null){
-       return Center(child: Text("No items"),);
-     }else{
-       return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allRequestedItems, widget.pageStorageKey,widget.isTab1);
-     }
-   }
+     return loading ? Loading() : _buildBorrowList(widget.chosenCategories, widget.allItems, widget.pageStorageKey);
+      }
   }
 
-  Widget _buildBorrowList(List<String> chosenCategories, List<dynamic> allItems, String pageStorageKey, bool type) {
-  // Type = true if available item
-  // Type = false if requested item
+  Widget _buildBorrowList(List<String> chosenCategories, List<dynamic> allItems, String pageStorageKey) {
     double _buildBox = 0;
 
     return allItems.isEmpty ? Center(child: Text("No items"),) : ListView.builder(
@@ -98,50 +73,24 @@ class _UserListState extends State<UserList> {
         if (index == allItems.length -1) {
           _buildBox = 80;
         }
-        return _buildRow(allItems[index], index, _buildBox, type);
-//        if (chosenCategories.any((item) => allItems[index].categories.contains(item)))  {// Don't know why all this logic is here though
-//          i = i + 1;
-//          return _buildRow(allItems[index], index, _buildBox, type);
-//        }else{
-//          if (index == allItems.length -1){
-//            _buildBox = 80;
-//            if (i == 0) {
-//              return Center(child: Text("No items in chosen categories"));
-//            }
-//          }
-////          if (i == 0){
-////            i = i + 1;
-//
-////          }else {
-//          return Center();
-////          }
-//        }
-
+        return _buildRow(allItems[index], index, _buildBox);
       },
-//      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
 
   }
 
-  Widget _buildRow(dynamic item, int num, double buildBox, bool type) {
+  Widget _buildRow(dynamic item, int num, double buildBox) {
 //    List<String> category = item.categories;
     String itemName = item.itemName;
     String description = item.description;
     String date = item.startDate;
     String itemRef = item.docRef;
     bool availability = true;
-    if (type){ // Then it's tab 1 (Available items)
-      availability = item.available;
-      availability == null ? availability = true: availability = item.available; // This is just for those items created before availability became a thing
-    }else{
       availability = item.currentlyNeeded;
+      // ignore: unnecessary_null_comparison
       availability == null ? availability = true : availability = item.currentlyNeeded;
-    }
-//    int typeInt;
-//    type==true ? typeInt = 2 : typeInt = 1;
-    // final bool alreadySaved = _saved.contains(pair);
+
     return Hero(
-//      tag: "row$num $typeInt",
       tag: "row$num 2",
       child: Wrap(
         children: <Widget>[
@@ -210,14 +159,14 @@ class _UserListState extends State<UserList> {
                           Spacer(flex:3),
                           IconButton(onPressed: (){
 //                            print(item);
-                            Navigator.pushNamed(context, NewItemRoute, arguments: [widget.uid, type, item]);
+                            Navigator.pushNamed(context, NewItemRoute, arguments: [widget.uid, item]);
                           },
                             icon: Icon(Icons.edit,),
                             color: Colors.blueGrey,
                             iconSize: 30.0,),
                           Spacer(flex:2),
                           IconButton(onPressed: (){
-                            _confirmDelete(context, itemRef, type);
+                            _confirmDelete(context, itemRef);
                           },
                           icon: Icon(Icons.delete,),
                           color: Colors.red,
@@ -280,7 +229,7 @@ class _UserListState extends State<UserList> {
               style: itemDateFromTo,
               children: <TextSpan>[
                 TextSpan(
-                  text: endDate == null ? " " : endDate,
+                  text: endDate,
                   style: itemDate,
                 ),
               ]),
@@ -289,7 +238,7 @@ class _UserListState extends State<UserList> {
     );
   }
 
-  _confirmDelete(context, String documentRef, bool type) { //TODO: this in BLoC. Use BLoCConsumer to build new list, and listener to show toast/snackbar with undo
+  _confirmDelete(context, String documentRef) { //TODO: this in BLoC. Use BLoCConsumer to build new list, and listener to show toast/snackbar with undo
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -307,7 +256,7 @@ class _UserListState extends State<UserList> {
                   Navigator.pop(context);
                 });
 
-                dynamic result = await DatabaseService(uid:"1").deleteItem(documentRef, type);
+                dynamic result = await DatabaseService(uid:"1").deleteItem(documentRef);
 
                 if (result == null) {
                   setState(() {

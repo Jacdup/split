@@ -1,19 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:twofortwo/services/category_service.dart';
 import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/shared/constants.dart';
-import 'package:twofortwo/shared/loading.dart';
 import 'package:twofortwo/ui/screens/home/request_list.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:provider/provider.dart';
-import 'package:twofortwo/ui/screens/home/available_list.dart';
 import 'package:twofortwo/ui/screens/home/drawer.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BorrowListPortrait extends StatefulWidget {
 
@@ -35,9 +30,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //  Widget _titleBar;
 //  RefreshController  _refreshController;
 
-
-
-  int _currentIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -75,7 +67,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //////      _scrollController.offset;
 //    });
 
-    _tabController = new TabController(length: 2, vsync: this);
+    _tabController = new TabController(length: 1, vsync: this);
     _tabController.addListener(_handleTabIndex);
     _tabController.animation!.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
 //    _refreshController = RefreshController(initialRefresh: false);
@@ -103,63 +95,43 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
   Widget build(BuildContext context) {
     Filter thisFilter = new Filter();
     final itemsRequestedFromFirestore = Provider.of<List<Item>>(context);
-    final itemsAvailableFromFirestore = Provider.of<List<ItemAvailable>>(context);
     final User userData = Provider.of<User>(context);
    // final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
        // ? Provider.of<User>(context)
         //: null;
 
-    List<Item> itemsRequested = thisFilter.sortRequestedByDate(itemsRequestedFromFirestore);
-    List<ItemAvailable> itemsAvailable = thisFilter.sortAvailableByDate(itemsAvailableFromFirestore);
+    List<Item> itemsRequested = thisFilter.sortByDate(itemsRequestedFromFirestore);
 
-          if (userData != null) {
-//            print(userData.categories);
-
-//            final items = Filter().filterRequestedByCategory(items1, userData.categories);
-//            final itemsAvailable = Filter().filterAvailableByCategory(itemsAvailable1, userData.categories);
-
-            return Scaffold(
-              drawer: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6, //20.0,
-                child: MenuDrawer(userData: userData,),
-//              child: _buildDrawer(context, userData),
-            ),
-              floatingActionButton: _actionButtons(userData.uid),
-              body: NestedScrollView(
-                  controller: _scrollController,
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-//                        _searchNode.hasFocus ? showSearchBar.value = true : showSearchBar.value = innerBoxIsScrolled;
-                    return <Widget>[
-                      _createHeader(userData.name, innerBoxIsScrolled),
-                    ];
-                  },
-                  body: Consumer<CategoryService>(
-                      builder: (context, categoryModel, child) =>TabBarView(
-                      children: <Widget>[
-//                        AvailableList(allItems: itemsAvailableTemp, uid: userData.uid, name: 'tab2',),
-//                        RequestList(allItems: itemsTemp, uid: userData.uid, name: 'tab1',),
-                         AvailableList(
-                            allItems: thisFilter.filterAvailableByCategory(itemsAvailable, categoryModel.userCategories.isEmpty ? [] : categoryModel.userCategories),
-                             uid: userData.uid,
-                            name: 'tab2',
-                             searchTerm: filter,),
-                         RequestList(
-                            allItems: thisFilter.filterRequestedByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? []: categoryModel.userCategories),
-                             uid: userData.uid,
-                            name: 'tab1',
-                             searchTerm: filter,),
-                      ],
-                      controller: _tabController,
-                    ),
+          return Scaffold(
+            drawer: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6, //20.0,
+              child: MenuDrawer(userData: userData,),
+          ),
+            floatingActionButton: _actionButtons(userData.uid),
+            body: NestedScrollView(
+                controller: _scrollController,
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    _createHeader(userData.name, innerBoxIsScrolled),
+                  ];
+                },
+                body: Consumer<CategoryService>(
+                    builder: (context, categoryModel, child) =>TabBarView(
+                    children: <Widget>[
+                       RequestList(
+                          allItems: thisFilter.filterByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? []: categoryModel.userCategories),
+                           uid: userData.uid,
+                          name: 'tab1',
+                           searchTerm: filter,),
+                    ],
+                    controller: _tabController,
                   ),
-              ),
+                ),
+            ),
 
-            );
-          } else {
-            return Loading();
+          );
           }
-  }
 
   Widget _createHeader(String userName, bool innerBoxIsScrolled) {
     return SliverAppBar(
@@ -239,8 +211,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
           labelColor: Colors.black87,
           unselectedLabelColor: Colors.black38,
           tabs: [
-            new Tab(child: Text("Up for Grabs", style: tabFont,), ),
-            new Tab(child: Text("In Need Of",style: tabFont,)),
+            new Tab(child: Text("Items", style: tabFont,), ),
+            // new Tab(child: Text("In Need Of",style: tabFont,)),
           ],
           controller: _tabController,
         ),
@@ -274,7 +246,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
           hintText: "Search",
           suffixIcon: IconButton(icon: Icon(Icons.clear), onPressed: (){
 
-            if (filter == null || filter == ""){
+            if (filter == ""){
               FocusScope.of(context).unfocus();
               _searchController.clear();
               setState(() {
@@ -289,7 +261,7 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
         style: TextStyle(fontSize: 14.0, height: 1),
         focusNode: _searchNode,
         onEditingComplete: () {
-          if (filter == null || filter == "") {
+          if (filter == "") {
             FocusScope.of(context).unfocus();
             _searchController.clear();
             setState(() {

@@ -16,14 +16,14 @@ This is to keep the 'business' logic separate from the widget construction.
 class ButtonPresses{
 
 
-  onSelectRequestedItemCategories(String uid, Item item,
+  onSelectItemCategories(String uid, Item item,
       List<String> selectedCategories) async {
 //      loading.value = true;
 ////      newItem = new Item(null, itemName, description, date, null, null); //TODO, send to category route
 ////      Navigator.pushReplacementNamed(context,CategoryRoute);
 //
 //    // TODO, this in category view
-    dynamic result = await DatabaseService(uid: uid).addItemRequestedData(
+    dynamic result = await DatabaseService(uid: uid).addItemData(
         item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
         item.createdAt,item.price, item.pricePeriod);
 //
@@ -46,57 +46,17 @@ class ButtonPresses{
   }
 
 
-  onSelectAvailableItemCategories(String uid, ItemAvailable item,
-      List<String> selectedCategories) async {
-//      loading.value = true;
-//
-////      newItem = new Item(_selectedCategory, itemName, date, description);
-    dynamic result = await DatabaseService(uid: uid).addItemAvailableData(
-        item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
-        item.createdAt, item.price, item.pricePeriod);
-
-    if (result == null) {
-      Fluttertoast.showToast(msg: 'Success! Item added.',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          fontSize: 20.0);
-      loading.value = false;
-    } else {
-      Fluttertoast.showToast(msg: 'Hmm. Something went wrong.',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          fontSize: 20.0);
-    }
-  }
-
-
-  onUpdateItemCategories(String uid, dynamic item, bool itemType,
-      List<String> selectedCategories) async {
+  onUpdateItemCategories(String uid, Item item, List<String> selectedCategories) async {
 
     dynamic result;
-//      loading.value = true;
-//
-////      newItem = new Item(_selectedCategory, itemName, date, description);
-  if (itemType == true) { // Available item
-
-    result = await DatabaseService(uid: uid).updateItem(
-        item,null, itemType, selectedCategories);
-  }else{
-    result = await DatabaseService(uid: uid).updateItem(
-        null,item, itemType, selectedCategories);
-  }
-//    dynamic result = await DatabaseService(uid: uid).addItemAvailableData(
-//        item.itemName, item.description, item.startDate,item.endDate, selectedCategories,
-//        item.createdAt);
-//  }
-
+    result = await DatabaseService(uid: uid).updateItem(item, selectedCategories);
 
     if (result == null) {
       Fluttertoast.showToast(msg: 'Success! Item updated.',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           fontSize: 20.0);
-      loading.value = false;
+          loading.value = false;
     } else {
       Fluttertoast.showToast(msg: 'Hmm. Something went wrong.',
           toastLength: Toast.LENGTH_LONG,
@@ -111,27 +71,12 @@ class ButtonPresses{
     var categories = Provider.of<CategoryService>(context, listen: false);
     categories.updateWith(selectedCategories);
 
-    //dynamic result = await DatabaseService(uid: uid).updateCategory(selectedCategories);
-
-  //  if (result == null) {
       loading.value = false;
-//    setState(() {
       Fluttertoast.showToast(
           msg: 'Successfully updated categories.',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           fontSize: 20.0);
-//                  error = 'Could not sign in, please check details';
-//      loading.value = false;
-//    });
-    // } else {
-    //   Fluttertoast.showToast(
-    //       msg: 'Hmm. Something went wrong.',
-    //       toastLength: Toast.LENGTH_LONG,
-    //       gravity: ToastGravity.CENTER,
-    //       fontSize: 20.0);
-    // }
-//  Navigator.pop(context);
   }
 
   onSendMessage(String messageUid, String documentRef, String messagePayload,

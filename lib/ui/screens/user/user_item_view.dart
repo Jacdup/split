@@ -5,7 +5,6 @@ import 'package:twofortwo/services/filter.dart';
 import 'package:twofortwo/services/item_service.dart';
 import 'package:twofortwo/services/user_service.dart';
 import 'package:twofortwo/shared/constants.dart';
-import 'package:twofortwo/shared/widgets.dart';
 import 'package:twofortwo/ui/screens/user/user_item_list.dart';
 import 'package:twofortwo/utils/colours.dart';
 import 'package:twofortwo/utils/screen_size.dart';
@@ -38,34 +37,25 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
 //    print(userData);
 
     final items = Provider.of<List<Item>>(context) ?? [];
-    final itemsAvailable = Provider.of<List<ItemAvailable>>(context) ?? [];
-
-    List<ItemAvailable> thisUserItemsAvailable = [];
-    List<Item> thisUserItemsRequested = [];
+    List<Item> thisUserItems = [];
 
 
     // Assign items that this user posted
-    itemsAvailable.forEach((thisItem){
-      if (thisItem.uid == userData.uid){
-        thisUserItemsAvailable.add(thisItem);
-      }
-    });
     items.forEach((thisItem){
       if (thisItem.uid == userData.uid){
-        thisUserItemsRequested.add(thisItem);
+        thisUserItems.add(thisItem);
       }
     });
 
-    thisUserItemsRequested= Filter().sortRequestedByDate(thisUserItemsRequested);
-    thisUserItemsAvailable = Filter().sortAvailableByDate(thisUserItemsAvailable);
+    thisUserItems = Filter().sortByDate(thisUserItems);
 
             return Scaffold(
               appBar: _profileAppBar(userData, userData.uid),
               body: Container(
                 child: new TabBarView(
                   children: <Widget>[
-                    new UserList(chosenCategories: CategoryService().allCategories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 1',uid: userData.uid, isTab1: true,),
-                    new UserList(chosenCategories: CategoryService().allCategories, allAvailableItems: thisUserItemsAvailable, allRequestedItems: thisUserItemsRequested, pageStorageKey: 'Tab 2',uid: userData.uid, isTab1: false,),
+                    new UserList(chosenCategories: CategoryService().allCategories, allItems: thisUserItems, pageStorageKey: 'Tab 1',uid: userData.uid, isTab1: true,),
+                    new UserList(chosenCategories: CategoryService().allCategories, allItems: thisUserItems, pageStorageKey: 'Tab 2',uid: userData.uid, isTab1: false,),
                   ],
                   controller: _tabController,
                 ),
@@ -82,17 +72,11 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
       child: Container(
         padding: EdgeInsets.fromLTRB(0,30,0,0),
         color: customBlue5,
-
-//        automaticallyImplyLeading: false,
-//        centerTitle: true,
         child: Column(
           children: <Widget>[
-//            IconButton(alignment: Alignment.centerLeft,icon: Icon(Icons.arrow_back)),
             Row(
               children: <Widget>[
                 BackButton(onPressed: (){Navigator.pop(context);}),
-//                IconButton(icon: Icon(Icons.arrow_back), iconSize: 32.0,onPressed: (){Navigator.pop(context);},),
-
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(right: 48.0),//TODO, responsive. Well, an IconButton has a min size of 48 pixels.
@@ -101,7 +85,6 @@ class _UserItemDetailsState extends State<UserItemDetails> with SingleTickerProv
                       child: CircleAvatar(
                         radius: screenHeight(context, dividedBy: 18),
                         backgroundColor: Colors.deepOrangeAccent,
-//              child: Image.asset('split_new_blue1.png'),
                         child: Text(
                           userData.name.substring(0, 1) +
                               userData.surname!.substring(0, 1),

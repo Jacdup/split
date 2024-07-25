@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twofortwo/shared/widgets.dart';
-import 'package:twofortwo/utils/colours.dart';
-import 'package:twofortwo/utils/screen_size.dart';
 import 'package:twofortwo/services/user_service.dart';
-
 
 class UserDetails extends StatefulWidget {
 

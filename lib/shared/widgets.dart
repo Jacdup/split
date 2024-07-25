@@ -238,8 +238,7 @@ class ProfileAppBar extends StatelessWidget {
                           backgroundColor: generateRandomColor(0),
 //              child: Image.asset('split_new_blue1.png'),
                           child: Text(
-                            userData!.name!.substring(0, 1) +
-                                userData!.surname!.substring(0, 1),
+                            userData!.name.substring(0, 1) + userData!.surname!.substring(0, 1),
                             style: TextStyle(fontSize: 25.0, color: Colors.white),
                           ),
                         ),

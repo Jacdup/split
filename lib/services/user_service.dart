@@ -3,7 +3,6 @@
 // This method should store a copy of the user details, without continually fetching from the storage service
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class User {
   final String uid;
