@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       providers: [
         StreamProvider<FUser>.value(value: AuthService().user, initialData: FUser(uid: "")), // Firebase user
         StreamProvider<List<Item>>.value(value: DatabaseService(uid: '').items, initialData: [],),
-        ChangeNotifierProvider<CategoryService>(create: (context) => CategoryService()),
+      //  ChangeNotifierProvider<CategoryService>(create: (context) => CategoryService()),
       ],
       child: MaterialApp(
         onGenerateRoute: (settings) {
@@ -47,16 +47,9 @@ class MyApp extends StatelessWidget {
 //        builder: DevicePreview.appBuilder, //  This is for testing UI
         title: '2For2 Demo',
         theme: ThemeData(
-//          primarySwatch: colorCustom,
           primarySwatch: customBlue5,
         ),
-//        home: Wrapper(), // becomes the route named '/'
         initialRoute: HomeViewRoute, // Temporary name for wrapper
-//        onGenerateRoute: router.generateRoute,//TODO: how to pass arguments here
-//        initialRoute: _getStartupScreen(context),
-
-        //onUnknownRoute: (settings) => MaterialPageRoute(builder: (context) => UndefinedView(name: settings.name)),
-        //home: MyHomePage(title: '2For2 Demo'),
       ),
     );
   }

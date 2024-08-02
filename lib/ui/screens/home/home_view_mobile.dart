@@ -40,37 +40,11 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
       });
     });
 
-//    showSearchBar.value(false);
-//    _searchNode.addListener(() {
-//      _showSearchBar = false;
-//    });
     _scrollController = new ScrollController();
-//    _animationController = new AnimationController(vsync: this, duration: const Duration(seconds: 2))..forward();
-
-//    showSearchBar.addListener(() {
-//      _title = _titleBar('userName');
-//    });
-//    _animationController.addListener(() {
-//      showSearchBar.value;
-//    });
-//    showSearchBar.addListener(() {
-//      setState(() {
-//        _searchNode;
-//      });
-//
-////    _handleTabIndex();
-////      _scrollController.offset;
-//////      if (_scrollController.offset > 50){
-//////        showSearchBar.value = true;
-//////    }
-//////      print(_scrollController.offset);
-//////      _scrollController.offset;
-//    });
 
     _tabController = new TabController(length: 1, vsync: this);
     _tabController.addListener(_handleTabIndex);
     _tabController.animation!.addListener(() {_handleTabIndex();}); // This makes the FAB respond faster to tab changes
-//    _refreshController = RefreshController(initialRefresh: false);
   }
 
   @override
@@ -85,7 +59,6 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 
   _handleTabIndex() {
     setState(() {
-      //_currentIndex = _tabController.index;
     });
   }
 
@@ -96,11 +69,9 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
     Filter thisFilter = new Filter();
     final itemsRequestedFromFirestore = Provider.of<List<Item>>(context);
     final User userData = Provider.of<User>(context);
-   // final User userData = Provider.of<User>(context).runtimeType == User //https://stackoverflow.com/questions/61818855/flutter-provider-type-listdynamic-is-not-a-subtype-of-type-user
-       // ? Provider.of<User>(context)
-        //: null;
 
     List<Item> itemsRequested = thisFilter.sortByDate(itemsRequestedFromFirestore);
+    var categories = CategoryService.categories;
 
           return Scaffold(
             drawer: SizedBox(
@@ -116,19 +87,22 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
                     _createHeader(userData.name, innerBoxIsScrolled),
                   ];
                 },
-                body: Consumer<CategoryService>(
-                    builder: (context, categoryModel, child) =>TabBarView(
-                    children: <Widget>[
-                       RequestList(
-                          allItems: thisFilter.filterByCategory(itemsRequested, categoryModel.userCategories.isEmpty ? []: categoryModel.userCategories),
+                body: ItemList(
+                          allItems: thisFilter.filterByCategory(itemsRequested, categories), // TODO: Replace with filter/real categories here
                            uid: userData.uid,
-                          name: 'tab1',
+                           name: 'tab1',
                            searchTerm: filter,),
-                    ],
-                    controller: _tabController,
-                  ),
+                  // TabBarView(
+                  //   children: <Widget>[
+                  //      ItemList(
+                  //         allItems: thisFilter.filterByCategory(itemsRequested, categories), // TODO: Replace with filter/real categories here
+                  //          uid: userData.uid,
+                  //          name: 'tab1',
+                  //          searchTerm: filter,),
+                  //   ],
+                  //   controller: _tabController,
+                  // ),
                 ),
-            ),
 
           );
           }
@@ -145,7 +119,8 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
 //      leading: Icon(Icons.menu),
       title: innerBoxIsScrolled || _showSearchBar || _searchNode.hasFocus  ? _searchBar() : SizedBox.shrink(), // Builds search bar in title when search clicked, or when innerBoxIsScrolled
       centerTitle: true,
-      expandedHeight: 200,
+      expandedHeight: 150,
+
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
@@ -189,34 +164,36 @@ class _BorrowListPortraitState extends State<BorrowListPortrait>
               ],
             ),
           ),
-          background: Row(
+          background: Column(
+
             children: <Widget>[
               Spacer(),
               Image.asset(
                 'logo_only.png',
                 width: 150.0,
                 height: 150.0,
+                alignment: Alignment(0, 0.5),
               ),
               Spacer(),
             ],
           ),
         ),
       ),
-      bottom: PreferredSize(
-        preferredSize: Size.square(38.0),
-        child: TabBar(
-          indicatorColor: customYellow2,
-          indicatorSize: TabBarIndicatorSize.tab,
-          indicatorWeight: 4.0,
-          labelColor: Colors.black87,
-          unselectedLabelColor: Colors.black38,
-          tabs: [
-            new Tab(child: Text("Items", style: tabFont,), ),
-            // new Tab(child: Text("In Need Of",style: tabFont,)),
-          ],
-          controller: _tabController,
-        ),
-      ),
+      // bottom: PreferredSize(
+      //   preferredSize: Size.square(38.0),
+      //   child: TabBar(
+      //     indicatorColor: customYellow2,
+      //     indicatorSize: TabBarIndicatorSize.tab,
+      //     indicatorWeight: 4.0,
+      //     labelColor: Colors.black87,
+      //     unselectedLabelColor: Colors.black38,
+      //     tabs: [
+      //       new Tab(child: Text("Items", style: tabFont,), ),
+      //       // new Tab(child: Text("In Need Of",style: tabFont,)),
+      //     ],
+      //     controller: _tabController,
+      //   ),
+      // ),
     );
 
     // );

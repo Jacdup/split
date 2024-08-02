@@ -152,7 +152,7 @@ class _NewItemState extends State<NewItem> {
     );
   }
 
-  Widget _createFields(String dateDescription, GlobalKey type, dynamic item, double width) {
+  Widget _createFields(String dateDescription, GlobalKey formKey, dynamic item, double width) {
 
     if (item != null) {
       itemName = item.itemName;
@@ -178,7 +178,7 @@ class _NewItemState extends State<NewItem> {
                                   : Colors.white70,);
 
     return Form(
-      key: type, // Keep track of form
+      key: formKey, // Keep track of form
       child: SingleChildScrollView(
         child: Container(
           width: screenWidth(context, dividedBy: width),
@@ -353,7 +353,7 @@ class _NewItemState extends State<NewItem> {
                             validator: (val) => (val!.isEmpty && itemPricePeriod != 0) ? 'Please set an asking price.' : null,
                             onChanged: (val) {
                               setState(() {
-                                itemPrice = double.parse(val);
+                                itemPrice = val != "" ? double.parse(val) : 0;
                               });
                             },
                             decoration: textInputDecoration.copyWith(
@@ -372,7 +372,7 @@ class _NewItemState extends State<NewItem> {
 //                child: IconButton(onPressed: (){print(widget.uidTab[1]);},icon: Icon(Icons.add_photo_alternate),iconSize: 40.0,color: Colors.black87,),
 //              ),
 
-              _buildButton(item, type),
+              _buildButton(item, formKey),
             ], // Children
           ),
         ),
@@ -463,13 +463,13 @@ class _NewItemState extends State<NewItem> {
             true,
             itemPrice,
             itemPricePeriod);
-        Navigator.pushReplacementNamed(context, CategoryRoute,
-            arguments: [newItem, widget.uidTabItem[1]]);
+        Navigator.pushReplacementNamed(context, CategoryRoute,arguments: [newItem, widget.uidTabItem[1]]);
     }
   }
 
   onPressedBtn() async {
-    if (_formKey1.currentState!.validate()) {
+    var currentState = _formKey1.currentState == null ? _formKey2.currentState : _formKey1.currentState;
+    if (currentState!.validate()) {
       String uid = widget.uidTabItem[0] as String;
       Item newItem = new Item(
           [],

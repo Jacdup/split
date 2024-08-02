@@ -6,20 +6,20 @@ import 'package:twofortwo/utils/routing_constants.dart';
 import 'package:twofortwo/shared/constants.dart';
 
 
-class RequestList extends StatefulWidget {
+class ItemList extends StatefulWidget {
 
   final List<Item?> allItems;
   final String name;
   final String uid;
   final String searchTerm;
 
-  RequestList({required this.allItems, required this.name, required this.uid, required this.searchTerm});
+  ItemList({required this.allItems, required this.name, required this.uid, required this.searchTerm});
 
   @override
-  _RequestListState createState() => _RequestListState();
+  _ItemListState createState() => _ItemListState();
 }
 
-class _RequestListState extends State<RequestList> {
+class _ItemListState extends State<ItemList> {
 
   List<bool> _infoShow = [];
   RefreshController _refreshController =  RefreshController(initialRefresh: false);
@@ -97,31 +97,8 @@ class _RequestListState extends State<RequestList> {
         if (index == allItems.length -1) {
           _buildBox = 0; // TODO
         }
-//        if (chosenCategories.any((item) => allItems[index].categories.contains(item))) {
-//          i = i + 1;
         return  widget.searchTerm == null || widget.searchTerm == "" ? _buildRow(allItems[index], index, _buildBox)
             : allItems[index]!.itemName.toLowerCase().contains(widget.searchTerm.toLowerCase()) ? _buildRow(allItems[index], index, _buildBox) : new Container();
-//          return _buildRow(allItems[index], index, _buildBox);
-//        }else{
-          if (index == allItems.length -1){
-            _buildBox = 80;
-            if (i == 0){
-              return Center(child: Text("No items in chosen categories"));
-            }
-          }
-//          if (index == allItems.length-1){
-//
-//          }
-//          print(index);
-//          if (i == 0){
-//            i = i +1;
-//            return Center(child: Text("No items in chosen categories"));
-//          }else {
-            return Center();
-//          }
-//        }
-
-
 
       },
 //      separatorBuilder: (BuildContext context, int index) => const Divider(),

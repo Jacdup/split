@@ -230,10 +230,11 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       try {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        var categories;
         return Item(
           // Expects only positional arguments
                 // Check if 'categories' field exists
-         // List<String> categories = data['categories'] != null ? List<String>.from(data['categories']) : []; // Provide a default value if 'categories' is missing
+        //  List<String> categories = (data['categories'] != null) ? List<String>.from(data['categories']) : []; // Provide a default value if 'categories' is missing
           List<String>.from(data['categories']), //.cast<String>()
           data['itemName'] ?? '',
           data['startDate'] ?? '',
